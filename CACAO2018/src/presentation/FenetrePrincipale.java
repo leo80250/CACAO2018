@@ -1,5 +1,4 @@
 package presentation;
-import abstraction.distributeur.europe.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -22,15 +21,15 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
-import control.CtrlBtnNext;
-import control.CtrlCheckBoxHistorique;
-import control.CtrlCheckBoxJournal;
-import control.CtrlJTextField;
-import control.CtrlCheckBoxGraphique;
-import control.CtrlLabelEtape;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
+import control.CtrlBtnNext;
+import control.CtrlCheckBoxGraphique;
+import control.CtrlCheckBoxHistorique;
+import control.CtrlCheckBoxJournal;
+import control.CtrlJTextField;
+import control.CtrlLabelEtape;
 
 /**
  * Classe modelisant la fenetre principale de l'interface.
