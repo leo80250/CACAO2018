@@ -3,9 +3,14 @@ package abstraction.fourni;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq2PROD.Eq2PROD;
+<<<<<<< HEAD
 import abstraction.eq3PROD.Eq3PROD;
 import abstraction.eq7TRAN.Eq7TRAN;
+=======
+import abstraction.eq7TRAN.Eq7TRAN;
+>>>>>>> branch 'master' of https://github.com/CACAO2018/CACAO2018
 
 /**
  * Classe modelisant "le monde" vu comme un regroupement d'acteurs, 
@@ -53,12 +58,18 @@ public class Monde extends Observable {
 	 * le corps de cette methode
 	 */
 	public void peupler() {
+		Eq5TRAN eq5 = new Eq5TRAN();
+		this.ajouterActeur(eq5);
 		Eq2PROD eq2 = new Eq2PROD();
 		this.ajouterActeur(eq2);
 		Eq7TRAN eq7 = new Eq7TRAN();
+<<<<<<< HEAD
 		this.ajouterActeur(eq7);
 		Eq3PROD eq3 = new Eq3PROD();
 		this.ajouterActeur(eq3);
+=======
+		this.ajouterActeur(eq7);
+>>>>>>> branch 'master' of https://github.com/CACAO2018/CACAO2018
 	}
 	/**
 	 * @return Retourne le numero de l'etape en cours.
