@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import abstraction.eq5TRAN.Eq5TRAN;
+import abstraction.eq2PROD.Eq2PROD;
+import abstraction.eq7TRAN.Eq7TRAN;
 
 /**
  * Classe modelisant "le monde" vu comme un regroupement d'acteurs, 
@@ -53,6 +55,10 @@ public class Monde extends Observable {
 	public void peupler() {
 		Eq5TRAN eq5 = new Eq5TRAN();
 		this.ajouterActeur(eq5);
+		Eq2PROD eq2 = new Eq2PROD();
+		this.ajouterActeur(eq2);
+		Eq7TRAN eq7 = new Eq7TRAN();
+		this.ajouterActeur(eq7);
 	}
 	/**
 	 * @return Retourne le numero de l'etape en cours.
