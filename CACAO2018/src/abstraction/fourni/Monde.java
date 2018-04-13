@@ -5,12 +5,8 @@ import java.util.Observable;
 
 import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq2PROD.Eq2PROD;
-<<<<<<< HEAD
 import abstraction.eq3PROD.Eq3PROD;
 import abstraction.eq7TRAN.Eq7TRAN;
-=======
-import abstraction.eq7TRAN.Eq7TRAN;
->>>>>>> branch 'master' of https://github.com/CACAO2018/CACAO2018
 
 /**
  * Classe modelisant "le monde" vu comme un regroupement d'acteurs, 
