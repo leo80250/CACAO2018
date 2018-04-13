@@ -12,7 +12,7 @@ public class Eq6DIST implements Acteur {
 
 	@Override
 	public void next() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub;
 		
 	}
 
