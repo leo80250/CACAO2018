@@ -6,14 +6,12 @@ public class Eq5TRAN implements Acteur {
 
 	@Override
 	public String getNom() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Eq5TRAN";
 	}
 
 	@Override
 	public void next() {
-		// TODO Auto-generated method stub
-		
+		System.out.println("L'équipe 5 est présente");		
 	}
 
 }
