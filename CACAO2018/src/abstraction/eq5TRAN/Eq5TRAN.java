@@ -25,7 +25,6 @@ public class Eq5TRAN implements Acteur, ITransformateur {
 		int achat = 600;
 		p.sell(achat);
 		this.stock += achat ;
-
 	}
 
 	@Override

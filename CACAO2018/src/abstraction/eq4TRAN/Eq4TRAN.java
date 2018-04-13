@@ -1,8 +1,16 @@
 package abstraction.eq4TRAN;
 
+import abstraction.eq4TRAN.ITransformateur;
+
 import abstraction.fourni.Acteur;
 
-public class Eq4TRAN implements Acteur{
+public class Eq4TRAN implements Acteur, ITransformateur{
+	
+	private int stock;
+
+	public Eq4TRAN() {
+		this.stock=1000 ;
+	}
 
 	@Override
 	public String getNom() {
@@ -12,8 +20,13 @@ public class Eq4TRAN implements Acteur{
 
 	@Override
 	public void next() {
-		// TODO Auto-generated method stub
+		System.out.println("L'équipe 4 est présente");		
 		
+	}
+	@Override
+	public void sell(int q) {
+		if(q>stock) return;
+		stock-=q;
 	}
 
 }
