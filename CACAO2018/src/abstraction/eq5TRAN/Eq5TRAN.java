@@ -16,6 +16,7 @@ public class Eq5TRAN implements Acteur, ITransformateur {
 
 	@Override
 	public void next() {
+		
 		System.out.println("L'équipe 5 est présente");		
 	}
 
