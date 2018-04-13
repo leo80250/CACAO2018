@@ -3,6 +3,8 @@ package abstraction.fourni;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import abstraction.eq2PROD.Eq2PROD;
+
 /**
  * Classe modelisant "le monde" vu comme un regroupement d'acteurs, 
  * d'indicateurs et de journaux. 
@@ -49,7 +51,8 @@ public class Monde extends Observable {
 	 * le corps de cette methode
 	 */
 	public void peupler() {
-		// Methode a redefinir
+		Eq2PROD eq2 = new Eq2PROD();
+		this.ajouterActeur(eq2);
 	}
 	/**
 	 * @return Retourne le numero de l'etape en cours.
