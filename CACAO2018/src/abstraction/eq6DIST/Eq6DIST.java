@@ -13,7 +13,7 @@ public class Eq6DIST implements Acteur, IVenteConso {
 	}
 	@Override
 	public String getNom() {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub;
 		return "Eq6DIST";
 	}
 
