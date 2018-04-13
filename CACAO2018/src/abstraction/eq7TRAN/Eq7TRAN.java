@@ -7,7 +7,7 @@ public class Eq7TRAN implements Acteur {
 	@Override
 	public String getNom() {
 		// TODO Auto-generated method stub
-		return null;
+		return "eq7TRAN";
 	}
 
 	@Override
