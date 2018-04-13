@@ -63,13 +63,10 @@ public class Monde extends Observable {
 		Eq2PROD eq2 = new Eq2PROD();
 		this.ajouterActeur(eq2);
 		Eq7TRAN eq7 = new Eq7TRAN();
-<<<<<<< HEAD
 		this.ajouterActeur(eq7);
 		Eq3PROD eq3 = new Eq3PROD();
 		this.ajouterActeur(eq3);
-=======
-		this.ajouterActeur(eq7);
->>>>>>> branch 'master' of https://github.com/CACAO2018/CACAO2018
+		
 	}
 	/**
 	 * @return Retourne le numero de l'etape en cours.
