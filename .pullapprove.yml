@@ -12,61 +12,71 @@ groups:
     conditions:
       files:
         exclude:
-          - CACAO2018/src/abstraction/distributeur/*
-          - CACAO2018/src/abstraction/producteur/*
-          - CACAO2018/src/abstraction/transformateur/*
+          - CACAO2018/src/abstraction/eq1DIST/*
+          - CACAO2018/src/abstraction/eq2PROD/*
+          - CACAO2018/src/abstraction/eq3PROD/*
+          - CACAO2018/src/abstraction/eq4TRAN/*
+          - CACAO2018/src/abstraction/eq5TRAN/*
+          - CACAO2018/src/abstraction/eq6DIST/*
+          - CACAO2018/src/abstraction/eq7TRAN/*
     required: 1
     reset_on_push:
       enabled: false
     users:
     - massimotisi
-    - fredericoalvares
 
-  distributeur-amerique:
+  equipe2-producteur:
     conditions:
       files:
-        - CACAO2018/src/abstraction/distributeur/amerique/*
+        - CACAO2018/src/abstraction/eq2PROD/*
     required: 1
     users: 
-      - danjud
+      - AgatheChevalier
 
-  distributeur-europe:
+  equipe3-producteur:
     conditions:
       files:
-        - CACAO2018/src/abstraction/distributeur/europe/*
+        - CACAO2018/src/abstraction/eq3PROD/*
     required: 1
     users: 
-      - wowalid
+      - CouvratClaire
 
-  producteur-ameriquelatine:
+  equipe4-transformateur:
     conditions:
       files:
-        - CACAO2018/src/abstraction/producteur/ameriquelatine/*
+        - CACAO2018/src/abstraction/eq4TRAN/*
     required: 1
     users: 
-      - AnaisBel
+      - Carlivoix
 
-  producteur-cotedivoire:
+  equipe5-transformateur:
     conditions:
       files:
-        - CACAO2018/src/abstraction/producteur/cotedivoire/*
+        - CACAO2018/src/abstraction/eq5TRAN/*
     required: 1
     users: 
-      - antoineroson
+      - ThomasSchillaci
 
-  transformateur-europe:
+  equipe7-transformateur:
     conditions:
       files:
-        - CACAO2018/src/abstraction/transformateur/europe/*
+        - CACAO2018/src/abstraction/eq7TRAN/*
     required: 1
     users: 
-      - theostourm
+      - leo80250
 
-  transformateur-usa:
+  equipe1-distributeur:
     conditions:
       files:
-        - CACAO2018/src/abstraction/transformateur/usa/*
+        - CACAO2018/src/abstraction/eq1DIST/*
     required: 1
     users: 
-      - aprage16
+      - elisagm
 
+  equipe6-distributeur:
+    conditions:
+      files:
+        - CACAO2018/src/abstraction/eq6DIST/*
+    required: 1
+    users: 
+      - leo-petitjean
