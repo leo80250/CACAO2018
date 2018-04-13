@@ -3,6 +3,8 @@ package abstraction.fourni;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import abstraction.eq1DIST.Eq1DIST;
+
 /**
  * Classe modelisant "le monde" vu comme un regroupement d'acteurs, 
  * d'indicateurs et de journaux. 
@@ -49,7 +51,8 @@ public class Monde extends Observable {
 	 * le corps de cette methode
 	 */
 	public void peupler() {
-		// Methode a redefinir
+		Eq1DIST eq1 = new Eq1DIST();
+		this.ajouterActeur(eq1);
 	}
 	/**
 	 * @return Retourne le numero de l'etape en cours.
