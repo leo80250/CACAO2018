@@ -7,7 +7,7 @@ public class Eq3PROD implements Acteur {
 	@Override
 	public String getNom() {
 		// TODO Auto-generated method stub
-		return null;
+		return "Eq3PROD";
 	}
 
 	@Override
