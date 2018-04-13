@@ -3,6 +3,10 @@ package abstraction.fourni;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import abstraction.eq5TRAN.Eq5TRAN;
+import abstraction.eq2PROD.Eq2PROD;
+import abstraction.eq7TRAN.Eq7TRAN;
+
 import abstraction.eq1DIST.Eq1DIST;
 
 /**
@@ -50,9 +54,18 @@ public class Monde extends Observable {
 	 * a titre d'exemple. Vous aurez bien evidemment a modifier 
 	 * le corps de cette methode
 	 */
+
+
 	public void peupler() {
 		Eq1DIST eq1 = new Eq1DIST();
 		this.ajouterActeur(eq1);
+		Eq5TRAN eq5 = new Eq5TRAN();
+		this.ajouterActeur(eq5);
+		Eq2PROD eq2 = new Eq2PROD();
+		this.ajouterActeur(eq2);
+		Eq7TRAN eq7 = new Eq7TRAN();
+		this.ajouterActeur(eq7);
+
 	}
 	/**
 	 * @return Retourne le numero de l'etape en cours.

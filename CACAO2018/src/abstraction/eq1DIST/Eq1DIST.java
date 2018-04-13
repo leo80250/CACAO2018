@@ -1,7 +1,8 @@
 package abstraction.eq1DIST;
 
+import abstraction.eq4TRAN.ITransformateur;
 import abstraction.fourni.Acteur;
-//import abstraction.fourni.Monde;
+import abstraction.fourni.Monde;
 
 public class Eq1DIST implements Acteur, IVenteConso {
 private int stock;
@@ -17,9 +18,13 @@ public Eq1DIST() {
 
 	@Override
 	public void next() {
-		//Acteur eq4 = (Monde.LE_MONDE.getActeur("Eq4TRAN"));
-		// IV eq4v = (IV)eq4;
-		//eq4v.sell(400);
+		Acteur eq5 = (Monde.LE_MONDE.getActeur("Eq5TRAN"));
+	//	ITransformateur eq5v =
+				((ITransformateur)eq5).sell(400);;
+	//	eq5v.sell(400);
+				this.stock = this.stock + 400;
+			System.out.println("Le stock de l'équipe 1 : "+this.stock);
+			
 	}
 
 	@Override
