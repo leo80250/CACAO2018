@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 
 import abstraction.eq2PROD.Eq2PROD;
+import abstraction.eq6DIST.Eq6DIST;
 import abstraction.eq7TRAN.Eq7TRAN;
 
 /**
@@ -56,6 +57,8 @@ public class Monde extends Observable {
 		this.ajouterActeur(eq2);
 		Eq7TRAN eq7 = new Eq7TRAN();
 		this.ajouterActeur(eq7);
+		Eq6DIST eq6 = new Eq6DIST();
+		this.ajouterActeur(eq6);
 	}
 	/**
 	 * @return Retourne le numero de l'etape en cours.

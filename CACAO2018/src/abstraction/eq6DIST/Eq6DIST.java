@@ -4,6 +4,10 @@ import abstraction.fourni.Acteur;
 
 public class Eq6DIST implements Acteur {
 
+	private int stock;
+	public Eq6DIST() {
+		this.stock=75412;
+	}
 	@Override
 	public String getNom() {
 		// TODO Auto-generated method stub
@@ -12,6 +16,7 @@ public class Eq6DIST implements Acteur {
 
 	@Override
 	public void next() {
+		
 		// TODO Auto-generated method stub;
 		
 	}
