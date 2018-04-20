@@ -7,15 +7,10 @@ import abstraction.fourni.Acteur;
 public class Eq4TRAN implements Acteur, ITransformateur{
 	
 	private int stock;
-<<<<<<< HEAD
-	
-	public Eq4TRAN() {
-		this.stock=1000;
-=======
+
 
 	public Eq4TRAN() {
 		this.stock=1000 ;
->>>>>>> branch 'master' of https://github.com/Carlivoix/CACAO2018.git
 	}
 
 	@Override
@@ -31,12 +26,12 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 	}
 	@Override
 	public void sell(int q) {
-<<<<<<< HEAD
-		this.stock=this.stock-q;
-=======
-		if(q>stock) return;
-		stock-=q;
->>>>>>> branch 'master' of https://github.com/Carlivoix/CACAO2018.git
+		if(q<=this.stock) {
+			this.stock -= q;
+		}
+		else {
+			System.out.println("Le stock n'est pas suffisant pout satisfaire la demande");
+		}
 	}
 
 }
