@@ -3,9 +3,28 @@ package abstraction.eq2PROD;
 import abstraction.fourni.Acteur;
 
 public class Eq2PROD implements Acteur, IProducteurCacao {
-	private int stock;
+	private int stockQM;
+	private int stockQB;
+	private double solde;
+	private final static int MOY_QB = 23000; 
+	private final static int MOY_QM = 35000; 
+	
+	private double meteo() {
+		double mini = 0.5;
+		double maxi = 1.3;
+		double x = Math.random();
+		if (x<0.005) {
+			return mini;
+		} else if (x>0.995) {
+			return maxi;
+		} else {
+			return 0.303*x+0.848;
+		}
+	}
+	
 	public Eq2PROD() {
-		this.stock=10000000;
+		this.stockQM=10000000;
+		this.stockQB=1000000;
 	}
 	
 	public String getNom() {
@@ -14,16 +33,14 @@ public class Eq2PROD implements Acteur, IProducteurCacao {
 	}
 
 	public void next() {
-		int prod = (int) (Math.random()*1000);
-		this.stock=this.stock+prod;
-		System.out.println("production de "+prod+" : le stock de eq2 est : "+this.stock);
+		this.stockQM=this.stockQM+ (int) meteo()*MOY_QM;
+		this.stockQB=this.stockQB+ (int) meteo()*MOY_QB;
 		// TODO Auto-generated method stub
 		
 	}
 
 	public void sell(int q) {
-		this.stock=this.stock-q;
-		System.out.println("eq2 sell ( "+q+") --> "+this.stock);
+		this.stockQM=this.stockQM-q;
 	}
 
 }
