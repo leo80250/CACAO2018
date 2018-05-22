@@ -99,6 +99,6 @@ public class Contrat {
 		}
 		
 		return "Contrat : "+this.quantite+" tonnes de feve de "+strqualite[this.qualite]+" qualité, à "+this.prix
-				+"€ la tonne.\nAcheteur : "+acheteur+" | Vendeur : "+vendeur+rep;
+				+"€ la tonne, soit un total de "+this.quantite*this.prix+"€.\nAcheteur : "+acheteur+" | Vendeur : "+vendeur+rep;
 	}
 }
