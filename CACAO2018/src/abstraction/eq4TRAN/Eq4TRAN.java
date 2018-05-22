@@ -48,16 +48,18 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 		
 	}
 	@Override
-	public void sell(int q) {
+	/*public void sell(int q) {
 		if(q>stock) return;
 		stock-=q;
-	}
+	} */ 
 	
 	public void journalEq4() {
 		JournalEq4.ajouter("Stock des tablettes Basse Qualité = "+stockTabBQ.getValeur());
 		JournalEq4.ajouter("Stock des tablettes Moyenne Qualité = "+stockTabMQ.getValeur());
 		JournalEq4.ajouter("Stock des tablettes Basse Qualité = "+stockTabHQ.getValeur());
-		JournalEq4.ajouter("Stock des chocolats Basse Qualité = "+stockTabBQ.getValeur());
+		JournalEq4.ajouter("Stock des chocolats Moyenne Qualité = "+stockTabBQ.getValeur());
+		JournalEq4.ajouter("Stock des chocolats Haute Qualité = "+stockTabBQ.getValeur());
+		JournalEq4.ajouter("Production des tablettes Basse Qualité = "+stockTabBQ.getValeur());
 
 	}
 
