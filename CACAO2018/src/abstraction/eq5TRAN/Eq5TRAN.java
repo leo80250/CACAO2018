@@ -1,45 +1,51 @@
 package abstraction.eq5TRAN;
 
-import abstraction.eq2PROD.IProducteurCacao;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.fourni.Acteur;
-import abstraction.fourni.Monde;
-
-import java.util.Arrays;
+import abstraction.fourni.Indicateur;
 
 import static abstraction.eq5TRAN.Marchandises.*;
 
 public class Eq5TRAN implements Acteur, ITransformateur {
 
     // cf Marchandises.java pour obtenir l'indexation
-    private float[] productionSouhaitee;
-    private float[] achatsSouhaites;
+    private Indicateur[] productionSouhaitee; // en kT
+    private Indicateur[] achatsSouhaites; // en kT
     private float facteurStock;
-    private float[] margesStock; // margeStock = facteurStock * variationDeStockParIteration
+    private Indicateur[] stocks; // margeStock = facteurStock * variationDeStockParIteration, en kT
 
-    private float banque; // en milliers
+    private Indicateur banque; // en milliers d'euros
+
 
     public Eq5TRAN() {
         int nbMarchandises = Marchandises.getNombreMarchandises();
-        productionSouhaitee = new float[nbMarchandises];
-        achatsSouhaites = new float[nbMarchandises];
+        productionSouhaitee = new Indicateur[nbMarchandises];
+        achatsSouhaites = new Indicateur[nbMarchandises];
         facteurStock = 3;
-        margesStock = new float[nbMarchandises];
+        stocks = new Indicateur[nbMarchandises];
 
-        productionSouhaitee[TABLETTES_BQ] = 345_000;
-        productionSouhaitee[TABLETTES_MQ] = 575_000;
-        productionSouhaitee[TABLETTES_HQ] = 115_000;
-        productionSouhaitee[TABLETTES_HQ] = 115_000;
-        productionSouhaitee[POUDRE_MQ] = 50_000;
-        productionSouhaitee[FRIANDISES_MQ] = 115_000;
+        productionSouhaitee[FEVES_BQ] = new Indicateur("Feves BQ", this, 0);
+        productionSouhaitee[FEVES_MQ] = new Indicateur("Feves MQ", this, 0);
+        productionSouhaitee[TABLETTES_BQ] = new Indicateur("Tablettes BQ", this, 345);
+        productionSouhaitee[TABLETTES_MQ] = new Indicateur("Tablettes MQ",this,575);
+        productionSouhaitee[TABLETTES_HQ] = new Indicateur("Tablettes HQ",this,115);
+        productionSouhaitee[POUDRE_MQ] = new Indicateur("Poudre MQ",this,50);
+        productionSouhaitee[POUDRE_HQ] = new Indicateur("Poudre HQ",this,0);
+        productionSouhaitee[FRIANDISES_MQ] = new Indicateur("Friandises MQ",this,115);
 
-        achatsSouhaites[FEVES_BQ] = 360_000;
-        achatsSouhaites[FEVES_MQ] = 840_000;
-        achatsSouhaites[POUDRE_HQ] = 115_000;
+        achatsSouhaites[FEVES_BQ] = new Indicateur("Feves BQ", this, 360);
+        achatsSouhaites[FEVES_MQ] = new Indicateur("Feves MQ",this,840);
+        achatsSouhaites[TABLETTES_BQ] = new Indicateur("Tablettes BQ",this,0);
+        achatsSouhaites[TABLETTES_MQ] = new Indicateur("Tablettes MQ",this,0);
+        achatsSouhaites[TABLETTES_HQ] = new Indicateur("Tablettes HQ",this,0);
+        achatsSouhaites[POUDRE_MQ] = new Indicateur("Poudre MQ",this,0);
+        achatsSouhaites[POUDRE_HQ] = new Indicateur("Poudre HQ",this,0);
+        achatsSouhaites[FRIANDISES_MQ] = new Indicateur("Friandises MQ", this, 0);
 
-        for (int i = 0; i < nbMarchandises; i++) margesStock[i] = productionSouhaitee[i] + achatsSouhaites[i];
+        for (int i = 0; i < nbMarchandises; i++)
+            stocks[i] = new Indicateur("Stocks de " + Marchandises.getMarchandise(i), this, productionSouhaitee[i].getValeur() + achatsSouhaites[i].getValeur());
 
-        banque=16_000; // environ benefice 2017 sur nombre d'usines
+        banque=new Indicateur("Banque",this,16_000); // environ benefice 2017 sur nombre d'usines
     }
 
     @Override
