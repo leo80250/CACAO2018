@@ -1,7 +1,7 @@
 package abstraction.eq7TRAN;
 
 
-public class ContratVendeurPoudre {
+public class ContratPoudre {
 	private int qualite;
 	private int quantite;
 	private double prix;
@@ -9,7 +9,7 @@ public class ContratVendeurPoudre {
 	private IVendeurPoudre prod;
 	private boolean reponse;
 	
-	public ContratVendeurPoudre(int qualite, int quantite, double prix, //IAcheteurPoudre tran,
+	public ContratPoudre(int qualite, int quantite, double prix, //IAcheteurPoudre tran,
 			IVendeurPoudre prod, boolean reponse) {
 		this.qualite = qualite;
 		this.quantite = quantite;

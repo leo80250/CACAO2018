@@ -2,16 +2,15 @@ package abstraction.eq7TRAN;
 
 public interface IVendeurPoudre {
 	
-	public ContratVendeurPoudre[] getOffresPubliques();
-	public void sendOffresPubliques(ContratVendeurPoudre[] offres);
+	public ContratPoudre[] getOffresPubliques();
+	public void sendOffresPubliques(ContratPoudre[] offres);
 	
-	public ContratVendeurPoudre[] getDemandePrivee();
-	public void sendDemandePrivee(ContratVendeurPoudre[] demandes);
+	public ContratPoudre[] getDemandePrivee();
+	public void sendDemandePrivee(ContratPoudre[] demandes);
 	
-	public ContratVendeurPoudre[] getOffreFinale();
-	public void sendOffreFinale(ContratVendeurPoudre[] contrats);
+	public ContratPoudre[] getOffreFinale();
+	public void sendOffreFinale(ContratPoudre[] contrats);
 	
-	public ContratVendeurPoudre[] getResultVentes();
-	public void sendResultVentes(ContratVendeurPoudre[] contrats);
-	
+	public ContratPoudre[] getResultVentes();
+	public void sendResultVentes(ContratPoudre[] contrats);	
 }
