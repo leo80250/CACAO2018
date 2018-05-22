@@ -1,7 +1,6 @@
 package abstraction.eq7TRAN;
 
-public interface IVendeurPoudre {
-	
+public interface IVendeurPoudre {	
 	public ContratPoudre[] getOffresPubliques();
 	public void sendOffresPubliques(ContratPoudre[] offres);
 	
