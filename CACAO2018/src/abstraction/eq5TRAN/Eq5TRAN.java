@@ -5,33 +5,56 @@ import abstraction.eq4TRAN.ITransformateur;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
 
+import java.util.Arrays;
+
+import static abstraction.eq5TRAN.Marchandises.*;
+
 public class Eq5TRAN implements Acteur, ITransformateur {
 
-	private int stock;
-	private float prix=1.0f;
-	private float banque=0.0f;
+    // cf Marchandises.java pour obtenir l'indexation
+    private float[] productionSouhaitee;
+    private float[] achatsSouhaites;
+    private float facteurStock;
+    private float[] margesStock; // margeStock = facteurStock * variationDeStockParIteration
 
-	public Eq5TRAN() {
-		this.stock=1000;
-	}
-	@Override
-	public String getNom() {
-		return "Eq5TRAN";
-	}
+    private float banque; // en milliers
 
-	@Override
-	public void next() {
-		IProducteurCacao p=(IProducteurCacao)(Monde.LE_MONDE.getActeur("Eq2PROD"));
-		int achat = 600;
-		p.sell(achat);
-		this.stock += achat ;
-	}
+    public Eq5TRAN() {
+        int nbMarchandises = Marchandises.getNombreMarchandises();
+        productionSouhaitee = new float[nbMarchandises];
+        achatsSouhaites = new float[nbMarchandises];
+        facteurStock = 3;
+        margesStock = new float[nbMarchandises];
 
-	@Override
-	public void sell(int q) {
-		if(q>stock) return;
-		stock-=q;
-		banque+=q*prix;
-	}
+        productionSouhaitee[TABLETTES_BQ] = 345_000;
+        productionSouhaitee[TABLETTES_MQ] = 575_000;
+        productionSouhaitee[TABLETTES_HQ] = 115_000;
+        productionSouhaitee[TABLETTES_HQ] = 115_000;
+        productionSouhaitee[POUDRE_MQ] = 50_000;
+        productionSouhaitee[FRIANDISES_MQ] = 115_000;
+
+        achatsSouhaites[FEVES_BQ] = 360_000;
+        achatsSouhaites[FEVES_MQ] = 840_000;
+        achatsSouhaites[POUDRE_HQ] = 115_000;
+
+        for (int i = 0; i < nbMarchandises; i++) margesStock[i] = productionSouhaitee[i] + achatsSouhaites[i];
+
+        banque=16_000; // environ benefice 2017 sur nombre d'usines
+    }
+
+    @Override
+    public String getNom() {
+        return "Eq5TRAN";
+    }
+
+    @Override
+    public void next() {
+
+    }
+
+    @Override
+    public void sell(int q) {
+
+    }
 
 }
