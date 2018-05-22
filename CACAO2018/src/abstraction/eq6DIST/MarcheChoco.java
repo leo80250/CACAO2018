@@ -5,12 +5,18 @@ public class MarcheChoco {
 	private double[][] prix;
 	private double[][] commande;
 	
-	
-	public MarcheChoco(int[] stock, double[][] prix) {
-		this.stock = ITransformateur.getStock();
+	final ArrayList<Acteur> lvf =  
+	final ArrayList<Acteur> LA = Monde.LE_MONDE.getActeurs();
+	for (Acteur a : LA) {
+		if (a instanceof IVendeurChoco) {
+			lvf.add(a);
+		}
+	}
+	public MarcheChoco() {
+		this.stock = {IVendeurChoco.getStock(),99,99};
 		this.prix = ITransformateur.getPrix();
 		this.commande = IAcheteurChoco.getCommande(this.prix,this.stock);
-		
+	
 		final int i=0;
 		
 		while (this.stock[i]==0 && i<this.stock.length) {
