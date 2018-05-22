@@ -7,7 +7,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 
 public class Eq4TRAN implements Acteur, ITransformateur{
-	
+
 	
 	public Indicateur stockTabBQ ;
 	public Indicateur stockTabMQ ;
@@ -23,6 +23,7 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 	public Journal JournalEq4 = new Journal("JournalEq4") ; 
 
 	public Eq4TRAN() {
+
 		stockTabBQ = new Indicateur("stockTabBQ",this,1000) ;
 		stockTabMQ = new Indicateur("stockTabMQ",this,1000) ;
 		stockTabHQ = new Indicateur("stockTabHQ",this,1000) ;
@@ -34,7 +35,8 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 		prodChocMQ = new Indicateur("prodChocMQ",this,1000) ;
 		prodChocHQ = new Indicateur("prodChocHQ",this,1000) ;
 		solde = new Indicateur("solde",this,1000) ;
-	}
+}
+		
 
 	@Override
 	public String getNom() {
@@ -47,11 +49,6 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 		System.out.println("L'équipe 4 est présente");		
 		
 	}
-	@Override
-	/*public void sell(int q) {
-		if(q>stock) return;
-		stock-=q;
-	} */ 
 	
 	public void journalEq4() {
 		JournalEq4.ajouter("Stock des tablettes Basse Qualité = "+stockTabBQ.getValeur());
@@ -61,6 +58,13 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 		JournalEq4.ajouter("Stock des chocolats Haute Qualité = "+stockTabBQ.getValeur());
 		JournalEq4.ajouter("Production des tablettes Basse Qualité = "+stockTabBQ.getValeur());
 
+	}
+
+
+	@Override
+	public void sell(int q) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
