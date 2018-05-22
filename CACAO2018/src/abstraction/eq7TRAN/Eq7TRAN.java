@@ -1,8 +1,8 @@
 package abstraction.eq7TRAN;
 
-import abstraction.echangeTRANTRAN.ContratPoudre;
-import abstraction.echangeTRANTRAN.IAcheteurPoudre;
-import abstraction.echangeTRANTRAN.IVendeurPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;

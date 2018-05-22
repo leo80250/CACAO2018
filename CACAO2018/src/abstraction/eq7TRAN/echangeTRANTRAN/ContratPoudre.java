@@ -1,4 +1,4 @@
-package abstraction.echangeTRANTRAN;
+package abstraction.eq7TRAN.echangeTRANTRAN;
 
 
 public class ContratPoudre {

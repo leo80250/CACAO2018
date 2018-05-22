@@ -1,9 +1,9 @@
-package abstraction.echangeTRANTRAN;
+package abstraction.eq7TRAN.echangeTRANTRAN;
 
-public interface IAcheteurPoudre {	
-	// Récupérer qui vend quoi, en quelle quantité et qualité et à quel prix auprès du régulateur 
+public interface IVendeurPoudre {
+	// Récupérer qui veut acheter quoi, en quelle quantité et qualité et à quel prix auprès du régulateur 
 	public ContratPoudre[] getOffresPubliques();
-	// Pour envoyer ce que l'on souhaite acheter, en quelle quantité... au régulateur
+	// Pour envoyer ce que l'on souhaite vendre, en quelle quantité... au régulateur
 	public void sendOffresPubliques(ContratPoudre[] offres);
 	
 	// Pour récupérer un devis auprès d'un autre TRAN
@@ -16,6 +16,6 @@ public interface IAcheteurPoudre {
 	public void sendOffreFinale(ContratPoudre[] contrats);
 	
 	// Pour récupérer le résultat de l'échange
-	public ContratPoudre[] getResultAchats();
-	public void sendResultAchats(ContratPoudre[] contrats);	
+	public ContratPoudre[] getResultVentes();
+	public void sendResultVentes(ContratPoudre[] contrats);	
 }
