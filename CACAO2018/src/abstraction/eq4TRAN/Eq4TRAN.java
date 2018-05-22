@@ -3,13 +3,37 @@ package abstraction.eq4TRAN;
 import abstraction.eq4TRAN.ITransformateur;
 
 import abstraction.fourni.Acteur;
+import abstraction.fourni.Indicateur;
+import abstraction.fourni.Journal;
 
 public class Eq4TRAN implements Acteur, ITransformateur{
 	
-	private int stock;
+	
+	public Indicateur stockTabBQ ;
+	public Indicateur stockTabMQ ;
+	public Indicateur stockTabHQ ;
+	public Indicateur stockChocMQ ;
+	public Indicateur stockChocHQ ;
+	public Indicateur prodTabBQ ;
+	public Indicateur prodTabMQ ;
+	public Indicateur prodTabHQ ;
+	public Indicateur prodChocMQ ;
+	public Indicateur prodChocHQ ;
+	public Indicateur solde ; 
+	public Journal JournalEq4 = new Journal("JournalEq4") ; 
 
 	public Eq4TRAN() {
-		this.stock=1000 ;
+		stockTabBQ = new Indicateur("stockTabBQ",this,1000) ;
+		stockTabMQ = new Indicateur("stockTabMQ",this,1000) ;
+		stockTabHQ = new Indicateur("stockTabHQ",this,1000) ;
+		stockChocMQ = new Indicateur("stockChocMQ",this,1000) ;
+		stockChocHQ = new Indicateur("stockTabHQ",this,1000) ;
+		prodTabBQ = new Indicateur("prodTabBQ",this,1000) ;
+		prodTabMQ = new Indicateur("prodTabMQ",this,1000) ;
+		prodTabHQ = new Indicateur("prodTabHQ",this,1000) ;
+		prodChocMQ = new Indicateur("prodChocMQ",this,1000) ;
+		prodChocHQ = new Indicateur("prodChocHQ",this,1000) ;
+		solde = new Indicateur("solde",this,1000) ;
 	}
 
 	@Override
@@ -27,6 +51,11 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 	public void sell(int q) {
 		if(q>stock) return;
 		stock-=q;
+	}
+	
+	public void journalEq4() {
+		JournalEq4.ajouter("Stock des tablettes Basse Qualité = "+stockTabBQ.getValeur());
+		
 	}
 
 }
