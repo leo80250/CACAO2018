@@ -1,4 +1,4 @@
-package vendeurChoco.eq4TRAN;
+package abstraction.eq4TRAN.VendeurChoco;
 /**
  * 
  * @author Etienne
