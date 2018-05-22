@@ -54,9 +54,13 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 		JournalEq4.ajouter("Stock des tablettes Basse Qualité = "+stockTabBQ.getValeur());
 		JournalEq4.ajouter("Stock des tablettes Moyenne Qualité = "+stockTabMQ.getValeur());
 		JournalEq4.ajouter("Stock des tablettes Basse Qualité = "+stockTabHQ.getValeur());
-		JournalEq4.ajouter("Stock des chocolats Moyenne Qualité = "+stockTabBQ.getValeur());
-		JournalEq4.ajouter("Stock des chocolats Haute Qualité = "+stockTabBQ.getValeur());
-		JournalEq4.ajouter("Production des tablettes Basse Qualité = "+stockTabBQ.getValeur());
+		JournalEq4.ajouter("Stock des chocolats Moyenne Qualité = "+stockChocMQ.getValeur());
+		JournalEq4.ajouter("Stock des chocolats Haute Qualité = "+stockChocHQ.getValeur());
+		JournalEq4.ajouter("Production des tablettes Basse Qualité = "+prodTabBQ.getValeur());
+		JournalEq4.ajouter("Production des tablettes Moyenne Qualité = "+prodTabBQ.getValeur());
+		JournalEq4.ajouter("Production des tablettes Haute Qualité = "+prodTabBQ.getValeur());
+		JournalEq4.ajouter("Production de chocolats Moyenne Qualité = "+prodChocMQ.getValeur());
+		JournalEq4.ajouter("Production de chocolats Haute Qualité = "+prodChocHQ.getValeur());
 
 	}
 
