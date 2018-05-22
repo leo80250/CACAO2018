@@ -51,6 +51,7 @@ public class Client {
 						+ (Math.random() * (0.6 * StockTotal.getValeur(i, j)));
 			}
 		}
+		
 		return new GrilleQuantite(CommandeTotale);
 	}
 }
