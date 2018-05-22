@@ -25,6 +25,7 @@ public class Eq2PROD implements Acteur, IProducteurCacao {
 	public Eq2PROD() {
 		this.stockQM=10000000;
 		this.stockQB=1000000;
+		this.solde = 15000.0;
 	}
 	
 	public String getNom() {
