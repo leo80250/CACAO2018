@@ -1,5 +1,7 @@
 package abstraction.eq7TRAN.echangeTRANTRAN;
 
+// Léo Fargeas, Maelle Boulard
+
 public interface IAcheteurPoudre {	
 	// Récupérer qui vend quoi, en quelle quantité et qualité et à quel prix auprès du régulateur 
 	public ContratPoudre[] getOffresPubliques();

@@ -1,5 +1,7 @@
 package abstraction.eq7TRAN.echangeTRANTRAN;
 
+// Léo Fargeas, Margaux Grand
+
 public interface IVendeurPoudre {
 	// Récupérer qui veut acheter quoi, en quelle quantité et qualité et à quel prix auprès du régulateur 
 	public ContratPoudre[] getOffresPubliques();
