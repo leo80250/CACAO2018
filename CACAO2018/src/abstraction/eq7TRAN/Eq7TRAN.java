@@ -1,12 +1,12 @@
 package abstraction.eq7TRAN;
 
+import abstraction.echangeTRANTRAN.ContratPoudre;
+import abstraction.echangeTRANTRAN.IAcheteurPoudre;
+import abstraction.echangeTRANTRAN.IVendeurPoudre;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
-import abstraction.echangeTRAN.ContratPoudre;
-import abstraction.echangeTRAN.IAcheteurPoudre;
-import abstraction.echangeTRAN.IVendeurPoudre;
 
 public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	private Indicateur achats;

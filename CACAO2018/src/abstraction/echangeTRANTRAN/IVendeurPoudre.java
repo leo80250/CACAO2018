@@ -1,6 +1,6 @@
-package abstraction.echangeTRAN;
+package abstraction.echangeTRANTRAN;
 
-public interface IAcheteurPoudre {	
+public interface IVendeurPoudre {	
 	public ContratPoudre[] getOffresPubliques();
 	public void sendOffresPubliques(ContratPoudre[] offres);
 	
@@ -10,6 +10,6 @@ public interface IAcheteurPoudre {
 	public ContratPoudre[] getOffreFinale();
 	public void sendOffreFinale(ContratPoudre[] contrats);
 	
-	public ContratPoudre[] getResultAchats();
-	public void sendResultAchats(ContratPoudre[] contrats);	
+	public ContratPoudre[] getResultVentes();
+	public void sendResultVentes(ContratPoudre[] contrats);	
 }
