@@ -1,11 +1,14 @@
 package abstraction.eq7TRAN;
 
+import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Eq7TRAN implements Acteur {
+public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	private Indicateur achats;
 	private Indicateur ventes;
 	private Indicateur stockFeves;
@@ -42,5 +45,55 @@ public class Eq7TRAN implements Acteur {
 
 	public void next() {
 		int prod = (int) (Math.random()*1000);
+	}
+	@Override
+	public ContratPoudre[] getResultVentes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void sendResultVentes(ContratPoudre[] contrats) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ContratPoudre[] getOffresPubliques() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void sendOffresPubliques(ContratPoudre[] offres) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ContratPoudre[] getDemandePrivee() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void sendDemandePrivee(ContratPoudre[] demandes) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ContratPoudre[] getOffreFinale() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void sendOffreFinale(ContratPoudre[] contrats) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ContratPoudre[] getResultAchats() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void sendResultAchats(ContratPoudre[] contrats) {
+		// TODO Auto-generated method stub
+		
 	}	
 }
