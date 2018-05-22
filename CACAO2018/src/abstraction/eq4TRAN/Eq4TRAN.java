@@ -11,6 +11,7 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 
 	public Eq4TRAN() {
 		this.stock=1000 ;
+		
 	}
 
 	@Override
@@ -24,6 +25,7 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 		System.out.println("L'équipe 4 est présente");		
 		
 	}
+	
 	@Override
 	public void sell(int q) {
 		if(q<=this.stock) {
