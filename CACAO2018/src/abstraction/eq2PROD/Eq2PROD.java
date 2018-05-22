@@ -30,15 +30,12 @@ public class Eq2PROD implements Acteur, IProducteurCacao {
 	}
 	
 	public String getNom() {
-		// TODO Auto-generated method stub
 		return "Eq2PROD";
 	}
 
 	public void next() {
 		this.stockQM=this.stockQM+ (int) meteo()*MOY_QM;
 		this.stockQB=this.stockQB+ (int) meteo()*MOY_QB;
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void sell(int q) {
