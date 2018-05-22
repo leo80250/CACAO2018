@@ -10,6 +10,7 @@ public class Eq2PROD implements Acteur, IProducteurCacao {
 	private final static int MOY_QM = 35000; 
 	
 	private double meteo() {
+		/* modélisation par Guillaume SALLE+Agathe CHEVALIER+Alexandre BIGOT, code par Guillaume SALLE */
 		double mini = 0.5;
 		double maxi = 1.3;
 		double x = Math.random();
