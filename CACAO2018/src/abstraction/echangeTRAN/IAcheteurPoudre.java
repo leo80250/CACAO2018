@@ -1,4 +1,4 @@
-package abstraction.eq7TRAN;
+package abstraction.echangeTRAN;
 
 public interface IAcheteurPoudre {	
 	public ContratPoudre[] getOffresPubliques();
