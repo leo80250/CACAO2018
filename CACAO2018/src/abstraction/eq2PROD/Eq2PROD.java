@@ -34,8 +34,8 @@ public class Eq2PROD implements Acteur, IProducteurCacao {
 	}
 
 	public void next() {
-		this.stockQM=this.stockQM+ (int) meteo()*MOY_QM;
-		this.stockQB=this.stockQB+ (int) meteo()*MOY_QB;
+		this.stockQM=this.stockQM+ (int) (meteo()*MOY_QM);
+		this.stockQB=this.stockQB+ (int) (meteo()*MOY_QB);
 	}
 
 	public void sell(int q) {
