@@ -37,6 +37,8 @@ public class MarcheChoco  {
 		MarcheChoco MC = new MarcheChoco();
 		ArrayList<GQte> commande=  new ArrayList<GQte>();
 		for (Acteur i : MC.distributeurs) {
+			IAcheteurChoco ibis = (IAcheteurChoco) i;
+			commande.add(ibis.getCommande(MC.prix, MC.stock));
 			
 		}
 	}
