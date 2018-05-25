@@ -8,6 +8,11 @@ package abstraction.eq3PROD.echangesProdTransfo;
 public interface IVendeurFeve {
 	
 	/**
+	 * Envoie au producteur le cours du marche du cacao calcule a partir des ventes au next precedent
+	 */
+	public void sendCoursMarche();
+	
+	/**
 	 * Recupere les offres publiques d'un producteur 
 	 * @return une liste de Contrat proposes par le producteur
 	 * Chaque Contrat indique les qualites de feves et les quantites et prix proposes, le reste des variables

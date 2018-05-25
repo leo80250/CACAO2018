@@ -6,6 +6,12 @@ public class VendeurTest implements Acteur, IVendeurFeve {
 	
 	private String nom;
 	
+	@Override
+	public void sendCoursMarche() {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	public VendeurTest(String nom) {
 		this.nom = nom;
 	}
