@@ -66,7 +66,7 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve, IMarche 
 	}
 
 	
-	
+	/* Modélisation par Alexandre BIGOT+Guillaume SALLE, code par Alexandre BIGOT */
 	private double maladie() {
 		if (this.maladie) {
 			this.maladie=false;
