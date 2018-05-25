@@ -3,11 +3,12 @@ package abstraction.eq2PROD;
 import abstraction.fourni.Acteur;
 import abstraction.eq3PROD.echangesProdTransfo.*;
 
-public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
+public class Eq2PROD implements Acteur, IVendeurFeve {
 	private int stockQM;
 	private int stockQB;
 	private double solde;
 	private boolean maladie;
+	private double coeffStock;
 	private final static int MOY_QB = 23000; 
 	private final static int MOY_QM = 35000; 
 	
@@ -16,6 +17,7 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 		this.stockQM=10000000;
 		this.stockQB=1000000;
 		this.solde = 15000.0;
+		this.coeffStock = 1;
 	}
 	
 	//accesseur
@@ -37,9 +39,18 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 	public String getNom() {
 		return "Eq2PROD";
 	}
+	public double getCoeffSolde() {
+		return this.coeffStock;
+	}
 
 	
 	//services
+	
+	private void calculCoeffPrixVentes() {
+		double coeffMeteo = meteo();
+		double coeffMaladie = maladie();
+		this.coeffStock = -0.2*(coeffMeteo-coeffMaladie)+1.2;
+	}
 	
 	private double meteo() {
 		/* modélisation par Guillaume SALLE+Agathe CHEVALIER+Alexandre BIGOT, code par Guillaume SALLE */
@@ -55,11 +66,6 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 		}
 	}
 	
-	/* Modélisation par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER, code par Romain BERNARD+Agathe CHEVALIER*/
-	private double CoeffPrixVente(double coeffmeteo) {
-		return( -0.2*coeffmeteo + 1.2 );
-	}
-
 	
 	/* Modélisation par Alexandre BIGOT+Guillaume SALLE, code par Alexandre BIGOT
 	 * Si plantations déjà malades alors la récolte est diminuée de 50% par rapport à la récolte
@@ -81,18 +87,14 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 	
 	
 	public void next() {
-		double CoeffMeteo = meteo();
-		double CoeffMaladie = maladie();
-		this.stockQM=this.stockQM+ (int) ((CoeffMeteo-CoeffMaladie)*MOY_QM);
-		this.stockQB=this.stockQB+ (int) ((CoeffMeteo-CoeffMaladie)*MOY_QB);
-		double CoeffPrixVente = CoeffPrixVente(CoeffMeteo);
-		double PrixVenteQM = getPrixMarche()*CoeffPrixVente;
-		double PrixVenteQB = getPrixMarche()*CoeffPrixVente*0.85;
+		calculCoeffPrixVentes();
+		this.stockQM=this.stockQM+ (int) (this.coeffStock*MOY_QM);
+		this.stockQB=this.stockQB+ (int) (this.coeffStock*MOY_QB);
+		// Pour avoir les prix de vente, il faut taper :
+		// double PrixVenteQM = getPrixMarche()*this.coeffStock;
+		// double PrixVenteQB = getPrixMarche()*this.coeffStock*0.85;
 	}
 
-	public void sell(int q) {
-		this.stockQM=this.stockQM-q;
-	}
 	public ContratFeve[] getOffrePublique() {
 		return null;
 	}
