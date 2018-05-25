@@ -91,7 +91,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 		this.stockQB=this.stockQB+ (int) (this.coeffStock*MOY_QB);
 		// Pour avoir les prix de vente, il faut taper :
 		// double PrixVenteQM = getPrixMarche()*this.coeffStock;
-		// double PrixVenteQB = getPrixMarche()*this.coeffStock*0.85;
+		// double PrixVenteQB = getPrixMarche()*this.coeffStock*0.85; 
 	}
 
 	public ContratFeve[] getOffrePublique() {
