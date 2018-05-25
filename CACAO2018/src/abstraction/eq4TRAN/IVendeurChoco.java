@@ -18,7 +18,7 @@ public interface IVendeurChoco {
 	/* Méthode renvoyant un tableau de prix échelonné par quantités commandées */
 	public GPrix getPrix();
 	
-	/* Renvoie sous forme de tableau par type de produit et qulaité, la livraison
+	/* Renvoie sous forme de tableau par type de produit et qualité, la livraison
 	 * effective aux distributeurs
 	 */
 	public GQte getLivraison(GQte[] commandes);

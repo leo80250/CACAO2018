@@ -1,5 +1,6 @@
 package abstraction.eq4TRAN.VendeurChoco;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -85,27 +86,29 @@ public class Vendeur {
 		System.out.println("Entrez le nombre d'intervalles de prix que vous désirez :");
 		int nbIntervalles = sc.nextInt();
 		System.out.println("Rentrez succesivement les intervalles que vous désirez définir : (les intervales peuvent être des nombres réels)");
-		float[] intervalles = new float[nbIntervalles]; 
+		ArrayList<Double> intervalles = new ArrayList<Double>(nbIntervalles); 
 		for(int i=0; i<nbIntervalles; i++) {
-			intervalles[i]=sc.nextFloat();
+			intervalles.set(i, sc.nextDouble());
 		}
-		float[][] prix = new float[6][nbIntervalles]; /* Stocke nos prix par produits et qualité */
+		ArrayList<Double[]> prix = new ArrayList<Double[]>(6); /* Stocke nos prix par produits et qualité */
+		Double[] prixproduit = new Double[10];
 		String[] produits = {"BonbonsBQ","BonbonsMQ","BonbonsHQ","TabletteBQ","TabletteMQ","TabletteHQ"};
 		for(int j=0; j<produits.length; j++) {
 			System.out.println("Indiquez votre prix pour " +produits[j]+ ": (en quantité)");
 			System.out.println("(Indiquez successivement les prix pour chaque intervalle précédemment défini)");
 			for(int k=0; k<nbIntervalles; k++) {
-				prix[j][k]=sc.nextFloat();
+				prixproduit[k]=sc.nextDouble();
 			}
+			prix.set(j, prixproduit);
 		}
 		return new GPrix(intervalles, prix);
 	}
 	
 	
-	public GQte[] getLivraison(GQte[] commandes) {
-		GQte commande1 = commandes[0];
-		GQte commande2 = commandes[1];
-		GQte[] Livraison = new GQte[2]; /*insérer notre livraison effective */
+	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
+		GQte commande1 = commandes.get(0);
+		GQte commande2 = commandes.get(1);
+		ArrayList<GQte> Livraison = new ArrayList<>(); /*insérer notre livraison effective */
 		return Livraison;
 	}
 }
