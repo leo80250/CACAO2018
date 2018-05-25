@@ -83,5 +83,8 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 	public void sendResultVentes(Contrat[] resultVentes) {
 		
 	}
+	public void sendCoursMarche() {
+		
+	}
 
 }
