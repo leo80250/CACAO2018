@@ -1,12 +1,20 @@
 package abstraction.eq1DIST;
 
+import abstraction.ClientsFinaux.GrilleQuantite;
+import abstraction.ClientsFinaux.InterfaceDistributeurClient;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
+<<<<<<< HEAD
 
 public class Eq1DIST implements Acteur {
 private Lot[] stock;
 //private int  banque;
+=======
+  
+public class Eq1DIST implements Acteur, IVenteConso, InterfaceDistributeurClient {
+private int stock;
+>>>>>>> branch 'master' of https://github.com/elisagm/CACAO2018.git
 
 public Eq1DIST()  {
 	this.stock = stock;
@@ -40,6 +48,11 @@ public Eq1DIST()  {
 		return(commande);
 		
 		
+	}
+	@Override
+	public GrilleQuantite commander(GrilleQuantite Q) {
+		// TODO Auto-generated method stub
+		return null;
 	}		
 	
 
