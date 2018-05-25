@@ -5,30 +5,39 @@
 package abstraction.ClientsFinaux;
 
 public class GrilleQuantite {
-	private double[][] quantite;
+	private int[][] quantite;
   
-	public GrilleQuantite(double[][] quantite) {
+	public GrilleQuantite(int[][] quantite) {
 		if (quantite.length == 2 && quantite[0].length == 3) {
 			this.quantite = quantite;
 		} else {
-			this.quantite = new double[2][3];
+			this.quantite = new int[2][3];
 		}
 	}
 
 	public GrilleQuantite() {
-		this(new double[2][3]);
+		this(new int[2][3]);
 	}
 
-	public void Modifier(int i, int j, double valeur) {
+	public void Modifier(int i, int j, int valeur) {
 		this.quantite[i][j] = valeur;
 	}
 
-	public double getValeur(int i, int j) {
+	public int getValeur(int i, int j) {
 		return this.quantite[i][j];
 	}
 
-	public double[][] getQuantite() {
+	public int[][] getQuantite() {
 		return this.quantite;
+	}
+	
+	public GrilleQuantite somme(GrilleQuantite Q) {
+		for(int i=0;i<Q.getQuantite().length;i++) {
+			for(int j=0;j<Q.getQuantite().length;j++) {
+				Q.Modifier(i,j,Q.getValeur(i,j)+this.getValeur(i,j));
+			}
+		}
+		return Q;
 	}
 
 }

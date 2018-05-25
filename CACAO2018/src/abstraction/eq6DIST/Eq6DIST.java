@@ -24,4 +24,6 @@ public class Eq6DIST implements Acteur, InterfaceDistributeurClient {
 		return null;
 	}
 
+	
+
 }

@@ -49,8 +49,9 @@ public Eq1DIST()  {
 	@Override
 	public GrilleQuantite commander(GrilleQuantite Q) {
 		// TODO Auto-generated method stub
-		return null;
-	}		
+		return null ;
+	}
+		
 	
 
 }

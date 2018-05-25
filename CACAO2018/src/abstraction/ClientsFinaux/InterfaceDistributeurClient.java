@@ -14,5 +14,6 @@ public interface InterfaceDistributeurClient {
 	 *         distributeur vend aux clients.
 	 */
 	public GrilleQuantite commander(GrilleQuantite Q);
+	
 
 }
