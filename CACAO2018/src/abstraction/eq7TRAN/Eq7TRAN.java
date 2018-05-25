@@ -72,59 +72,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 			this.getAbsenteisme().setValeur(this, newAbsenteisme);
 
 	}
-	
-	
-	
-	@Override
-	public ContratPoudre[] getResultVentes() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void sendResultVentes(ContratPoudre[] contrats) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public ContratPoudre[] getOffresPubliques() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void sendOffresPubliques(ContratPoudre[] offres) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public ContratPoudre[] getDemandePrivee() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void sendDemandePrivee(ContratPoudre[] demandes) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public ContratPoudre[] getOffreFinale() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void sendOffreFinale(ContratPoudre[] contrats) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public ContratPoudre[] getResultAchats() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void sendResultAchats(ContratPoudre[] contrats) {
-		// TODO Auto-generated method stub
-		
-	}
 	public Indicateur getAchats() {
 		return achats;
 	}
@@ -172,5 +119,30 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	}
 	public void setAbsenteisme(Indicateur absenteisme) {
 		this.absenteisme = absenteisme;
-	}	
+	}
+	@Override
+	public void sendCatalogue(ContratPoudre[] offres) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ContratPoudre[] getCatalogue(IAcheteurPoudre acheteur) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ContratPoudre[] getDevis(ContratPoudre[] devis) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ContratPoudre[] sendReponseDevis(ContratPoudre[] devis, boolean reponse) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ContratPoudre[] getEchangeFinal(ContratPoudre[] contrat) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

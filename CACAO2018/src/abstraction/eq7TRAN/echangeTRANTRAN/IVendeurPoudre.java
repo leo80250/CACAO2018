@@ -1,23 +1,16 @@
 package abstraction.eq7TRAN.echangeTRANTRAN;
 
-// Léo Fargeas, Margaux Grand
+// Léo Fargeas, Margaux Grand, Juliette Gorline, Mickaël Abdealy
 
-public interface IVendeurPoudre {
-	// Récupérer qui veut acheter quoi, en quelle quantité et qualité et à quel prix auprès du régulateur 
-	public ContratPoudre[] getOffresPubliques();
-	// Pour envoyer ce que l'on souhaite vendre, en quelle quantité... au régulateur
-	public void sendOffresPubliques(ContratPoudre[] offres);
-	
-	// Pour récupérer un devis auprès d'un autre TRAN
-	public ContratPoudre[] getDemandePrivee();
-	// Pour envoyer un devis
-	public void sendDemandePrivee(ContratPoudre[] demandes);
-	
-	// Pour récupérer le contrat final
-	public ContratPoudre[] getOffreFinale();
-	public void sendOffreFinale(ContratPoudre[] contrats);
-	
-	// Pour récupérer le résultat de l'échange
-	public ContratPoudre[] getResultVentes();
-	public void sendResultVentes(ContratPoudre[] contrats);	
+public interface IVendeurPoudre { 
+	// Le vendeur partage à tout le monde son catalogue
+	public void sendCatalogue(ContratPoudre[] offres);
+	// L'acheteur récupère le catalogue du vendeur (offre que tout le monde voit)
+	public ContratPoudre[] getCatalogue(IAcheteurPoudre acheteur);
+	// L'acheteur récupère un devis du vendeur (négociation privée)
+	public ContratPoudre[] getDevis(ContratPoudre[] devis);
+	// L'acheteur envoie au vendeur s'il signe ou pas le devis
+	public ContratPoudre[] sendReponseDevis(ContratPoudre[] devis, boolean reponse);
+	// L'acheteur récupère ce qu'il a réellement reçu du vendeur (peut y avoir des non livraisons etc...)
+	public ContratPoudre[] getEchangeFinal(ContratPoudre[] contrat);
 }
