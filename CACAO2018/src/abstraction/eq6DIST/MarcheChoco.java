@@ -1,37 +1,28 @@
-package abstraction.eq6DIST; // Karel Kédémos , Victor Signes
+package abstraction.eq6DIST; // Karel Kédémos , Victor Signes, Léopold Petitjean
+import java.util.ArrayList;
+
+import abstraction.fourni.Acteur;
+import abstraction.fourni.Monde;
 
 public class MarcheChoco {
 	private double[][] stock;
 	private double[][] prix;
-	private double[][] commande;
+	private ArrayList <Acteur> distributeurs;
+	private ArrayList <Acteur> transformateurs;
 	
-	final ArrayList<Acteur> lvf =  
-	final ArrayList<Acteur> LA = Monde.LE_MONDE.getActeurs();
-	for (Acteur a : LA) {
-		if (a instanceof IVendeurChoco) {
-			lvf.add(a);
-		}
-	}
 	public MarcheChoco() {
-		this.stock = {IVendeurChoco.getStock(),99,99};
-		this.prix = ITransformateur.getPrix();
-		this.commande = IAcheteurChoco.getCommande(this.prix,this.stock);
+		
+	this.distributeurs= new ArrayList<Acteur>();
+	this.distributeurs.add((Monde.LE_MONDE.getActeur("Eq6DIST")));
+	this.distributeurs.add((Monde.LE_MONDE.getActeur("Eq1DIST")));
+	this.transformateurs= new ArrayList<Acteur>();
+	this.transformateurs.add( Monde.LE_MONDE.getActeur("Eq4TRAN"));
+	this.transformateurs.add( Monde.LE_MONDE.getActeur("Eq5TRAN"));
+	this.transformateurs.add( Monde.LE_MONDE.getActeur("Eq7TRAN"));
 	
-		final int i=0;
+	for (Acteur i : this.distributeurs) {
 		
-		while (this.stock[i]==0 && i<this.stock.length) {
-			i++;
-		}
-		
-		if (i!=this.stock.length) {
-			
-		}
-		
-		for (int i=0;i<this.stock.length;i++) {
-			if (this.stock[i]!=0) {
-				for 
-				
-			}
-		}
+	}	
 	}
-}	
+	
+}
