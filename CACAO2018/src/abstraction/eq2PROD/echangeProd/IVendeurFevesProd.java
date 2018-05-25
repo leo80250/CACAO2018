@@ -1,6 +1,7 @@
 package abstraction.eq2PROD.echangeProd;
 
 public interface IVendeurFevesProd {
+	/* modélisation par Romain BERNARD avec les équipes 3+4+5+7, code par Alexandre BIGOT 18.05 */ 
 	/* getPrix donne le prix de vente des fèves, et le grp3 ne peut nous acheter que des feves de
 	 * qualité moyenne au prix du marché multiplié par 1.06 */
 	public double getPrix();
