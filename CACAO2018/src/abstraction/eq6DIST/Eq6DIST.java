@@ -1,8 +1,9 @@
 package abstraction.eq6DIST;
 
+import abstraction.ClientsFinaux.InterfaceDistributeurClient;
 import abstraction.fourni.Acteur;
 
-public class Eq6DIST implements Acteur {
+public class Eq6DIST implements Acteur, InterfaceDistributeurClient {
 
 	@Override
 	public String getNom() {

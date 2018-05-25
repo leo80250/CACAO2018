@@ -1,10 +1,11 @@
 package abstraction.eq1DIST;
 
+import abstraction.ClientsFinaux.InterfaceDistributeurClient;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
 
-public class Eq1DIST implements Acteur, IVenteConso {
+public class Eq1DIST implements Acteur, IVenteConso, InterfaceDistributeurClient {
 private int stock;
 
 public Eq1DIST() {
