@@ -3,7 +3,7 @@ package abstraction.eq2PROD;
 import abstraction.fourni.Acteur;
 import abstraction.eq3PROD.echangesProdTransfo.*;
 
-public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
+public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve, IMarche {
 	private int stockQM;
 	private int stockQB;
 	private double solde;
@@ -77,23 +77,29 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 		this.stockQM=this.stockQM-q;
 	}
 
-	public Contrat[] getOffrePublique() {
+	public ContratFeve[] getOffrePublique() {
 		return null;
 	}
 
-	public void sendDemandePrivee(Contrat[] demandePrivee) {
+	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
 		
 	}
 
-	public Contrat[] getOffreFinale() {
+	public ContratFeve[] getOffreFinale() {
 		return null;
 	}
 
-	public void sendResultVentes(Contrat[] resultVentes) {
-		
+	public void sendResultVentes(ContratFeve[] resultVentes) {
 	}
+	
 	public void sendCoursMarche() {
-		
 	}
-
+	
+	public int getPrixMarche() {
+		return 0;
+	}
+	
+	public ContratFeve[] getContrat() {
+		return null;
+	}
 }
