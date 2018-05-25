@@ -8,7 +8,7 @@ public class Eq1DIST implements Acteur {
 private Lot[] stock;
 //private int  banque;
 
-public Eq1DIST() {
+public Eq1DIST()  {
 	this.stock = stock;
 }
 	@Override
@@ -18,15 +18,15 @@ public Eq1DIST() {
 	}
 
 	@Override
-	/*public void next() {
+	public void next() {
 		Acteur eq5 = (Monde.LE_MONDE.getActeur("Eq5TRAN"));
 	//	ITransformateur eq5v =
 				((ITransformateur)eq5).sell(400);;
 	//	eq5v.sell(400);
-				this.stock = this.stock + 400;
+				
 			System.out.println("Le stock de l'équipe 1 : "+this.stock);
 			
-	}*/
+	}
 	
 	public double[][] getCommande(){
 		// Alice Gauthier Elisa Gressier-Monard
