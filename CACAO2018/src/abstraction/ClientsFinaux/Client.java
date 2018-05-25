@@ -8,11 +8,11 @@ import java.util.Random;
 
 public class Client {
 	private double[][] PartdeMarche;
-
+ 
 	public Client(double[][] P) {
 		if (P.length == 2 && P[0].length == 3) {
 			this.PartdeMarche = P;
-		} else {
+		} else { 
 			this.PartdeMarche = new double[2][3];
 		}
 	}

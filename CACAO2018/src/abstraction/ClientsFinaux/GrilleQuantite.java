@@ -6,7 +6,7 @@ package abstraction.ClientsFinaux;
 
 public class GrilleQuantite {
 	private double[][] quantite;
-
+  
 	public GrilleQuantite(double[][] quantite) {
 		if (quantite.length == 2 && quantite[0].length == 3) {
 			this.quantite = quantite;

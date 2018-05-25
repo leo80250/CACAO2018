@@ -1,10 +1,11 @@
 package abstraction.eq1DIST;
 
+import abstraction.ClientsFinaux.GrilleQuantite;
 import abstraction.ClientsFinaux.InterfaceDistributeurClient;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
-
+  
 public class Eq1DIST implements Acteur, IVenteConso, InterfaceDistributeurClient {
 private int stock;
 
@@ -33,6 +34,11 @@ public Eq1DIST() {
 		this.stock=this.stock-q;
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public GrilleQuantite commander(GrilleQuantite Q) {
+		// TODO Auto-generated method stub
+		return null;
 	}		
 	
 

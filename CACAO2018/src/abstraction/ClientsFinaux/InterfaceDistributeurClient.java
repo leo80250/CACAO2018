@@ -3,7 +3,7 @@
  */
 
 package abstraction.ClientsFinaux;
-
+ 
 public interface InterfaceDistributeurClient {
 	/**
 	 *
