@@ -4,11 +4,12 @@ import abstraction.eq4TRAN.ITransformateur;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
 
-public class Eq1DIST implements Acteur, IVenteConso {
-private int stock;
+public class Eq1DIST implements Acteur {
+private Lot[] stock;
+//private int  banque;
 
 public Eq1DIST() {
-	this.stock=1234567;
+	this.stock = stock;
 }
 	@Override
 	public String getNom() {
@@ -17,7 +18,7 @@ public Eq1DIST() {
 	}
 
 	@Override
-	public void next() {
+	/*public void next() {
 		Acteur eq5 = (Monde.LE_MONDE.getActeur("Eq5TRAN"));
 	//	ITransformateur eq5v =
 				((ITransformateur)eq5).sell(400);;
@@ -25,12 +26,19 @@ public Eq1DIST() {
 				this.stock = this.stock + 400;
 			System.out.println("Le stock de l'équipe 1 : "+this.stock);
 			
-	}
-
-	@Override
-	public void sell(int q) {
-		this.stock=this.stock-q;
-		// TODO Auto-generated method stub
+	}*/
+	
+	public double[][] getCommande(){
+		// Alice Gauthier Elisa Gressier-Monard
+		double[] commandeEq4 = {0,7500,7500,0,29167,12500} ;
+		double[] commandeEq5 = {0,16167,5000,0,0,0};
+		double[] commandeEq7 = {0,16167,5000,0,0,0};
+		double[][] commande= new double[3][6];
+		commande[0] = commandeEq4;
+		commande[1] = commandeEq5;
+		commande[2] = commandeEq7;
+		return(commande);
+		
 		
 	}		
 	
