@@ -52,6 +52,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 		}
 		
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
+		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
 		this.journal = new Journal("Journal de "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		Monde.LE_MONDE.ajouterIndicateur(this.achats);
