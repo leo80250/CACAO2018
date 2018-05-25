@@ -1,6 +1,6 @@
 package abstraction.eq7TRAN.echangeTRANTRAN;
 
-// Léo Fargeas, Margaux Grand, Juliette Gorline, Mickaël Abdealy
+// Léo Fargeas, Margaux Grand, Juliette Gorline, Mickaël Abdealy, Maelle Boulard
 
 public interface IVendeurPoudre { 
 	// Le vendeur partage à tout le monde son catalogue

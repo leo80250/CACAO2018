@@ -1,5 +1,7 @@
 package abstraction.eq7TRAN;
 
+import java.util.Arrays;
+
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
@@ -11,9 +13,9 @@ import abstraction.fourni.Monde;
 public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	private Indicateur achats;
 	private Indicateur ventes;
-	private Indicateur stockFeves;
-	private Indicateur stockPoudre;
-	private Indicateur stockTablettes;
+	private Indicateur[] stockFeves;
+	private Indicateur[] stockPoudre;
+	private Indicateur[] stockTablettes;
 	private Indicateur solde;
 	private Journal journal;
 	private String nom;
@@ -36,15 +38,22 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 		this.nom = nom;
 		this.achats = new Indicateur("Achat de "+this.getNom(), this, 0.0);
 		this.ventes = new Indicateur("Vente de "+this.getNom(), this, 0.0);
-		this.stockFeves = new Indicateur(this.getNom()+" a un stock de fèves de ", this, 0.0);
-		this.stockPoudre = new Indicateur(this.getNom()+" a un stock de poudre de ", this, 0.0);
-		this.stockTablettes = new Indicateur(this.getNom()+" a un stock de tablettes de ", this, 0.0);
+		this.stockFeves = new Indicateur[3];
+		this.stockPoudre = new Indicateur[3];
+		this.stockTablettes = new Indicateur[3];
+		for(int i = 0; i < 3; i++) {
+			this.stockFeves[i] = new Indicateur(this.getNom()+" a un stock de fèves de ", this, 0.0);
+			this.stockPoudre[i] = new Indicateur(this.getNom()+" a un stock de poudre de ", this, 0.0);
+			this.stockTablettes[i] = new Indicateur(this.getNom()+" a un stock de tablettes de ", this, 0.0);
+		}
+		
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.journal = new Journal("Journal de "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		Monde.LE_MONDE.ajouterIndicateur(this.achats);
 		Monde.LE_MONDE.ajouterIndicateur(this.ventes);
 		Monde.LE_MONDE.ajouterIndicateur(this.solde);
+		
 	}
 	public Eq7TRAN(Monde monde) {
 		this(monde, "Eq7TRAN");
@@ -70,10 +79,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 			this.getAbsenteisme().setValeur(this, oldAbsenteisme);
 		else 
 			this.getAbsenteisme().setValeur(this, newAbsenteisme);
-
 	}
+	
+	
+	
+	
 	public Indicateur getAchats() {
-		return achats;
+		return this.achats;
 	}
 	public void setAchats(Indicateur achats) {
 		this.achats = achats;
@@ -84,42 +96,46 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	public void setVentes(Indicateur ventes) {
 		this.ventes = ventes;
 	}
-	public Indicateur getStockFeves() {
-		return stockFeves;
+	public Indicateur[] getStockFeves() {
+		return this.stockFeves;
 	}
-	public void setStockFeves(Indicateur stockFeves) {
+	public void setStockFeves(Indicateur[] stockFeves) {
 		this.stockFeves = stockFeves;
 	}
-	public Indicateur getStockPoudre() {
-		return stockPoudre;
+	public Indicateur[] getStockPoudre() {
+		return this.stockPoudre;
 	}
-	public void setStockPoudre(Indicateur stockPoudre) {
+	public void setStockPoudre(Indicateur[] stockPoudre) {
 		this.stockPoudre = stockPoudre;
 	}
-	public Indicateur getStockTablettes() {
-		return stockTablettes;
+	public Indicateur[] getStockTablettes() {
+		return this.stockTablettes;
 	}
-	public void setStockTablettes(Indicateur stockTablettes) {
+	public void setStockTablettes(Indicateur[] stockTablettes) {
 		this.stockTablettes = stockTablettes;
 	}
 	public Indicateur getSolde() {
-		return solde;
+		return this.solde;
 	}
 	public void setSolde(Indicateur solde) {
 		this.solde = solde;
 	}
 	public Journal getJournal() {
-		return journal;
+		return this.journal;
 	}
 	public void setJournal(Journal journal) {
 		this.journal = journal;
 	}
 	public Indicateur getAbsenteisme() {
-		return absenteisme;
+		return this.absenteisme;
 	}
 	public void setAbsenteisme(Indicateur absenteisme) {
 		this.absenteisme = absenteisme;
 	}
+	
+	
+	
+	
 	@Override
 	public void sendCatalogue(ContratPoudre[] offres) {
 		// TODO Auto-generated method stub
