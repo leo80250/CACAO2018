@@ -58,10 +58,19 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 			return 0.303*x+0.848;
 		}
 	}
+	
+	/* Modélisation par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER, code par Romain BERNARD+Agathe CHEVALIER*/
+	private double CoeffPrixVente(double coeffmeteo) {
+		return( -0.2*coeffmeteo + 1.2 );
+	}
 
 	public void next() {
-		this.stockQM=this.stockQM+ (int) (meteo()*MOY_QM);
-		this.stockQB=this.stockQB+ (int) (meteo()*MOY_QB);
+		double CoeffMeteo = meteo();
+		this.stockQM=this.stockQM+ (int) (CoeffMeteo*MOY_QM);
+		this.stockQB=this.stockQB+ (int) (CoeffMeteo*MOY_QB);
+		double CoeffPrixVente = CoeffPrixVente(CoeffMeteo);
+		double PrixVenteQM = getPrixMarche()*CoeffPrixVente;
+		double PrixVenteQB = getPrixMarche()*CoeffPrixVente*0.85;
 	}
 
 	public void sell(int q) {
