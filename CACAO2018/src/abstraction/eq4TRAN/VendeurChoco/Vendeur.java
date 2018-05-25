@@ -1,5 +1,7 @@
 package abstraction.eq4TRAN.VendeurChoco;
 
+import java.util.Scanner;
+
 /**
  * 
  * @author Etienne
@@ -79,15 +81,31 @@ public class Vendeur {
 	}
 	
 	public GPrix getPrix() {
-		float[] intervalles = new float[10];
-		float[] prix = new float[10];
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Entrez le nombre d'intervalles de prix que vous désirez :");
+		int nbIntervalles = sc.nextInt();
+		System.out.println("Rentrez succesivement les intervalles que vous désirez définir : (les intervales peuvent être des nombres réels)");
+		float[] intervalles = new float[nbIntervalles]; 
+		for(int i=0; i<nbIntervalles; i++) {
+			intervalles[i]=sc.nextFloat();
+		}
+		float[][] prix = new float[6][nbIntervalles]; /* Stocke nos prix par produits et qualité */
+		String[] produits = {"BonbonsBQ","BonbonsMQ","BonbonsHQ","TabletteBQ","TabletteMQ","TabletteHQ"};
+		for(int j=0; j<produits.length; j++) {
+			System.out.println("Indiquez votre prix pour " +produits[j]+ ": (en quantité)");
+			System.out.println("(Indiquez successivement les prix pour chaque intervalle précédemment défini)");
+			for(int k=0; k<nbIntervalles; k++) {
+				prix[j][k]=sc.nextFloat();
+			}
+		}
 		return new GPrix(intervalles, prix);
 	}
 	
 	
-	public GQte getLivraison(GQte[] commandes) {
+	public GQte[] getLivraison(GQte[] commandes) {
 		GQte commande1 = commandes[0];
 		GQte commande2 = commandes[1];
-		return commande1;
+		GQte[] Livraison = new GQte[2]; /*insérer notre livraison effective */
+		return Livraison;
 	}
 }

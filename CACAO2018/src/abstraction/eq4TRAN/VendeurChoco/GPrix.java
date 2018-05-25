@@ -11,11 +11,14 @@ public class GPrix {
 	 */
 	
 	private float[] intervalles;
-	private float[] prix;
+	private float[][] prix;
 	
-	public GPrix(float[] intervalles, float[] prix) {
-		if(intervalles.length!=prix.length) {
+	public GPrix(float[] intervalles, float[][] prix) {
+		if(intervalles.length!=prix[0].length) {
 			throw new IllegalArgumentException("Le nombre d'intervalles ne correspond pas au nombre de tarifs annoncés.");
+		}
+		if(prix.length!=6) {
+			throw new IllegalArgumentException("Le nombre de tableaux de prix annoncés ne correspond pas au nombre de produits mis en vente (6)");
 		}
 		else {
 			this.intervalles=intervalles;
@@ -23,7 +26,7 @@ public class GPrix {
 		}
 	}
 	
-	public float getPrix(float quantite) {
+	public float getPrix(float quantite, float[] prix) {
 		int i =0;
 		while((i<intervalles.length-1)&&(intervalles[i]>quantite)) {
 			i++;
