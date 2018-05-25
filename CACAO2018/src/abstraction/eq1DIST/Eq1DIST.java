@@ -5,16 +5,13 @@ import abstraction.ClientsFinaux.InterfaceDistributeurClient;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
-<<<<<<< HEAD
 
-public class Eq1DIST implements Acteur {
-private Lot[] stock;
-//private int  banque;
-=======
+
+
   
-public class Eq1DIST implements Acteur, IVenteConso, InterfaceDistributeurClient {
-private int stock;
->>>>>>> branch 'master' of https://github.com/elisagm/CACAO2018.git
+public class Eq1DIST implements Acteur, InterfaceDistributeurClient {
+private Lot[] stock;
+
 
 public Eq1DIST()  {
 	this.stock = stock;
