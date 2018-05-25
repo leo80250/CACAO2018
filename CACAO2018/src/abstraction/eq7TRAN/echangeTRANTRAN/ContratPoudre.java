@@ -18,4 +18,7 @@ public class ContratPoudre {
 		this.acheteur = acheteur;
 		this.reponse = reponse;
 	}
+	public ContratPoudre() {
+		this(0,0,0,null,null,false);
+	}
 }

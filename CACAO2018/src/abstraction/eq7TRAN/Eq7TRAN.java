@@ -22,6 +22,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	
 	private Indicateur absenteisme;
 	
+	private ContratPoudre[] cataloguePoudre;
+	
 	// en tonnes par 2 semaines
 	private static final int MOY_ACHAT_FEVES_MQ = 1400;
 	private static final int MOY_ACHAT_FEVES_HQ = 3200;
@@ -41,10 +43,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 		this.stockFeves = new Indicateur[3];
 		this.stockPoudre = new Indicateur[3];
 		this.stockTablettes = new Indicateur[3];
+		this.cataloguePoudre = new ContratPoudre[3];
 		for(int i = 0; i < 3; i++) {
 			this.stockFeves[i] = new Indicateur(this.getNom()+" a un stock de fèves de ", this, 0.0);
 			this.stockPoudre[i] = new Indicateur(this.getNom()+" a un stock de poudre de ", this, 0.0);
 			this.stockTablettes[i] = new Indicateur(this.getNom()+" a un stock de tablettes de ", this, 0.0);
+			this.cataloguePoudre[i] = new ContratPoudre();
 		}
 		
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
@@ -134,31 +138,26 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	}
 	
 	
+	/////////////////////////////
+	// METHODES VENDEUR POUDRE //
+	/////////////////////////////
 	
-	
-	@Override
-	public void sendCatalogue(ContratPoudre[] offres) {
-		// TODO Auto-generated method stub
-		
+	public void sendCataloguePoudre(ContratPoudre[] offres) {
+		this.cataloguePoudre = offres;
 	}
-	@Override
-	public ContratPoudre[] getCatalogue(IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
-		return null;
+	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
+		return this.cataloguePoudre;
 	}
-	@Override
-	public ContratPoudre[] getDevis(ContratPoudre[] devis) {
-		// TODO Auto-generated method stub
-		return null;
+	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis) {
+		// paramètres pour évaluer combien à combien on vend, notre stock etc...
+		return devis;
 	}
-	@Override
-	public ContratPoudre[] sendReponseDevis(ContratPoudre[] devis) {
-		// TODO Auto-generated method stub
-		return null;
+	public ContratPoudre[] sendReponseDevisPoudre(ContratPoudre[] devis) {
+		// inutile ?
+		return devis;
 	}
-	@Override
-	public ContratPoudre[] getEchangeFinal(ContratPoudre[] contrat) {
-		// TODO Auto-generated method stub
-		return null;
+	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat) {
+		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
+		return contrat;
 	}
 }
