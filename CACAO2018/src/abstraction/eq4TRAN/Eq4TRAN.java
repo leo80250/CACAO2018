@@ -1,12 +1,11 @@
 package abstraction.eq4TRAN;
 
 import abstraction.eq4TRAN.ITransformateur;
-
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 
-public class Eq4TRAN implements Acteur, ITransformateur{
+public class Eq4TRAN implements Acteur, ITransformateur {
 
 	
 	public Indicateur stockTabBQ ;
@@ -46,6 +45,8 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 
 	@Override
 	public void next() {
+		//Achat Poudre à un transformateur
+		
 		System.out.println("L'équipe 4 est présente");		
 		
 	}
@@ -70,5 +71,4 @@ public class Eq4TRAN implements Acteur, ITransformateur{
 		// TODO Auto-generated method stub
 		
 	}
-
 }
