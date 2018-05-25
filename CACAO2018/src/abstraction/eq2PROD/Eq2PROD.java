@@ -105,7 +105,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 	}
 	
 	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
-		this.demandeTran = demandePrivee;
+		this.demandeTran = demandePrivee; 
 	}
 	
 	public ContratFeve[] getOffreFinale() {
