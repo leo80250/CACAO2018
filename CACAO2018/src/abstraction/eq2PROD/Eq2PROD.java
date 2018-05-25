@@ -9,6 +9,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 	private double solde;
 	private boolean maladie;
 	private double coeffStock;
+	private ContratFeve[] demandeTran;
 	private final static int MOY_QB = 23000; 
 	private final static int MOY_QM = 35000; 
 	
@@ -18,6 +19,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 		this.stockQB=1000000;
 		this.solde = 15000.0;
 		this.coeffStock = 1;
+		this.demandeTran = new ContratFeve[0];
 	}
 	
 	//accesseur
@@ -41,6 +43,9 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 	}
 	public double getCoeffSolde() {
 		return this.coeffStock;
+	}
+	public ContratFeve[] getDemandeTran() {
+		return this.demandeTran;
 	}
 
 	
@@ -89,16 +94,20 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 		calculCoeffPrixVentes();
 		this.stockQM=this.stockQM+ (int) (this.coeffStock*MOY_QM);
 		this.stockQB=this.stockQB+ (int) (this.coeffStock*MOY_QB);
-		// Pour avoir les prix de vente, il faut taper :
-		// double PrixVenteQM = getPrixMarche()*this.coeffStock;
-		// double PrixVenteQB = getPrixMarche()*this.coeffStock*0.85; 
 	}
 
 	public ContratFeve[] getOffrePublique() {
-		return null;
+		ContratFeve c1 = new ContratFeve(0,this.stockQB,/*getPrixMarche()* */this.coeffStock*0.85,null,this,false);
+		ContratFeve c2 = new ContratFeve(1,this.stockQM,/*getPrixMarche()* */this.coeffStock,null,this,false);
+		ContratFeve[] c = new ContratFeve[2];
+		c[0]=c1; c[1] = c2;
+		return c;
 	}
+	
 	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
+		this.demandeTran = demandePrivee;
 	}
+	
 	public ContratFeve[] getOffreFinale() {
 		return null;
 	}
