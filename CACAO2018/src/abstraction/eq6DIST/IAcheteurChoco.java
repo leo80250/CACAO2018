@@ -12,5 +12,5 @@ import abstraction.eq4TRAN.VendeurChoco.GQte;
  */
 public interface IAcheteurChoco {
 	public GQte getCommande(ArrayList<GPrix> gPrix, ArrayList<GQte> stock);
-	public void livraison(double[][] d);
+	public void livraison(ArrayList<GQte> d);
 }
