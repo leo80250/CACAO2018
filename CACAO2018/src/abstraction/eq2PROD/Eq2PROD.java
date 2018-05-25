@@ -66,7 +66,11 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve, IMarche 
 	}
 
 	
-	/* Modélisation par Alexandre BIGOT+Guillaume SALLE, code par Alexandre BIGOT */
+	/* Modélisation par Alexandre BIGOT+Guillaume SALLE, code par Alexandre BIGOT
+	 * Si plantations déjà malades alors la récolte est diminuée de 50% par rapport à la récolte
+	 * déjà réduite ou augmentée par la météo et au step suivant la plantation n'est plus malade
+	 * sinon il y a 0.5% que la plantation soit infectée et la récolte n'est pas diminuée par 
+	 * le facteur maladie  */
 	private double maladie() {
 		if (this.maladie) {
 			this.maladie=false;
@@ -86,8 +90,9 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve, IMarche 
 
 	public void next() {
 		double CoeffMeteo = meteo();
-		this.stockQM=this.stockQM+ (int) (CoeffMeteo*MOY_QM);
-		this.stockQB=this.stockQB+ (int) (CoeffMeteo*MOY_QB);
+		double CoeffMaladie = maladie();
+		this.stockQM=this.stockQM+ (int) ((CoeffMeteo-CoeffMaladie)*MOY_QM);
+		this.stockQB=this.stockQB+ (int) ((CoeffMeteo-CoeffMaladie)*MOY_QB);
 		double CoeffPrixVente = CoeffPrixVente(CoeffMeteo);
 		double PrixVenteQM = getPrixMarche()*CoeffPrixVente;
 		double PrixVenteQB = getPrixMarche()*CoeffPrixVente*0.85;
