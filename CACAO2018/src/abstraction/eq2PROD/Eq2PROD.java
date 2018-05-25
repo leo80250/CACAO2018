@@ -22,23 +22,18 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 	public static int getMoyQb() {
 		return MOY_QB;
 	}
-
 	public static int getMoyQm() {
 		return MOY_QM;
-	}
-	
+	}	
 	public int getStockQM() {
 		return stockQM;
 	}
-
 	public int getStockQB() {
 		return stockQB;
 	}
-
 	public double getSolde() {
 		return solde;
 	}
-	
 	public String getNom() {
 		return "Eq2PROD";
 	}
@@ -85,9 +80,6 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 	}
 	
 	
-
-
-
 	public void next() {
 		double CoeffMeteo = meteo();
 		double CoeffMaladie = maladie();
@@ -101,22 +93,16 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 	public void sell(int q) {
 		this.stockQM=this.stockQM-q;
 	}
-
 	public ContratFeve[] getOffrePublique() {
 		return null;
 	}
-
 	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
-		
 	}
-
 	public ContratFeve[] getOffreFinale() {
 		return null;
 	}
-
 	public void sendResultVentes(ContratFeve[] resultVentes) {
 	}
-	
 	public void sendCoursMarche() {
 	}
 	
