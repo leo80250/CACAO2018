@@ -24,6 +24,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	
 	private ContratPoudre[] cataloguePoudre;
 	
+	private static final int INDEX_BQ = 0;
+	private static final int INDEX_MQ = 1;
+	private static final int INDEX_HQ = 2;
+	
 	// en tonnes par 2 semaines
 	private static final int MOY_ACHAT_FEVES_MQ = 1400;
 	private static final int MOY_ACHAT_FEVES_HQ = 3200;
@@ -79,8 +83,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	
 	public void calculateAbsenteisme() {
 		double oldAbsenteisme = this.getAbsenteisme().getValeur();
-		double newAbsenteisme = this.getAbsenteisme().getValeur() + Math.pow(-1, Math.round(Math.random()))*0.5*Math.random();
-		if(newAbsenteisme>0.15)
+		double newAbsenteisme = this.getAbsenteisme().getValeur() + Math.pow(-1, Math.round(Math.random()))*0.05*Math.random();
+		if(newAbsenteisme < 0 || newAbsenteisme>0.15)
 			this.getAbsenteisme().setValeur(this, oldAbsenteisme);
 		else 
 			this.getAbsenteisme().setValeur(this, newAbsenteisme);
@@ -150,7 +154,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 		return this.cataloguePoudre;
 	}
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis) {
-		// paramètres pour évaluer combien à combien on vend, notre stock etc...
+		int n = devis.length;
+		for(int i = 0; i<n; i++) {
+			int qualite = devis[i].getQualite();
+			if(devis[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
+				devis[i].setReponse(false);
+			}
+		}
 		return devis;
 	}
 	public ContratPoudre[] sendReponseDevisPoudre(ContratPoudre[] devis) {
