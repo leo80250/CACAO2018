@@ -5,7 +5,7 @@ package abstraction.eq3PROD.echangesProdTransfo;
  * @author Grégoire
  */
 
-public interface IMarche {
+public interface IMarcheFeve {
 	
 	/**
 	 * Calcule le prix du marche a partir du next precedent (Moyenne des prix)
