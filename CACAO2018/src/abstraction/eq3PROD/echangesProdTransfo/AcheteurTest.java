@@ -11,13 +11,13 @@ public class AcheteurTest implements Acteur, IAcheteurFeve {
 	}
 	
 	@Override
-	public void sendOffrePublique(Contrat[] offrePublique) {
+	public void sendOffrePublique(ContratFeve[] offrePublique) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Contrat[] getDemandePrivee() {
+	public ContratFeve[] getDemandePrivee() {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -29,13 +29,13 @@ public class AcheteurTest implements Acteur, IAcheteurFeve {
 	}
 
 	@Override
-	public void sendOffreFinale(Contrat[] offreFinale) {
+	public void sendOffreFinale(ContratFeve[] offreFinale) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Contrat[] getResultVentes() {
+	public ContratFeve[] getResultVentes() {
 		// TODO Auto-generated method stub
 		return null;
 	}
