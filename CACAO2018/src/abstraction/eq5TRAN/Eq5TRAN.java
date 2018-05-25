@@ -21,10 +21,10 @@ public class Eq5TRAN implements Acteur, ITransformateur {
 
 	@Override
 	public void next() {
-		IProducteurCacao p=(IProducteurCacao)(Monde.LE_MONDE.getActeur("Eq2PROD"));
+		/*IProducteurCacao p=(IProducteurCacao)(Monde.LE_MONDE.getActeur("Eq2PROD"));
 		int achat = 600;
 		p.sell(achat);
-		this.stock += achat ;
+		this.stock += achat ;*/
 	}
 
 	@Override
