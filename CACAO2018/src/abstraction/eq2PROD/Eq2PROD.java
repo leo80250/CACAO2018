@@ -10,6 +10,15 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 	private final static int MOY_QB = 23000; 
 	private final static int MOY_QM = 35000; 
 	
+	//constructeur
+	public Eq2PROD() {
+		this.stockQM=10000000;
+		this.stockQB=1000000;
+		this.solde = 15000.0;
+	}
+	
+	//accesseur
+	
 	private double meteo() {
 		/* modélisation par Guillaume SALLE+Agathe CHEVALIER+Alexandre BIGOT, code par Guillaume SALLE */
 		double mini = 0.5;
@@ -24,12 +33,16 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 		}
 	}
 	
-	public Eq2PROD() {
-		this.stockQM=10000000;
-		this.stockQB=1000000;
-		this.solde = 15000.0;
-	}
+
 	
+	public static int getMoyQb() {
+		return MOY_QB;
+	}
+
+	public static int getMoyQm() {
+		return MOY_QM;
+	}
+
 	public String getNom() {
 		return "Eq2PROD";
 	}
