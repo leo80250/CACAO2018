@@ -66,6 +66,7 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 	}
 
 	
+	
 	private double maladie() {
 		if (this.maladie) {
 			this.maladie=false;
