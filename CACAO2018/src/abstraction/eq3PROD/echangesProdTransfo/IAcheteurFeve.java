@@ -13,13 +13,13 @@ public interface IAcheteurFeve {
 	 * Chaque Contrat indique les qualites de feves et les quantites et prix proposes, le reste des variables
 	 * etant a null
 	 */
-	public void sendOffrePublique(Contrat[] offrePublique);
+	public void sendOffrePublique(ContratFeve[] offrePublique);
 
 	/**
 	 * Recupere les demandes specifiques du transformateur a chaque producteur
 	 * @return une liste de tous les Contrat destines a un meme producteur
 	 */
-	public Contrat[] getDemandePrivee();
+	public ContratFeve[] getDemandePrivee();
 	
 	/**
 	 * Informe l'acteur fictif des contrats en cours (MODELOISATION)
@@ -32,7 +32,7 @@ public interface IAcheteurFeve {
 	 * Chaque Contrat indique les qualites de feves, les quantites et prix proposes, les deux acteurs de l'echange,
 	 * la reponse etant a null
 	 */
-	public void sendOffreFinale(Contrat[] offreFinale);
+	public void sendOffreFinale(ContratFeve[] offreFinale);
 	
 	/**
 	 * Recupere les offres de ventes destinees au producteur avec la reponse fournie
@@ -40,6 +40,6 @@ public interface IAcheteurFeve {
 	 * la reponse des transformateurs
 	 * @condition La somme des depenses pour les contrats acceptes est inferieure au capital du transformateur
 	 */
-	public Contrat[] getResultVentes();
+	public ContratFeve[] getResultVentes();
 
 }

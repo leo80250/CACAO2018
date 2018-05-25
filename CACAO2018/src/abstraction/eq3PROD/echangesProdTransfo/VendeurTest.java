@@ -6,36 +6,31 @@ public class VendeurTest implements Acteur, IVendeurFeve {
 	
 	private String nom;
 	
-	@Override
-	public void sendCoursMarche() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	public VendeurTest(String nom) {
 		this.nom = nom;
 	}
 	
 	@Override
-	public Contrat[] getOffrePublique() {
+	public ContratFeve[] getOffrePublique() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void sendDemandePrivee(Contrat[] demandePrivee) {
+	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public Contrat[] getOffreFinale() {
+	public ContratFeve[] getOffreFinale() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void sendResultVentes(Contrat[] resultVentes) {
+	public void sendResultVentes(ContratFeve[] resultVentes) {
 		// TODO Auto-generated method stub
 		
 	}
