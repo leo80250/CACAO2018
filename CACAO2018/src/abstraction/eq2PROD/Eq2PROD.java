@@ -79,7 +79,6 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve {
 		}
 	}
 	
-	
 	public void next() {
 		double CoeffMeteo = meteo();
 		double CoeffMaladie = maladie();
