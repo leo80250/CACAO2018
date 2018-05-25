@@ -152,7 +152,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 		return null;
 	}
 	@Override
-	public ContratPoudre[] sendReponseDevis(ContratPoudre[] devis, boolean reponse) {
+	public ContratPoudre[] sendReponseDevis(ContratPoudre[] devis) {
 		// TODO Auto-generated method stub
 		return null;
 	}
