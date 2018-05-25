@@ -7,6 +7,7 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve, IMarche 
 	private int stockQM;
 	private int stockQB;
 	private double solde;
+	private boolean maladie;
 	private final static int MOY_QB = 23000; 
 	private final static int MOY_QM = 35000; 
 	
@@ -63,6 +64,25 @@ public class Eq2PROD implements Acteur, IProducteurCacao, IVendeurFeve, IMarche 
 	private double CoeffPrixVente(double coeffmeteo) {
 		return( -0.2*coeffmeteo + 1.2 );
 	}
+
+	
+	
+	private double maladie() {
+		if (this.maladie) {
+			this.maladie=false;
+			return 0.5;
+		} else {
+			double x=Math.random();
+			if (x<0.005) {
+				this.maladie=true;
+			}
+			return 0.0 ;
+		}
+	}
+	
+	
+
+
 
 	public void next() {
 		double CoeffMeteo = meteo();
