@@ -96,6 +96,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 		this.stockQB=this.stockQB+ (int) (this.coeffStock*MOY_QB);
 	}
 
+	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
 	public ContratFeve[] getOffrePublique() {
 		ContratFeve c1 = new ContratFeve(0,this.stockQB,/*getPrixMarche()* */this.coeffStock*0.85,null,this,false);
 		ContratFeve c2 = new ContratFeve(1,this.stockQM,/*getPrixMarche()* */this.coeffStock,null,this,false);
@@ -103,7 +104,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 		c[0]=c1; c[1] = c2;
 		return c;
 	}
-	
+	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
 	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
 		this.demandeTran = demandePrivee; 
 	}
