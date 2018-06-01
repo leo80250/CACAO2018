@@ -50,7 +50,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 
 	
 	//services
-	
+	/* Alexandre BIGOT+Guillaume SALLE */
 	private void calculCoeffPrixVentes() {
 		double coeffMeteo = meteo();
 		double coeffMaladie = maladie();
