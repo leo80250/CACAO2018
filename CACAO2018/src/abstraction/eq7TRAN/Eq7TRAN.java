@@ -28,15 +28,28 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	private String nom;
 	
 	private Indicateur absenteisme;
+	private Indicateur efficacite;
+	// Historique
 	private Indicateur[] prixAchatFeves;
-	private Indicateur[] prixVenteFeves;
+	private Indicateur[] prixVentePoudre;
+	private Indicateur[] prixVenteTablettes;
+	private Indicateur[] productionPoudreReelle;
+	private Indicateur[] productionTablettesReelle;
+	private Indicateur[] productionPoudreAttendue;
+	private Indicateur[] productionTablettesAttendue;
+	
 	private ContratPoudre[] commandesEnCours;
+
+	private int MOY_TAUX_EFFICACITE_EMPLOYES = 1;
 	
 	// en tonnes par 2 semaines
 	private final int[] MOY_ACHAT_FEVES = {0, 1400, 3200};
 	private final int[] MOY_ACHAT_POUDRE = {0, 0, 0};
 	private final int[] MOY_VENTE_POUDRE = {0, 0, 1000};
 	private final int[] MOY_VENTE_TABLETTE = {0, 1400, 2300};
+	
+	private final int SUM_MOY_VENTE_POUDRE = MOY_VENTE_POUDRE[0]+MOY_VENTE_POUDRE[1]+MOY_VENTE_POUDRE[2];
+	private final int SUM_MOY_VENTE_TABLETTES = MOY_VENTE_TABLETTE[0]+MOY_VENTE_TABLETTE[1]+MOY_VENTE_TABLETTE[2];
 	
 	// en €/tonne
 	private final double[] MOY_PRIX_ACHAT_FEVES = {1800, 2100, 2500};
@@ -54,13 +67,24 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		this.stockPoudre = new Indicateur[3];
 		this.stockTablettes = new Indicateur[3];
 		this.prixAchatFeves = new Indicateur[3];
+		this.prixVentePoudre = new Indicateur[3];
+		this.prixVenteTablettes = new Indicateur[3];
+		this.productionPoudreReelle = new Indicateur[3];
+		this.productionTablettesReelle = new Indicateur[3];
+		
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
+		this.efficacite = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 1.0);
+		
 		for(int i = 0; i < 3; i++) {
 			this.stockFeves[i] = new Indicateur(this.getNom()+" a un stock de fèves de ", this, 0.0);
 			this.stockPoudre[i] = new Indicateur(this.getNom()+" a un stock de poudre de ", this, 0.0);
 			this.stockTablettes[i] = new Indicateur(this.getNom()+" a un stock de tablettes de ", this, 0.0);
 			this.prixAchatFeves[i] = new Indicateur(this.getNom()+" a dernièrement acheté des fèves au prix de ", this, this.MOY_PRIX_ACHAT_FEVES[i]);
+			this.prixVentePoudre[i] = new Indicateur(this.getNom()+" a dernièrement vendu de la poudre au prix de ", this, 0);
+			this.prixVenteTablettes[i] = new Indicateur(this.getNom()+" a dernièrement vendu des tablettes au prix de ", this, 0);
+			this.productionPoudreReelle[i] = new Indicateur(this.getNom()+" a dernièrement produit une quantité de poudre de", this, SUM_MOY_VENTE_POUDRE);
+			this.productionTablettesReelle[i] = new Indicateur(this.getNom()+" a dernièrement produit une quantité de tablettes de", this, SUM_MOY_VENTE_TABLETTES);
 		}
 		
 		this.journal = new Journal("Journal de "+this.getNom());
@@ -137,6 +161,64 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	public void setAbsenteisme(Indicateur absenteisme) {
 		this.absenteisme = absenteisme;
 	}
+	public Indicateur getEfficacite() {
+		return this.efficacite;
+	}
+	public void setEfficacite(Indicateur efficacite) {
+		this.efficacite = efficacite;
+	}
+	public Indicateur[] getPrixVenteTablettes() {
+		return prixVenteTablettes;
+	}
+	public void setPrixVenteTablettes(Indicateur[] prixVenteTablettes) {
+		this.prixVenteTablettes = prixVenteTablettes;
+	}
+	public Indicateur[] getProductionPoudreReelle() {
+		return productionPoudreReelle;
+	}
+	public void setProductionPoudreReelle(Indicateur[] productionPoudreReelle) {
+		this.productionPoudreReelle = productionPoudreReelle;
+	}
+	public void setProductionPoudreReelle(int productionPoudreReelle, int qualite) {
+		Indicateur[] productionsReelle = this.getProductionPoudreReelle();
+		productionsReelle[qualite].setValeur(this, productionPoudreReelle);
+	}
+	public Indicateur[] getProductionTablettesReelle() {
+		return productionTablettesReelle;
+	}
+	public void setProductionTablettesReelle(Indicateur[] productionTablettesReelle) {
+		this.productionTablettesReelle = productionTablettesReelle;
+	}
+	public void setProductionTablettesReelle(int productionTablettesReelle, int qualite) {
+		Indicateur[] productionsReelle = this.getProductionTablettesReelle();
+		productionsReelle[qualite].setValeur(this, productionTablettesReelle);
+	}
+	public Indicateur[] getProductionPoudreAttendue() {
+		return productionPoudreAttendue;
+	}
+	public void setProductionPoudreAttendue(Indicateur[] productionPoudreAttendue) {
+		this.productionPoudreAttendue = productionPoudreAttendue;
+	}
+	public void setProductionPoudreAttendue(int productionPoudreAttendue, int qualite) {
+		Indicateur[] productionsAttendue = this.getProductionPoudreAttendue();
+		productionsAttendue[qualite].setValeur(this, productionPoudreAttendue);
+	}
+	public Indicateur[] getProductionTablettesAttendue() {
+		return productionTablettesAttendue;
+	}
+	public void setProductionTablettesAttendue(Indicateur[] productionTablettesAttendue) {
+		this.productionTablettesAttendue = productionTablettesAttendue;
+	}
+	public void setProductionTablettesAttendue(int productionTablettesAttendue, int qualite) {
+		Indicateur[] productionsAttendue = this.getProductionTablettesAttendue();
+		productionsAttendue[qualite].setValeur(this, productionTablettesAttendue);
+	}
+	public Indicateur getProductionPoudreAttendue(int qualite) {
+		return this.getProductionPoudreAttendue()[qualite];
+	}
+	public Indicateur getProductionTablettesAttendue(int qualite) {
+		return this.getProductionPoudreAttendue()[qualite];
+	}
 	
 	/** calculateAbsenteisme
 	 * @author boulardmaelle, leofargeas
@@ -150,6 +232,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 			this.getAbsenteisme().setValeur(this, oldAbsenteisme);
 		else 
 			this.getAbsenteisme().setValeur(this, newAbsenteisme);
+	}
+	public void calculateTauxEfficacite() {
+		
 	}
 	
 	public double estimateCoutTransformationPoudre(int qualite) {
@@ -178,17 +263,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	// METHODES VENDEUR POUDRE&CHOCOLAT //
 	/////////////////////////////////////
 	
-	public static int nb_employes=100; //a modifier
-	// On considere que nb_employes permettent d'assurer la totalite de la production
-	int sum_moy_vente_poudre=MOY_VENTE_POUDRE[0]+MOY_VENTE_POUDRE[1]+MOY_VENTE_POUDRE[2];
-	int sum_moy_vente_tablette=MOY_VENTE_TABLETTE[0]+MOY_VENTE_TABLETTE[1]+MOY_VENTE_TABLETTE[2];
-	
-	public int getProductionPoudre(int qualite) {
-		return ((int)(1.0 - this.getAbsenteisme().getValeur()))*sum_moy_vente_poudre/(sum_moy_vente_poudre+sum_moy_vente_tablette);
+	public void calculateProductionPoudreReelle(int qualite) {
+		this.getProductionPoudreReelle()[qualite].setValeur(this,(1.0 - this.getAbsenteisme().getValeur())*this.getEfficacite().getValeur()*this.getProductionPoudreAttendue(qualite).getValeur());
 	}
-	
-	public int getProductionTablette(int qualite) {
-		return ((int)(1.0 - this.getAbsenteisme().getValeur()))*sum_moy_vente_tablette/(sum_moy_vente_poudre+sum_moy_vente_tablette);
+	public void calculateProductionTablettesReelle(int qualite) {
+		this.getProductionTablettesReelle()[qualite].setValeur(this,(1.0 - this.getAbsenteisme().getValeur())*this.getEfficacite().getValeur()*this.getProductionTablettesAttendue(qualite).getValeur());
 	}
 	
 	// Léo Fargeas
@@ -207,9 +286,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 			return null; 
 		return this.getStockTablettes()[qualite];
 	}
-	/*public Indicateur getStockPrevisionnel(int qualite) {
-		return 0;
-	}*/
+	public Indicateur getStockPrevisionnel(int qualite) {
+		int tonnes = 0;
+		return absenteisme;
+	}
 	
 	/////////////////////////////
 	// METHODES VENDEUR POUDRE //
