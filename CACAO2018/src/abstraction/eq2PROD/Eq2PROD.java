@@ -11,6 +11,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	private boolean maladie;
 	private double coeffStock;
 	private ContratFeve[] demandeTran;
+	private ContratFeve[] contratsFinaux;
 	private final static int MOY_QB = 46000; /* pour un step = deux semaines */
 	private final static int MOY_QM = 70000; /* pour un step = deux semaines */
 	private final static int coutFixe = 70800000;
@@ -22,6 +23,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		this.solde = 15000.0;
 		this.coeffStock = 1;
 		this.demandeTran = new ContratFeve[0];
+		this.contratsFinaux = new ContratFeve[0];
 	}
 	
 	//accesseur
