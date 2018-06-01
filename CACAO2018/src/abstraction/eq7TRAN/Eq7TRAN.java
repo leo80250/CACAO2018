@@ -261,8 +261,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	}
 	@Override
 	public void sendOffreFinale(ContratFeve[] offreFinale) {
-		// TODO Auto-generated method stub
-		
+		return offreFinale;
 	}
 	@Override
 	public ContratFeve[] getResultVentes() {
@@ -278,8 +277,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	
 	@Override
 	public double getPrixMarche() {
-		// TODO Auto-generated method stub
-		return 0;
+		
 	}
 	@Override
 	public ContratFeve[] getContrat() {
@@ -291,20 +289,47 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	 * 
 	 */
 	
-	@Override
+	//Joseph Bernard
 	public GQte getStock() {
-		// TODO Auto-generated method stub
-		return null;
+		return new GQte(0,0,0,this.getStockTablette(0),this.getStockTablette(1),this.getStockTablette(2));
 	}
-	@Override
-	public GPrix getPrix() {
-		// TODO Auto-generated method stub
-		return null;
+	
+	//tableau de GPrix pour les trois qualites
+	public GPrix[] getPrix() {
+		return {new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(0)),
+				new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(1)),
+				new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(2))};
+		}
 	}
-	@Override
-	public GQte getLivraison(GQte[] commandes) {
-		// TODO Auto-generated method stub
-		return null;
+
+	public GQte[] getLivraison(GQte[] commandes) {
+		int[] stock= {this.getStockTablette(0).getValeur(),this.getStockTablette(1).getValeur(),this.getStockTablette(2).getValeur()};
+		int[] commande1= {commandes[0].getqTabletteBQ(),commandes[0].getqTabletteMQ(),commandes[0].getqTabletteHQ()};
+		int[] commande2= {commandes[1].getqTabletteBQ(),commandes[1].getqTabletteMQ(),commandes[1].getqTabletteHQ()};
+		
+		int[] deliver1= {0,0,0};
+		int[] deliver2= {0,0,0};
+		
+		for (int i=0;i<3;i++) {
+			int stock_2;
+			int stock_i=stock[i];
+			int deliver_1=0;
+			int deliver_2=0;
+			while ((int)stock_i!=0) {
+				stock_2=stock_i/2;
+				if ((stock_2<=commande1[i])&&(stock_2<=commande2[i])) {
+					commande1[i]-=stock_2;
+					deliver_1+=stock_2;
+					commande2[i]-=stock_2;
+					deliver_2+=stock_2;
+					stock_i=stock_2;
+				}
+			}
+			deliver1[i]=deliver_1;
+			deliver2[i]=deliver_2;
+		}
+		
+		return {new GQte(0,0,0,deliver1[0],deliver1[1],deliver1[2]),new GQte(0,0,0,deliver2[0],deliver2[1],deliver2[2])};
 	}
 	@Override
 	public void sendOffrePublique(ContratFeve[] offrePublique) {
