@@ -123,7 +123,10 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	public ContratFeve[] getOffreFinale() {
 		return null;
 	}
+	
+	/*Agathe CHEVALIER*/
 	public void sendResultVentes(ContratFeve[] resultVentes) {
+		this.contratsFinaux = resultVentes;
 	}
 	public void sendCoursMarche() {
 	}
