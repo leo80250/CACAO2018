@@ -2,8 +2,8 @@
  * @author Leo Vuylsteker / Axelle Hermelin 
  */
 
-package abstraction.ClientsFinaux;
- 
+package abstraction.eq1DIST;
+
 public interface InterfaceDistributeurClient {
 	/**
 	 *
@@ -14,4 +14,6 @@ public interface InterfaceDistributeurClient {
 	 *         distributeur vend aux clients.
 	 */
 	public GrilleQuantite commander(GrilleQuantite Q);
+	
+
 }

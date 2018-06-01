@@ -1,7 +1,5 @@
 package abstraction.eq1DIST;
 
-import abstraction.ClientsFinaux.GrilleQuantite;
-import abstraction.ClientsFinaux.InterfaceDistributeurClient;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;

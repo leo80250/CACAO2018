@@ -6,6 +6,10 @@ import java.util.Observable;
 import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq2PROD.Eq2PROD;
 import abstraction.eq7TRAN.Eq7TRAN;
+import abstraction.eq4TRAN.Eq4TRAN;
+import abstraction.eq3PROD.Eq3PROD;
+import abstraction.eq6DIST.Eq6DIST;
+
 
 import abstraction.eq1DIST.Eq1DIST;
 
@@ -64,7 +68,17 @@ public class Monde extends Observable {
 		Eq2PROD eq2 = new Eq2PROD();
 		this.ajouterActeur(eq2);
 		Eq7TRAN eq7 = new Eq7TRAN();
+
 		this.ajouterActeur(eq7);
+
+
+		this.ajouterActeur(eq7);
+		Eq4TRAN eq4 = new Eq4TRAN();
+		this.ajouterActeur(eq4);
+		Eq3PROD eq3 = new Eq3PROD();
+		this.ajouterActeur(eq3);
+		Eq6DIST eq6 = new Eq6DIST();
+		this.ajouterActeur(eq6);
 
 	}
 	/**
