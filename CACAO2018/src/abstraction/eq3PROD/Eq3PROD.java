@@ -4,6 +4,7 @@ import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 //import abstraction.eq1DIST.IVenteConso;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.fourni.Acteur;
+import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve {
@@ -22,8 +23,10 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	/*private int tpsnonmaladieIndo;
 	private int tpsnonmaladieAmerique;*/
 	
+	private Journal journal;
 	
-	public Eq3PROD() {
+	
+	public Eq3PROD(String nom, Monde monde) {
 		this.stockmoyen= 75000;
 		this.stockfin= 24000;
 
@@ -34,8 +37,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		}
 	
 		public ContratFeve[] getOffrePublique() {
-			ContratFeve c1=new ContratFeve(1,this.stockmoyen,/*Prixmarché*/0,null,this,false);
-			ContratFeve c2=new ContratFeve(2,this.stockfin,/*Prixmarché*/0,null,this,false);
+			ContratFeve c1=new ContratFeve(1,this.stockmoyen,/*Prixmarchï¿½*/0,null,this,false);
+			ContratFeve c2=new ContratFeve(2,this.stockfin,/*Prixmarchï¿½*/0,null,this,false);
 			ContratFeve[] c=new ContratFeve[2];
 			c[0]=c1;
 			c[1]=c2;
@@ -108,8 +111,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			}
 			this.stockmoyen = this.stockmoyen+prodBresil+prodIndo;
 			this.stockfin = this.stockfin+prodfin;
-			System.out.println(" eq 3 production fève moyennes de "+(prodBresil+prodIndo)+" --> stockMoyen="+this.stockmoyen);
-			System.out.println("eq 3 production fève fines de "+prodfin+" --> stockFin="+this.stockfin);
+			System.out.println(" eq 3 production fï¿½ve moyennes de "+(prodBresil+prodIndo)+" --> stockMoyen="+this.stockmoyen);
+			System.out.println("eq 3 production fï¿½ve fines de "+prodfin+" --> stockFin="+this.stockfin);
 			IVenteConso vendeur = (IVenteConso) (Monde.LE_MONDE.getActeur("Eq6DIST"));
 			vendeur.sell(100);
 		}

@@ -32,8 +32,8 @@ public class MarcheFeve implements IMarcheFeve {
 	}
 
 	@Override
-	public ContratFeve[] getContrat() {
-		return this.contratActuel;
+	public ContratFeve[] getContratPrecedent() {
+		return this.contratPrecedent;
 	}
 
 }
