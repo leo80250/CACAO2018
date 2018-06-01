@@ -31,10 +31,26 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		public String getNom() {
 			return "Eq3PROD";
 		}
+		
+		public void setEq4() {
+			this.eq4=eq4;
+		}
+		
+		public void setEq5() {
+			this.eq5=eq5;
+		}
 	
+		public void setEq7() {
+			this.eq7=eq7;
+		}
+		
+		public void setVirtuel() {
+			this.virtuel=virtuel;
+		}
+		
 		public ContratFeve[] getOffrePublique() {
-			ContratFeve c1=new ContratFeve(1,this.stockmoyen,/*Prixmarch�*/0,null,this,false);
-			ContratFeve c2=new ContratFeve(2,this.stockfin,/*Prixmarch�*/0,null,this,false);
+			ContratFeve c1=new ContratFeve(1,this.stockmoyen,/*Prixmarche*/0,null,this,false);
+			ContratFeve c2=new ContratFeve(2,this.stockfin,/*Prixmarche*/0,null,this,false);
 			ContratFeve[] c=new ContratFeve[2];
 			c[0]=c1;
 			c[1]=c2;
@@ -45,11 +61,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			
 		}
 		
-		public ContratFeve[] getOffreFinale() {
+		/*public ContratFeve[] getOffreFinale() {
+			ContratFeve eq4m=
 			
 			
 			return null;
-		}
+		}*/
 		
 		public void sendResultVentes(ContratFeve[] resultVentes) {
 			
@@ -108,11 +125,16 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			}
 			this.stockmoyen = this.stockmoyen+prodBresil+prodIndo;
 			this.stockfin = this.stockfin+prodfin;
-
-			System.out.println(" eq 3 production f�ve moyennes de "+(prodBresil+prodIndo)+" --> stockMoyen="+this.stockmoyen);
-			System.out.println("eq 3 production f�ve fines de "+prodfin+" --> stockFin="+this.stockfin);
+			System.out.println(" eq 3 production feve moyennes de "+(prodBresil+prodIndo)+" --> stockMoyen="+this.stockmoyen);
+			System.out.println("eq 3 production feve fines de "+prodfin+" --> stockFin="+this.stockfin);
 			/*IVenteConso vendeur = (IVenteConso) (Monde.LE_MONDE.getActeur("Eq6DIST"));
 			vendeur.sell(100);*/
+		}
+
+		@Override
+		public ContratFeve[] getOffreFinale() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	
 }
