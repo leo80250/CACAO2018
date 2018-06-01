@@ -217,7 +217,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		return new ContratPoudre[0];
 	}
-	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis) {
+	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
 		int n = devis.length;
 		for(int i = 0; i<n; i++) {
 			int qualite = devis[i].getQualite();
@@ -228,13 +228,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		}
 		return devis;
 	}
-	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat) {
+	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
 		return contrat;
 	}
 	
 	
-	public void sendReponsePoudre(ContratPoudre[] devis) {
+	public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
 		// TODO Auto-generated method stub
 		
 	}
