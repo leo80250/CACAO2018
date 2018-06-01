@@ -15,6 +15,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	private final static int MOY_QB = 46000; /* pour un step = deux semaines */
 	private final static int MOY_QM = 70000; /* pour un step = deux semaines */
 	private final static int coutFixe = 70800000;
+	private final static double prix_minQM = 1000;
+	private final static double prix_minQB = 850;
 	
 	//constructeur
 	public Eq2PROD() {
@@ -121,7 +123,27 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	}
 	
 	public ContratFeve[] getOffreFinale() {
-		return null;
+		ContratFeve[] c=new ContratFeve[demandeTran.length];
+		for (int i=0;i<demandeTran.length;i++ ) {
+			if (demandeTran[i].getQualite()==0) {
+				if (demandeTran[i].getPrix()>=/*getPrixMarche()* */this.coeffStock*0.85) {
+					c[i]=demandeTran[i];
+			} 	else if (demandeTran[i].getPrix()<prix_minQB) {
+				c[i]=new ContratFeve(demandeTran[i].getQualite(),demandeTran[i].getQuantite(),prix_minQB, demandeTran[i].getTransformateur(),demandeTran[i].getProducteur(),demandeTran[i].getReponse());
+			}	else {
+				c[i]=new ContratFeve(demandeTran[i].getQualite(),demandeTran[i].getQuantite(),0.25*prix_minQB+0.75*demandeTran[i].getPrix(), demandeTran[i].getTransformateur(),demandeTran[i].getProducteur(),demandeTran[i].getReponse());
+			}
+		}
+			 else {
+				if (demandeTran[i].getPrix()>=/*getPrixMarche()* */this.coeffStock) {
+				c[i]=demandeTran[i];
+				} else if (demandeTran[i].getPrix()<prix_minQM) {
+				c[i]=new ContratFeve(demandeTran[i].getQualite(),demandeTran[i].getQuantite(),prix_minQM, demandeTran[i].getTransformateur(),demandeTran[i].getProducteur(),demandeTran[i].getReponse());
+				} else {
+					c[i]=new ContratFeve(demandeTran[i].getQualite(),demandeTran[i].getQuantite(),0.25*prix_minQM+0.75*demandeTran[i].getPrix(), demandeTran[i].getTransformateur(),demandeTran[i].getProducteur(),demandeTran[i].getReponse());
+				}
+		}
+	} return c;
 	}
 	
 	/*Agathe CHEVALIER*/
