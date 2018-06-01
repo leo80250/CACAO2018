@@ -3,7 +3,7 @@ package abstraction.eq7TRAN.echangeTRANTRAN;
 /**
  * 
  * @author boulardmaelle, leofargeas, margauxgrand
- * interface IVendeurPoudre 
+ * interface IVendeurPoudre  
  */
 
 public interface IVendeurPoudre { 
