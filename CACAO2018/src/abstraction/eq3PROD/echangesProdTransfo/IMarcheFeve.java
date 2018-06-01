@@ -11,7 +11,7 @@ public interface IMarcheFeve {
 	 * Calcule le prix du marche a partir du next precedent (Moyenne des prix)
 	 * @return une liste d'entiers correspondant aux prix du marche pour la qualite moyenne
 	 */
-	public int getPrixMarche();
+	public double getPrixMarche();
 	
 	/**
 	 * Informe l'acteur fictif des precedentes ventes 
