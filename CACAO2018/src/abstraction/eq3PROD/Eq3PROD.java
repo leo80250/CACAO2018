@@ -22,7 +22,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private Journal journal;
 	
 	
-	public Eq3PROD(String nom, Monde monde) {
+	public Eq3PROD() {
 		this.stockmoyen= 75000;
 		this.stockfin= 24000;
 
