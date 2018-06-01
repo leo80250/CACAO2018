@@ -39,7 +39,10 @@ public class MarcheChoco  {
 		for (Acteur i : MC.distributeurs) {
 			IAcheteurChoco ibis = (IAcheteurChoco) i;
 			commande.add(ibis.getCommande(MC.prix, MC.stock));
-			
+		}
+		for (Acteur i : MC.transformateurs)	{
+			IVendeurChoco ibis = (IVendeurChoco) i;
+			i.
 		}
 	}
 	
