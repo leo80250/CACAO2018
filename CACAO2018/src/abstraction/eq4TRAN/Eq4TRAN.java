@@ -2,12 +2,20 @@ package abstraction.eq4TRAN;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
+import java.util.ArrayList;
+
+
 import abstraction.eq4TRAN.ITransformateur;
+import abstraction.eq4TRAN.VendeurChoco.GPrix;
+import abstraction.eq4TRAN.VendeurChoco.GQte;
+import abstraction.eq4TRAN.VendeurChoco.Vendeur;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 
-public class Eq4TRAN implements IAcheteurFeve, Acteur, ITransformateur {
+
+public class Eq4TRAN implements IAcheteurFeve, Acteur, ITransformateur, IVendeurChoco {
+
 
 	
 	public Indicateur stockTabBQ ;
@@ -22,6 +30,7 @@ public class Eq4TRAN implements IAcheteurFeve, Acteur, ITransformateur {
 	public Indicateur prodChocHQ ;
 	public Indicateur solde ; 
 	public Journal JournalEq4 = new Journal("JournalEq4") ; 
+	private Vendeur vendeur;
 
 	public Eq4TRAN() {
 
@@ -36,6 +45,7 @@ public class Eq4TRAN implements IAcheteurFeve, Acteur, ITransformateur {
 		prodChocMQ = new Indicateur("prodChocMQ",this,1000) ;
 		prodChocHQ = new Indicateur("prodChocHQ",this,1000) ;
 		solde = new Indicateur("solde",this,1000) ;
+		vendeur = new Vendeur(0.0,stockChocMQ.getValeur(),stockChocHQ.getValeur(),stockTabBQ.getValeur(),stockTabMQ.getValeur(),stockTabHQ.getValeur());
 }
 		
 
@@ -104,5 +114,24 @@ public class Eq4TRAN implements IAcheteurFeve, Acteur, ITransformateur {
 	public ContratFeve[] getResultVentes() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public GQte getStock() {
+		// TODO Auto-generated method stub
+		return this.vendeur.getStock();
+	}
+
+
+	@Override
+	public GPrix getPrix() {
+		// TODO Auto-generated method stub
+		return this.vendeur.getPrix();
+	}
+
+
+	@Override
+	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
+		// TODO Auto-generated method stub
+		return this.vendeur.getLivraison(commandes);
 	}
 }
