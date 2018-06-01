@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import abstraction.eq1DIST.IVenteConso;
 import abstraction.eq4TRAN.ITransformateur;
+import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
@@ -41,23 +42,27 @@ public class Eq6DIST implements Acteur, IVenteConso { //IAcheteurChoco {
 		//System.out.println("eq6 : vente de "+q+" --stock = -->"+this.stock);
 	}
 	
-	//public GQte getCommande(ArrayList<GPrix> gPrix, ArrayList<GQte> stock) {
+	public ArrayList<GQte> getCommande(ArrayList<GPrix> gPrix, ArrayList<GQte> stock) {
 		/**
-		 * Léopold Petitjean
+		 * Karel Kédémos
 		 */
-		//final double quantité_demandée_transfo1_CMG=0.0;
-		//final double quantité_demandée_transfo1_TBG=0.0;
-		//final double quantité_demandée_transfo1_TMG=3000;
-		//final double quantité_demandée_transfo2_CMG=24650;
-	 	//final double quantité_demandée_transfo2_TBG=4000;
-		//final double quantité_demandée_transfo2_TMG=48000;
-		//final double quantité_demandée_transfo3_CMG=5800;
-		//final double quantité_demandée_transfo3_TBG=200;
-		//final double quantité_demandée_transfo3_TMG=6750;
+		ArrayList<GQte> commande = new ArrayList<GQte>();
 		
-		//double [][] commande = {{quantité_demandée_transfo1_TBG,quantité_demandée_transfo1_TMG,0.0,0.0,quantité_demandée_transfo1_CMG,0.0},{quantité_demandée_transfo2_TBG,quantité_demandée_transfo2_TMG,0.0,0.0,quantité_demandée_transfo2_CMG,0.0},{quantité_demandée_transfo3_TBG,quantité_demandée_transfo3_TMG,0.0,0.0,quantité_demandée_transfo3_CMG,0.0}};
-		//return(commande);
-	//}
+		final int quantité_demandée_transfo1_CMG=0;
+		final int quantité_demandée_transfo1_TBG=0;
+		final int quantité_demandée_transfo1_TMG=3000;
+		final int quantité_demandée_transfo2_CMG=24650;
+	 	final int quantité_demandée_transfo2_TBG=4000;
+		final int quantité_demandée_transfo2_TMG=48000;
+		final int quantité_demandée_transfo3_CMG=5800;
+		final int quantité_demandée_transfo3_TBG=200;
+		final int quantité_demandée_transfo3_TMG=6750;
+		
+		commande.add(new GQte(0, quantité_demandée_transfo1_CMG,0,quantité_demandée_transfo1_TBG,quantité_demandée_transfo1_TMG,0));
+		commande.add(new GQte(0, quantité_demandée_transfo2_CMG,0,quantité_demandée_transfo2_TBG,quantité_demandée_transfo2_TMG,0));
+		commande.add(new GQte(0, quantité_demandée_transfo3_CMG,0,quantité_demandée_transfo3_TBG,quantité_demandée_transfo3_TMG,0));
+		return(commande);
+	}
 	public void livraison(GQte d) {
 		this.stock.setqBonbonBQ(this.stock.getqBonbonBQ()+d.getqBonbonBQ());
 		this.stock.setqBonbonMQ(this.stock.getqBonbonMQ()+d.getqBonbonMQ());
