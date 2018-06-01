@@ -174,10 +174,24 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	
 	public int getProductionPoudre(int qualite) {
 		return (1-this.getAbsenteisme())*sum_moy_vente_poudre/(sum_moy_vente_poudre+sum_moy_vente_tablette);
-	} 
+	}
+	
 	public int getProductionTablette(int qualite) {
 		return (1-this.getAbsenteisme())*sum_moy_vente_tablette/(sum_moy_vente_poudre+sum_moy_vente_tablette);
 	}
+	
+	// Léo Fargeas
+	public Indicateur getStockPoudre(int qualite) {
+		if(qualite < 0 || qualite > 3) 
+			return null;
+		return this.getStockPoudre()[qualite];
+	}
+	public Indicateur getStockTablette(int qualite) {
+		if(qualite < 0 || qualite > 3) 
+			return null; 
+		return this.getStockTablettes()[qualite];
+	}
+	
 	
 	/////////////////////////////
 	// METHODES VENDEUR POUDRE //
