@@ -1,6 +1,10 @@
 package abstraction.eq7TRAN.echangeTRANTRAN;
 
-// Léo Fargeas, Margaux Grand, Juliette Gorline, Mickaël Abdealy, Maelle Boulard
+/**
+ * 
+ * @author boulardmaelle, leofargeas, margauxgrand
+ * interface IVendeurPoudre
+ */
 
 public interface IVendeurPoudre { 
 	// this.nomMethode

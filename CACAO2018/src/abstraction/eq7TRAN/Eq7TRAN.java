@@ -143,8 +143,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		this.absenteisme = absenteisme;
 	}
 	
-	/**
+	/** calculateAbsenteisme
 	 * @author boulardmaelle, leofargeas
+	 * @return le taux d'absenteisme (entre 0 et 15%)
 	 */
 	
 	public void calculateAbsenteisme() {
