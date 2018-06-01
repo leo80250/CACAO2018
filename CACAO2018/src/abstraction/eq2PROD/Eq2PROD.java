@@ -10,8 +10,9 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 	private boolean maladie;
 	private double coeffStock;
 	private ContratFeve[] demandeTran;
-	private final static int MOY_QB = 23000; 
-	private final static int MOY_QM = 35000; 
+	private final static int MOY_QB = 46000; /* pour un step = deux semaines */
+	private final static int MOY_QM = 70000; /* pour un step = deux semaines */
+	private final static int coutFixe = 70800000;
 	
 	//constructeur
 	public Eq2PROD() {
