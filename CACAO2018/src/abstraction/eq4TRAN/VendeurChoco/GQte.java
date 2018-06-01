@@ -12,15 +12,15 @@ public class GQte {
 	 * triés par qualité croissante
 	 */
 	
-	private int qBonbonBQ;
-	private int qBonbonMQ;
-	private int qBonbonHQ;
-	private int qTabletteBQ;
-	private int qTabletteMQ;
-	private int qTabletteHQ;
+	private double qBonbonBQ;
+	private double qBonbonMQ;
+	private double qBonbonHQ;
+	private double qTabletteBQ;
+	private double qTabletteMQ;
+	private double qTabletteHQ;
 	
 	
-	public GQte(int qBonbonBQ, int qBonbonMQ, int qBonbonHQ, int qTabletteBQ, int qTabletteMQ, int qTabletteHQ) {
+	public GQte(double qBonbonBQ, double qBonbonMQ, double qBonbonHQ, double qTabletteBQ, double qTabletteMQ, double qTabletteHQ) {
 		this.qBonbonBQ = (qBonbonBQ>=0) ? qBonbonBQ : 0;
 		this.qBonbonMQ=(qBonbonMQ>=0) ? qBonbonMQ : 0;
 		this.qBonbonHQ=(qBonbonHQ>=0) ? qBonbonHQ : 0;
@@ -29,7 +29,7 @@ public class GQte {
 		this.qTabletteHQ=(qTabletteHQ>=0) ? qTabletteHQ : 0;
 	}
 
-	public int getqBonbonBQ() {
+	public double getqBonbonBQ() {
 		return qBonbonBQ;
 	}
 
@@ -37,7 +37,7 @@ public class GQte {
 		this.qBonbonBQ = qBonbonBQ;
 	}
 
-	public int getqBonbonMQ() {
+	public double getqBonbonMQ() {
 		return qBonbonMQ;
 	}
 
@@ -45,7 +45,7 @@ public class GQte {
 		this.qBonbonMQ = qBonbonMQ;
 	}
 
-	public int getqBonbonHQ() {
+	public double getqBonbonHQ() {
 		return qBonbonHQ;
 	}
 
@@ -53,7 +53,7 @@ public class GQte {
 		this.qBonbonHQ = qBonbonHQ;
 	}
 
-	public int getqTabletteBQ() {
+	public double getqTabletteBQ() {
 		return qTabletteBQ;
 	}
 
@@ -61,7 +61,7 @@ public class GQte {
 		this.qTabletteBQ = qTabletteBQ;
 	}
 
-	public int getqTabletteMQ() {
+	public double getqTabletteMQ() {
 		return qTabletteMQ;
 	}
 
@@ -69,7 +69,7 @@ public class GQte {
 		this.qTabletteMQ = qTabletteMQ;
 	}
 
-	public int getqTabletteHQ() {
+	public double getqTabletteHQ() {
 		return qTabletteHQ;
 	}
 

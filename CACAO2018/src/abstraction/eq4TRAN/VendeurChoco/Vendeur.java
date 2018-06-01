@@ -15,14 +15,14 @@ public class Vendeur implements IVendeurChoco{
 	 * classe définissant les méthodes nécessaires à l'interface IVendeur Choco
 	 */
 	
-	private int qBonbonBQ;
-	private int qBonbonMQ;
-	private int qBonbonHQ;
-	private int qTabletteBQ;
-	private int qTabletteMQ;
-	private int qTabletteHQ;
+	private double qBonbonBQ;
+	private double qBonbonMQ;
+	private double qBonbonHQ;
+	private double qTabletteBQ;
+	private double qTabletteMQ;
+	private double qTabletteHQ;
 	
-	public Vendeur(int qBBQ, int qBMQ, int qBHQ, int qTBQ, int qTMQ, int qTHQ) {
+	public Vendeur(double qBBQ, double qBMQ, double qBHQ, double qTBQ, double qTMQ, double qTHQ) {
 		qBonbonBQ = (qBBQ>=0) ? qBBQ : 0;
 		qBonbonMQ = (qBMQ>=0) ? qBMQ : 0;
 		qBonbonHQ = (qBHQ>=0) ? qBHQ : 0;
@@ -40,7 +40,7 @@ public class Vendeur implements IVendeurChoco{
 		qTabletteHQ=0;
 	}
 
-	public int getqBonbonBQ() {
+	public double getqBonbonBQ() {
 		return qBonbonBQ;
 	}
 
@@ -48,7 +48,7 @@ public class Vendeur implements IVendeurChoco{
 		this.qBonbonBQ = qBonbonBQ;
 	}
 
-	public int getqBonbonMQ() {
+	public double getqBonbonMQ() {
 		return qBonbonMQ;
 	}
 
@@ -56,7 +56,7 @@ public class Vendeur implements IVendeurChoco{
 		this.qBonbonMQ = qBonbonMQ;
 	}
 
-	public int getqBonbonHQ() {
+	public double getqBonbonHQ() {
 		return qBonbonHQ;
 	}
 
@@ -64,7 +64,7 @@ public class Vendeur implements IVendeurChoco{
 		this.qBonbonHQ = qBonbonHQ;
 	}
 
-	public int getqTabletteBQ() {
+	public double getqTabletteBQ() {
 		return qTabletteBQ;
 	}
 
@@ -72,7 +72,7 @@ public class Vendeur implements IVendeurChoco{
 		this.qTabletteBQ = qTabletteBQ;
 	}
 
-	public int getqTabletteMQ() {
+	public double getqTabletteMQ() {
 		return qTabletteMQ;
 	}
 
@@ -80,7 +80,7 @@ public class Vendeur implements IVendeurChoco{
 		this.qTabletteMQ = qTabletteMQ;
 	}
 
-	public int getqTabletteHQ() {
+	public double getqTabletteHQ() {
 		return qTabletteHQ;
 	}
 
