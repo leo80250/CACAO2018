@@ -48,6 +48,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 		this.stockFeves = new Indicateur[3];
 		this.stockPoudre = new Indicateur[3];
 		this.stockTablettes = new Indicateur[3];
+		this.prixAchatFeves = new Indicateur[3];
 		this.cataloguePoudre = new ContratPoudre[3];
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
@@ -56,7 +57,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 			this.stockPoudre[i] = new Indicateur(this.getNom()+" a un stock de poudre de ", this, 0.0);
 			this.stockTablettes[i] = new Indicateur(this.getNom()+" a un stock de tablettes de ", this, 0.0);
 			this.cataloguePoudre[i] = new ContratPoudre();
-			//this.prixAchatFeves[i] = new Indicateur(this.getNom()+" a dernièrement acheté des fèves au prix de ", this, this.MOY_PRIX_ACHAT_FEVES[i]);
+			this.prixAchatFeves[i] = new Indicateur(this.getNom()+" a dernièrement acheté des fèves au prix de ", this, this.MOY_PRIX_ACHAT_FEVES[i]);
 		}
 		
 		this.journal = new Journal("Journal de "+this.getNom());
@@ -164,6 +165,14 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	}
 	public double estimatePrixVenteTablette(int qualite) {
 		return (estimatePrixAchatFeves(qualite)+estimateCoutTransformationTablette(qualite))*(1+estimateMargeTablette(qualite));
+	}
+	
+	
+	public int getProductionPoudre(int qualite) {
+		return 0;
+	}
+	public int getProductionTablette(int qualite) {
+		return 0;
 	}
 	
 	/////////////////////////////
