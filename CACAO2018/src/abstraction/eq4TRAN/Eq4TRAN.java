@@ -5,7 +5,7 @@ import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 
-public class Eq4TRAN implements Acteur, ITransformateur {
+public class Eq4TRAN implements Acteur, ITransformateur, IVendeurChoco {
 
 	
 	public Indicateur stockTabBQ ;

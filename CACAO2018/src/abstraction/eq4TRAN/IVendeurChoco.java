@@ -1,5 +1,7 @@
 package abstraction.eq4TRAN;
 
+import java.util.ArrayList;
+
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 
@@ -21,6 +23,6 @@ public interface IVendeurChoco {
 	/* Renvoie sous forme de tableau par type de produit et qualité, la livraison
 	 * effective aux distributeurs
 	 */
-	public GQte getLivraison(GQte[] commandes);
+	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes);
 	
 }
