@@ -11,6 +11,14 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	
 	private int stockmoyen;
 	private int stockfin;
+	private double[] eq4moyen;
+	private double[] eq4fin;
+	private double[] eq5moyen;
+	private double[] eq5fin;
+	private double[] eq7moyen;
+	private double[] eq7fin;
+	private double[] virtuelmoyen;
+	private double[] virtuelfin;
 	/*private int tpsnonmaladieIndo;
 	private int tpsnonmaladieAmerique;*/
 	
@@ -25,6 +33,37 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			return "Eq3PROD";
 		}
 	
+		public ContratFeve[] getOffrePublique() {
+			ContratFeve c1=new ContratFeve(1,this.stockmoyen,/*Prixmarché*/0,null,this,false);
+			ContratFeve c2=new ContratFeve(2,this.stockfin,/*Prixmarché*/0,null,this,false);
+			ContratFeve[] c=new ContratFeve[2];
+			c[0]=c1;
+			c[1]=c2;
+			return c;
+		}
+
+		public void sendDemandePrivee(ContratFeve[] demandePrivee) {
+			
+		}
+		
+		public ContratFeve[] getOffreFinale() {
+			
+			return null;
+		}
+		
+		public void sendResultVentes(ContratFeve[] resultVentes) {
+			
+		}
+	
+		public boolean maladieAmerique() {
+			double p=Math.random();
+			return (p<0.008);
+		}
+		
+		public boolean maladieIndo() {
+			return (Math.random()<=0.042);
+		}
+		
 		public void next() {
 			int x=Monde.LE_MONDE.getStep();
 			int prodBresil=0;
@@ -62,6 +101,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			if (this.maladieIndo()) {
 				prodIndo=(int)(prodIndo*0.9);
 			}
+			
 			if (this.maladieAmerique()) {
 				prodBresil=(int)(prodIndo*0.4);
 				prodfin=(int)(prodfin*0.4);
@@ -70,42 +110,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.stockfin = this.stockfin+prodfin;
 			System.out.println(" eq 3 production fève moyennes de "+(prodBresil+prodIndo)+" --> stockMoyen="+this.stockmoyen);
 			System.out.println("eq 3 production fève fines de "+prodfin+" --> stockFin="+this.stockfin);
-			//IVenteConso vendeur = (IVenteConso) (Monde.LE_MONDE.getActeur("Eq6DIST"));
-			//vendeur.sell(100);
-		}
-	
-		
-		public boolean maladieAmerique() {
-			double p=Math.random();
-			return (p<0.008);
-		}
-		
-		public boolean maladieIndo() {
-			return (Math.random()<=0.042);
-		}
-	
-
-		public ContratFeve[] getOffrePublique() {
-			ContratFeve c1=new ContratFeve(1,this.stockmoyen,/*Prixmarché*/0,null,this,false);
-			
-			
-			
-			return null;
-		}
-
-		public void sendDemandePrivee(ContratFeve[] demandePrivee) {
-			
-		}
-		
-		@Override
-		public ContratFeve[] getOffreFinale() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		@Override
-		public void sendResultVentes(ContratFeve[] resultVentes) {
-			// TODO Auto-generated method stub
-			
+			IVenteConso vendeur = (IVenteConso) (Monde.LE_MONDE.getActeur("Eq6DIST"));
+			vendeur.sell(100);
 		}
 	
 }
