@@ -259,10 +259,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		return (estimatePrixAchatFeves(qualite)+estimateCoutTransformationTablette(qualite))*(1+estimateMargeTablette(qualite));
 	}
 	
+	//Joseph Bernard
+	
 	//////////////////////////////////////
 	// METHODES VENDEUR POUDRE&CHOCOLAT //
 	/////////////////////////////////////
-	
 	public void calculateProductionPoudreReelle(int qualite) {
 		this.getProductionPoudreReelle()[qualite].setValeur(this,(1.0 - this.getAbsenteisme().getValeur())*this.getEfficacite().getValeur()*this.getProductionPoudreAttendue(qualite).getValeur());
 	}
@@ -337,8 +338,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	}
 	@Override
 	public void sendOffreFinale(ContratFeve[] offreFinale) {
-		// TODO Auto-generated method stub
-		
 	}
 	@Override
 	public ContratFeve[] getResultVentes() {
@@ -354,8 +353,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	
 	@Override
 	public double getPrixMarche() {
-		// TODO Auto-generated method stub
-		return 0;
+		return 0.0;
 	}
 	@Override
 	public ContratFeve[] getContrat() {
@@ -367,10 +365,53 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	 * 
 	 */
 	
-	@Override
+	//Joseph Bernard
 	public GQte getStock() {
+		return new GQte(0,0,0,(int)this.getStockTablette(0).getValeur(),(int)this.getStockTablette(1).getValeur(),(int)this.getStockTablette(2).getValeur());
+	}
+	
+	//tableau de GPrix pour les trois qualites
+	//public GPrix[] getPrix() {
+		//GPrix[] array = new GPrix[3];
+		//array[0] = new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(0));
+		//array[1] = new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(1));
+		//array[2] = new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(2));
+		//return new GPrix[3];
+	//}
+	/*
+	public GQte[] getLivraison(GQte[] commandes) {
+		int[] stock= {this.getStockTablette(0).getValeur(),this.getStockTablette(1).getValeur(),this.getStockTablette(2).getValeur()};
+		int[] commande1= {commandes[0].getqTabletteBQ(),commandes[0].getqTabletteMQ(),commandes[0].getqTabletteHQ()};
+		int[] commande2= {commandes[1].getqTabletteBQ(),commandes[1].getqTabletteMQ(),commandes[1].getqTabletteHQ()};
+		
+		int[] deliver1= {0,0,0};
+		int[] deliver2= {0,0,0};
+		
+		for (int i=0;i<3;i++) {
+			int stock_2;
+			int stock_i=stock[i];
+			int deliver_1=0;
+			int deliver_2=0;
+			while ((int)stock_i!=0) {
+				stock_2=stock_i/2;
+				if ((stock_2<=commande1[i])&&(stock_2<=commande2[i])) {
+					commande1[i]-=stock_2;
+					deliver_1+=stock_2;
+					commande2[i]-=stock_2;
+					deliver_2+=stock_2;
+					stock_i=stock_2;
+				}
+			}
+			deliver1[i]=deliver_1;
+			deliver2[i]=deliver_2;
+		}
+		
+		return {new GQte(0,0,0,deliver1[0],deliver1[1],deliver1[2]),new GQte(0,0,0,deliver2[0],deliver2[1],deliver2[2])};
+	}*/
+	@Override
+	public void sendOffrePublique(ContratFeve[] offrePublique) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 	@Override
 	public GPrix getPrix() {
@@ -383,8 +424,18 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		return null;
 	}
 	@Override
-	public void sendOffrePublique(ContratFeve[] offrePublique) {
+	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void sendReponsePoudre(ContratPoudre[] devis) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
