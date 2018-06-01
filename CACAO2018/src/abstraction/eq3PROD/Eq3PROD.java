@@ -12,14 +12,10 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	
 	private int stockmoyen;
 	private int stockfin;
-	private double[] eq4moyen;
-	private double[] eq4fin;
-	private double[] eq5moyen;
-	private double[] eq5fin;
-	private double[] eq7moyen;
-	private double[] eq7fin;
-	private double[] virtuelmoyen;
-	private double[] virtuelfin;
+	private ContratFeve[] eq4;
+	private ContratFeve[] eq5;
+	private ContratFeve[] eq7;
+	private ContratFeve[] virtuel;
 	/*private int tpsnonmaladieIndo;
 	private int tpsnonmaladieAmerique;*/
 	
@@ -50,6 +46,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		}
 		
 		public ContratFeve[] getOffreFinale() {
+			
 			
 			return null;
 		}
@@ -111,10 +108,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			}
 			this.stockmoyen = this.stockmoyen+prodBresil+prodIndo;
 			this.stockfin = this.stockfin+prodfin;
+
 			System.out.println(" eq 3 production f�ve moyennes de "+(prodBresil+prodIndo)+" --> stockMoyen="+this.stockmoyen);
 			System.out.println("eq 3 production f�ve fines de "+prodfin+" --> stockFin="+this.stockfin);
-			IVenteConso vendeur = (IVenteConso) (Monde.LE_MONDE.getActeur("Eq6DIST"));
-			vendeur.sell(100);
+			/*IVenteConso vendeur = (IVenteConso) (Monde.LE_MONDE.getActeur("Eq6DIST"));
+			vendeur.sell(100);*/
 		}
 	
 }
