@@ -1,42 +1,111 @@
 package abstraction.eq3PROD;
 
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 //import abstraction.eq1DIST.IVenteConso;
-import abstraction.eq2PROD.IProducteurCacao;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
 
-public class Eq3PROD implements Acteur, IProducteurCacao {
+public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve {
 	
 	
-	private int stock;
-	private int plantation;
-	
+	private int stockmoyen;
+	private int stockfin;
+	/*private int tpsnonmaladieIndo;
+	private int tpsnonmaladieAmerique;*/
 	
 	
 	public Eq3PROD() {
-		this.stock= 1000000000;
+		this.stockmoyen= 75000;
+		this.stockfin= 24000;
+
 	}
-		@Override
+	
 		public String getNom() {
-			// TODO Auto-generated method stub
 			return "Eq3PROD";
 		}
 	
-		@Override
 		public void next() {
-			// TODO Auto-generated method stub
-			int prod = (int)(Math.random()*2000);
-			this.stock = this.stock+prod;
-			System.out.println(" eq 3 prod de "+prod+" --> stock="+this.stock);
+			int x=Monde.LE_MONDE.getStep();
+			int prodBresil=0;
+			int prodIndo=0;
+			int prodfin=0;
+			if (x%12<=3) {               /*Janvier;Fevrier*/
+				prodBresil=30000;
+				prodfin=24000;
+			}
+			if (x%24==4 || x%24==5 || x%24==10 || x%24==11) {    /*Mars;Juin*/
+				prodBresil=30000;
+				prodIndo=24000;
+				prodfin=45000;
+			}
+			if (x%24>5 && x%24<=9) {      /*Avril;Mai*/         
+				prodIndo=24000;
+				prodfin=45000;
+			}
+			if (x%24==12 || x%24==13) {   /*Juillet*/
+				prodBresil=30000;
+				prodIndo=24000;
+			}
+			if (x%24>13 && x%24<=15) {    /*Aout*/
+				prodBresil=30000;
+			}
+			if (x%24>15 && x%24<=17) {    /*Septembre*/      
+				prodBresil=30000;
+				prodIndo=45000;
+			}
+			if (x%24>17 && x%24<=23) {             /*Octobre;Novembre;Decembre*/
+				prodBresil=30000;
+				prodIndo=45000;
+				prodfin=24000;
+			}
+			if (this.maladieIndo()) {
+				prodIndo=(int)(prodIndo*0.9);
+			}
+			if (this.maladieAmerique()) {
+				prodBresil=(int)(prodIndo*0.4);
+				prodfin=(int)(prodfin*0.4);
+			}
+			this.stockmoyen = this.stockmoyen+prodBresil+prodIndo;
+			this.stockfin = this.stockfin+prodfin;
+			System.out.println(" eq 3 production fève moyennes de "+(prodBresil+prodIndo)+" --> stockMoyen="+this.stockmoyen);
+			System.out.println("eq 3 production fève fines de "+prodfin+" --> stockFin="+this.stockfin);
 			//IVenteConso vendeur = (IVenteConso) (Monde.LE_MONDE.getActeur("Eq6DIST"));
 			//vendeur.sell(100);
 		}
 	
+		
+		public boolean maladieAmerique() {
+			double p=Math.random();
+			return (p<0.008);
+		}
+		
+		public boolean maladieIndo() {
+			return (Math.random()<=0.042);
+		}
+	
+
+		public ContratFeve[] getOffrePublique() {
+			ContratFeve c1=new ContratFeve(1,this.stockmoyen,/*Prixmarché*/0,null,this,false);
+			
+			
+			
+			return null;
+		}
+
+		public void sendDemandePrivee(ContratFeve[] demandePrivee) {
+			
+		}
+		
 		@Override
-		public void sell(int q) {
+		public ContratFeve[] getOffreFinale() {
 			// TODO Auto-generated method stub
-			this.stock=this.stock-q;
-			System.out.println(" eq 3 vend "+q+" --> stock="+this.stock);
+			return null;
+		}
+		@Override
+		public void sendResultVentes(ContratFeve[] resultVentes) {
+			// TODO Auto-generated method stub
+			
 		}
 	
 }
