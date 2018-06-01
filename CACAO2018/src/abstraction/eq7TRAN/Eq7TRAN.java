@@ -12,7 +12,7 @@ import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre; 
 import abstraction.fourni.Acteur;
-import abstraction.fourni.Indicateur; 
+import abstraction.fourni.Indicateur;  
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 

@@ -7,7 +7,7 @@ package abstraction.eq7TRAN.echangeTRANTRAN;
  */
 
 public interface IVendeurPoudre { 
-	// this.nomMethode
+	// this.nomMethode 
 	// Le vendeur partage à tout le monde son catalogue
 	public void sendCataloguePoudre(ContratPoudre[] offres);
 	
