@@ -4,6 +4,7 @@ import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 //import abstraction.eq1DIST.IVenteConso;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.fourni.Acteur;
+import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve {
@@ -18,8 +19,10 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	/*private int tpsnonmaladieIndo;
 	private int tpsnonmaladieAmerique;*/
 	
+	private Journal journal;
 	
-	public Eq3PROD() {
+	
+	public Eq3PROD(String nom, Monde monde) {
 		this.stockmoyen= 75000;
 		this.stockfin= 24000;
 
@@ -58,12 +61,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			
 		}
 		
-		public ContratFeve[] getOffreFinale() {
+		/*public ContratFeve[] getOffreFinale() {
 			ContratFeve eq4m=
 			
 			
 			return null;
-		}
+		}*/
 		
 		public void sendResultVentes(ContratFeve[] resultVentes) {
 			
@@ -126,6 +129,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			System.out.println("eq 3 production feve fines de "+prodfin+" --> stockFin="+this.stockfin);
 			/*IVenteConso vendeur = (IVenteConso) (Monde.LE_MONDE.getActeur("Eq6DIST"));
 			vendeur.sell(100);*/
+		}
+
+		@Override
+		public ContratFeve[] getOffreFinale() {
+			// TODO Auto-generated method stub
+			return null;
 		}
 	
 }
