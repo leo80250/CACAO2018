@@ -122,6 +122,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		this.demandeTran = demandePrivee; 
 	}
 	
+	/* Par Romain */
 	public ContratFeve[] getOffreFinale() {
 		ContratFeve[] c=new ContratFeve[demandeTran.length];
 		for (int i=0;i<demandeTran.length;i++ ) {
@@ -145,11 +146,24 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		}
 	} return c;
 	}
-	
-	/*Agathe CHEVALIER*/
-	public void sendResultVentes(ContratFeve[] resultVentes) {
-		this.contratsFinaux = resultVentes;
-	}
+
+	/*Agathe CHEVALIER + Alexandre BIGOT*/
+    public void sendResultVentes(ContratFeve[] resultVentes) {
+   	 for (int i=0; i<resultVentes.length;i++) {
+   		 if (resultVentes[i].getReponse()) {
+   			 
+   			 if (resultVentes[i].getQualite()==0) {
+   				 this.solde= this.solde + resultVentes[i].getPrix()*resultVentes[i].getQuantite() ;
+   				 this.stockQB=this.stockQB - resultVentes[i].getQuantite() ;
+   			 }
+   			 if (resultVentes[i].getQualite()==1) {
+   				 this.solde= this.solde + resultVentes[i].getPrix()*resultVentes[i].getQuantite() ;
+   				 this.stockQM=this.stockQM - resultVentes[i].getQuantite() ;
+   			 }
+   		 }
+   	 }
+    }
+
 	public void sendCoursMarche() {
 	}
 	
