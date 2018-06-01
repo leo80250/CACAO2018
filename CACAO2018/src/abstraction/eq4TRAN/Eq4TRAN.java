@@ -1,11 +1,13 @@
 package abstraction.eq4TRAN;
 
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 
-public class Eq4TRAN implements Acteur, ITransformateur {
+public class Eq4TRAN implements IAcheteurFeve, Acteur, ITransformateur {
 
 	
 	public Indicateur stockTabBQ ;
@@ -67,8 +69,40 @@ public class Eq4TRAN implements Acteur, ITransformateur {
 
 
 	@Override
-	public void sell(int q) {
+	public void sendOffrePublique(ContratFeve[] offrePublique) {
+		// TODO Auto-generated method stub
+		for (int i=0;i<offrePublique.length;i++) {
+			System.out.println(offrePublique[i]);
+		}
+	}
+
+
+	@Override
+	public ContratFeve[] getDemandePrivee() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void sendContratFictif() {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+	@Override
+	public void sendOffreFinale(ContratFeve[] offreFinale) {
+		// TODO Auto-generated method stub
+		for (int i=0;i<offreFinale.length;i++) {
+			System.out.println(offreFinale[i]);
+		}
+	}
+
+
+	@Override
+	public ContratFeve[] getResultVentes() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
