@@ -2,11 +2,8 @@ package abstraction.eq7TRAN.echangeTRANTRAN;
 
 
 public class ContratPoudre {
-	// 0 = BQ, 1 = MQ, 2 = HQ
 	private int qualite;
-	// en tonnes
 	private int quantite;
-	// en euros
 	private double prix;
 	private IAcheteurPoudre acheteur;
 	private IVendeurPoudre vendeur;
