@@ -275,7 +275,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		if(qualite < 0 || qualite > 3) 
 			return null;
 		return this.getStockFeves()[qualite];
-	}
+	} 
 	public Indicateur getStockPoudre(int qualite) {
 		if(qualite < 0 || qualite > 3) 
 			return null;
