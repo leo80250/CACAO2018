@@ -65,7 +65,7 @@ public class Monde extends Observable {
 		this.ajouterActeur(eq7);
 		Eq4TRAN eq4 = new Eq4TRAN();
 		this.ajouterActeur(eq4);
-		Eq3PROD eq3 = new Eq3PROD("Eq3Prod", this);
+		Eq3PROD eq3 = new Eq3PROD();
 		this.ajouterActeur(eq3);
 		Eq6DIST eq6 = new Eq6DIST();
 		this.ajouterActeur(eq6);
