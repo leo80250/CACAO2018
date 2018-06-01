@@ -23,8 +23,7 @@ import abstraction.eq6DIST.Eq6DIST;
  * du Monde.
  *
  * @author Romuald Debruyne
- */
-public class Monde extends Observable {
+	public class Monde extends Observable {
 
 	// Il n'y aura qu'une seule instance de la classe Monde.
 	// Pour acceder facilement a cette unique
@@ -65,7 +64,7 @@ public class Monde extends Observable {
 		this.ajouterActeur(eq7);
 		Eq4TRAN eq4 = new Eq4TRAN();
 		this.ajouterActeur(eq4);
-		Eq3PROD eq3 = new Eq3PROD("Eq3Prod", this);
+		Eq3PROD eq3 = new Eq3PROD();
 		this.ajouterActeur(eq3);
 		Eq6DIST eq6 = new Eq6DIST();
 		this.ajouterActeur(eq6);
