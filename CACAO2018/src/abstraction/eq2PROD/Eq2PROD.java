@@ -2,8 +2,9 @@ package abstraction.eq2PROD;
 
 import abstraction.fourni.Acteur;
 import abstraction.eq3PROD.echangesProdTransfo.*;
+import abstraction.eq2PROD.echangeProd.*;
 
-public class Eq2PROD implements Acteur, IVendeurFeve {
+public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	private int stockQM;
 	private int stockQB;
 	private double solde;
