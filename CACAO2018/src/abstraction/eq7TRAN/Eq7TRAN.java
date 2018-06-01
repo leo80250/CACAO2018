@@ -2,15 +2,21 @@ package abstraction.eq7TRAN;
 
 import java.util.Arrays;
 
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
+import abstraction.eq4TRAN.IVendeurChoco;
+import abstraction.eq4TRAN.VendeurChoco.GPrix;
+import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
-import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre; 
 import abstraction.fourni.Acteur;
-import abstraction.fourni.Indicateur;
+import abstraction.fourni.Indicateur;  
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
+public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarcheFeve, IAcheteurFeve, IVendeurChoco {
 	private Indicateur achats;
 	private Indicateur ventes;
 	// 0 = BQ, 1 = MQ, 2 = HQ
@@ -24,8 +30,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	private Indicateur absenteisme;
 	private Indicateur[] prixAchatFeves;
 	private Indicateur[] prixVenteFeves;
-	
-	private ContratPoudre[] cataloguePoudre;
+	private ContratPoudre[] commandesEnCours;
 	
 	// en tonnes par 2 semaines
 	private final int[] MOY_ACHAT_FEVES = {0, 1400, 3200};
@@ -49,14 +54,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 		this.stockPoudre = new Indicateur[3];
 		this.stockTablettes = new Indicateur[3];
 		this.prixAchatFeves = new Indicateur[3];
-		this.cataloguePoudre = new ContratPoudre[3];
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
 		for(int i = 0; i < 3; i++) {
 			this.stockFeves[i] = new Indicateur(this.getNom()+" a un stock de fèves de ", this, 0.0);
 			this.stockPoudre[i] = new Indicateur(this.getNom()+" a un stock de poudre de ", this, 0.0);
 			this.stockTablettes[i] = new Indicateur(this.getNom()+" a un stock de tablettes de ", this, 0.0);
-			this.cataloguePoudre[i] = new ContratPoudre();
 			this.prixAchatFeves[i] = new Indicateur(this.getNom()+" a dernièrement acheté des fèves au prix de ", this, this.MOY_PRIX_ACHAT_FEVES[i]);
 		}
 		
@@ -135,6 +138,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 		this.absenteisme = absenteisme;
 	}
 	
+	/** calculateAbsenteisme
+	 * @author boulardmaelle, leofargeas
+	 * @return le taux d'absenteisme (entre 0 et 15%)
+	 */
 	
 	public void calculateAbsenteisme() {
 		double oldAbsenteisme = this.getAbsenteisme().getValeur();
@@ -168,20 +175,32 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	}
 	
 	//Joseph Bernard
+	
+	//////////////////////////////////////
+	// METHODES VENDEUR POUDRE&CHOCOLAT //
+	/////////////////////////////////////
+	
+	// Joseph Bernard
 	public static int nb_employes=100; //a modifier
 	// On considere que nb_employes permettent d'assurer la totalite de la production
 	int sum_moy_vente_poudre=MOY_VENTE_POUDRE[0]+MOY_VENTE_POUDRE[1]+MOY_VENTE_POUDRE[2];
 	int sum_moy_vente_tablette=MOY_VENTE_TABLETTE[0]+MOY_VENTE_TABLETTE[1]+MOY_VENTE_TABLETTE[2];
 	
+
 	public int getProductionPoudre(int qualite) {
-		return (1-this.getAbsenteisme().getValeur())*sum_moy_vente_poudre/(sum_moy_vente_poudre+sum_moy_vente_tablette);
+		return ((int)(1.0 - this.getAbsenteisme().getValeur()))*sum_moy_vente_poudre/(sum_moy_vente_poudre+sum_moy_vente_tablette);
 	}
 	
 	public int getProductionTablette(int qualite) {
-		return (1-this.getAbsenteisme().getValeur())*sum_moy_vente_tablette/(sum_moy_vente_poudre+sum_moy_vente_tablette);
+		return ((int)(1.0 - this.getAbsenteisme().getValeur()))*sum_moy_vente_tablette/(sum_moy_vente_poudre+sum_moy_vente_tablette);
 	}
 	
 	// Léo Fargeas
+	public Indicateur getStockFeves(int qualite) {
+		if(qualite < 0 || qualite > 3) 
+			return null;
+		return this.getStockFeves()[qualite];
+	}
 	public Indicateur getStockPoudre(int qualite) {
 		if(qualite < 0 || qualite > 3) 
 			return null;
@@ -192,19 +211,17 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 			return null; 
 		return this.getStockTablettes()[qualite];
 	}
-	
+	/*public Indicateur getStockPrevisionnel(int qualite) {
+		return 0;
+	}*/
 	
 	/////////////////////////////
 	// METHODES VENDEUR POUDRE //
 	/////////////////////////////
-	
-	public void sendCataloguePoudre(ContratPoudre[] offres) {
-		this.cataloguePoudre = offres;
-	}
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
-		return this.cataloguePoudre;
+		return new ContratPoudre[0];
 	}
-	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis) {
+	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
 		int n = devis.length;
 		for(int i = 0; i<n; i++) {
 			int qualite = devis[i].getQualite();
@@ -215,12 +232,82 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 		}
 		return devis;
 	}
-	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat) {
+	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
 		return contrat;
 	}
+	
+	
+	public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/**
+	 * Interface IAcheteurFeve
+	 * @author boulardmaelle, margauxgrand
+	 */
+	
+	
 	@Override
-	public void sendReponsePoudre(ContratPoudre[] devis) {
+	public ContratFeve[] getDemandePrivee() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void sendContratFictif() {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void sendOffreFinale(ContratFeve[] offreFinale) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ContratFeve[] getResultVentes() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	
+	/**Interface IMarcheFeve
+	 * 
+	 */
+	
+	@Override
+	public double getPrixMarche() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public ContratFeve[] getContrat() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	/** Interface IVendeurChoco
+	 * 
+	 */
+	
+	@Override
+	public GQte getStock() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public GPrix getPrix() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public GQte getLivraison(GQte[] commandes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void sendOffrePublique(ContratFeve[] offrePublique) {
 		// TODO Auto-generated method stub
 		
 	}
