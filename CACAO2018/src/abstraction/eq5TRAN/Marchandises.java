@@ -2,6 +2,10 @@ package abstraction.eq5TRAN;
 
 import java.lang.reflect.Field;
 
+/**
+ * Pour classifier les marchandises
+ * Thomas Schillaci
+ */
 public class Marchandises {
 
     public static final int FEVES_BQ = 0;
