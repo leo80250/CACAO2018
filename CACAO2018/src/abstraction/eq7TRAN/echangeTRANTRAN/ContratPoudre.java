@@ -51,7 +51,7 @@ public class ContratPoudre {
 	public void setVendeur(IVendeurPoudre vendeur) {
 		this.vendeur = vendeur;
 	}
-	public boolean isReponse() {
+	public boolean getReponse() {
 		return this.reponse;
 	}
 	public void setReponse(boolean reponse) {
