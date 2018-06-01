@@ -12,8 +12,10 @@ public interface IVendeurPoudre {
 	// vendeur.nomMethode
 	// L'acheteur récupère le catalogue du vendeur (offre que tout le monde voit)
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur);
+	
 	// L'acheteur récupère un devis du vendeur (négociation privée)
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis);
+	
 	// L'acheteur envoie au vendeur s'il signe ou pas le devis
 	// Si le devis est renvoyé en négociation, on change le prix et on laisse la réponse nulle
 	// Si le devis est signé, on met true
