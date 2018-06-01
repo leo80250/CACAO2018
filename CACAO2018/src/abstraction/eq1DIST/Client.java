@@ -2,9 +2,8 @@
  * @author Leo Vuylsteker / Axelle Hermelin 
  */
 
-package abstraction.ClientsFinaux;
+package abstraction.eq1DIST;
 
-import abstraction.eq1DIST.Eq1DIST;
 import abstraction.eq6DIST.Eq6DIST;
 
 public class Client {

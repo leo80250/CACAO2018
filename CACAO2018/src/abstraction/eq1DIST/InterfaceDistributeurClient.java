@@ -2,8 +2,8 @@
  * @author Leo Vuylsteker / Axelle Hermelin 
  */
 
-package abstraction.ClientsFinaux;
- 
+package abstraction.eq1DIST;
+
 public interface InterfaceDistributeurClient {
 	/**
 	 *
