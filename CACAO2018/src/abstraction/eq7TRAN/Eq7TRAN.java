@@ -174,15 +174,22 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		return (estimatePrixAchatFeves(qualite)+estimateCoutTransformationTablette(qualite))*(1+estimateMargeTablette(qualite));
 	}
 	
-//<<<<<<< HEAD
 	//////////////////////////////////////
 	// METHODES VENDEUR POUDRE&CHOCOLAT //
 	/////////////////////////////////////
-//=======
+	
 	public static int nb_employes=100; //a modifier
 	// On considere que nb_employes permettent d'assurer la totalite de la production
 	int sum_moy_vente_poudre=MOY_VENTE_POUDRE[0]+MOY_VENTE_POUDRE[1]+MOY_VENTE_POUDRE[2];
 	int sum_moy_vente_tablette=MOY_VENTE_TABLETTE[0]+MOY_VENTE_TABLETTE[1]+MOY_VENTE_TABLETTE[2];
+	
+	public int getProductionPoudre(int qualite) {
+		return ((int)(1.0 - this.getAbsenteisme().getValeur()))*sum_moy_vente_poudre/(sum_moy_vente_poudre+sum_moy_vente_tablette);
+	}
+	
+	public int getProductionTablette(int qualite) {
+		return ((int)(1.0 - this.getAbsenteisme().getValeur()))*sum_moy_vente_tablette/(sum_moy_vente_poudre+sum_moy_vente_tablette);
+	}
 	
 	// Léo Fargeas
 	public Indicateur getStockFeves(int qualite) {
