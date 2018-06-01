@@ -122,7 +122,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		this.demandeTran = demandePrivee; 
 	}
 	
-	/* Romain BERNARD */
+	/* Par Romain */
 	public ContratFeve[] getOffreFinale() {
 		ContratFeve[] c=new ContratFeve[demandeTran.length];
 		for (int i=0;i<demandeTran.length;i++ ) {
