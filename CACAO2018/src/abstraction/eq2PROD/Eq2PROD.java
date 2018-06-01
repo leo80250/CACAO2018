@@ -49,7 +49,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 		return this.demandeTran;
 	}
 	
-	public double getPrix() { /* codé par Alexandre Bigot */
+	/* Alexandre BIGOT */
+	public double getPrix() {
 		return /*getPrixMarche()* */this.coeffStock ;
 	}
 	
@@ -124,8 +125,11 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 	public void sendCoursMarche() {
 	}
 	
-	public int acheter(int quantite) { /*code par Alexandre Bigot, le cas ou la quantité demandé
-	est inférieure au stock n'est au final pas codé car il est impossible que cela arrive */
+	/* Alexandre BIGOT
+	 * Le cas où la quantité demandée est inférieure au stock n'est au final pas codée
+	 * car il est impossible que cela arrive
+	 */
+	public int acheter(int quantite) {
 		if (quantite >= this.stockQB) {
 			this.stockQB=this.stockQB - quantite ;
 			this.solde = this.solde /*+ quantite*getPrixMarche()*this.coeffStock */ ;
