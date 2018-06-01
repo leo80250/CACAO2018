@@ -33,7 +33,7 @@ public class GQte {
 		return qBonbonBQ;
 	}
 
-	public void setqBonbonBQ(int qBonbonBQ) {
+	public void setqBonbonBQ(double qBonbonBQ) {
 		this.qBonbonBQ = qBonbonBQ;
 	}
 
@@ -41,7 +41,7 @@ public class GQte {
 		return qBonbonMQ;
 	}
 
-	public void setqBonbonMQ(int qBonbonMQ) {
+	public void setqBonbonMQ(double qBonbonMQ) {
 		this.qBonbonMQ = qBonbonMQ;
 	}
 
@@ -49,7 +49,7 @@ public class GQte {
 		return qBonbonHQ;
 	}
 
-	public void setqBonbonHQ(int qBonbonHQ) {
+	public void setqBonbonHQ(double qBonbonHQ) {
 		this.qBonbonHQ = qBonbonHQ;
 	}
 
@@ -57,7 +57,7 @@ public class GQte {
 		return qTabletteBQ;
 	}
 
-	public void setqTabletteBQ(int qTabletteBQ) {
+	public void setqTabletteBQ(double qTabletteBQ) {
 		this.qTabletteBQ = qTabletteBQ;
 	}
 
@@ -65,7 +65,7 @@ public class GQte {
 		return qTabletteMQ;
 	}
 
-	public void setqTabletteMQ(int qTabletteMQ) {
+	public void setqTabletteMQ(double qTabletteMQ) {
 		this.qTabletteMQ = qTabletteMQ;
 	}
 
@@ -73,7 +73,7 @@ public class GQte {
 		return qTabletteHQ;
 	}
 
-	public void setqTabletteHQ(int qTabletteHQ) {
+	public void setqTabletteHQ(double qTabletteHQ) {
 		this.qTabletteHQ = qTabletteHQ;
 	}
 	

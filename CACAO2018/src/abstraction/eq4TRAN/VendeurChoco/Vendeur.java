@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import abstraction.eq4TRAN.IVendeurChoco;
+import abstraction.fourni.Journal;
 
 /**
  * 
@@ -21,6 +22,7 @@ public class Vendeur implements IVendeurChoco{
 	private double qTabletteBQ;
 	private double qTabletteMQ;
 	private double qTabletteHQ;
+	public Journal ventes = new Journal("ventes");
 	
 	public Vendeur(double qBBQ, double qBMQ, double qBHQ, double qTBQ, double qTMQ, double qTHQ) {
 		qBonbonBQ = (qBBQ>=0) ? qBBQ : 0;
@@ -120,6 +122,15 @@ public class Vendeur implements IVendeurChoco{
 		GQte commande1 = commandes.get(0);
 		GQte commande2 = commandes.get(1);
 		ArrayList<GQte> Livraison = new ArrayList<>(); /*insérer notre livraison effective */
+		commande2.setqBonbonBQ(this.getqBonbonBQ()-commande1.getqBonbonBQ());
+		commande2.setqBonbonMQ(this.getqBonbonMQ()-commande1.getqBonbonMQ());
+		commande2.setqBonbonHQ(this.getqBonbonHQ()-commande1.getqBonbonHQ());
+		commande2.setqTabletteBQ(this.getqTabletteBQ()-commande2.getqTabletteBQ());
+		commande2.setqTabletteMQ(this.getqTabletteMQ()-commande2.getqTabletteMQ());
+		commande2.setqTabletteHQ(this.getqTabletteHQ()-commande2.getqTabletteHQ());
+		Livraison.add(commande1);
+		Livraison.add(commande2);
+		ventes.ajouter("Livraison : " + Livraison);
 		return Livraison;
 	}
 }

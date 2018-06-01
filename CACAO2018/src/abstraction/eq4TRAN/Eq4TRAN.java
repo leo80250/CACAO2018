@@ -29,7 +29,7 @@ public class Eq4TRAN implements IAcheteurFeve, Acteur, ITransformateur, IVendeur
 	public Indicateur prodChocMQ ;
 	public Indicateur prodChocHQ ;
 	public Indicateur solde ; 
-	public Journal JournalEq4 = new Journal("JournalEq4") ; 
+	public Journal JournalEq4 = new Journal("JournalEq4") ;
 	private Vendeur vendeur;
 
 	public Eq4TRAN() {
@@ -76,7 +76,6 @@ public class Eq4TRAN implements IAcheteurFeve, Acteur, ITransformateur, IVendeur
 		JournalEq4.ajouter("Production de chocolats Haute Qualité = "+prodChocHQ.getValeur());
 
 	}
-
 
 	@Override
 	public void sendOffrePublique(ContratFeve[] offrePublique) {
