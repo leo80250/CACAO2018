@@ -30,9 +30,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	private Indicateur absenteisme;
 	private Indicateur[] prixAchatFeves;
 	private Indicateur[] prixVenteFeves;
-	
-	private ContratPoudre[] cataloguePoudre;
-	private ContratFeve[] catalogueFeve;
+	private ContratPoudre[] commandesEnCours;
 	
 	// en tonnes par 2 semaines
 	private final int[] MOY_ACHAT_FEVES = {0, 1400, 3200};
@@ -56,15 +54,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		this.stockPoudre = new Indicateur[3];
 		this.stockTablettes = new Indicateur[3];
 		this.prixAchatFeves = new Indicateur[3];
-		this.cataloguePoudre = new ContratPoudre[3];
-		this.catalogueFeve= new ContratFeve[3];
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
 		for(int i = 0; i < 3; i++) {
 			this.stockFeves[i] = new Indicateur(this.getNom()+" a un stock de fèves de ", this, 0.0);
 			this.stockPoudre[i] = new Indicateur(this.getNom()+" a un stock de poudre de ", this, 0.0);
 			this.stockTablettes[i] = new Indicateur(this.getNom()+" a un stock de tablettes de ", this, 0.0);
-			this.cataloguePoudre[i] = new ContratPoudre();
 			this.prixAchatFeves[i] = new Indicateur(this.getNom()+" a dernièrement acheté des fèves au prix de ", this, this.MOY_PRIX_ACHAT_FEVES[i]);
 		}
 		
@@ -179,15 +174,41 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		return (estimatePrixAchatFeves(qualite)+estimateCoutTransformationTablette(qualite))*(1+estimateMargeTablette(qualite));
 	}
 	
+//<<<<<<< HEAD
 	//////////////////////////////////////
 	// METHODES VENDEUR POUDRE&CHOCOLAT //
 	/////////////////////////////////////
+//=======
+	public static int nb_employes=100; //a modifier
+	// On considere que nb_employes permettent d'assurer la totalite de la production
+	int sum_moy_vente_poudre=MOY_VENTE_POUDRE[0]+MOY_VENTE_POUDRE[1]+MOY_VENTE_POUDRE[2];
+	int sum_moy_vente_tablette=MOY_VENTE_TABLETTE[0]+MOY_VENTE_TABLETTE[1]+MOY_VENTE_TABLETTE[2];
 	
-	public void sendCataloguePoudre(ContratPoudre[] offres) {
-		this.cataloguePoudre = offres;
+	// Léo Fargeas
+	public Indicateur getStockFeves(int qualite) {
+		if(qualite < 0 || qualite > 3) 
+			return null;
+		return this.getStockFeves()[qualite];
 	}
+	public Indicateur getStockPoudre(int qualite) {
+		if(qualite < 0 || qualite > 3) 
+			return null;
+		return this.getStockPoudre()[qualite];
+	}
+	public Indicateur getStockTablette(int qualite) {
+		if(qualite < 0 || qualite > 3) 
+			return null; 
+		return this.getStockTablettes()[qualite];
+	}
+	/*public Indicateur getStockPrevisionnel(int qualite) {
+		return 0;
+	}*/
+	
+	/////////////////////////////
+	// METHODES VENDEUR POUDRE //
+	/////////////////////////////
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
-		return this.cataloguePoudre;
+		return new ContratPoudre[0];
 	}
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis) {
 		int n = devis.length;
@@ -217,11 +238,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	 */
 	
 	
-	@Override
-	public void sendOffrePublique(ContratFeve[] offrePublique) {
-		this.catalogueFeve=offrePublique;
-		
-	}
 	@Override
 	public ContratFeve[] getDemandePrivee() {
 		// TODO Auto-generated method stub
@@ -278,5 +294,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	public GQte getLivraison(GQte[] commandes) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	@Override
+	public void sendOffrePublique(ContratFeve[] offrePublique) {
+		// TODO Auto-generated method stub
+		
 	}
 }
