@@ -2,16 +2,19 @@ package abstraction.eq2PROD;
 
 import abstraction.fourni.Acteur;
 import abstraction.eq3PROD.echangesProdTransfo.*;
+import abstraction.eq2PROD.echangeProd.*;
 
-public class Eq2PROD implements Acteur, IVendeurFeve {
+public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	private int stockQM;
 	private int stockQB;
 	private double solde;
 	private boolean maladie;
 	private double coeffStock;
 	private ContratFeve[] demandeTran;
-	private final static int MOY_QB = 23000; 
-	private final static int MOY_QM = 35000; 
+	private ContratFeve[] contratsFinaux;
+	private final static int MOY_QB = 46000; /* pour un step = deux semaines */
+	private final static int MOY_QM = 70000; /* pour un step = deux semaines */
+	private final static int coutFixe = 70800000;
 	
 	//constructeur
 	public Eq2PROD() {
@@ -20,6 +23,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 		this.solde = 15000.0;
 		this.coeffStock = 1;
 		this.demandeTran = new ContratFeve[0];
+		this.contratsFinaux = new ContratFeve[0];
 	}
 	
 	//accesseur
@@ -47,10 +51,17 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 	public ContratFeve[] getDemandeTran() {
 		return this.demandeTran;
 	}
+	
+	/* Alexandre BIGOT */
+	public double getPrix() {
+		return /*getPrixMarche()* */this.coeffStock ;
+	}
+	
+	
 
 	
 	//services
-	
+	/* Alexandre BIGOT+Guillaume SALLE */
 	private void calculCoeffPrixVentes() {
 		double coeffMeteo = meteo();
 		double coeffMaladie = maladie();
@@ -96,6 +107,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 		this.stockQB=this.stockQB+ (int) (this.coeffStock*MOY_QB);
 	}
 
+	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
 	public ContratFeve[] getOffrePublique() {
 		ContratFeve c1 = new ContratFeve(0,this.stockQB,/*getPrixMarche()* */this.coeffStock*0.85,null,this,false);
 		ContratFeve c2 = new ContratFeve(1,this.stockQM,/*getPrixMarche()* */this.coeffStock,null,this,false);
@@ -103,7 +115,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 		c[0]=c1; c[1] = c2;
 		return c;
 	}
-	
+	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
 	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
 		this.demandeTran = demandePrivee; 
 	}
@@ -111,9 +123,26 @@ public class Eq2PROD implements Acteur, IVendeurFeve {
 	public ContratFeve[] getOffreFinale() {
 		return null;
 	}
+	
+	/*Agathe CHEVALIER*/
 	public void sendResultVentes(ContratFeve[] resultVentes) {
+		this.contratsFinaux = resultVentes;
 	}
 	public void sendCoursMarche() {
+	}
+	
+	/* Alexandre BIGOT
+	 * Le cas où la quantité demandée est inférieure au stock n'est au final pas codée
+	 * car il est impossible que cela arrive
+	 */
+	public int acheter(int quantite) {
+		if (quantite >= this.stockQB) {
+			this.stockQB=this.stockQB - quantite ;
+			this.solde = this.solde /*+ quantite*getPrixMarche()*this.coeffStock */ ;
+			return quantite ;
+		} else {
+			return 0 ;
+		}
 	}
 	
 }
