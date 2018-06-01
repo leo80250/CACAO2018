@@ -1,33 +1,70 @@
 package abstraction.eq7TRAN;
 
+import java.util.Arrays;
+
+import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Eq7TRAN implements Acteur {
+public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	private Indicateur achats;
 	private Indicateur ventes;
-	private Indicateur stockFeves;
-	private Indicateur stockPoudre;
-	private Indicateur stockTablettes;
+	// 0 = BQ, 1 = MQ, 2 = HQ
+	private Indicateur[] stockFeves;
+	private Indicateur[] stockPoudre;
+	private Indicateur[] stockTablettes;
 	private Indicateur solde;
 	private Journal journal;
 	private String nom;
+	
+	private Indicateur absenteisme;
+	private Indicateur[] prixAchatFeves;
+	private Indicateur[] prixVenteFeves;
+	
+	private ContratPoudre[] cataloguePoudre;
+	
+	// en tonnes par 2 semaines
+	private final int[] MOY_ACHAT_FEVES = {0, 1400, 3200};
+	private final int[] MOY_ACHAT_POUDRE = {0, 0, 0};
+	private final int[] MOY_VENTE_POUDRE = {0, 0, 1000};
+	private final int[] MOY_VENTE_TABLETTE = {0, 1400, 2300};
+	
+	// en €/tonne
+	private final double[] MOY_PRIX_ACHAT_FEVES = {1800, 2100, 2500};
+	
+	private final double MOY_PRIX_FRAIS_ACHAT_FEVES = 0;
+	private final double MOY_PRIX_FRAIS_VENTE_FEVES = 0;
+	private final double MOY_MARGE_POUDRE = 0.2;
+	private final double MOY_MARGE_TABLETTE = 0.2;
 
 	public Eq7TRAN(Monde monde, String nom) {
 		this.nom = nom;
 		this.achats = new Indicateur("Achat de "+this.getNom(), this, 0.0);
 		this.ventes = new Indicateur("Vente de "+this.getNom(), this, 0.0);
-		this.stockFeves = new Indicateur(this.getNom()+" a un stock de fèves de ", this, 0.0);
-		this.stockPoudre = new Indicateur(this.getNom()+" a un stock de poudre de ", this, 0.0);
-		this.stockTablettes = new Indicateur(this.getNom()+" a un stock de tablettes de ", this, 0.0);
+		this.stockFeves = new Indicateur[3];
+		this.stockPoudre = new Indicateur[3];
+		this.stockTablettes = new Indicateur[3];
+		this.cataloguePoudre = new ContratPoudre[3];
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
+		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
+		for(int i = 0; i < 3; i++) {
+			this.stockFeves[i] = new Indicateur(this.getNom()+" a un stock de fèves de ", this, 0.0);
+			this.stockPoudre[i] = new Indicateur(this.getNom()+" a un stock de poudre de ", this, 0.0);
+			this.stockTablettes[i] = new Indicateur(this.getNom()+" a un stock de tablettes de ", this, 0.0);
+			this.cataloguePoudre[i] = new ContratPoudre();
+			//this.prixAchatFeves[i] = new Indicateur(this.getNom()+" a dernièrement acheté des fèves au prix de ", this, this.MOY_PRIX_ACHAT_FEVES[i]);
+		}
+		
 		this.journal = new Journal("Journal de "+this.getNom());
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		Monde.LE_MONDE.ajouterIndicateur(this.achats);
 		Monde.LE_MONDE.ajouterIndicateur(this.ventes);
 		Monde.LE_MONDE.ajouterIndicateur(this.solde);
+		
 	}
 	public Eq7TRAN(Monde monde) {
 		this(monde, "Eq7TRAN");
@@ -41,6 +78,122 @@ public class Eq7TRAN implements Acteur {
 	}
 
 	public void next() {
-		int prod = (int) (Math.random()*1000);
+		this.calculateAbsenteisme();
+		this.getJournal().ajouter("Absenteisme = " + this.getAbsenteisme().getValeur());
+		//this.getJournal().ajouter("Estimation prix achat feves = " + this.estimatePrixAchatFeves(0));
+		//this.getJournal().ajouter("Estimation prix vente poudre BQ = " + this.estimatePrixVentePoudre(0));
+	}
+	
+	
+	public Indicateur getAchats() {
+		return this.achats;
+	}
+	public void setAchats(Indicateur achats) {
+		this.achats = achats;
+	}
+	public Indicateur getVentes() {
+		return ventes;
+	}
+	public void setVentes(Indicateur ventes) {
+		this.ventes = ventes;
+	}
+	public Indicateur[] getStockFeves() {
+		return this.stockFeves;
+	}
+	public void setStockFeves(Indicateur[] stockFeves) {
+		this.stockFeves = stockFeves;
+	}
+	public Indicateur[] getStockPoudre() {
+		return this.stockPoudre;
+	}
+	public void setStockPoudre(Indicateur[] stockPoudre) {
+		this.stockPoudre = stockPoudre;
+	}
+	public Indicateur[] getStockTablettes() {
+		return this.stockTablettes;
+	}
+	public void setStockTablettes(Indicateur[] stockTablettes) {
+		this.stockTablettes = stockTablettes;
+	}
+	public Indicateur getSolde() {
+		return this.solde;
+	}
+	public void setSolde(Indicateur solde) {
+		this.solde = solde;
+	}
+	public Journal getJournal() {
+		return this.journal;
+	}
+	public void setJournal(Journal journal) {
+		this.journal = journal;
+	}
+	public Indicateur getAbsenteisme() {
+		return this.absenteisme;
+	}
+	public void setAbsenteisme(Indicateur absenteisme) {
+		this.absenteisme = absenteisme;
+	}
+	
+	
+	public void calculateAbsenteisme() {
+		double oldAbsenteisme = this.getAbsenteisme().getValeur();
+		double newAbsenteisme = this.getAbsenteisme().getValeur() + Math.pow(-1, Math.round(Math.random()))*0.05*Math.random();
+		if(newAbsenteisme < 0 || newAbsenteisme>0.15)
+			this.getAbsenteisme().setValeur(this, oldAbsenteisme);
+		else 
+			this.getAbsenteisme().setValeur(this, newAbsenteisme);
+	}
+	
+	public double estimateCoutTransformationPoudre(int qualite) {
+		return 0;
+	}
+	public double estimateMargePoudre(int qualite) {
+		return this.MOY_MARGE_POUDRE;
+	}
+	public double estimateCoutTransformationTablette(int qualite) {
+		return 0;
+	}
+	public double estimateMargeTablette(int qualite) {
+		return this.MOY_MARGE_TABLETTE;
+	}
+	public double estimatePrixAchatFeves(int qualite) {
+		return this.prixAchatFeves[qualite].getValeur();
 	}	
+	public double estimatePrixVentePoudre(int qualite) {
+		return (estimatePrixAchatFeves(qualite)+estimateCoutTransformationPoudre(qualite))*(1+estimateMargePoudre(qualite));
+	}
+	public double estimatePrixVenteTablette(int qualite) {
+		return (estimatePrixAchatFeves(qualite)+estimateCoutTransformationTablette(qualite))*(1+estimateMargeTablette(qualite));
+	}
+	
+	/////////////////////////////
+	// METHODES VENDEUR POUDRE //
+	/////////////////////////////
+	
+	public void sendCataloguePoudre(ContratPoudre[] offres) {
+		this.cataloguePoudre = offres;
+	}
+	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
+		return this.cataloguePoudre;
+	}
+	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis) {
+		int n = devis.length;
+		for(int i = 0; i<n; i++) {
+			int qualite = devis[i].getQualite();
+			// Si on a pas la bonne quantité on refuse
+			if(devis[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
+				devis[i].setReponse(false);
+			}
+		}
+		return devis;
+	}
+	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat) {
+		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
+		return contrat;
+	}
+	@Override
+	public void sendReponsePoudre(ContratPoudre[] devis) {
+		// TODO Auto-generated method stub
+		
+	}
 }
