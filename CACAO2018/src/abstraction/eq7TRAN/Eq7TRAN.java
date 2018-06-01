@@ -38,7 +38,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	private final int[] MOY_VENTE_POUDRE = {0, 0, 1000};
 	private final int[] MOY_VENTE_TABLETTE = {0, 1400, 2300};
 	
-	// en €/tonne
+	// en â‚¬/tonne
 	private final double[] MOY_PRIX_ACHAT_FEVES = {1800, 2100, 2500};
 	
 	private final double MOY_PRIX_FRAIS_ACHAT_FEVES = 0;
@@ -57,10 +57,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
 		for(int i = 0; i < 3; i++) {
-			this.stockFeves[i] = new Indicateur(this.getNom()+" a un stock de fèves de ", this, 0.0);
+			this.stockFeves[i] = new Indicateur(this.getNom()+" a un stock de fÃ¨ves de ", this, 0.0);
 			this.stockPoudre[i] = new Indicateur(this.getNom()+" a un stock de poudre de ", this, 0.0);
 			this.stockTablettes[i] = new Indicateur(this.getNom()+" a un stock de tablettes de ", this, 0.0);
-			this.prixAchatFeves[i] = new Indicateur(this.getNom()+" a dernièrement acheté des fèves au prix de ", this, this.MOY_PRIX_ACHAT_FEVES[i]);
+			this.prixAchatFeves[i] = new Indicateur(this.getNom()+" a derniÃ¨rement achetÃ© des fÃ¨ves au prix de ", this, this.MOY_PRIX_ACHAT_FEVES[i]);
 		}
 		
 		this.journal = new Journal("Journal de "+this.getNom());
@@ -191,7 +191,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		return ((int)(1.0 - this.getAbsenteisme().getValeur()))*sum_moy_vente_tablette/(sum_moy_vente_poudre+sum_moy_vente_tablette);
 	}
 	
-	// Léo Fargeas
+	// LÃ©o Fargeas
 	public Indicateur getStockFeves(int qualite) {
 		if(qualite < 0 || qualite > 3) 
 			return null;
@@ -221,7 +221,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		int n = devis.length;
 		for(int i = 0; i<n; i++) {
 			int qualite = devis[i].getQualite();
-			// Si on a pas la bonne quantité on refuse
+			// Si on a pas la bonne quantitÃ© on refuse
 			if(devis[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
 				devis[i].setReponse(false);
 			}
@@ -229,7 +229,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		return devis;
 	}
 	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
-		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
+		// est-ce qu'il a eu des probs pour la rÃ©alisation du contrat ?
 		return contrat;
 	}
 	
@@ -277,11 +277,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	@Override
-	public ContratFeve[] getContrat() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 	
 	/** Interface IVendeurChoco
 	 * 
@@ -306,5 +302,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	public void sendOffrePublique(ContratFeve[] offrePublique) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public ContratFeve[] getContratPrecedent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
