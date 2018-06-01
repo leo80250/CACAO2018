@@ -40,9 +40,19 @@ public class MarcheChoco  {
 			IAcheteurChoco ibis = (IAcheteurChoco) i;
 			commande.add(ibis.getCommande(MC.prix, MC.stock));
 		}
+		ArrayList<ArrayList<GQte>> livraison = new ArrayList<ArrayList<GQte>>();
+		for(int j =0; j<3;j++) {
+			ArrayList<GQte> Livraisoni =new ArrayList<GQte>(); 
+			for (int i=0 ; i<commande.size() ; i++) {
+				Livraisoni.add(commande.get(i));
+			}
+			livraison.add(Livraisoni);		
+		}
+		int l=0;
 		for (Acteur i : MC.transformateurs)	{
 			IVendeurChoco ibis = (IVendeurChoco) i;
-			i.
+			//ArrayList<GQte> =ibis.getLivraison(livraison.get(l));
+			l++;
 		}
 	}
 	
