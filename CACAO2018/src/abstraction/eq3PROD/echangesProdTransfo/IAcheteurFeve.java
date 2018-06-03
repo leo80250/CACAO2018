@@ -50,7 +50,7 @@ public interface IAcheteurFeve {
 	 * @condition La somme des depenses pour les contrats acceptes est inferieure au capital du transformateur
 	 * Format des Contrat retourne :
 	 * ContratFeve(1[qualite], 1[quantite], 1000[prix], VOUS[IAcheteurFeve], ven[IVendeurFeve], reponse [Reponse])
-	 * IDEE DU CODE : renvoyer une liste des ContratFeve proposez par les differents producteurs avec VOTRE reponse
+	 * IDEE DU CODE : renvoyer une liste des ContratFeve proposee par les differents producteurs avec VOTRE reponse
 	 */
 	public ContratFeve[] getResultVentes();
 
