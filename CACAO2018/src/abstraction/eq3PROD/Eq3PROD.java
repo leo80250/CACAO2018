@@ -48,9 +48,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.virtuel=virtuel;
 		}
 		
+
 		public ContratFeve[] getOffrePublique() {
 			ContratFeve c1=new ContratFeve((IAcheteurFeve) this, null, 1, this.stockmoyen, 0, 0, /*Prix marche*/ 0.0, 0.0, 0.0, false);
 			ContratFeve c2=new ContratFeve((IAcheteurFeve) this, null, 2, this.stockfin, 0, 0, /*Prix marche*/ 0.0, 0.0, 0.0, false);
+
 			ContratFeve[] c=new ContratFeve[2];
 			c[0]=c1;
 			c[1]=c2;
@@ -63,8 +65,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		
 		/*public ContratFeve[] getOffreFinale() {
 			ContratFeve eq4m=
-			
-			
 			return null;
 		}*/
 		
@@ -127,7 +127,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.stockfin = this.stockfin+prodfin;
 			System.out.println(" eq 3 production feve moyennes de "+(prodBresil+prodIndo)+" --> stockMoyen="+this.stockmoyen);
 			System.out.println("eq 3 production feve fines de "+prodfin+" --> stockFin="+this.stockfin);
-			/*IVenteConso vendeur = (IVenteConso) (Monde.LE_MONDE.getActeur("Eq6DIST"));
+			/*vendeur = (Monde.LE_MONDE.getActeur("Eq6DIST"));
 			vendeur.sell(100);*/
 		}
 

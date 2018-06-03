@@ -1,29 +1,148 @@
 package abstraction.eq2PROD;
 
 import abstraction.fourni.Acteur;
+import abstraction.eq3PROD.echangesProdTransfo.*;
+import abstraction.eq2PROD.echangeProd.*;
 
-public class Eq2PROD implements Acteur, IProducteurCacao {
-	private int stock;
+public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
+	private int stockQM;
+	private int stockQB;
+	private double solde;
+	private boolean maladie;
+	private double coeffStock;
+	private ContratFeve[] demandeTran;
+	private ContratFeve[] contratsFinaux;
+	private final static int MOY_QB = 46000; /* pour un step = deux semaines */
+	private final static int MOY_QM = 70000; /* pour un step = deux semaines */
+	private final static int coutFixe = 70800000;
+	
+	//constructeur
 	public Eq2PROD() {
-		this.stock=10000000;
+		this.stockQM=10000000;
+		this.stockQB=1000000;
+		this.solde = 15000.0;
+		this.coeffStock = 1;
+		this.demandeTran = new ContratFeve[0];
+		this.contratsFinaux = new ContratFeve[0];
 	}
 	
+	//accesseur
+	public static int getMoyQb() {
+		return MOY_QB;
+	}
+	public static int getMoyQm() {
+		return MOY_QM;
+	}	
+	public int getStockQM() {
+		return stockQM;
+	}
+	public int getStockQB() {
+		return stockQB;
+	}
+	public double getSolde() {
+		return solde;
+	}
 	public String getNom() {
-		// TODO Auto-generated method stub
 		return "Eq2PROD";
 	}
+	public double getCoeffSolde() {
+		return this.coeffStock;
+	}
+	public ContratFeve[] getDemandeTran() {
+		return this.demandeTran;
+	}
+	
+	/* Alexandre BIGOT */
+	public double getPrix() {
+		return /*getPrixMarche()* */this.coeffStock ;
+	}
+	
+	
 
+	
+	//services
+	/* Alexandre BIGOT+Guillaume SALLE */
+	private void calculCoeffPrixVentes() {
+		double coeffMeteo = meteo();
+		double coeffMaladie = maladie();
+		this.coeffStock = -0.2*(coeffMeteo-coeffMaladie)+1.2;
+	}
+	
+	private double meteo() {
+		/* modélisation par Guillaume SALLE+Agathe CHEVALIER+Alexandre BIGOT, code par Guillaume SALLE */
+		double mini = 0.5;
+		double maxi = 1.3;
+		double x = Math.random();
+		if (x<0.005) {
+			return mini;
+		} else if (x>0.995) {
+			return maxi;
+		} else {
+			return 0.303*x+0.848;
+		}
+	}
+	
+	
+	/* Modélisation par Alexandre BIGOT+Guillaume SALLE, code par Alexandre BIGOT
+	 * Si plantations déjà malades alors la récolte est diminuée de 50% par rapport à la récolte
+	 * déjà réduite ou augmentée par la météo et au step suivant la plantation n'est plus malade
+	 * sinon il y a 0.5% que la plantation soit infectée et la récolte n'est pas diminuée par 
+	 * le facteur maladie  */
+	private double maladie() {
+		if (this.maladie) {
+			this.maladie=false;
+			return 0.5;
+		} else {
+			double x=Math.random();
+			if (x<0.005) {
+				this.maladie=true;
+			}
+			return 0.0 ;
+		}
+	}
+	
 	public void next() {
-		int prod = (int) (Math.random()*1000);
-		this.stock=this.stock+prod;
-		System.out.println("production de "+prod+" : le stock de eq2 est : "+this.stock);
-		// TODO Auto-generated method stub
-		
+		calculCoeffPrixVentes();
+		this.stockQM=this.stockQM+ (int) (this.coeffStock*MOY_QM);
+		this.stockQB=this.stockQB+ (int) (this.coeffStock*MOY_QB);
 	}
 
-	public void sell(int q) {
-		this.stock=this.stock-q;
-		System.out.println("eq2 sell ( "+q+") --> "+this.stock);
+	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
+	public ContratFeve[] getOffrePublique() {
+		ContratFeve c1 = new ContratFeve(0,this.stockQB,/*getPrixMarche()* */this.coeffStock*0.85,null,this,false);
+		ContratFeve c2 = new ContratFeve(1,this.stockQM,/*getPrixMarche()* */this.coeffStock,null,this,false);
+		ContratFeve[] c = new ContratFeve[2];
+		c[0]=c1; c[1] = c2;
+		return c;
 	}
-
+	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
+	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
+		this.demandeTran = demandePrivee; 
+	}
+	
+	public ContratFeve[] getOffreFinale() {
+		return null;
+	}
+	
+	/*Agathe CHEVALIER*/
+	public void sendResultVentes(ContratFeve[] resultVentes) {
+		this.contratsFinaux = resultVentes;
+	}
+	public void sendCoursMarche() {
+	}
+	
+	/* Alexandre BIGOT
+	 * Le cas où la quantité demandée est inférieure au stock n'est au final pas codée
+	 * car il est impossible que cela arrive
+	 */
+	public int acheter(int quantite) {
+		if (quantite >= this.stockQB) {
+			this.stockQB=this.stockQB - quantite ;
+			this.solde = this.solde /*+ quantite*getPrixMarche()*this.coeffStock */ ;
+			return quantite ;
+		} else {
+			return 0 ;
+		}
+	}
+	
 }
