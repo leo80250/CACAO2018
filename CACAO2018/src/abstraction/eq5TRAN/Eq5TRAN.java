@@ -9,6 +9,8 @@ import static abstraction.eq5TRAN.Marchandises.TABLETTES_BQ;
 import static abstraction.eq5TRAN.Marchandises.TABLETTES_HQ;
 import static abstraction.eq5TRAN.Marchandises.TABLETTES_MQ;
 
+import abstraction.eq5TRAN.appeldOffre.DemandeAO;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
@@ -22,7 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
+public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChoco {
 
     // cf Marchandises.java pour obtenir l'indexation
     private Indicateur[] productionSouhaitee; // ce qui sort de nos machines en kT
@@ -192,6 +194,19 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     						
     					
    }
+
+    @Override
+	public double getReponse(DemandeAO d) {
+		switch(d.getQualite()) {
+		case 1: return Double.MAX_VALUE;
+		case 2: if (d.getQuantite() < 0.2*stocks[FRIANDISES_MQ].getValeur()) return 1.1*prix[FRIANDISES_MQ].getValeur()*d.getQuantite();
+		case 3: return Double.MAX_VALUE;
+		case 4: if (d.getQuantite() < 0.2*stocks[TABLETTES_BQ].getValeur()) return 1.1*prix[TABLETTES_BQ].getValeur()*d.getQuantite();
+		case 5: if (d.getQuantite() < 0.2*stocks[TABLETTES_MQ].getValeur()) return 1.1*prix[TABLETTES_MQ].getValeur()*d.getQuantite();
+		case 6: if (d.getQuantite() < 0.2*stocks[TABLETTES_HQ].getValeur()) return 1.1*prix[TABLETTES_HQ].getValeur()*d.getQuantite();
+		}
+		return Double.MAX_VALUE;
+	} /** @Author: Maxim **/
 
 	
 }

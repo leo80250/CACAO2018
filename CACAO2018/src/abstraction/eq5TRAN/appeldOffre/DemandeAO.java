@@ -1,8 +1,9 @@
 package abstraction.eq5TRAN.appeldOffre;
 
 public class DemandeAO {
-	public double quantite;
-	public int qualite; /** Les qualités de chocolat sont des int de 1 à 6 pour les différentes qualités, dans l'ordre habituel **/
+	public double quantite; /** poids en tonnes **/
+	public int qualite; /** Les qualités de chocolat sont des int de 1 à 6 pour les différentes qualités,
+	dans l'ordre BONBONS BQ, MQ, HQ et TABLETTES BQ, MQ, HQ @Author: Maxim **/
 		
 	public DemandeAO(double quantite, int qualite) {
 		if ((quantite > 0) && (qualite >=1) && (qualite <= 6)) {
