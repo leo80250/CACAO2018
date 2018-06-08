@@ -185,7 +185,6 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	}
 	
 	/*private Journal journal;
-	private Indicateur production;
 	private String nom;
 	
 	public Producteur(String nom, Monde monde) {
