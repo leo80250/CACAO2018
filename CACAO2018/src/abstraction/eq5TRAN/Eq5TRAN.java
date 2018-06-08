@@ -139,6 +139,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     @Override
     /**
      * @author Juliette
+     * V1 : si la réponse est cohérente avec la demande initiale, nos stocks et nos prix, on répond oui
      */
     public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
         ContratPoudre[] reponse = new ContratPoudre[devis.length];
