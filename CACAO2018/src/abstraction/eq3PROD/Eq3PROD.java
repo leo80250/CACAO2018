@@ -31,11 +31,13 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private ContratFeve[] virtuel;
 	private final double[] prix_Ventes_Feves = {1800, 2100, 2500};
 	private final double[] prodFeves = {0,0,0};
+	MarcheFeve marche=new MarcheFeve();
 	
 	/**
 	 * @author Claire
 	 */
 	public Eq3PROD() {
+		Monde.LE_MONDE.ajouterActeur(marche);
 		this.stockmoyen= 75000;
 		this.stockfin= 24000;
 		this.nom = nom;
@@ -136,6 +138,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			int prodBresil=0;
 			int prodIndo=0;
 			int prodfin=0;
+			prix_Ventes_Feves[1]=marche.getPrixMarche();
 			if (x%12<=3) {               /*Janvier;Fevrier*/
 				prodBresil=30000;
 				prodfin=24000;
