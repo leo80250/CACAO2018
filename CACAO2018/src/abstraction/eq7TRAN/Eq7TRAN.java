@@ -107,7 +107,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 
 	public void next() {
 		this.calculateAbsenteisme();
-		this.calculateTauxEfficacite();
+		/*this.calculateTauxEfficacite();
 		this.calculateProductionPoudreReelle(0);
 		this.calculateProductionPoudreReelle(1);
 		this.calculateProductionPoudreReelle(2);
@@ -117,6 +117,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getJournal().ajouter("Absenteisme = " + this.getAbsenteisme().getValeur());
 		this.getJournal().ajouter("Estimation prix achat feves = " + this.estimatePrixAchatFeves(0)+", "+this.estimatePrixAchatFeves(1)+", "+this.estimatePrixAchatFeves(2));
 		this.getJournal().ajouter("Estimation prix vente poudre BQ = " + this.estimatePrixVentePoudre(0)+", "+this.estimatePrixVentePoudre(1)+", "+this.estimatePrixVentePoudre(2));
+		*/
 	}
 	
 	
