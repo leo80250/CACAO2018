@@ -233,6 +233,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		else 
 			this.getAbsenteisme().setValeur(this, newAbsenteisme);
 	}
+	
+	/** calculate 
+	 * 
+	 */
 	public void calculateTauxEfficacite() {
 		
 	}
@@ -295,6 +299,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	/////////////////////////////
 	// METHODES VENDEUR POUDRE //
 	/////////////////////////////
+	
+	/** 
+	 * Interface IVendeurPoudre
+	 * @author boulardmaelle @margauxgrand @josephbernard
+	 */
+	
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		return new ContratPoudre[0];
 	}
@@ -362,6 +372,36 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		array[2] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(2)});
 		return array;
 	}
+	@Override
+	public GPrix getPrix() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public GQte getLivraison(GQte[] commandes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void sendOffrePublique(ContratFeve[] offrePublique) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void sendReponsePoudre(ContratPoudre[] devis) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	/*
 	public GQte[] getLivraison(GQte[] commandes) {
 		int[] stock= {this.getStockTablette(0).getValeur(),this.getStockTablette(1).getValeur(),this.getStockTablette(2).getValeur()};
@@ -392,34 +432,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 		return {new GQte(0,0,0,deliver1[0],deliver1[1],deliver1[2]),new GQte(0,0,0,deliver2[0],deliver2[1],deliver2[2])};
 	}*/
-	@Override
-	public void sendOffrePublique(ContratFeve[] offrePublique) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public GPrix getPrix() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public GQte getLivraison(GQte[] commandes) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void sendReponsePoudre(ContratPoudre[] devis) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+
+	
+
+	
+	
+
 }
