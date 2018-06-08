@@ -58,7 +58,7 @@ IVendeurPoudre{
 	 * 
 	 */
 	public Eq4TRAN() {
-		
+
 		/**@Mickaël
 		 */
 		contratPoudreEnCoursEq7TRAN = new ContratPoudre[3];
@@ -136,39 +136,57 @@ IVendeurPoudre{
 			}
 
 		}
-		
-		
-		ArrayList<ContratPoudre> contratPoudreEnCours = null;
-		contratPoudreEnCours.add(contratPoudreEnCoursEq5TRAN[0]);
-		contratPoudreEnCours.add(contratPoudreEnCoursEq5TRAN[1]);
-		contratPoudreEnCours.add(contratPoudreEnCoursEq5TRAN[2]);
-		contratPoudreEnCours.add(contratPoudreEnCoursEq7TRAN[0]);
-		contratPoudreEnCours.add(contratPoudreEnCoursEq7TRAN[1]);
-		contratPoudreEnCours.add(contratPoudreEnCoursEq7TRAN[2]);
-		
-		for(int i = 0 ; i < contratPoudreEnCours.size() ; i++ ) {
 
-			/**
-			 * On récupère les qtés de poudre achetée
-			 * On les transforme en produits
-			 * Puis on les stocke
-			 */
-
-			if(contratPoudreEnCours.get(i).getReponse()) {
-				if (contratPoudreEnCours.get(i).getQualite() == 1) {
-					prodChocMQ.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getQuantite());
-					double ancienStockChocMQ = stockChocMQ.getValeur() ;
-					stockChocMQ.setValeur(Eq4TRAN, ancienStockChocMQ + prodChocMQ.getValeur());
-					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
-
-				} else if (contratPoudreEnCours.get(i).getQualite() == 2 ) {
-					prodChocHQ.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite());
-					double ancienStockChocHQ = stockChocHQ.getValeur() ;
-					stockChocHQ.setValeur(Eq4TRAN, ancienStockChocHQ + prodChocHQ.getValeur()); 
-					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
-				}
-			}
-		} 
+		/**
+		 * @Mickaël
+		 */
+//		Monde.LE_MONDE.getActeur("Eq5TRAN").getDevisPoudre(contratPoudreEnCoursEq5TRAN, (IAcheteurPoudre) this);
+//		Monde.LE_MONDE.getActeur("Eq7TRAN").getDevisPoudre(contratPoudreEnCoursEq7TRAN, (IAcheteurPoudre)this);
+//		for (int i=0;i<contratPoudreEnCoursEq5TRAN.length;i++) {
+//			contratPoudreEnCoursEq5TRAN[i].setReponse(true);
+//			contratPoudreEnCoursEq7TRAN[i].setReponse(true);
+//		}
+//		if (1==1) { /* Pour l'instant on accepte l'achat sans condition */
+//			Monde.LE_MONDE.getActeur("Eq5TRAN").sendReponsePoudre(contratPoudreEnCoursEq5TRAN, (IAcheteurPoudre) this);
+//			Monde.LE_MONDE.getActeur("Eq7TRAN").sendReponsePoudre(contratPoudreEnCoursEq7TRAN, (IAcheteurPoudre)this);
+//		}
+//		
+//		ContratPoudre[] contratfinalEq5TRAN = new ContratPoudre[3];
+//		ContratPoudre[] contratfinalEq7TRAN = new ContratPoudre[3];
+//		contratfinalEq5TRAN = Monde.LE_MONDE.getActeur("Eq5TRAN").getEchangeFinalPoudre(contratPoudreEnCoursEq5TRAN, (IAcheteurPoudre)this);
+//		contratfinalEq7TRAN = Monde.LE_MONDE.getActeur("Eq7TRAN").getEchangeFinalPoudre(contratPoudreEnCoursEq7TRAN, (IAcheteurPoudre)this);
+//		
+//		ArrayList<ContratPoudre> contratPoudreEnCours = null;
+//		contratPoudreEnCours.add(contratfinalEq5TRAN[0]);
+//		contratPoudreEnCours.add(contratfinalEq5TRAN[1]);
+//		contratPoudreEnCours.add(contratfinalEq5TRAN[2]);
+//		contratPoudreEnCours.add(contratfinalEq7TRAN[0]);
+//		contratPoudreEnCours.add(contratfinalEq7TRAN[1]);
+//		contratPoudreEnCours.add(contratfinalEq7TRAN[2]);
+//
+//		for(int i = 0 ; i < contratPoudreEnCours.size() ; i++ ) {
+//
+//			/**
+//			 * On récupère les qtés de poudre achetée
+//			 * On les transforme en produits
+//			 * Puis on les stocke
+//			 */
+//
+//			if(contratPoudreEnCours.get(i).getReponse()) {
+//				if (contratPoudreEnCours.get(i).getQualite() == 1) {
+//					prodChocMQ.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getQuantite());
+//					double ancienStockChocMQ = stockChocMQ.getValeur() ;
+//					stockChocMQ.setValeur(Eq4TRAN, ancienStockChocMQ + prodChocMQ.getValeur());
+//					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
+//
+//				} else if (contratPoudreEnCours.get(i).getQualite() == 2 ) {
+//					prodChocHQ.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite());
+//					double ancienStockChocHQ = stockChocHQ.getValeur() ;
+//					stockChocHQ.setValeur(Eq4TRAN, ancienStockChocHQ + prodChocHQ.getValeur()); 
+//					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
+//				}
+//			}
+//		} 
 
 
 		/** Màj des stocks pour les distributeurs
