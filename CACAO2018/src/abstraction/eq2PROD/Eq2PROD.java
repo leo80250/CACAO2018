@@ -95,7 +95,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		for (Acteur a : acteurs) {
 			if(a instanceof MarcheFeve) {
 				return ((MarcheFeve) a).getPrixMarche();
-			}
+			} 
 		} return 0;
 	}
 	
