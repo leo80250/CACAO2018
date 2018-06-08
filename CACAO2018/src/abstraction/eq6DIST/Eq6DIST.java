@@ -40,6 +40,7 @@ public class Eq6DIST implements Acteur{ //IAcheteurChoco {
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_TMQ);
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_THQ);
 		this.journalEq6= new Journal("Journal Equipe 6");
+		Monde.LE_MONDE.ajouterJournal(journalEq6);
 	}
 	@Override
 	public String getNom() {
