@@ -234,7 +234,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			this.getAbsenteisme().setValeur(this, newAbsenteisme);
 	}
 	
-	/** calculate 
+	/** calculateefficacite 
 	 * 
 	 */
 	public void calculateTauxEfficacite() {
