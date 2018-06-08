@@ -6,6 +6,7 @@ import java.util.List;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
+import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq6DIST.IAcheteurChoco;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Journal;
@@ -40,20 +41,21 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	@Override
 	public void next() {
 		int[][] stocklim = new int[][] {
-			{0,0,0},
-			{0,0,0}
+			{0,245000*2,105000*2},
+			{0,175000*2,75000*2}
 		};
-		for (int i =0; i<3;i++) {
+		/*for (int i =0; i<3;i++) {
 			for (int j=0;j<3;j++) {
 				if (stock[i][j]<stocklim[i][j]) {
-					
+					DemandeAO d= new DemandeAO(1,2);
+					getReponse(d);
 				}
 					
 			}
-		}
+		}*/
 			
 	}
-	
+
 	@Override
 	public GrilleQuantite commander(GrilleQuantite Q) {
 		int[][] res = new int[2][3];
@@ -84,7 +86,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		return l;
 	}
 	
-	public void livraison(GQte d) {
+	public void livraison(GQte d,double solde) {
 		for(int i=0; i<3;i++) {
 			stock[0][0] += d.getqTabletteBQ();
 			stock[0][1] += d.getqTabletteMQ();
@@ -93,6 +95,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 			stock[1][1] += d.getqBonbonMQ();
 			stock[1][2] += d.getqBonbonHQ();
 		}
+		this.banque -= solde;
 	}
 	
 
