@@ -387,8 +387,48 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public GQte getLivraison(GQte[] commandes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void sendOffrePublique(ContratFeve[] offrePublique) {
+		// TODO Auto-generated method stub
+		
+	}
 	
-	
+	//Joseph Bernard
+	/*
+	public List<GQte> getLivraison(List<GQte> commandes) {
+		int[] stock= {this.getStockTablette(0).getValeur(),this.getStockTablette(1).getValeur(),this.getStockTablette(2).getValeur()};
+		int[] commande1= {commandes.get(0).getqTabletteBQ(),commandes.get(0).getqTabletteMQ(),commandes.get(0).getqTabletteHQ()};
+		int[] commande2= {commandes.get(1).getqTabletteBQ(),commandes.get(1).getqTabletteMQ(),commandes.get(1).getqTabletteHQ()};
+		int[] deliver1= new int[3];
+		int[] deliver2= new int[3];
+			
+		for(int i=0;i<3;i++) {
+			if (commande1[i]+commande2[i]<=stock[i]) {
+				deliver1[i]=commande1[i];
+				deliver2[i]=commande2[i];
+			}
+			else {
+				double p=commande1[i]/(commande1[i]+commande2[i]);
+				deliver1[i]=(int)(p*stock[i]);
+				deliver2[i]=stock[i]-deliver1[i];
+			}
+			this.stockTablettes[i].setValeur(this.getNom(),this.stockTablette [i].getValeur()-deliver1[i]-deliver2[i]);
+		}
+			
+		//setvaleur sur le solde
+		List<GQte> livraison= new ArrayList<GQte>();
+		livraison.add(new GQte(0,0,0,deliver1[0],deliver1[1],deliver1[2]));
+		livraison.add(new GQte(0,0,0,deliver2[0],deliver2[1],deliver2[2]));
+
+		return livraison;
+		}
+	}
+>>>>>>> branch 'master' of https://github.com/leo80250/CACAO2018.git
 	@Override
 	public void sendOffrePublique(ContratFeve[] offrePublique) {
 		// TODO Auto-generated method stub
@@ -399,6 +439,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	*/
 	
 	
 	
