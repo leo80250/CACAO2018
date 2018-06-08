@@ -67,7 +67,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 		return c;		
 	}
 
-	public void sendContratFictif() {
+	public void sendContratFictif(ContratFeve[] listContrats) {
 	}
 
 	/* Agathe CHEVALIER */
