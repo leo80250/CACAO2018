@@ -19,6 +19,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	
 	//constructeur
 	public Eq2PROD() {
+		this(Monde.LE_MONDE,"Eq2Prod");
 		this.stockQM=10000000;
 		this.stockQB=1000000;
 		this.solde = 15000.0;
@@ -111,10 +112,10 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		this.stockQM=this.stockQM+ (int) (this.coeffStock*MOY_QM);
 		this.stockQB=this.stockQB+ (int) (this.coeffStock*MOY_QB);
 		this.solde=this.solde-coutFixe;
-		/*this.getJournal().ajouter("Quantité basse qualité = "+ this.getStockQB());
+		this.getJournal().ajouter("Quantité basse qualité = "+ this.getStockQB());
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ this.getStockQM());
 		this.getJournal().ajouter("Coefficient de la météo ="+ this.getCoeffMeteo());
-		this.getJournal().ajouter("Coefficient des maladies ="+ this.getCoeffMaladie());*/
+		this.getJournal().ajouter("Coefficient des maladies ="+ this.getCoeffMaladie());
 	}
 
 	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
@@ -215,11 +216,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		Monde.LE_MONDE.ajouterJournal(this.ventesOccasionnelles);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockQBas);
-		Monde.LE_MONDE.ajouterIndicateur(stockQMoy);
-	}
-	
-	public Eq2PROD(Monde monde){
-		this(monde, "Eq2PROD");
+		Monde.LE_MONDE.ajouterIndicateur(this.stockQMoy);
 	}
 	
 }
