@@ -8,6 +8,7 @@ import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
+import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
@@ -20,6 +21,7 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
 	private Indicateur stock_THQ;
 	private Indicateur banque;
 	private GQte stock;
+	private Journal journalEq6;
 	public Eq6DIST() {
 		MarcheChoco MC = new MarcheChoco();
 		Monde.LE_MONDE.ajouterActeur(MC);
@@ -38,6 +40,7 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_TBQ);
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_TMQ);
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_THQ);
+		this.journalEq6= new Journal("Journal Equipe 6");
 	}
 	@Override
 	public String getNom() {
@@ -55,6 +58,18 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
 		this.stock_TMQ.setValeur(this, this.stock.getqTabletteMQ());
 		this.stock_THQ.setValeur(this, this.stock.getqTabletteHQ());
 		
+		/**
+		 * Karel Kédémos
+		 */
+		journalEq6.ajouter(Integer.toString(this.stock.getqBonbonBQ()));
+		journalEq6.ajouter(Integer.toString(this.stock.getqBonbonMQ()));
+		journalEq6.ajouter(Integer.toString(this.stock.getqBonbonBQ()));
+		journalEq6.ajouter(Integer.toString(this.stock.getqTabletteBQ()));
+		journalEq6.ajouter(Integer.toString(this.stock.getqTabletteMQ()));
+		journalEq6.ajouter(Integer.toString(this.stock.getqTabletteHQ()));
+
+
+
 		
 	}
 	@Override
@@ -93,4 +108,5 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
 		this.stock.setqTabletteHQ(this.stock.getqTabletteHQ()+d.getqTabletteHQ());
 	}
 	
+
 }
