@@ -69,11 +69,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
         prix[POUDRE_HQ] = new Indicateur("Prix de poudre HQ",this,0);
         prix[FRIANDISES_MQ] = new Indicateur("Prix de friandises MQ", this, 100);
         
-        for (int i = 0; i < nbMarchandises; i++)
+        for (int i = 0; i < nbMarchandises; i++) {
             stocksSouhaites[i] = new Indicateur("Stocks souhaites de " + Marchandises.getMarchandise(i), this, productionSouhaitee[i].getValeur() + achatsSouhaites[i].getValeur());
-
-        for (int i = 0; i < nbMarchandises; i++)
             stocks[i] = new Indicateur("Stocks de " + Marchandises.getMarchandise(i), this, stocksSouhaites[i].getValeur()); // on initialise les vrais stocks comme étant ce que l'on souhaite avoir pour la premiere iteration
+        }
 
         banque=new Indicateur("Banque",this,16_000); // environ benefice 2017 sur nombre d'usines
 
