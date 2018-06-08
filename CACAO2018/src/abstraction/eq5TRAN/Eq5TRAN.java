@@ -118,6 +118,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	}
 
     @Override
+    /**
+     * @author Juliette
+     */
     public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
         ContratPoudre[] devis = new ContratPoudre[demande.length];
         for (int i=0; i<demande.length;i++) {
@@ -133,6 +136,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     }
 
     @Override
+    /**
+     * @author Juliette
+     */
     public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
         ContratPoudre[] reponse = new ContratPoudre[devis.length];
         for (int i=0; i<devis.length;i++){
@@ -154,8 +160,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
      * @author Juliette
      * Dans cette méthode, nous sommes ACHETEURS
      * Methode permettant de récupérer les devis de poudre correspondant à nos demandes et de décider si on les accepte ou non
-     */
-    
+     */    
     private void getTousLesDevisPoudre(ContratPoudre[] demande) {
     	List<Acteur> listeActeurs = Monde.LE_MONDE.getActeurs();
 
