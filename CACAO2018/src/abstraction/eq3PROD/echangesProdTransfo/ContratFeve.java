@@ -1,5 +1,6 @@
 package abstraction.eq3PROD.echangesProdTransfo;
 
+import abstraction.eq2PROD.acheteurFictifTRAN.acheteurFictifTRAN;
 import abstraction.fourni.Acteur;
 
 public class ContratFeve {
@@ -81,7 +82,11 @@ public class ContratFeve {
 	}
 	
 		// Getters //
-	
+	// @deprecated
+	public ContratFeve(int i, int tonnageQB, double prixQB, acheteurFictifTRAN acheteurFictifTRAN, Object object,
+			boolean b) {
+		// TODO Auto-generated constructor stub
+	}
 	public IAcheteurFeve getTransformateur() {
 		return this.transformateur;
 	}
