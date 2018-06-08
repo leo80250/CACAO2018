@@ -13,7 +13,9 @@ private Lot[] stock;
 
 public Eq1DIST()  {
 	this.stock = stock;
-	double[][] PartsdeMarche= {};
+	double[][] PartsdeMarche= {{0.7,0.49,0,0.42,0,0},
+			                   {0,0.21,0.7,0.28,0.7,0},
+			                   {0.3,0.3,0.3,0.3,0.3,0}};
 	Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche));
 }
 	@Override
