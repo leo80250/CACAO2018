@@ -107,7 +107,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 
 	public void next() {
 		this.calculateAbsenteisme();
+		this.calculateTauxEfficacite();
 		this.getJournal().ajouter("Absenteisme = " + this.getAbsenteisme().getValeur());
+		this.getJournal().ajouter("Efficacite = " + this.getEfficacite().getValeur());
 		//this.getJournal().ajouter("Estimation prix achat feves = " + this.estimatePrixAchatFeves(0));
 		//this.getJournal().ajouter("Estimation prix vente poudre BQ = " + this.estimatePrixVentePoudre(0));
 	}
@@ -234,11 +236,34 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			this.getAbsenteisme().setValeur(this, newAbsenteisme);
 	}
 	
-	/** calculateefficacite 
-	 * 
+	/** calculateEfficacite  
+	 * @author margauxgrand, boulardmaelle
+	 * @return le taux d'efficacite entre 70 et 120
 	 */
 	public void calculateTauxEfficacite() {
-		
+		int nbEmployes =100; //100 employes font 110% de production sans prendre aucun autre indicateur en compte
+		int abs = (int) Math.ceil(this.getAbsenteisme().getValeur()*100);
+		int emplPresents= nbEmployes-abs;
+		double efficaciteAbs = emplPresents/3;
+		double chancebeautemps = Math.random();
+		double efficaciteTemps;
+		double efficaciteJourFerie;
+		double efficaciteFinale;
+		if (chancebeautemps > 0.5) {
+			efficaciteTemps=21;
+		} else if (chancebeautemps<0.1) {
+			efficaciteTemps=-8;
+		} else {
+			efficaciteTemps=4;
+		}
+		int jourFerie=(int) Math.ceil(Math.random()*3); //maximum 3 jours feries
+		efficaciteJourFerie= -jourFerie;
+		efficaciteFinale= 110-efficaciteAbs+efficaciteTemps+efficaciteJourFerie; //Disons que de base, on a une 
+		//efficacite de 110%, parce que nos employes sont bons.
+		this.getEfficacite().setValeur(this, efficaciteFinale/100);
+		if (efficaciteFinale<60.0 || efficaciteFinale>120.0) {
+			this.getEfficacite().setValeur(this, 95/100); //on met 95% d'efficacite pour repartir sur de bonnes bases
+		}
 	}
 	
 	public double estimateCoutTransformationPoudre(int qualite) {
