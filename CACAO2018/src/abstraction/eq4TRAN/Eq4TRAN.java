@@ -140,7 +140,7 @@ public class Eq4TRAN implements Acteur,
 					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
 				
 				} else if (contratPoudreEnCours.get(i).getQualite() == 2 ) {
-					prodChocHQ.setValeur(Eq4TRAN, contratFeveEnCours.get(i).getQuantite());
+					prodChocHQ.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite());
 					double ancienStockChocHQ = stockChocHQ.getValeur() ;
 					stockChocHQ.setValeur(Eq4TRAN, ancienStockChocHQ + prodChocHQ.getValeur()); 
 					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
