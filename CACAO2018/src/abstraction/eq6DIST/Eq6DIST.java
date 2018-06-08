@@ -68,7 +68,6 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
 		journalEq6.ajouter(Integer.toString(this.stock.getqTabletteMQ()));
 		journalEq6.ajouter(Integer.toString(this.stock.getqTabletteHQ()));
 
-		
 	}
 	@Override
 	public void sell(int q) {
