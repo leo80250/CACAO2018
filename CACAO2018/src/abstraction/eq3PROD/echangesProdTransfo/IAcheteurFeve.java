@@ -34,7 +34,8 @@ public interface IAcheteurFeve {
 	 * Utiliser marche.getContrat()
 	 * @author Grégoire
 	 */
-	public void sendContratFictif();
+	
+	public void sendContratFictif(ContratFeve[] listContrats);
 	
 	/** 
 	 * Informe un transformateur des offres finales des producteurs qui lui sont destinees

@@ -413,7 +413,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		return null;
 	}
 	@Override
-	public void sendContratFictif() {
+	public void sendContratFictif(ContratFeve[] listContrats) {
 		// TODO Auto-generated method stub
 		
 	}
