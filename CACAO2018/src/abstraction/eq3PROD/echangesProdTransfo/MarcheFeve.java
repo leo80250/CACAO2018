@@ -1,15 +1,23 @@
 package abstraction.eq3PROD.echangesProdTransfo;
 
-public class MarcheFeve implements IMarcheFeve {
+import abstraction.fourni.Acteur;
+
+/**
+ * @author Grégoire
+ */
+
+public class MarcheFeve implements IMarcheFeve, Acteur {
 	
 	private ContratFeve[] contratPrecedent;
 	private ContratFeve[] contratActuel;
+	private String nom;
 	
 	public MarcheFeve() {
 		this.contratPrecedent = new ContratFeve[1]; 
 		contratPrecedent[0] = new ContratFeve(null, null, 1);
 		this.contratActuel = new ContratFeve[1];
 		contratActuel[0] = new ContratFeve();
+		this.nom = "Marche intermediaire";
 	}
 	
 	public MarcheFeve(ContratFeve[] contratPrecedent, ContratFeve[] contratActuel) {
@@ -34,6 +42,17 @@ public class MarcheFeve implements IMarcheFeve {
 	@Override
 	public ContratFeve[] getContratPrecedent() {
 		return this.contratPrecedent;
+	}
+
+	@Override
+	public String getNom() {
+		return this.nom;
+	}
+
+	@Override
+	public void next() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

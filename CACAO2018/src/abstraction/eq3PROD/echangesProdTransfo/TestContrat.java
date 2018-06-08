@@ -2,6 +2,10 @@ package abstraction.eq3PROD.echangesProdTransfo;
 
 import java.util.List;
 
+/**
+ * @author Grégoire
+ */
+
 public class TestContrat {
 	public static void main(String[] args) {
 		ContratFeve Test1 = new ContratFeve();
