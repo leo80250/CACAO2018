@@ -82,9 +82,10 @@ public class ContratFeve {
 	}
 	
 		// Getters //
-	// @deprecated
-	public ContratFeve(int i, int tonnageQB, double prixQB, acheteurFictifTRAN acheteurFictifTRAN, Object object,
-			boolean b) {
+
+	@Deprecated
+	public ContratFeve(int qualite2, int quantite, double prixMinqb, IAcheteurFeve transformateur2,
+			IVendeurFeve producteur2, boolean reponse2) {
 		// TODO Auto-generated constructor stub
 	}
 	public IAcheteurFeve getTransformateur() {
@@ -172,5 +173,15 @@ public class ContratFeve {
 		
 		return "Contrat : "+this.getProposition_Quantite()+" tonnes de feve de "+strqualite[this.getQualite()]+" qualité, à "+this.getProposition_Prix()
 				+"€ la tonne, soit un total de "+this.getProposition_Quantite()*this.getProposition_Prix()+"€.\nAcheteur : "+acheteur+" | Vendeur : "+vendeur+rep;
+	}
+	@Deprecated
+	public double getPrix() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Deprecated
+	public int getQuantite() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
