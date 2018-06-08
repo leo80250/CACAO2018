@@ -85,7 +85,6 @@ public class Eq4TRAN implements Acteur,
 		 */
 		
 		// contratFeveEnCours.add(null) ;
-		contratPoudreEnCours.add(null) ;
 		
 		/**
 		 * pour chaque contrat on récupère prix et qté
@@ -222,14 +221,30 @@ public class Eq4TRAN implements Acteur,
 
 	@Override
 	public GPrix getPrix() {
-		// TODO Auto-generated method stub
+
 		return vendeur.getPrix();
 	}
 
 	@Override
 	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
-		// TODO Auto-generated method stub
-		return vendeur.getLivraison(commandes);
+		ArrayList<GQte> livraison = new ArrayList<GQte>();
+		livraison.addAll(vendeur.getLivraison(commandes));
+		stockChocMQ.setValeur(Eq4TRAN,stockChocMQ.getValeur()-livraison.get(0).getqBonbonMQ()-livraison.get(1).getqBonbonMQ());
+		stockChocHQ.setValeur(Eq4TRAN, stockChocHQ.getValeur()-livraison.get(0).getqBonbonHQ()-livraison.get(1).getqBonbonHQ());
+		stockTabBQ.setValeur(Eq4TRAN, stockTabBQ.getValeur()-livraison.get(0).getqTabletteBQ()-livraison.get(1).getqTabletteBQ());
+		stockTabMQ.setValeur(Eq4TRAN, stockTabMQ.getValeur()-livraison.get(0).getqTabletteMQ()-livraison.get(1).getqTabletteMQ());
+		stockTabHQ.setValeur(Eq4TRAN, stockTabHQ.getValeur()-livraison.get(0).getqTabletteHQ()-livraison.get(1).getqTabletteHQ());
+		double s = 0.0;
+		for(int i=0;i<2;i++) {
+			s+=livraison.get(i).getqBonbonBQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqBonbonBQ(), 1);
+			s+=livraison.get(i).getqBonbonMQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqBonbonMQ(), 2);
+			s+=livraison.get(i).getqBonbonHQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqBonbonHQ(), 3);
+			s+=livraison.get(i).getqTabletteBQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqTabletteBQ(), 4);
+			s+=livraison.get(i).getqTabletteMQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqTabletteMQ(), 5);
+			s+=livraison.get(i).getqTabletteHQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqTabletteHQ(), 6);
+		}
+		solde.setValeur(Eq4TRAN, s);
+		return livraison;
 	}
 
 }

@@ -77,5 +77,7 @@ public class GQte {
 		this.qTabletteHQ = qTabletteHQ;
 	}
 	
-	
+	public double getqTot() {
+		return getqBonbonBQ()+getqBonbonMQ()+getqBonbonHQ()+getqTabletteBQ()+getqTabletteMQ()+getqTabletteHQ();
+	}
 }
