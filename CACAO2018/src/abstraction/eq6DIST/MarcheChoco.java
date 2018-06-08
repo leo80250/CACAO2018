@@ -7,7 +7,7 @@ import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
 
-public class MarcheChoco  {
+public class MarcheChoco  implements Acteur{
 	private ArrayList<GQte> stock;
 	private ArrayList<GPrix> prix;
 	private ArrayList <Acteur> distributeurs;
@@ -34,11 +34,10 @@ public class MarcheChoco  {
 	}	
 	}
 	public void next() {
-		MarcheChoco MC = new MarcheChoco();
 		ArrayList<ArrayList<GQte>> commande=  new ArrayList<ArrayList<GQte>>();
-		for (Acteur i : MC.distributeurs) {
+		for (Acteur i : this.distributeurs) {
 			IAcheteurChoco ibis = (IAcheteurChoco) i;
-			commande.add(ibis.getCommande(MC.prix, MC.stock));
+			commande.add(ibis.getCommande(this.prix, this.stock));
 		}
 		ArrayList<ArrayList<GQte>> livraison = new ArrayList<ArrayList<GQte>>();
 		for(int j =0; j<3;j++) {
@@ -63,7 +62,7 @@ public class MarcheChoco  {
 		}
 		int l=0;
 		ArrayList<ArrayList<GQte>> Delivery = new ArrayList<ArrayList<GQte>>();
-		for (Acteur i : MC.transformateurs)	{
+		for (Acteur i : this.transformateurs)	{
 			IVendeurChoco ibis = (IVendeurChoco) i;
 			//Delivery.add(ibis.getLivraison(livraison.get(l)));
 			l++;
@@ -89,11 +88,16 @@ public class MarcheChoco  {
 			}
 			
 			}
-		for (Acteur i : MC.distributeurs) {
+		for (Acteur i : this.distributeurs) {
 			IAcheteurChoco ibis = (IAcheteurChoco) i;
 			ibis.livraison(PourDIST.get(l));
 			l++;
 		}
+	}
+	@Override
+	public String getNom() {
+		// TODO Auto-generated method stub
+		return "MarcheChoco";
 	}
 	
 }

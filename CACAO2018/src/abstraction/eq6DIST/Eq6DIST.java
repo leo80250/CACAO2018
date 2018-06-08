@@ -21,6 +21,8 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
 	private Indicateur banque;
 	private GQte stock;
 	public Eq6DIST() {
+		MarcheChoco MC = new MarcheChoco();
+		Monde.LE_MONDE.ajouterActeur(MC);
 		this.banque= new Indicateur("Solde bancaire Eq6 : ",this, 120000);
 		this.stock= new GQte(0,0,0,0,0,0);	
 		this.stock_BBQ= new Indicateur("Stock de bonbons BQ Eq6 :",this);
