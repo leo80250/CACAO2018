@@ -17,6 +17,8 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Monde;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 
@@ -145,6 +147,34 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
         return new ContratPoudre[0];
     }
+    
+    /**
+     * @author Juliette
+     * Dans cette méthode, nous sommes ACHETEURS
+     * Methode permettant de récupérer les devis de poudre correspondant à nos demandes et de décider si on les accepte ou non
+     */
+    
+    private void getTousLesDevisPoudre(ContratPoudre[] demande) {
+    	List<Acteur> listeActeurs = Monde.LE_MONDE.getActeurs();
+    	List<ContratPoudre[]> devis = new ArrayList<ContratPoudre[]>();
+    	List<IVendeurPoudre> vendeurs = new ArrayList<IVendeurPoudre>();
+    	for (int i=0;i<listeActeurs.size();i++) {
+    		if(listeActeurs.get(i) instanceof IVendeurPoudre) {
+    			vendeurs.add((IVendeurPoudre)listeActeurs.get(i));
+    			devis.add(vendeurs.get(i).getDevisPoudre(demande, this));
+    		}
+    	}
+    	for(int k=0;k<devis.size();k++) {
+    		for(int j=0;j<3;j++) {
+    			if(devis.get(k)[j].equals(demande[j])) {
+    				devis.get(k)[j].setReponse(true);
+    			}
+    		}
+    		vendeurs.get(k).sendReponsePoudre(devis.get(k), this);
+    	}
+    						
+    					
+   }
 
 	
 }
