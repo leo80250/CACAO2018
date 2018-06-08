@@ -390,8 +390,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	//Joseph Bernard
 		public List<GQte> getLivraison(List<GQte> commandes) {
 			int[] stock= {this.getStockTablette(0).getValeur(),this.getStockTablette(1).getValeur(),this.getStockTablette(2).getValeur()};
-			int[] commande1= {comndes[0].getqTabletteBQ(),commandes[0].getqTabletteMQ(),commandes[0].getqTabletteHQ()};
-			int[] commande2= {commandes[1].getqTabletteBQ(),commandes[1].getqTabletteMQ(),commandes[1].getqTabletteHQ()};
+			int[] commande1= {commandes.get(0).getqTabletteBQ(),commandes.get(0).getqTabletteMQ(),commandes.get(0).getqTabletteHQ()};
+			int[] commande2= {commandes.get(1).getqTabletteBQ(),commandes.get(1).getqTabletteMQ(),commandes.get(1).getqTabletteHQ()};
 			int[] deliver1= new int[3];
 			int[] deliver2= new int[3];
 			
