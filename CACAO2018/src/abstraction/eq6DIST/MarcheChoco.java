@@ -34,6 +34,7 @@ public class MarcheChoco  implements Acteur{
 	}	
 	}
 	public void next() {
+		
 		ArrayList<ArrayList<GQte>> commande=  new ArrayList<ArrayList<GQte>>();
 		for (Acteur i : this.distributeurs) {
 			IAcheteurChoco ibis = (IAcheteurChoco) i;
@@ -68,6 +69,7 @@ public class MarcheChoco  implements Acteur{
 			l++;
 		}
 		l=0;
+		ArrayList<Double> paiement=new ArrayList<Double>();
 		ArrayList<GQte> PourDIST=new ArrayList<GQte>();
 		for (int j=0;j<2;j++) {
 			int qBonbonBQj=0;
@@ -76,7 +78,9 @@ public class MarcheChoco  implements Acteur{
 			int qTabletteBQj=0;
 			int qTabletteMQj=0;
 			int qTabletteHQj=0;
+			paiement.add(0.0);
 			for (int i=0; i<Delivery.size(); i++) {
+				paiement.set(j,paiement.get(j)+this.prix.get(i).getPrix(Delivery.get(i).get(j).getqBonbonBQ()));
 				qBonbonBQj=qBonbonBQj+Delivery.get(i).get(j).getqBonbonBQ();
 				qBonbonMQj=qBonbonMQj+Delivery.get(i).get(j).getqBonbonMQ();
 				qBonbonHQj=qBonbonHQj+Delivery.get(i).get(j).getqBonbonHQ();
@@ -99,5 +103,4 @@ public class MarcheChoco  implements Acteur{
 		// TODO Auto-generated method stub
 		return "MarcheChoco";
 	}
-	
 }

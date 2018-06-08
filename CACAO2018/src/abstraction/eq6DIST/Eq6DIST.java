@@ -91,13 +91,14 @@ public class Eq6DIST implements Acteur{ //IAcheteurChoco {
 		commande.add(new GQte(0, quantité_demandée_transfo3_CMG,0,quantité_demandée_transfo3_TBG,quantité_demandée_transfo3_TMG,0));
 		return(commande);
 	}
-	/*public void livraison(GQte d) {
+	public void livraison(GQte d, double solde) {
 		this.stock.setqBonbonBQ(this.stock.getqBonbonBQ()+d.getqBonbonBQ());
 		this.stock.setqBonbonMQ(this.stock.getqBonbonMQ()+d.getqBonbonMQ());
 		this.stock.setqBonbonHQ(this.stock.getqBonbonHQ()+d.getqBonbonHQ());
 		this.stock.setqTabletteBQ(this.stock.getqTabletteBQ()+d.getqTabletteBQ());
 		this.stock.setqTabletteMQ(this.stock.getqTabletteMQ()+d.getqTabletteMQ());
 		this.stock.setqTabletteHQ(this.stock.getqTabletteHQ()+d.getqTabletteHQ());
-	}*/
+		this.banque.setValeur(this, solde);
+	}
 	
 }
