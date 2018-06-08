@@ -8,22 +8,16 @@ import java.util.ArrayList;
 import abstraction.eq3PROD.echangesProdTransfo.*;
 
 public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
+/* VARIABLES D'INSTANCE */
 	private ContratFeve[] offreProd;
 	private ContratFeve[] offreFinale;
 	private ContratFeve[] contratPrecedent;
 	
+	
+/* GETTEURS */
+	/* Romain Bernard */
 	public String getNom() {
 		return "acheteurFictifTRAN";
-	}
-	/* Agathe CHEVALIER */
-	public void sendOffrePublique(ContratFeve[] offrePublique) {
-		this.offreProd = offrePublique;
-	}
-	
-	/* getContratReference() va permettre à l'acteur fictif de récupérer les contrats signés précédents
-	 * Ses commandes seront celles données par le contrat précédent à un pourcentage près */
-	public void getContratReference() {
-		/*this.contratPrecedent = MarcheFeve.getContratPrecedent();*/
 	}
 	
 	/* Guillaume Sallé */
@@ -36,8 +30,22 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 		}
 		return vendeurs;
 	}
+
+/* IMPLEMENTATION DES INTERFACES 
+ * Ici nous implementons IAcheteurFeve 
+ * */
+	/* Agathe Chevalier */
+	public void sendOffrePublique(ContratFeve[] offrePublique) {
+		this.offreProd = offrePublique;
+	}
 	
-	
+	/* Agathe Chevalier
+	 * getContratReference() va permettre à l'acteur fictif de récupérer les contrats signés précédents
+	 * Ses commandes seront celles données par le contrat précédent à un pourcentage près */
+	public void getContratReference() {
+		/*this.contratPrecedent = MarcheFeve.getContratPrecedent();*/
+	}
+
 	/* Agathe CHEVALIER */
 	public ContratFeve[] getDemandePrivee() {
 		/*this.contratPrecedent = MarcheFeve.getContrat();*/
@@ -66,17 +74,18 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 		c[0]=cB ; c[1]=cM1 ; c[2]=cM2 ; c[3]=cH;
 		return c;		
 	}
-	/* Guillaume SALLE*/
+	
+	/* Guillaume SALLé*/
 	public void sendContratFictif(ContratFeve[] listContrats) {
 		this.contratPrecedent = listContrats;
 	}
 
-	/* Agathe CHEVALIER */
+	/* Agathe Chevalier */
 	public void sendOffreFinale(ContratFeve[] offreFinale) {
 		this.offreFinale=offreFinale;
 	}
 
-	/* Agathe CHEVALIER */
+	/* Agathe Chevalier */
 	public ContratFeve[] getResultVentes() {
 		for(int i=0; i <= offreFinale.length-1; i++) {
 			offreFinale[0].setReponse(true); /* l'acheteur fictif signe tous les contrats */
@@ -84,6 +93,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 		return offreFinale;
 	}
 	
+/* NEXT DE L'ACTEUR FICTIF */	
 	public void next() {
 	}
 }
