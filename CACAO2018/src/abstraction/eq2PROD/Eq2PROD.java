@@ -191,12 +191,17 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	
 	/*Agathe CHEVALIER + Alexandre BIGOT*/
 	private Journal journal;
+	private Journal ventesOccasionnelles;
 	private String nom;
 	private Indicateur stockQMoy;
 	private Indicateur stockQBas;
 	
 	public Journal getJournal() {
 		return this.journal;
+	}
+	
+	public Journal getVentesOccasionelles() {
+		return this.ventesOccasionnelles;
 	}
 	
 	public Eq2PROD(Monde monde, String nom) {
@@ -206,6 +211,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		
 		this.journal= new Journal("Journal de"+this.nom);
 		Monde.LE_MONDE.ajouterJournal(this.journal);
+		Monde.LE_MONDE.ajouterJournal(this.ventesOccasionnelles);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockQBas);
 		Monde.LE_MONDE.ajouterIndicateur(stockQMoy);
 	}
