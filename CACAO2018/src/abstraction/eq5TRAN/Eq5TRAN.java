@@ -120,11 +120,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     @Override
     /**
      * @author Juliette
+     * V1 : on n'envoie un devis que si la qualité demandée est moyenne (la seule que nous vendons) et que nous avons assez de stocks
      */
     public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
         ContratPoudre[] devis = new ContratPoudre[demande.length];
         for (int i=0; i<demande.length;i++) {
-            if (demande[i].getQualite()!=1) {
+            if (demande[i].getQualite()!=1 && demande[i].getQuantite()<stocks[POUDRE_MQ].getValeur()) {
                 devis[i]=new ContratPoudre(0,0,0,acheteur,this,false);
             }
             else{
