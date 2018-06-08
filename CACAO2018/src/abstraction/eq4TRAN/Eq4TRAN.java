@@ -125,14 +125,14 @@ public class Eq4TRAN implements Acteur,
 		/**
 		 * pour contrat poudre
 		 */
-		for(int i = 0 ; i < contratPoudreEnCours.size() ; i++ ) {
+		 for(int i = 0 ; i < contratPoudreEnCours.size() ; i++ ) {
 			/**
 			 * On récupère les qtés de poudre achetée
 			 * On les transforme en produits
 			 * Puis on les stocke
 			 */
-			/**
-			if(contratPoudreEnCours.get(i).isReponse()) {
+			
+			if(contratPoudreEnCours.get(i).getReponse()) {
 				if (contratPoudreEnCours.get(i).getQualite() == 1) {
 					prodChocMQ.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getQuantite());
 					double ancienStockChocMQ = stockChocMQ.getValeur() ;
