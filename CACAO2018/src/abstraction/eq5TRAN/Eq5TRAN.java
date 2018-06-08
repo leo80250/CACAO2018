@@ -200,15 +200,34 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 	@Override
 	public double getReponse(DemandeAO d) {
 		switch(d.getQualite()) {
-		case 1: return Double.MAX_VALUE;
-		case 2: if (d.getQuantite() < 0.2*stocks[FRIANDISES_MQ].getValeur()) return 1.1*prix[FRIANDISES_MQ].getValeur()*d.getQuantite();
-		case 3: return Double.MAX_VALUE;
-		case 4: if (d.getQuantite() < 0.2*stocks[TABLETTES_BQ].getValeur()) return 1.1*prix[TABLETTES_BQ].getValeur()*d.getQuantite();
-		case 5: if (d.getQuantite() < 0.2*stocks[TABLETTES_MQ].getValeur()) return 1.1*prix[TABLETTES_MQ].getValeur()*d.getQuantite();
-		case 6: if (d.getQuantite() < 0.2*stocks[TABLETTES_HQ].getValeur()) return 1.1*prix[TABLETTES_HQ].getValeur()*d.getQuantite();
+		case 1: {
+			journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)");
+			return Double.MAX_VALUE;
+		}
+		case 2: if (d.getQuantite() < 0.2*stocks[FRIANDISES_MQ].getValeur()) {
+			journal.ajouter("Eq5 renvoie"+ 1.1*prix[FRIANDISES_MQ].getValeur()*d.getQuantite() +"à getReponse(d)");
+			return 1.1*prix[FRIANDISES_MQ].getValeur()*d.getQuantite();
+		}
+		case 3: {
+			journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)");
+			return Double.MAX_VALUE;
+		}
+		case 4: if (d.getQuantite() < 0.2*stocks[TABLETTES_BQ].getValeur()) {
+			journal.ajouter("Eq5 renvoie"+ 1.1*prix[TABLETTES_BQ].getValeur()*d.getQuantite() +"à getReponse(d)");
+			return 1.1*prix[TABLETTES_BQ].getValeur()*d.getQuantite();
+		}
+		case 5: if (d.getQuantite() < 0.2*stocks[TABLETTES_MQ].getValeur()) {
+			journal.ajouter("Eq5 renvoie"+ 1.1*prix[TABLETTES_MQ].getValeur()*d.getQuantite() +"à getReponse(d)");
+			return 1.1*prix[TABLETTES_MQ].getValeur()*d.getQuantite();
+		}
+		case 6: if (d.getQuantite() < 0.2*stocks[TABLETTES_HQ].getValeur()) {
+			journal.ajouter("Eq5 renvoie"+ 1.1*prix[TABLETTES_HQ].getValeur()*d.getQuantite() +"à getReponse(d)");
+			return 1.1*prix[TABLETTES_HQ].getValeur()*d.getQuantite();
+		}
 		}
 		return Double.MAX_VALUE;
-	} /** @Author: Maxim **/
+		/** @Author: Maxim **/
+	}
 
 
 }
