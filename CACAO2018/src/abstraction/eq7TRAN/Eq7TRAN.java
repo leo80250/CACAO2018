@@ -1,5 +1,6 @@
 package abstraction.eq7TRAN;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
@@ -306,5 +307,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	public void sendOffrePublique(ContratFeve[] offrePublique) {
 		// TODO Auto-generated method stub
 		
+	}
+	@Override
+	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
