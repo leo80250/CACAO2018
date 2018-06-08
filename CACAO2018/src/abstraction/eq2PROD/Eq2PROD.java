@@ -119,8 +119,10 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 
 	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
 	public ContratFeve[] getOffrePublique() {
-		ContratFeve c1 = new ContratFeve(0,this.stockQB,/*MarcheFeve.getPrixMarche()* */this.coeffStock*0.85,null,this,false);
-		ContratFeve c2 = new ContratFeve(1,this.stockQM,/*MarcheFeve.getPrixMarche()* */this.coeffStock,null,this,false);
+		ContratFeve c1 = new ContratFeve(null, this, 0, this.stockQB, 0, 0, 
+				/*MarcheFeve.getPrixMarche()* */this.coeffStock*0.85, 0.0, 0.0, false);
+		ContratFeve c2 =  new ContratFeve(null, this, 1, this.stockQM, 0, 0, 
+				/*MarcheFeve.getPrixMarche()* */this.coeffStock, 0.0, 0.0, false);
 		ContratFeve[] c = new ContratFeve[2];
 		c[0]=c1; c[1] = c2;
 		return c;
