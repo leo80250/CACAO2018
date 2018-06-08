@@ -110,8 +110,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 
 	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
 	public ContratFeve[] getOffrePublique() {
-		ContratFeve c1 = new ContratFeve(0,this.stockQB,/*getPrixMarche()* */this.coeffStock*0.85,null,this,false);
-		ContratFeve c2 = new ContratFeve(1,this.stockQM,/*getPrixMarche()* */this.coeffStock,null,this,false);
+		ContratFeve c1 = new ContratFeve(0,this.stockQB,/*MarcheFeve.getPrixMarche()* */this.coeffStock*0.85,null,this,false);
+		ContratFeve c2 = new ContratFeve(1,this.stockQM,/*MarcheFeve.getPrixMarche()* */this.coeffStock,null,this,false);
 		ContratFeve[] c = new ContratFeve[2];
 		c[0]=c1; c[1] = c2;
 		return c;
@@ -126,7 +126,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		ContratFeve[] c=new ContratFeve[demandeTran.length];
 		for (int i=0;i<demandeTran.length;i++ ) {
 			if (demandeTran[i].getQualite()==0) {
-				if (demandeTran[i].getPrix()>=/*getPrixMarche()* */this.coeffStock*0.85) {
+				if (demandeTran[i].getPrix()>=/*MarcheFeve.getPrixMarche()* */this.coeffStock*0.85) {
 					c[i]=demandeTran[i];
 			} 	else if (demandeTran[i].getPrix()<prix_minQB) {
 				c[i]=new ContratFeve(demandeTran[i].getQualite(),demandeTran[i].getQuantite(),prix_minQB, demandeTran[i].getTransformateur(),demandeTran[i].getProducteur(),demandeTran[i].getReponse());
@@ -135,7 +135,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			}
 		}
 			 else {
-				if (demandeTran[i].getPrix()>=/*getPrixMarche()* */this.coeffStock) {
+				if (demandeTran[i].getPrix()>=/*MarcheFeve.getPrixMarche()* */this.coeffStock) {
 				c[i]=demandeTran[i];
 				} else if (demandeTran[i].getPrix()<prix_minQM) {
 				c[i]=new ContratFeve(demandeTran[i].getQualite(),demandeTran[i].getQuantite(),prix_minQM, demandeTran[i].getTransformateur(),demandeTran[i].getProducteur(),demandeTran[i].getReponse());
@@ -173,7 +173,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	public int acheter(int quantite) {
 		if (quantite >= this.stockQB) {
 			this.stockQB=this.stockQB - quantite ;
-			this.solde = this.solde /*+ quantite*getPrixMarche()*this.coeffStock */ ;
+			this.solde = this.solde /*+ quantite*MarcheFeve.getPrixMarche()*this.coeffStock */ ;
 			return quantite ;
 		} else {
 			return 0 ;
