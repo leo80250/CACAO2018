@@ -1,14 +1,16 @@
 package abstraction.eq5TRAN;
 
-import static abstraction.eq5TRAN.Marchandises.FEVES_BQ;
-import static abstraction.eq5TRAN.Marchandises.FEVES_MQ;
-import static abstraction.eq5TRAN.Marchandises.FRIANDISES_MQ;
-import static abstraction.eq5TRAN.Marchandises.POUDRE_HQ;
-import static abstraction.eq5TRAN.Marchandises.POUDRE_MQ;
-import static abstraction.eq5TRAN.Marchandises.TABLETTES_BQ;
-import static abstraction.eq5TRAN.Marchandises.TABLETTES_HQ;
-import static abstraction.eq5TRAN.Marchandises.TABLETTES_MQ;
+import static abstraction.eq5TRAN.Marchandises.*;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
+import abstraction.eq2PROD.Eq2PROD;
+import abstraction.eq3PROD.Eq3PROD;
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
@@ -16,23 +18,23 @@ import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Monde;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeve	 {
 
-public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
-
-    // cf Marchandises.java pour obtenir l'indexation
+    
+	// cf Marchandises.java pour obtenir l'indexation
     private Indicateur[] productionSouhaitee; // ce qui sort de nos machines en kT
     private Indicateur[] achatsSouhaites; // ce qu'on achète aux producteurs en kT
     private float facteurStock; // facteur lié aux risques= combien d'itérations on peut tenir sans réception de feves/poudre
     private Indicateur[] stocksSouhaites; // margeStock = facteurStock * variationDeStockParIteration, en kT
     private Indicateur[] stocks; // les vrais stocks en kT
+    private ContratFeve[] offrePublique;
 
     private Indicateur banque; // en milliers d'euros
     private Indicateur[] prix;
+    
+    int FEVE_BQ_EQ2 = 0 ;
+    int FEVE_MQ_EQ2 = 1 ;
+    int FEVE_MQ_EQ3 = 2 ;
 
     /**
      * @author: Thomas Schillaci
@@ -72,6 +74,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
         prix[POUDRE_MQ] = new Indicateur("Prix de poudre MQ",this,100);
         prix[POUDRE_HQ] = new Indicateur("Prix de poudre HQ",this,0);
         prix[FRIANDISES_MQ] = new Indicateur("Prix de friandises MQ", this, 100);
+        
+     
         
         for (int i = 0; i < nbMarchandises; i++) {
             stocksSouhaites[i] = new Indicateur("Stocks souhaites de " + Marchandises.getMarchandise(i), this, productionSouhaitee[i].getValeur() + achatsSouhaites[i].getValeur());
@@ -183,5 +187,123 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     					
    }
 
+	@Override
+	public void sendContratFictif() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
-}
+
+	
+	
+	// Méthodes de l'interface producteur - transformateur ( François )
+	
+	/*
+	 * François Le Guernic
+	 * 
+	 **/
+
+		@Override
+		public void sendOffrePublique(ContratFeve[] offrePublique) {
+			/* On achète des fèves de BQ ( seulement à équipe 2 ) et de MQ ( à équipes 2 et 3 ) aux équipes de producteur 
+			 * 
+			 */
+			
+			ContratFeve[] c1 = new ContratFeve[3] ; 
+			
+			// Pour récupérer les offres qui nous intéressent
+			int i = 0 ;
+			for ( ContratFeve c : offrePublique) { 
+				if (  (((Eq2PROD)c.getProducteur()).getNom()=="Eq2PROD" && c.getQualite()==0)
+				
+						|| (((Eq2PROD)c.getProducteur()).getNom()=="Eq2PROD" && c.getQualite()==1)
+						|| (((Eq3PROD)c.getProducteur()).getNom()=="Eq3PROD" && c.getQualite()==1))
+					{ c1[i] = c ; i ++ ; } 
+				
+			}
+			
+			this.offrePublique= new ContratFeve[3] ;
+					for (int j = 0 ; j < 3 ; j ++) { 
+						
+					
+					if (  ((Eq2PROD)c1[j].getProducteur()).getNom()=="Eq2PROD" ) { this.offrePublique[0]= c1[j] ; };	
+					if (  ((Eq2PROD)c1[j].getProducteur()).getNom()=="Eq2PROD" && c1[j].getQualite() == 1 )
+					{ this.offrePublique[1]= c1[j] ; }
+					else { this.offrePublique[2] = c1[j] ; } }
+		}
+
+		/**
+		 * Francois Le Guernic
+		 */
+		@Override
+		public ContratFeve[] getDemandePrivee() {
+			
+			/*Par convention, dans la liste de deux contrat, on aura dans l'ordre :
+			 * - le contrat pour les fèves BQ à l'équipe 2
+			 * - le contart pour les fèves MQ à l'équipe 2
+			 * - le contrat pour les fèves MQ à l'équipe 3
+			 */
+			
+			ContratFeve[] demandes = new ContratFeve[3] ;
+			for ( int i = 0 ; i < 3 ; i ++ ) { 
+				demandes[i].setTransformateur(this) ;
+				demandes[i].setReponse(false);
+			}
+			demandes[FEVE_BQ_EQ2].setProducteur((IVendeurFeve) Monde.LE_MONDE.getActeur("Eq2PROD"));
+			demandes[FEVE_BQ_EQ2].setQualite(0);
+			demandes[FEVE_BQ_EQ2].setDemande_Quantite((int) ( this.achatsSouhaites[FEVES_BQ].getValeur()) );
+			demandes[FEVE_BQ_EQ2].setDemande_Prix(this.offrePublique[0].getPrix()) ;
+			demandes[FEVE_MQ_EQ2].setProducteur((IVendeurFeve) Monde.LE_MONDE.getActeur("Eq2PROD"));
+			demandes[FEVE_MQ_EQ2].setQualite(1) ;
+			demandes[FEVE_MQ_EQ2].setDemande_Quantite((int)(0.3*this.achatsSouhaites[FEVES_MQ].getValeur())) ;
+			demandes[FEVE_MQ_EQ2].setDemande_Prix(this.offrePublique[1].getPrix());
+			demandes[FEVE_MQ_EQ3].setProducteur((IVendeurFeve) Monde.LE_MONDE.getActeur("Eq3PROD"));
+			demandes[FEVE_MQ_EQ3].setQualite(1); 
+			demandes[FEVE_MQ_EQ3].setDemande_Quantite((int) (0.3*this.achatsSouhaites[FEVES_MQ].getValeur())) ;
+			demandes[FEVE_MQ_EQ3].setDemande_Prix(this.offrePublique[2].getPrix());
+			
+			return demandes ;
+			
+		} 
+		
+		@Override
+		public void sendOffreFinale(ContratFeve[] offreFinale) {
+	ContratFeve[] c1 = new ContratFeve[3] ; 
+			
+			// Pour récupérer les offres qui nous intéressent
+			int i = 0 ;
+			for ( ContratFeve c : offreFinale) { 
+				if (  (((Eq2PROD)c.getProducteur()).getNom()=="Eq2PROD" && c.getQualite()==0)
+				
+						|| (((Eq2PROD)c.getProducteur()).getNom()=="Eq2PROD" && c.getQualite()==1)
+						|| (((Eq3PROD)c.getProducteur()).getNom()=="Eq3PROD" && c.getQualite()==1))
+					{ c1[i] = c ; i ++ ; } 
+				
+			}
+			
+			this.offrePublique= new ContratFeve[3] ;
+					for (int j = 0 ; j < 3 ; j ++) { 
+						
+					
+					if (  ((Eq2PROD)c1[j].getProducteur()).getNom()=="Eq2PROD" ) { this.offrePublique[0]= c1[j] ; };	
+					if (  ((Eq2PROD)c1[j].getProducteur()).getNom()=="Eq2PROD" && c1[j].getQualite() == 1 )
+					{ this.offrePublique[1]= c1[j] ; }
+					else { this.offrePublique[2] = c1[j] ; } }
+		}
+		
+		@Override
+		public ContratFeve[] getResultVentes() {
+			// T
+			return null ; 
+		}
+		
+		
+		
+			
+			
+		}
+		
+		
+
+	
