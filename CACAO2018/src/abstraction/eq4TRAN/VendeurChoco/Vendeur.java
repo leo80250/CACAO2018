@@ -102,12 +102,12 @@ public class Vendeur implements IVendeurChoco{
 		}
 		ArrayList<Double[] > prix = new ArrayList<>();
 		//Discuter de la stratégie d'etagement des prix
-		Double[] prix1 = {0.9, 0.875, 0.85, 0.8, 0.775, 0.75, 0.725, 0.7};
-		Double[] prix2 = {1.5, 1.475, 1.45, 1.4, 1.375, 1.35, 1.325, 1.3};
-		Double[] prix3 = {3.0, 2.975, 2.95, 2.9, 2.875, 2.85, 2.825, 2.8};
-		Double[] prix4 = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		Double[] prix5 = {7.0, 6.975, 6.95, 6.9, 6.875, 6.85, 6.825, 6.8};
-		Double[] prix6 = {11.0, 10.975, 10.95, 10.9, 10.875, 10.85, 10.825, 10.8};
+		Double[] prix4 = {0.9, 0.875, 0.85, 0.8, 0.775, 0.75, 0.725, 0.7};
+		Double[] prix5 = {1.5, 1.475, 1.45, 1.4, 1.375, 1.35, 1.325, 1.3};
+		Double[] prix6 = {3.0, 2.975, 2.95, 2.9, 2.875, 2.85, 2.825, 2.8};
+		Double[] prix1 = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		Double[] prix2 = {7.0, 6.975, 6.95, 6.9, 6.875, 6.85, 6.825, 6.8};
+		Double[] prix3 = {11.0, 10.975, 10.95, 10.9, 10.875, 10.85, 10.825, 10.8};
 		prix.add(prix1);
 		prix.add(prix2);
 		prix.add(prix3);
@@ -120,6 +120,7 @@ public class Vendeur implements IVendeurChoco{
 	
 	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
 		GQte commande1 = commandes.get(0);
+		// On considère que commande1 correspond à la commande de l'équipe eq1DIST
 		GQte commande2 = commandes.get(1);
 		ArrayList<GQte> Livraison = new ArrayList<>(); /*insérer notre livraison effective */
 		commande2.setqBonbonBQ(this.getqBonbonBQ()-commande1.getqBonbonBQ());
