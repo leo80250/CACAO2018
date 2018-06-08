@@ -18,7 +18,9 @@ import abstraction.fourni.Monde;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 
@@ -156,12 +158,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     
     private void getTousLesDevisPoudre(ContratPoudre[] demande) {
     	List<Acteur> listeActeurs = Monde.LE_MONDE.getActeurs();
+
     	List<ContratPoudre[]> devis = new ArrayList<ContratPoudre[]>();
-    	List<IVendeurPoudre> vendeurs = new ArrayList<IVendeurPoudre>();
-    	for (int i=0;i<listeActeurs.size();i++) {
-    		if(listeActeurs.get(i) instanceof IVendeurPoudre) {
-    			vendeurs.add((IVendeurPoudre)listeActeurs.get(i));
-    			devis.add(vendeurs.get(i).getDevisPoudre(demande, this));
+
+    	for (Acteur acteur : listeActeurs) {
+    		if(acteur instanceof IVendeurPoudre) {
+    			devis.add(((IVendeurPoudre)acteur).getDevisPoudre(demande, this));
     		}
     	}
     	for(int k=0;k<devis.size();k++) {
@@ -170,7 +172,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     				devis.get(k)[j].setReponse(true);
     			}
     		}
-    		vendeurs.get(k).sendReponsePoudre(devis.get(k), this);
+    		devis.get(k)[0].getVendeur().sendReponsePoudre(devis.get(k), this);
     	}
     						
     					
