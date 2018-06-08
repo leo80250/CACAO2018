@@ -1,5 +1,6 @@
 package abstraction.eq7TRAN;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -493,6 +494,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 	}
 	@Override
+<<<<<<< HEAD
 	public GQte getLivraison(GQte[] commandes) {
 		// TODO Auto-generated method stub
 		return null;
@@ -502,4 +504,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	
 	
+	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

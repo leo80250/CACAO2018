@@ -49,12 +49,12 @@ public class MarcheChoco  implements Acteur{
 			int qTabletteMQj=0;
 			int qTabletteHQj=0;
 			for (int i=0 ; i<commande.size() ; i++) {
-				qBonbonBQj=qBonbonBQj+commande.get(i).get(j).getqBonbonBQ();
-				qBonbonMQj=qBonbonMQj+commande.get(i).get(j).getqBonbonMQ();
-				qBonbonHQj=qBonbonHQj+commande.get(i).get(j).getqBonbonHQ();
-				qTabletteBQj=qTabletteBQj+commande.get(i).get(j).getqTabletteBQ();
-				qTabletteMQj=qTabletteMQj+commande.get(i).get(j).getqTabletteMQ();
-				qTabletteHQj=qTabletteHQj+commande.get(i).get(j).getqTabletteHQ();
+				qBonbonBQj=(int) (qBonbonBQj+commande.get(i).get(j).getqBonbonBQ());
+				qBonbonMQj=(int) (qBonbonMQj+commande.get(i).get(j).getqBonbonMQ());
+				qBonbonHQj=(int) (qBonbonHQj+commande.get(i).get(j).getqBonbonHQ());
+				qTabletteBQj=(int) (qTabletteBQj+commande.get(i).get(j).getqTabletteBQ());
+				qTabletteMQj=(int) (qTabletteMQj+commande.get(i).get(j).getqTabletteMQ());
+				qTabletteHQj=(int) (qTabletteHQj+commande.get(i).get(j).getqTabletteHQ());
 				
 				Livraisoni.add(new GQte(qBonbonBQj,qBonbonMQj,qBonbonHQj,qTabletteBQj,qTabletteMQj,qTabletteHQj) );
 			}
@@ -77,12 +77,12 @@ public class MarcheChoco  implements Acteur{
 			int qTabletteMQj=0;
 			int qTabletteHQj=0;
 			for (int i=0; i<Delivery.size(); i++) {
-				qBonbonBQj=qBonbonBQj+Delivery.get(i).get(j).getqBonbonBQ();
-				qBonbonMQj=qBonbonMQj+Delivery.get(i).get(j).getqBonbonMQ();
-				qBonbonHQj=qBonbonHQj+Delivery.get(i).get(j).getqBonbonHQ();
-				qTabletteBQj=qTabletteBQj+Delivery.get(i).get(j).getqTabletteBQ();
-				qTabletteMQj=qTabletteMQj+Delivery.get(i).get(j).getqTabletteMQ();
-				qTabletteHQj=qTabletteHQj+Delivery.get(i).get(j).getqTabletteHQ();
+				qBonbonBQj=(int) (qBonbonBQj+Delivery.get(i).get(j).getqBonbonBQ());
+				qBonbonMQj=(int) (qBonbonMQj+Delivery.get(i).get(j).getqBonbonMQ());
+				qBonbonHQj=(int) (qBonbonHQj+Delivery.get(i).get(j).getqBonbonHQ());
+				qTabletteBQj=(int) (qTabletteBQj+Delivery.get(i).get(j).getqTabletteBQ());
+				qTabletteMQj=(int) (qTabletteMQj+Delivery.get(i).get(j).getqTabletteMQ());
+				qTabletteHQj=(int) (qTabletteHQj+Delivery.get(i).get(j).getqTabletteHQ());
 				GQte Deliveryj= new GQte(qBonbonBQj,qBonbonMQj,qBonbonHQj,qTabletteBQj,qTabletteMQj,qTabletteHQj);
 				PourDIST.add(Deliveryj);
 			}
