@@ -10,7 +10,7 @@ import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Monde;
 
-public class Eq6DIST implements Acteur, IVenteConso{ //IAcheteurChoco {
+public class Eq6DIST implements Acteur{ //IAcheteurChoco {
 	
 	private Indicateur stock_BBQ;
 	private Indicateur stock_BMQ;
@@ -57,11 +57,7 @@ public class Eq6DIST implements Acteur, IVenteConso{ //IAcheteurChoco {
 		
 		
 	}
-	@Override
-	public void sell(int q) {
-		//this.stock = this.stock - q;
-		//System.out.println("eq6 : vente de "+q+" --stock = -->"+this.stock);
-	}
+	
 	
 	public ArrayList<GQte> getCommande(ArrayList<GPrix> gPrix, ArrayList<GQte> stock) {
 		/**
