@@ -23,7 +23,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 	/* getContratReference() va permettre à l'acteur fictif de récupérer les contrats signés précédents
 	 * Ses commandes seront celles données par le contrat précédent à un pourcentage près */
 	public void getContratReference() {
-		/*this.contratPrecedent = MarcheFeve.getContratPrecedent;*/
+		/*this.contratPrecedent = MarcheFeve.getContratPrecedent();*/
 	}
 	
 	/* Guillaume Sallé */
