@@ -13,6 +13,7 @@ import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
+import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChoco {
@@ -27,6 +28,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 	private Indicateur banque; // en milliers d'euros
 	private Indicateur[] prix;
 
+	private Journal journal;
+
 	/**
 	 * @author: Thomas Schillaci
 	 */
@@ -39,52 +42,60 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 		stocks = new Indicateur[nbMarchandises];
 		prix = new Indicateur[nbMarchandises];
 
-		productionSouhaitee[FEVES_BQ] = new Indicateur("Production souhaitee de feves BQ", this, 0);
-		productionSouhaitee[FEVES_MQ] = new Indicateur("Production souhaitee de feves MQ", this, 0);
-		productionSouhaitee[TABLETTES_BQ] = new Indicateur("Production souhaitee de tablettes BQ", this, 345);
-		productionSouhaitee[TABLETTES_MQ] = new Indicateur("Production souhaitee de tablettes MQ",this,575);
-		productionSouhaitee[TABLETTES_HQ] = new Indicateur("Production souhaitee de tablettes HQ",this,115);
-		productionSouhaitee[POUDRE_MQ] = new Indicateur("Production souhaitee de poudre MQ",this,50);
-		productionSouhaitee[POUDRE_HQ] = new Indicateur("Production souhaitee de poudre HQ",this,0);
-		productionSouhaitee[FRIANDISES_MQ] = new Indicateur("Production souhaitee de friandises MQ",this,115);
+		productionSouhaitee[FEVES_BQ] = new Indicateur("Eq5 - Production souhaitee de feves BQ", this, 0);
+		productionSouhaitee[FEVES_MQ] = new Indicateur("Eq5 - Production souhaitee de feves MQ", this, 0);
+		productionSouhaitee[TABLETTES_BQ] = new Indicateur("Eq5 - Production souhaitee de tablettes BQ", this, 345);
+		productionSouhaitee[TABLETTES_MQ] = new Indicateur("Eq5 - Production souhaitee de tablettes MQ",this,575);
+		productionSouhaitee[TABLETTES_HQ] = new Indicateur("Eq5 - Production souhaitee de tablettes HQ",this,115);
+		productionSouhaitee[POUDRE_MQ] = new Indicateur("Eq5 - Production souhaitee de poudre MQ",this,50);
+		productionSouhaitee[POUDRE_HQ] = new Indicateur("Eq5 - Production souhaitee de poudre HQ",this,0);
+		productionSouhaitee[FRIANDISES_MQ] = new Indicateur("Eq5 - Production souhaitee de friandises MQ",this,115);
 
-		achatsSouhaites[FEVES_BQ] = new Indicateur("Achats souhaites de feves BQ", this, 360);
-		achatsSouhaites[FEVES_MQ] = new Indicateur("Achats souhaites de feves MQ",this,840);
-		achatsSouhaites[TABLETTES_BQ] = new Indicateur("Achats souhaites de tablettes BQ",this,0);
-		achatsSouhaites[TABLETTES_MQ] = new Indicateur("Achats souhaites de tablettes MQ",this,0);
-		achatsSouhaites[TABLETTES_HQ] = new Indicateur("Achats souhaites de tablettes HQ",this,0);
-		achatsSouhaites[POUDRE_MQ] = new Indicateur("Achats souhaites de poudre MQ",this,0);
-		achatsSouhaites[POUDRE_HQ] = new Indicateur("Achats souhaites de poudre HQ",this,0);
-		achatsSouhaites[FRIANDISES_MQ] = new Indicateur("Achats souhaites de friandises MQ", this, 0);
+		achatsSouhaites[FEVES_BQ] = new Indicateur("Eq5 - Achats souhaites de feves BQ", this, 360);
+		achatsSouhaites[FEVES_MQ] = new Indicateur("Eq5 - Achats souhaites de feves MQ",this,840);
+		achatsSouhaites[TABLETTES_BQ] = new Indicateur("Eq5 - Achats souhaites de tablettes BQ",this,0);
+		achatsSouhaites[TABLETTES_MQ] = new Indicateur("Eq5 - Achats souhaites de tablettes MQ",this,0);
+		achatsSouhaites[TABLETTES_HQ] = new Indicateur("Eq5 - Achats souhaites de tablettes HQ",this,0);
+		achatsSouhaites[POUDRE_MQ] = new Indicateur("Eq5 - Achats souhaites de poudre MQ",this,0);
+		achatsSouhaites[POUDRE_HQ] = new Indicateur("Eq5 - Achats souhaites de poudre HQ",this,0);
+		achatsSouhaites[FRIANDISES_MQ] = new Indicateur("Eq5 - Achats souhaites de friandises MQ", this, 0);
 
-		prix[FEVES_BQ] = new Indicateur("Prix de feves BQ", this, 0);
-		prix[FEVES_MQ] = new Indicateur("Prix de feves MQ",this,0);
-		prix[TABLETTES_BQ] = new Indicateur("Prix de tablettes BQ",this,100);
-		prix[TABLETTES_MQ] = new Indicateur("Prix de tablettes MQ",this,100);
-		prix[TABLETTES_HQ] = new Indicateur("Prix de tablettes HQ",this,0);
-		prix[POUDRE_MQ] = new Indicateur("Prix de poudre MQ",this,100);
-		prix[POUDRE_HQ] = new Indicateur("Prix de poudre HQ",this,0);
-		prix[FRIANDISES_MQ] = new Indicateur("Prix de friandises MQ", this, 100);
+		prix[FEVES_BQ] = new Indicateur("Eq5 - Prix de feves BQ", this, 0);
+		prix[FEVES_MQ] = new Indicateur("Eq5 - Prix de feves MQ",this,0);
+		prix[TABLETTES_BQ] = new Indicateur("Eq5 - Prix de tablettes BQ",this,100);
+		prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ",this,100);
+		prix[TABLETTES_HQ] = new Indicateur("Eq5 - Prix de tablettes HQ",this,0);
+		prix[POUDRE_MQ] = new Indicateur("Eq5 - Prix de poudre MQ",this,100);
+		prix[POUDRE_HQ] = new Indicateur("Eq5 - Prix de poudre HQ",this,0);
+		prix[FRIANDISES_MQ] = new Indicateur("Eq5 - Prix de friandises MQ", this, 100);
 
 		for (int i = 0; i < nbMarchandises; i++) {
-			stocksSouhaites[i] = new Indicateur("Stocks souhaites de " + Marchandises.getMarchandise(i), this, productionSouhaitee[i].getValeur() + achatsSouhaites[i].getValeur());
-			stocks[i] = new Indicateur("Stocks de " + Marchandises.getMarchandise(i), this, stocksSouhaites[i].getValeur()); // on initialise les vrais stocks comme étant ce que l'on souhaite avoir pour la premiere iteration
+			stocksSouhaites[i] = new Indicateur("Eq5 - Stocks souhaites de " + Marchandises.getMarchandise(i), this, productionSouhaitee[i].getValeur() + achatsSouhaites[i].getValeur());
+			stocks[i] = new Indicateur("Eq5 - Stocks de " + Marchandises.getMarchandise(i), this, stocksSouhaites[i].getValeur()); // on initialise les vrais stocks comme étant ce que l'on souhaite avoir pour la premiere iteration
 		}
 
-		banque=new Indicateur("Banque",this,16_000); // environ benefice 2017 sur nombre d'usines
+		banque=new Indicateur("Eq5 - Banque",this,16_000); // environ benefice 2017 sur nombre d'usines
 
-		for (Field field : getClass().getDeclaredFields()) {
-			if(field==null) continue;
-			try {
-				if(field.get(this) instanceof  Indicateur)
-					Monde.LE_MONDE.ajouterIndicateur((Indicateur) field.get(this));
-				else if(field.get(this) instanceof Indicateur[])
-					for (Indicateur indicateur : (Indicateur[]) field.get(this))
-						Monde.LE_MONDE.ajouterIndicateur(indicateur);
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
-		}
+//		for (Field field : getClass().getDeclaredFields()) {
+//			if(field==null) continue;
+//			try {
+//				if(field.get(this) instanceof  Indicateur)
+//					Monde.LE_MONDE.ajouterIndicateur((Indicateur) field.get(this));
+//				else if(field.get(this) instanceof Indicateur[])
+//					for (Indicateur indicateur : (Indicateur[]) field.get(this))
+//						Monde.LE_MONDE.ajouterIndicateur(indicateur);
+//			} catch (IllegalAccessException e) {
+//				e.printStackTrace();
+//			}
+//		}
+
+        Monde.LE_MONDE.ajouterIndicateur(banque);
+        Monde.LE_MONDE.ajouterIndicateur(stocks[TABLETTES_BQ]);
+        Monde.LE_MONDE.ajouterIndicateur(stocks[TABLETTES_MQ]);
+        Monde.LE_MONDE.ajouterIndicateur(stocks[TABLETTES_HQ]);
+
+		journal = new Journal("Journal Eq5");
+		Monde.LE_MONDE.ajouterJournal(journal);
 	}
 
 	@Override
