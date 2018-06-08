@@ -14,6 +14,9 @@ import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
+import abstraction.fourni.Monde;
+
+import java.lang.reflect.Field;
 
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 
@@ -73,6 +76,19 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
             stocks[i] = new Indicateur("Stocks de " + Marchandises.getMarchandise(i), this, stocksSouhaites[i].getValeur()); // on initialise les vrais stocks comme étant ce que l'on souhaite avoir pour la premiere iteration
 
         banque=new Indicateur("Banque",this,16_000); // environ benefice 2017 sur nombre d'usines
+
+        for (Field field : getClass().getDeclaredFields()) {
+            if(field==null) continue;
+            try {
+                if(field.get(this) instanceof  Indicateur)
+                    Monde.LE_MONDE.ajouterIndicateur((Indicateur) field.get(this));
+                else if(field.get(this) instanceof Indicateur[])
+                    for (Indicateur indicateur : (Indicateur[]) field.get(this))
+                        Monde.LE_MONDE.ajouterIndicateur(indicateur);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -99,46 +115,37 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	}
 
     @Override
-    /**
-     * @author Juliette 
-     */
-    public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
-    	ContratPoudre[] devis = new ContratPoudre[demande.length];
-		for (int i=0; i<demande.length;i++) {
-			if (demande[i].getQualite()!=1) {
-				devis[i]=new ContratPoudre(0,0,0,acheteur,this,false);
-			}
-			else{
-				devis[i]=new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur(), acheteur, this, false);
-			}
-		}
+    public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande) {
+        ContratPoudre[] devis = new ContratPoudre[demande.length];
+        for (int i=0; i<demande.length;i++) {
+            if (demande[i].getQualite()!=1) {
+                devis[i]=new ContratPoudre(0,0,0,this,this,false);
+            }
+            else{
+                devis[i]=new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur(), this, this, false);
+            }
+        }
 
-		return devis;
+        return devis;
     }
-    
 
     @Override
-    /**
-     * @author Juliette
-     */
-    public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
-    	ContratPoudre[] reponse = new ContratPoudre[devis.length];
-		for (int i=0; i<devis.length;i++){
-			if (devis[i].getQualite()!=1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur() && devis[i].getPrix() == prix[POUDRE_MQ].getValeur()) {
-				reponse[i] = new ContratPoudre (devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), true);
-			}
-			else {
-				reponse[i] = new ContratPoudre (devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), false);
-			}
-		}
-	}
+    public void sendReponsePoudre(ContratPoudre[] devis) {
+        ContratPoudre[] reponse = new ContratPoudre[devis.length];
+        for (int i=0; i<devis.length;i++){
+            if (devis[i].getQualite()!=1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur() && devis[i].getPrix() == prix[POUDRE_MQ].getValeur()) {
+                reponse[i] = new ContratPoudre (devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), true);
+            }
+            else {
+                reponse[i] = new ContratPoudre (devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), false);
+            }
+        }
+    }
 
     @Override
-    public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
+    public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat) {
         return new ContratPoudre[0];
     }
 
-
-	
 	
 }
