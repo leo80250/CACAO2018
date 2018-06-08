@@ -13,6 +13,8 @@ private Lot[] stock;
 
 public Eq1DIST()  {
 	this.stock = stock;
+	double[][] PartsdeMarche= {};
+	Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche));
 }
 	@Override
 	public String getNom() {

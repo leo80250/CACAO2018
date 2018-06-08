@@ -8,16 +8,9 @@ public class GrilleQuantite {
 	private int[][] quantite;
   
 	public GrilleQuantite(int[][] quantite) {
-		if (quantite.length == 2 && quantite[0].length == 3) {
-			this.quantite = quantite;
-		} else {
-			this.quantite = new int[2][3];
-		}
+		this.quantite = quantite;
 	}
 
-	public GrilleQuantite() {
-		this(new int[2][3]);
-	}
 
 	public void Modifier(int i, int j, int valeur) {
 		this.quantite[i][j] = valeur;
