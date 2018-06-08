@@ -166,13 +166,13 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     			devis.add(((IVendeurPoudre)acteur).getDevisPoudre(demande, this));
     		}
     	}
-    	for(int k=0;k<devis.size();k++) {
+    	for(ContratPoudre[] contrat : devis) {
     		for(int j=0;j<3;j++) {
-    			if(devis.get(k)[j].equals(demande[j])) {
-    				devis.get(k)[j].setReponse(true);
+    			if(contrat[j].equals(demande[j])) {
+    				contrat[j].setReponse(true);
     			}
     		}
-    		devis.get(k)[0].getVendeur().sendReponsePoudre(devis.get(k), this);
+    		contrat[0].getVendeur().sendReponsePoudre(contrat, this);
     	}
     						
     					
