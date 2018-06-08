@@ -152,8 +152,16 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     }
 
     @Override
+    /**
+     * @author Juliette
+     * Pour la V1 on suppose que le contrat est entièrement honnoré
+     */
     public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
-        return new ContratPoudre[0];
+    	ContratPoudre[] echangesEffectifs = new ContratPoudre[contrat.length];
+    	for (int i=0;i<contrat.length;i++) {
+    		echangesEffectifs[i]=contrat[i];
+       	}
+        return echangesEffectifs;
     }
     
     /**
