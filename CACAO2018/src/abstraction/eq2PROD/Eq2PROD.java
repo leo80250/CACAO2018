@@ -57,10 +57,14 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		return /*getPrixMarche()* */this.coeffStock ;
 	}
 	
+	public double getCoeffMeteo() {
+		return this.meteo();
+	}
 	
-
+	public double getCoeffMaladie() {
+		return this.maladie();
+	}
 	
-	//services
 	/* Alexandre BIGOT+Guillaume SALLE */
 	private void calculCoeffPrixVentes() {
 		double coeffMeteo = meteo();
@@ -101,12 +105,16 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		}
 	}
 	
-	/* Code par Guillaume SALLE */
+	/* Code par Guillaume SALLE + Agathe CHEVALIER */
 	public void next() {
 		calculCoeffPrixVentes();
 		this.stockQM=this.stockQM+ (int) (this.coeffStock*MOY_QM);
 		this.stockQB=this.stockQB+ (int) (this.coeffStock*MOY_QB);
 		this.solde=this.solde-coutFixe;
+		/*this.getJournal().ajouter("Quantité basse qualité = "+ this.getStockQB());*/
+		/*this.getJournal().ajouter("Quantité moyenne qualité ="+ this.getStockQM());*/
+		/*this.getJournal().ajouter("Coefficient de la météo ="+ this.getCoeffMeteo());*/
+		/*this.getJournal().ajouter("Coefficient des maladies ="+ this.getCoeffMaladie());*/
 	}
 
 	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
@@ -181,18 +189,25 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		}
 	}
 	
-	/*private Journal journal;
+	/*Agathe CHEVALIER + Alexandre BIGOT*/
+	private Journal journal;
 	private String nom;
+	private Indicateur stockQMoy;
+	private Indicateur stockQBas;
 	
-	public Producteur(String nom, Monde monde) {
+	public Eq2PROD(Monde monde, String nom) {
 		this.nom = nom;
-		this.production = new Indicateur("Production de"+this.nom,this,0.0);
-		if(this.nom.equals(Constantes.NOM_PRODUCTEUR_1)) {
-			this.production = new Indicateur(Constantes.IND_PRODUCTION_P1);
-			this.journal=new Journal("Journal de"+this.nom);
-			Monde.LE_MONDE.ajouterJournal(this.journal);
-		} else {
-			this.journal=null;
-		}
-	}*/
+		this.stockQBas = new Indicateur("Stock de"+this.nom+"de basse qualité",this,0.0);
+		this.stockQMoy = new Indicateur("Stock de"+this.nom+"de moyenne qualité",this,0.0);
+		
+		this.journal= new Journal("Journal de"+this.nom);
+		Monde.LE_MONDE.ajouterJournal(this.journal);
+		Monde.LE_MONDE.ajouterIndicateur(this.stockQBas);
+		Monde.LE_MONDE.ajouterIndicateur(stockQMoy);
+	}
+	
+	public Eq2PROD(Monde monde){
+		this(monde, "Eq2PROD");
+	}
+	
 }
