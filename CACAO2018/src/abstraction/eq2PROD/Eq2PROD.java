@@ -2,6 +2,9 @@ package abstraction.eq2PROD;
 
 import abstraction.fourni.*;
 import abstraction.eq3PROD.echangesProdTransfo.*;
+
+import java.util.ArrayList;
+
 import abstraction.eq2PROD.echangeProd.*;
 
 public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
@@ -85,7 +88,15 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			return 0.303*x+0.848;
 		}
 	}
-	
+	//Romain BERNARD
+	private double prixMarche() {
+		ArrayList<Acteur> acteurs=Monde.LE_MONDE.getActeurs();
+		for (Acteur a : acteurs) {
+			if(a instanceof MarcheFeve) {
+				return ((MarcheFeve) a).getPrixMarche();
+			}
+		} return 0;
+	}
 	
 	/* Modélisation par Alexandre BIGOT+Guillaume SALLE, code par Alexandre BIGOT
 	 * Si plantations déjà malades alors la récolte est diminuée de 50% par rapport à la récolte
@@ -132,26 +143,30 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		this.demandeTran = demandePrivee; 
 	}
 	
+	
 	/* Modélisation par Romain BERNARD+Guillaume SALLE, Code par Romain BERNARD*/
 	public ContratFeve[] getOffreFinale() {
 		ContratFeve[] c=new ContratFeve[demandeTran.length];
 		for (int i=0;i<demandeTran.length;i++ ) {
+			c[i]=demandeTran[i];
 			if (demandeTran[i].getQualite()==0) {
-				if (demandeTran[i].getPrix()>=/*MarcheFeve.getPrixMarche()* */this.coeffStock*0.85) {
-					c[i]=demandeTran[i];
-			} 	else if (demandeTran[i].getPrix()<prix_minQB) {
-				c[i]=new ContratFeve(demandeTran[i].getQualite(),demandeTran[i].getQuantite(),prix_minQB, demandeTran[i].getTransformateur(),demandeTran[i].getProducteur(),demandeTran[i].getReponse());
+				if (demandeTran[i].getDemande_Prix()>=prixMarche()*this.coeffStock*0.85) {
+					
+			} 	else if (demandeTran[i].getDemande_Prix()<prix_minQB) {
+				c[i].setProposition_Prix(prix_minQB);
 			}	else {
-				c[i]=new ContratFeve(demandeTran[i].getQualite(),demandeTran[i].getQuantite(),0.25*prix_minQB+0.75*demandeTran[i].getPrix(), demandeTran[i].getTransformateur(),demandeTran[i].getProducteur(),demandeTran[i].getReponse());
+				c[i].setProposition_Prix(0.25*prix_minQB+0.75*demandeTran[i].getDemande_Prix());
 			}
 		}
 			 else {
-				if (demandeTran[i].getPrix()>=/*MarcheFeve.getPrixMarche()* */this.coeffStock) {
-				c[i]=demandeTran[i];
-				} else if (demandeTran[i].getPrix()<prix_minQM) {
-				c[i]=new ContratFeve(demandeTran[i].getQualite(),demandeTran[i].getQuantite(),prix_minQM, demandeTran[i].getTransformateur(),demandeTran[i].getProducteur(),demandeTran[i].getReponse());
+				if (demandeTran[i].getDemande_Prix()>=prixMarche()* this.coeffStock) {
+				
+				} else if (demandeTran[i].getDemande_Prix()<prix_minQM) {
+					
+					c[i].setProposition_Prix(prix_minQM);
 				} else {
-					c[i]=new ContratFeve(demandeTran[i].getQualite(),demandeTran[i].getQuantite(),0.25*prix_minQM+0.75*demandeTran[i].getPrix(), demandeTran[i].getTransformateur(),demandeTran[i].getProducteur(),demandeTran[i].getReponse());
+					
+					c[i].setProposition_Prix(0.25*prix_minQM+0.75*demandeTran[i].getDemande_Prix());
 				}
 		}
 	} return c;
