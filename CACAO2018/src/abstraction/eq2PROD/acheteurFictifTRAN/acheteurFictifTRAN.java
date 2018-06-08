@@ -1,6 +1,10 @@
 package abstraction.eq2PROD.acheteurFictifTRAN;
 
 import abstraction.fourni.Acteur;
+import abstraction.fourni.Monde;
+
+import java.util.ArrayList;
+
 import abstraction.eq3PROD.echangesProdTransfo.*;
 
 public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
@@ -21,6 +25,18 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 	public void getContratReference() {
 		/*this.contratPrecedent = MarcheFeve.getContratPrecedent;*/
 	}
+	
+	/* Guillaume Sallé */
+	public ArrayList<Acteur> getVendeurs() {
+		ArrayList<Acteur> vendeurs = Monde.LE_MONDE.getActeurs();
+		for (Acteur v : vendeurs) {
+			if (!(v instanceof IVendeurFeve)) {
+				vendeurs.remove(v);
+			}
+		}
+		return vendeurs;
+	}
+	
 	
 	/* Agathe CHEVALIER */
 	public ContratFeve[] getDemandePrivee() {
