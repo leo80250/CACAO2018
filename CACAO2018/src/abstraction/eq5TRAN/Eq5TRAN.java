@@ -97,7 +97,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 
     @Override
     public void next() {
-    
+
     }
 
 	@Override
@@ -114,14 +114,14 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
 	}
 
     @Override
-    public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande) {
+    public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
         ContratPoudre[] devis = new ContratPoudre[demande.length];
         for (int i=0; i<demande.length;i++) {
             if (demande[i].getQualite()!=1) {
-                devis[i]=new ContratPoudre(0,0,0,this,this,false);
+                devis[i]=new ContratPoudre(0,0,0,acheteur,this,false);
             }
             else{
-                devis[i]=new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur(), this, this, false);
+                devis[i]=new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur(), acheteur, this, false);
             }
         }
 
@@ -129,7 +129,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     }
 
     @Override
-    public void sendReponsePoudre(ContratPoudre[] devis) {
+    public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
         ContratPoudre[] reponse = new ContratPoudre[devis.length];
         for (int i=0; i<devis.length;i++){
             if (devis[i].getQualite()!=1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur() && devis[i].getPrix() == prix[POUDRE_MQ].getValeur()) {
@@ -142,7 +142,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
     }
 
     @Override
-    public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat) {
+    public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
         return new ContratPoudre[0];
     }
 
