@@ -18,9 +18,24 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
 	private Indicateur stock_TBQ;
 	private Indicateur stock_TMQ;
 	private Indicateur stock_THQ;
+	private Indicateur banque;
 	private GQte stock;
 	public Eq6DIST() {
-		this.stock= new GQte(0,0,0,0,0,0);		
+		this.banque= new Indicateur("Solde bancaire Eq6 : ",this, 120000);
+		this.stock= new GQte(0,0,0,0,0,0);	
+		this.stock_BBQ= new Indicateur("Stock de bonbons BQ Eq6 :",this);
+		this.stock_BMQ=new Indicateur("Stock de bonbons MQ Eq6 :",this);
+		this.stock_BHQ=new Indicateur("Stock de bonbons HQ Eq6 :",this);
+		this.stock_TBQ=new Indicateur("Stock de tablettes BQ Eq6 :",this);
+		this.stock_TMQ=new Indicateur("Stock de tablettes MQ Eq6 :",this);
+		this.stock_THQ=new Indicateur("Stock de tablettes HQ Eq6 :",this);
+		Monde.LE_MONDE.ajouterIndicateur(this.banque);
+		Monde.LE_MONDE.ajouterIndicateur(this.stock_BBQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.stock_BMQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.stock_BHQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.stock_TBQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.stock_TMQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.stock_THQ);
 	}
 	@Override
 	public String getNom() {
@@ -31,6 +46,12 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
 	@Override
 	public void next() {
 		// TODO Auto-generated method stub;
+		this.stock_BBQ.setValeur(this, this.stock.getqBonbonBQ());
+		this.stock_BMQ.setValeur(this, this.stock.getqBonbonMQ());
+		this.stock_BHQ.setValeur(this, this.stock.getqBonbonHQ());
+		this.stock_TBQ.setValeur(this, this.stock.getqTabletteBQ());
+		this.stock_TMQ.setValeur(this, this.stock.getqTabletteMQ());
+		this.stock_THQ.setValeur(this, this.stock.getqTabletteHQ());
 		
 		
 	}
