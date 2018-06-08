@@ -96,7 +96,7 @@ public class Eq4TRAN implements Acteur,
 			 * On récupère les qtés de fèves achetées
 			 * Elles sont transformées immédiatement en produits
 			 * Les produits sont ajoutés aux stocks
-			 * Le coût total de l'achat est retiré à la solde
+			 * Le coût total de l'achat est retiré au solde
 			 */
 			if (contratFeveEnCours.get(i).getReponse()) {
 				if(contratFeveEnCours.get(i).getQualite() == 0) {
@@ -125,7 +125,7 @@ public class Eq4TRAN implements Acteur,
 		/**
 		 * pour contrat poudre
 		 */
-		for(int i = 0 ; i < contratPoudreEnCours.size() ; i++ ) {
+	//	for(int i = 0 ; i < contratPoudreEnCours.size() ; i++ ) {
 			/**
 			 * On récupère les qtés de poudre achetée
 			 * On les transforme en produits
@@ -223,7 +223,7 @@ public class Eq4TRAN implements Acteur,
 	}
 
 	@Override
-	public GQte getLivraison(GQte[] commandes) {
+	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
 		// TODO Auto-generated method stub
 		return null;
 	}

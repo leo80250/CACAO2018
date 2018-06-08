@@ -133,4 +133,5 @@ public class Vendeur implements IVendeurChoco{
 		ventes.ajouter("Livraison : " + Livraison);
 		return Livraison;
 	}
+
 }
