@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import abstraction.eq2PROD.echangeProd.*;
 
 public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
+/* VARIABLES D'INSTANCE */
 	private int stockQM;
 	private int stockQB;
 	private double solde;
@@ -19,8 +20,9 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	private final static int coutFixe = 70800000; // entretien des plantations
 	private final static double prix_minQM = 1000;
 	private final static double prix_minQB = 850;
+	private boolean quantiteEq3;
 	
-	//constructeur
+/* CONSTRUCTEURS */
 	public Eq2PROD() {
 		this(Monde.LE_MONDE,"Eq2Prod");
 		this.stockQM=10000000;
@@ -30,7 +32,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		this.demandeTran = new ContratFeve[0];
 	}
 	
-	//accesseur
+/* GETTEURS */
+	/* Guillaume Sallé */
 	public static int getMoyQb() {
 		return MOY_QB;
 	}
@@ -46,38 +49,40 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	public double getSolde() {
 		return solde;
 	}
+	/* implemente en V0 */
 	public String getNom() {
 		return "Eq2PROD";
 	}
+	/* Guillaume Sallé */
 	public double getCoeffSolde() {
 		return this.coeffStock;
 	}
+	/* Romain Bernard */
 	public ContratFeve[] getDemandeTran() {
 		return this.demandeTran;
 	}
-	
-	/* Alexandre BIGOT */
+	/* Alexandre Bigot */
 	public double getPrix() {
 		return prixMarche()*this.coeffStock ;
 	}
-	
+	/* Alexandre Bigot + Guillaume Sallé */
 	public double getCoeffMeteo() {
 		return this.meteo();
 	}
-	
+	/* Alexandre Bigot */
 	public boolean getCoeffMaladie() {
 		return this.maladie;
 	}
 	
-	/* Alexandre BIGOT+Guillaume SALLE */
-	private void calculCoeffPrixVentes() {
-		double coeffMeteo = meteo();
-		double coeffMaladie = maladie();
-		this.coeffStock = -0.2*(coeffMeteo-coeffMaladie)+1.2;
-	}
-	
+/* VARIABLES INDEPENDANTES DES AUTRES GROUPES
+ * Ces variables nous permettent de modeliser une production de cacao
+ * la plus réaliste possible par rapport à nos recherches documentaires
+ * precedant la modelisation informatique
+ * Nous prenons en compte la meteo et les maladies
+ */
 	private double meteo() {
-		/* modélisation par Guillaume SALLE+Agathe CHEVALIER+Alexandre BIGOT, code par Guillaume SALLE */
+		/* Modélisation par Guillaume Sallé + Agathe Chevalier + Alexandre Bigot
+		 * Code par Guillaume Sallé */
 		double mini = 0.5;
 		double maxi = 1.3;
 		double x = Math.random();
@@ -89,17 +94,9 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			return 0.303*x+0.848;
 		}
 	}
-	//Romain BERNARD
-	private double prixMarche() {
-		ArrayList<Acteur> acteurs=Monde.LE_MONDE.getActeurs();
-		for (Acteur a : acteurs) {
-			if(a instanceof MarcheFeve) {
-				return ((MarcheFeve) a).getPrixMarche();
-			} 
-		} return 0;
-	}  
 	
-	/* Modélisation par Alexandre BIGOT+Guillaume SALLE, code par Alexandre BIGOT
+	/* Modélisation par Alexandre Bigot + Guillaume Sallé, 
+	 * Code par Alexandre Bigot
 	 * Si plantations déjà malades alors la récolte est diminuée de 50% par rapport à la récolte
 	 * déjà réduite ou augmentée par la météo et au step suivant la plantation n'est plus malade
 	 * sinon il y a 0.5% que la plantation soit infectée et la récolte n'est pas diminuée par 
@@ -117,25 +114,18 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		}
 	}
 	
-	/* Code par Guillaume SALLE + Agathe CHEVALIER */
-	public void next() {
-		calculCoeffPrixVentes();
-		this.stockQM=this.stockQM+ (int) (this.coeffStock*MOY_QM);
-		this.stockQB=this.stockQB+ (int) (this.coeffStock*MOY_QB);
-		this.solde=this.solde-coutFixe;
-		this.getJournal().ajouter("Quantité basse qualité = "+ this.getStockQB());
-		this.getJournal().ajouter("Quantité moyenne qualité ="+ this.getStockQM());
-		this.getJournal().ajouter("Coefficient de la météo ="+ this.getCoeffMeteo());
-		if(this.maladie==false) {
-			this.getJournal().ajouter("Aucune maladie n'a frappé les plantations");
-		} else {
-			this.getJournal().ajouter("Une maladie a frappé les plantations");
-		}
-		this.getJournal().ajouter("------------------------------------------------------------------------------");
-		
+	/* Alexandre Bigot + Guillaume Sallé */
+	private void calculCoeffPrixVentes() {
+		double coeffMeteo = meteo();
+		double coeffMaladie = maladie();
+		this.coeffStock = -0.2*(coeffMeteo-coeffMaladie)+1.2;
 	}
-
-	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
+	
+/* IMPLEMENTATION DES DIFFERENTES INTERFACES UTILES A NOTRE ACTEUR
+ * Ici nous avons implemente IVendeurFeve et IVendeurFevesProd
+ */
+	
+	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
 	public ContratFeve[] getOffrePublique() {
 		ContratFeve c1 = new ContratFeve(null, this, 0, this.stockQB, 0, 0, 
 				prixMarche()*this.coeffStock*0.85, 0.0, 0.0, false);
@@ -145,13 +135,14 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		c[0]=c1; c[1] = c2;
 		return c;
 	}
-	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
+	
+	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
 	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
 		this.demandeTran = demandePrivee; 
 	}
 	
-	
-	/* Modélisation par Romain BERNARD+Guillaume SALLE, Code par Romain BERNARD*/
+	/* Modélisation par Romain Bernard + Guillaume Sallé
+	 * Code par Romain Bernard */
 	public ContratFeve[] getOffreFinale() {
 		ContratFeve[] c=new ContratFeve[demandeTran.length];
 		for (int i=0;i<demandeTran.length;i++ ) {
@@ -179,7 +170,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	} return c;
 	}
 
-	/*Agathe CHEVALIER + Alexandre BIGOT + Romain BERNARD*/
+	/* Agathe Chevalier + Alexandre Bigot + Romain Bernard */
     public void sendResultVentes(ContratFeve[] resultVentes) {
     double chiffreDAffaire=0;
    	 for (int i=0; i<resultVentes.length;i++) {
@@ -199,7 +190,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
    	 } this.solde=this.solde-0.35*chiffreDAffaire; // paiement des salaires à 35% du CA
     }
 	
-	/* Alexandre BIGOT
+	/* Alexandre Bigot
 	 * Le cas où la quantité demandée est inférieure au stock n'est au final pas codée
 	 * car il est impossible que cela arrive
 	 */
@@ -207,31 +198,50 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		if (quantite <= this.stockQB) {
 			this.stockQB=this.stockQB - quantite ;
 			this.solde = this.solde + quantite*prixMarche()*this.coeffStock ;
+			quantiteEq3 = true;
 			return quantite ;
 		} else {
+			quantiteEq3 = false;
 			return 0 ;
 		}
 	}
 	
-	/*Agathe CHEVALIER + Alexandre BIGOT*/
+	/* Romain Bernard */
+	private double prixMarche() {
+		ArrayList<Acteur> acteurs=Monde.LE_MONDE.getActeurs();
+		for (Acteur a : acteurs) {
+			if(a instanceof MarcheFeve) {
+				return ((MarcheFeve) a).getPrixMarche();
+			} 
+		} return 0;
+	}  
+		
+/* INDICATEURS ET JOURNAUX
+ * Les indicateurs que nous affichons sont le stock de basse qualite et le stock de moyenne qualite
+ * Nous avons 2 journaux: un pour l'historique des stocks, la meteo et les maladies
+ * et un autre pour l'historique des echanges avec les autres producteurs
+ */
+	/* Agathe Chevalier + Alexandre Bigot */
 	private Journal journal;
 	private Journal ventesOccasionnelles;
 	private String nom;
 	private Indicateur stockQMoy;
 	private Indicateur stockQBas;
 	
+	/* Agathe Chevalier */
 	public Journal getJournal() {
 		return this.journal;
 	}
-
+	/* Alexandre Bigot */
 	public Journal getJournalOccasionel() {
 		return this.ventesOccasionnelles;
 	}
 	
+	/* Agathe Chevalier + Alexandre Bigot */
 	public Eq2PROD(Monde monde, String nom) {
 		this.nom = nom;
-		this.stockQBas = new Indicateur("Stock de "+this.nom+" de basse qualité",this,stockQB);
-		this.stockQMoy = new Indicateur("Stock de "+this.nom+" de moyenne qualité",this,stockQM);
+		this.stockQBas = new Indicateur("Stock de "+this.nom+" de basse qualité",this,this.getStockQB());
+		this.stockQMoy = new Indicateur("Stock de "+this.nom+" de moyenne qualité",this,this.getStockQM());
 		
 		this.journal= new Journal("Journal de"+this.nom);
 		this.ventesOccasionnelles = new Journal("Journal de ventes occasionnelles de"+this.nom);
@@ -241,4 +251,27 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		Monde.LE_MONDE.ajouterIndicateur(this.stockQMoy);
 	}
 	
+/* NEXT DE NOTRE ACTEUR */
+	/* Code par Guillaume SALLE + Agathe CHEVALIER */
+	public void next() {
+		calculCoeffPrixVentes();
+		this.stockQM=this.stockQM+ (int) (this.coeffStock*MOY_QM);
+		this.stockQB=this.stockQB+ (int) (this.coeffStock*MOY_QB);
+		this.solde=this.solde-coutFixe;
+		this.getJournal().ajouter("Quantité basse qualité = "+ this.getStockQB());
+		this.getJournal().ajouter("Quantité moyenne qualité ="+ this.getStockQM());
+		this.getJournal().ajouter("Coefficient de la météo ="+ this.getCoeffMeteo());
+		if(this.maladie==false) {
+			this.getJournal().ajouter("Aucune maladie n'a frappé les plantations");
+		} else {
+			this.getJournal().ajouter("Une maladie a frappé les plantations");
+		}
+		this.getJournal().ajouter("------------------------------------------------------------------------------");
+		if(this.quantiteEq3==true) {
+			this.getJournalOccasionel().ajouter("Une transaction a été réalisée avec l'équipe 3");
+		} else {
+			this.getJournalOccasionel().ajouter("Aucune transaction n'a été réalisée avec l'équipe3");
+		}
+		this.getJournalOccasionel().ajouter("------------------------------------------------------------------------------");
+	}
 }
