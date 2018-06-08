@@ -199,7 +199,6 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	public Journal getJournal() {
 		return this.journal;
 	}
-	
 	public Journal getVentesOccasionelles() {
 		return this.ventesOccasionnelles;
 	}
@@ -210,6 +209,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		this.stockQMoy = new Indicateur("Stock de"+this.nom+"de moyenne qualité",this,0.0);
 		
 		this.journal= new Journal("Journal de"+this.nom);
+		this.ventesOccasionnelles = new Journal("Journal de ventes occasionnelles de"+this.nom);
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 		Monde.LE_MONDE.ajouterJournal(this.ventesOccasionnelles);
 		Monde.LE_MONDE.ajouterIndicateur(this.stockQBas);
