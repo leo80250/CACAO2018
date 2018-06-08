@@ -272,7 +272,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getProductionTablettesReelle()[qualite].setValeur(this,(1.0 - this.getAbsenteisme().getValeur())*this.getEfficacite().getValeur()*this.getProductionTablettesAttendue(qualite).getValeur());
 	}
 	
-	// LÃ©o Fargeas
+	// Léo Fargeas
 	public Indicateur getStockFeves(int qualite) {
 		if(qualite < 0 || qualite > 3) 
 			return null;
