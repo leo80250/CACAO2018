@@ -7,6 +7,7 @@ import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
+import abstraction.eq4TRAN.VendeurChoco.Vendeur;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
@@ -40,6 +41,7 @@ public class Eq4TRAN implements Acteur,
 	private Indicateur prodChocHQ ;
 	private Indicateur solde ; 
 	private Journal JournalEq4 = new Journal("JournalEq4") ;
+	private Vendeur vendeur;
 	
 	/** Contrats en cours pour la méthode next interne
 	 * 
@@ -65,6 +67,7 @@ public class Eq4TRAN implements Acteur,
 		prodChocMQ = new Indicateur("prodChocMQ",this,1000) ;
 		prodChocHQ = new Indicateur("prodChocHQ",this,1000) ;
 		solde = new Indicateur("solde",this,1000) ;
+		vendeur = new Vendeur(0.0, stockChocMQ.getValeur(), stockChocHQ.getValeur(), stockTabBQ.getValeur(), stockTabMQ.getValeur(), stockTabHQ.getValeur());
 }
 		
 	/** Nom de l'acteur
@@ -214,19 +217,19 @@ public class Eq4TRAN implements Acteur,
 	@Override
 	public GQte getStock() {
 		
-		return null;
+		return vendeur.getStock();
 	}
 
 	@Override
 	public GPrix getPrix() {
 		// TODO Auto-generated method stub
-		return null;
+		return vendeur.getPrix();
 	}
 
 	@Override
 	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
 		// TODO Auto-generated method stub
-		return null;
+		return vendeur.getLivraison(commandes);
 	}
 
 }
