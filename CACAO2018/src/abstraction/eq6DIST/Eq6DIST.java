@@ -103,6 +103,5 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
 		this.stock.setqTabletteMQ(this.stock.getqTabletteMQ()+d.getqTabletteMQ());
 		this.stock.setqTabletteHQ(this.stock.getqTabletteHQ()+d.getqTabletteHQ());
 	}
-	
 
 }
