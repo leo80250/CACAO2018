@@ -7,23 +7,20 @@ import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.fourni.Acteur;
+import abstraction.fourni.Indicateur;
 import abstraction.fourni.Monde;
 
-public class Eq6DIST implements Acteur, IVenteConso { //IAcheteurChoco {
+public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
 	
-	//private double quantité_demandée_transfo1_CMG;
-	//private double quantité_demandée_transfo1_TBG;
-	//private double quantité_demandée_transfo1_TMG;
-	//private double quantité_demandée_transfo2_CMG;
-	//private double quantité_demandée_transfo2_TBG;
-	//private double quantité_demandée_transfo2_TMG;
-	//private double quantité_demandée_transfo3_CMG;
-	//private double quantité_demandée_transfo3_TBG;
-	//private double quantité_demandée_transfo3_TMG;
-	//private double[] commande;
+	private Indicateur stock_BBQ;
+	private Indicateur stock_BMQ;
+	private Indicateur stock_BHQ;
+	private Indicateur stock_TBQ;
+	private Indicateur stock_TMQ;
+	private Indicateur stock_THQ;
 	private GQte stock;
 	public Eq6DIST() {
-		
+		this.stock= new GQte(0,0,0,0,0,0);		
 	}
 	@Override
 	public String getNom() {
@@ -34,6 +31,7 @@ public class Eq6DIST implements Acteur, IVenteConso { //IAcheteurChoco {
 	@Override
 	public void next() {
 		// TODO Auto-generated method stub;
+		
 		
 	}
 	@Override
