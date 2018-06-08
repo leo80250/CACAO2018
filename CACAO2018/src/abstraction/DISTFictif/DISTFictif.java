@@ -131,7 +131,7 @@ public class DISTFictif implements Acteur, IAcheteurChoco{
 	}
 
 	@Override
-	public void livraison(GQte d) {
+	public void livraison(GQte livraison, double d) {
 		// TODO Auto-generated method stub
 		
 	}
