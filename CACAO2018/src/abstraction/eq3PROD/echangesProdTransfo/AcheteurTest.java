@@ -27,7 +27,7 @@ public class AcheteurTest implements Acteur, IAcheteurFeve {
 	}
 
 	@Override
-	public void sendContratFictif() {
+	public void sendContratFictif(ContratFeve[] listContrats) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -54,5 +54,6 @@ public class AcheteurTest implements Acteur, IAcheteurFeve {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }
