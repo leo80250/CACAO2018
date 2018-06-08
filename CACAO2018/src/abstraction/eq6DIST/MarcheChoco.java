@@ -90,7 +90,7 @@ public class MarcheChoco  implements Acteur{
 			}
 		for (Acteur i : this.distributeurs) {
 			IAcheteurChoco ibis = (IAcheteurChoco) i;
-			ibis.livraison(PourDIST.get(l));
+			//ibis.livraison(PourDIST.get(l));
 			l++;
 		}
 	}
