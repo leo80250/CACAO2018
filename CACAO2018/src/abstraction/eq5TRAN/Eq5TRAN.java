@@ -36,6 +36,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
         achatsSouhaites = new Indicateur[nbMarchandises];
         facteurStock = 3;
         stocksSouhaites = new Indicateur[nbMarchandises];
+        stocks = new Indicateur[nbMarchandises];
         prix = new Indicateur[nbMarchandises];
 
         productionSouhaitee[FEVES_BQ] = new Indicateur("Production souhaitee de feves BQ", this, 0);
@@ -68,7 +69,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre {
         for (int i = 0; i < nbMarchandises; i++)
             stocksSouhaites[i] = new Indicateur("Stocks souhaites de " + Marchandises.getMarchandise(i), this, productionSouhaitee[i].getValeur() + achatsSouhaites[i].getValeur());
 
-        for (int i = 0; i < stocks.length; i++)
+        for (int i = 0; i < nbMarchandises; i++)
             stocks[i] = new Indicateur("Stocks de " + Marchandises.getMarchandise(i), this, stocksSouhaites[i].getValeur()); // on initialise les vrais stocks comme étant ce que l'on souhaite avoir pour la premiere iteration
 
         banque=new Indicateur("Banque",this,16_000); // environ benefice 2017 sur nombre d'usines
