@@ -1,6 +1,7 @@
 package abstraction.eq7TRAN;
 
 import java.util.Arrays;
+import java.util.List;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
@@ -39,8 +40,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private Indicateur[] productionTablettesAttendue;
 	
 	private ContratPoudre[] commandesEnCours;
+	private ContratFeve[] offresFevesPubliquesEnCours;
+	
+	
 
-	private int MOY_TAUX_EFFICACITE_EMPLOYES = 1;
+	private final int MOY_TAUX_EFFICACITE_EMPLOYES = 1;
 	
 	// en tonnes par 2 semaines
 	private final int[] MOY_ACHAT_FEVES = {0, 1400, 3200};
@@ -58,6 +62,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private final double MOY_PRIX_FRAIS_VENTE_FEVES = 0;
 	private final double MOY_MARGE_POUDRE = 0.2;
 	private final double MOY_MARGE_TABLETTE = 0.2;
+	
 
 	public Eq7TRAN(Monde monde, String nom) {
 		this.nom = nom;
@@ -107,9 +112,27 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 
 	public void next() {
 		this.calculateAbsenteisme();
+
+		this.calculateTauxEfficacite();
+
+		/*this.calculateTauxEfficacite();
+		this.calculateProductionPoudreReelle(0);
+		this.calculateProductionPoudreReelle(1);
+		this.calculateProductionPoudreReelle(2);
+		this.calculateProductionTablettesReelle(0);
+		this.calculateProductionTablettesReelle(1);
+		this.calculateProductionTablettesReelle(2);
+
 		this.getJournal().ajouter("Absenteisme = " + this.getAbsenteisme().getValeur());
+
+		this.getJournal().ajouter("Efficacite = " + this.getEfficacite().getValeur());
 		//this.getJournal().ajouter("Estimation prix achat feves = " + this.estimatePrixAchatFeves(0));
 		//this.getJournal().ajouter("Estimation prix vente poudre BQ = " + this.estimatePrixVentePoudre(0));
+
+		this.getJournal().ajouter("Estimation prix achat feves = " + this.estimatePrixAchatFeves(0)+", "+this.estimatePrixAchatFeves(1)+", "+this.estimatePrixAchatFeves(2));
+		this.getJournal().ajouter("Estimation prix vente poudre BQ = " + this.estimatePrixVentePoudre(0)+", "+this.estimatePrixVentePoudre(1)+", "+this.estimatePrixVentePoudre(2));
+		*/
+
 	}
 	
 	
@@ -219,6 +242,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public Indicateur getProductionTablettesAttendue(int qualite) {
 		return this.getProductionPoudreAttendue()[qualite];
 	}
+	public void setOffresFevesPubliquesEnCours(ContratFeve[] offres) {
+		this.offresFevesPubliquesEnCours = offres;
+	}
+	public ContratFeve[] getOffresFevesPubliquesEnCours() {
+		return this.offresFevesPubliquesEnCours;
+	}
 	
 	/** calculateAbsenteisme
 	 * @author boulardmaelle, leofargeas
@@ -233,8 +262,35 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		else 
 			this.getAbsenteisme().setValeur(this, newAbsenteisme);
 	}
+	
+	/** calculateEfficacite  
+	 * @author margauxgrand, boulardmaelle
+	 * @return le taux d'efficacite entre 70 et 120
+	 */
 	public void calculateTauxEfficacite() {
-		
+		int nbEmployes =100; //100 employes font 110% de production sans prendre aucun autre indicateur en compte
+		int abs = (int) Math.ceil(this.getAbsenteisme().getValeur()*100);
+		int emplPresents= nbEmployes-abs;
+		double efficaciteAbs = emplPresents/3;
+		double chancebeautemps = Math.random();
+		double efficaciteTemps;
+		double efficaciteJourFerie;
+		double efficaciteFinale;
+		if (chancebeautemps > 0.5) {
+			efficaciteTemps=21;
+		} else if (chancebeautemps<0.1) {
+			efficaciteTemps=-8;
+		} else {
+			efficaciteTemps=4;
+		}
+		int jourFerie=(int) Math.ceil(Math.random()*3); //maximum 3 jours feries
+		efficaciteJourFerie= -jourFerie;
+		efficaciteFinale= 110-efficaciteAbs+efficaciteTemps+efficaciteJourFerie; //Disons que de base, on a une 
+		//efficacite de 110%, parce que nos employes sont bons.
+		this.getEfficacite().setValeur(this, efficaciteFinale/100);
+		if (efficaciteFinale<60.0 || efficaciteFinale>120.0) {
+			this.getEfficacite().setValeur(this, 95/100); //on met 95% d'efficacite pour repartir sur de bonnes bases
+		}
 	}
 	
 	public double estimateCoutTransformationPoudre(int qualite) {
@@ -295,6 +351,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	/////////////////////////////
 	// METHODES VENDEUR POUDRE //
 	/////////////////////////////
+	
+	/** 
+	 * Interface IVendeurPoudre
+	 * @author boulardmaelle @margauxgrand @josephbernard
+	 */
+	
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		return new ContratPoudre[0];
 	}
@@ -320,11 +382,30 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 	}
 	
+	////////////////////////////
+	// METHODES ACHETEUR FEVE //
+	////////////////////////////
+	
+	public ContratFeve[] analyseOffresFevesPubliques() {
+		
+		
+		return offresFevesPubliquesEnCours;
+	}
+		
 	/**
 	 * Interface IAcheteurFeve
 	 * @author boulardmaelle, margauxgrand
 	 */
 	
+	@Override
+	public void sendOffrePublique(ContratFeve[] offresPubliques) {
+		// On garde les anciennes offres ?
+		/*
+		ContratFeve[] oldOffres = this.getOffresFevesPubliquesEnCours();
+		int n = oldOffres.length;
+		*/
+		this.setOffresFevesPubliquesEnCours(offresPubliques);
+	}
 	
 	@Override
 	public ContratFeve[] getDemandePrivee() {
@@ -356,47 +437,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	//tableau de GPrix pour les trois qualites
 	//public GPrix[] getPrix() {
-		//GPrix[] array = new GPrix[3];
-		//array[0] = new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(0));
-		//array[1] = new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(1));
-		//array[2] = new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(2));
-		//return new GPrix[3];
+	//	GPrix[] array = new GPrix[3];
+	//	array[0] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(0)});
+	//	array[1] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(1)});
+	//	array[2] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(2)});
+	//	return array;
 	//}
-	/*
-	public GQte[] getLivraison(GQte[] commandes) {
-		int[] stock= {this.getStockTablette(0).getValeur(),this.getStockTablette(1).getValeur(),this.getStockTablette(2).getValeur()};
-		int[] commande1= {commandes[0].getqTabletteBQ(),commandes[0].getqTabletteMQ(),commandes[0].getqTabletteHQ()};
-		int[] commande2= {commandes[1].getqTabletteBQ(),commandes[1].getqTabletteMQ(),commandes[1].getqTabletteHQ()};
-		
-		int[] deliver1= {0,0,0};
-		int[] deliver2= {0,0,0};
-		
-		for (int i=0;i<3;i++) {
-			int stock_2;
-			int stock_i=stock[i];
-			int deliver_1=0;
-			int deliver_2=0;
-			while ((int)stock_i!=0) {
-				stock_2=stock_i/2;
-				if ((stock_2<=commande1[i])&&(stock_2<=commande2[i])) {
-					commande1[i]-=stock_2;
-					deliver_1+=stock_2;
-					commande2[i]-=stock_2;
-					deliver_2+=stock_2;
-					stock_i=stock_2;
-				}
-			}
-			deliver1[i]=deliver_1;
-			deliver2[i]=deliver_2;
-		}
-		
-		return {new GQte(0,0,0,deliver1[0],deliver1[1],deliver1[2]),new GQte(0,0,0,deliver2[0],deliver2[1],deliver2[2])};
-	}*/
-	@Override
-	public void sendOffrePublique(ContratFeve[] offrePublique) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	@Override
 	public GPrix getPrix() {
 		// TODO Auto-generated method stub
@@ -407,19 +454,52 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		// TODO Auto-generated method stub
 		return null;
 	}
-	@Override
-	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	
+	//Joseph Bernard
+	/*
+	public List<GQte> getLivraison(List<GQte> commandes) {
+		int[] stock= {this.getStockTablette(0).getValeur(),this.getStockTablette(1).getValeur(),this.getStockTablette(2).getValeur()};
+		int[] commande1= {commandes.get(0).getqTabletteBQ(),commandes.get(0).getqTabletteMQ(),commandes.get(0).getqTabletteHQ()};
+		int[] commande2= {commandes.get(1).getqTabletteBQ(),commandes.get(1).getqTabletteMQ(),commandes.get(1).getqTabletteHQ()};
+		int[] deliver1= new int[3];
+		int[] deliver2= new int[3];
+			
+		for(int i=0;i<3;i++) {
+			if (commande1[i]+commande2[i]<=stock[i]) {
+				deliver1[i]=commande1[i];
+				deliver2[i]=commande2[i];
+			}
+			else {
+				double p=commande1[i]/(commande1[i]+commande2[i]);
+				deliver1[i]=(int)(p*stock[i]);
+				deliver2[i]=stock[i]-deliver1[i];
+			}
+			this.stockTablettes[i].setValeur(this.getNom(),this.stockTablette [i].getValeur()-deliver1[i]-deliver2[i]);
+		}
+			
+		//setvaleur sur le solde
+		List<GQte> livraison= new ArrayList<GQte>();
+		livraison.add(new GQte(0,0,0,deliver1[0],deliver1[1],deliver1[2]));
+		livraison.add(new GQte(0,0,0,deliver2[0],deliver2[1],deliver2[2]));
+
+		return livraison;
+		}
 	}
+>>>>>>> branch 'master' of https://github.com/leo80250/CACAO2018.git
 	@Override
-	public void sendReponsePoudre(ContratPoudre[] devis) {
+	public void sendOffrePublique(ContratFeve[] offrePublique) {
 		// TODO Auto-generated method stub
 		
 	}
 	@Override
-	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat) {
+	public GQte getLivraison(GQte[] commandes) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	*/
+	
+	
+	
 }
