@@ -107,9 +107,16 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 
 	public void next() {
 		this.calculateAbsenteisme();
+		this.calculateTauxEfficacite();
+		this.calculateProductionPoudreReelle(0);
+		this.calculateProductionPoudreReelle(1);
+		this.calculateProductionPoudreReelle(2);
+		this.calculateProductionTablettesReelle(0);
+		this.calculateProductionTablettesReelle(1);
+		this.calculateProductionTablettesReelle(2);
 		this.getJournal().ajouter("Absenteisme = " + this.getAbsenteisme().getValeur());
-		//this.getJournal().ajouter("Estimation prix achat feves = " + this.estimatePrixAchatFeves(0));
-		//this.getJournal().ajouter("Estimation prix vente poudre BQ = " + this.estimatePrixVentePoudre(0));
+		this.getJournal().ajouter("Estimation prix achat feves = " + this.estimatePrixAchatFeves(0)+", "+this.estimatePrixAchatFeves(1)+", "+this.estimatePrixAchatFeves(2));
+		this.getJournal().ajouter("Estimation prix vente poudre BQ = " + this.estimatePrixVentePoudre(0)+", "+this.estimatePrixVentePoudre(1)+", "+this.estimatePrixVentePoudre(2));
 	}
 	
 	
@@ -365,13 +372,14 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	//tableau de GPrix pour les trois qualites
-	public GPrix[] getPrix() {
-		GPrix[] array = new GPrix[3];
-		array[0] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(0)});
-		array[1] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(1)});
-		array[2] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(2)});
-		return array;
-	}
+	//public GPrix[] getPrix() {
+	//	GPrix[] array = new GPrix[3];
+	//	array[0] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(0)});
+	//	array[1] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(1)});
+	//	array[2] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(2)});
+	//	return array;
+	//}
+	
 	@Override
 	public GPrix getPrix() {
 		// TODO Auto-generated method stub
@@ -386,21 +394,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public void sendOffrePublique(ContratFeve[] offrePublique) {
 		// TODO Auto-generated method stub
 		
-	}
-	@Override
-	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void sendReponsePoudre(ContratPoudre[] devis) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	/*
 	public GQte[] getLivraison(GQte[] commandes) {
