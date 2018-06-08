@@ -17,5 +17,5 @@ public interface IMarcheFeve {
 	 * Informe l'acteur fictif des precedentes ventes 
 	 * @return une liste de ContratFeve des ventes effectuees au next precedent
 	 */
-	 public ContratFeve[] getContrat();
+	 public ContratFeve[] getContratPrecedent();
 }
