@@ -2,6 +2,9 @@ package abstraction.eq5TRAN;
 
 import java.lang.reflect.Field;
 
+/**
+ * @author: Thomas Schillaci
+ */
 public class Marchandises {
 
     public static final int FEVES_BQ = 0;
