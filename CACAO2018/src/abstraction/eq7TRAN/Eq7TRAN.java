@@ -16,7 +16,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarcheFeve, IAcheteurFeve, IVendeurChoco {
+public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeve, IVendeurChoco {
 	private Indicateur achats;
 	private Indicateur ventes;
 	// 0 = BQ, 1 = MQ, 2 = HQ
@@ -341,22 +341,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IMarche
 	}
 	@Override
 	public ContratFeve[] getResultVentes() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-	
-	/**Interface IMarcheFeve
-	 * 
-	 */
-	
-	@Override
-	public double getPrixMarche() {
-		return 0.0;
-	}
-	@Override
-	public ContratFeve[] getContrat() {
 		// TODO Auto-generated method stub
 		return null;
 	}
