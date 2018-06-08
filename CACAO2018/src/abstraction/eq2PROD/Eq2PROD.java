@@ -97,7 +97,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 				return ((MarcheFeve) a).getPrixMarche();
 			} 
 		} return 0;
-	}
+	} 
 	
 	/* Modélisation par Alexandre BIGOT+Guillaume SALLE, code par Alexandre BIGOT
 	 * Si plantations déjà malades alors la récolte est diminuée de 50% par rapport à la récolte
