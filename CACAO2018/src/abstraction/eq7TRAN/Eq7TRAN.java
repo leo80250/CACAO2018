@@ -48,7 +48,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private final int[] MOY_VENTE_POUDRE = {0, 0, 1000};
 	private final int[] MOY_VENTE_TABLETTE = {0, 1400, 2300};
 	
-	// en €/tonne
 	private final int SUM_MOY_VENTE_POUDRE = MOY_VENTE_POUDRE[0]+MOY_VENTE_POUDRE[1]+MOY_VENTE_POUDRE[2];
 	private final int SUM_MOY_VENTE_TABLETTES = MOY_VENTE_TABLETTE[0]+MOY_VENTE_TABLETTE[1]+MOY_VENTE_TABLETTE[2];
 	
@@ -345,18 +344,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
-	
-	
-	/**Interface IMarcheFeve
-	 * 
-	 */
-	
-	public double getPrixMarche() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	
 	/** Interface IVendeurChoco
 	 * 
