@@ -101,6 +101,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		}
 	}
 	
+	/* Code par Guillaume SALLE */
 	public void next() {
 		calculCoeffPrixVentes();
 		this.stockQM=this.stockQM+ (int) (this.coeffStock*MOY_QM);
