@@ -1,14 +1,30 @@
 package abstraction.eq3PROD;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
-//import abstraction.eq1DIST.IVenteConso;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
+import abstraction.eq4TRAN.IVendeurChoco;
+import abstraction.eq4TRAN.VendeurChoco.GPrix;
+import abstraction.eq4TRAN.VendeurChoco.GQte;
+import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre; 
 import abstraction.fourni.Acteur;
+import abstraction.fourni.Indicateur;  
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
+//import abstraction.eq1DIST.IVenteConso;
+
 public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve {
-	
+	private Indicateur achats;
+	private Indicateur ventes;
+	// 0 = BQ, 1 = MQ, 2 = HQ
+	private Indicateur[] stockFeves;
+	private Indicateur[] stockPoudre;
+	private Indicateur[] stockTablettes;
+	private Indicateur solde;
+	private Journal journal;
 	
 	private int stockmoyen;
 	private int stockfin;
@@ -19,7 +35,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	/*private int tpsnonmaladieIndo;
 	private int tpsnonmaladieAmerique;*/
 	
-	private Journal journal;
 	
 	
 	public Eq3PROD() {
@@ -71,7 +86,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		public void sendResultVentes(ContratFeve[] resultVentes) {
 			
 		}
-	
+		/**
+		 * @author Claire
+		 */
 		public boolean maladieAmerique() {
 			double p=Math.random();
 			return (p<0.008);
@@ -80,7 +97,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		public boolean maladieIndo() {
 			return (Math.random()<=0.042);
 		}
-		
+		/**
+		@author Claire
+		**/
 		public void next() {
 			int x=Monde.LE_MONDE.getStep();
 			int prodBresil=0;
