@@ -13,7 +13,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	private ContratFeve[] demandeTran;
 	private final static int MOY_QB = 46000; /* pour un step = deux semaines */
 	private final static int MOY_QM = 70000; /* pour un step = deux semaines */
-	private final static int coutFixe = 70800000;
+	private final static int coutFixe = 70800000; // entretien des plantations
 	private final static double prix_minQM = 1000;
 	private final static double prix_minQB = 850;
 	
@@ -106,6 +106,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		calculCoeffPrixVentes();
 		this.stockQM=this.stockQM+ (int) (this.coeffStock*MOY_QM);
 		this.stockQB=this.stockQB+ (int) (this.coeffStock*MOY_QB);
+		this.solde=this.solde-coutFixe;
 	}
 
 	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
@@ -146,21 +147,24 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	} return c;
 	}
 
-	/*Agathe CHEVALIER + Alexandre BIGOT*/
+	/*Agathe CHEVALIER + Alexandre BIGOT + Romain BERNARD*/
     public void sendResultVentes(ContratFeve[] resultVentes) {
+    double chiffreDAffaire=0;
    	 for (int i=0; i<resultVentes.length;i++) {
    		 if (resultVentes[i].getReponse()) {
    			 
    			 if (resultVentes[i].getQualite()==0) {
    				 this.solde= this.solde + resultVentes[i].getPrix()*resultVentes[i].getQuantite() ;
    				 this.stockQB=this.stockQB - resultVentes[i].getQuantite() ;
+   				 chiffreDAffaire+=resultVentes[i].getPrix()*resultVentes[i].getQuantite();
    			 }
    			 if (resultVentes[i].getQualite()==1) {
    				 this.solde= this.solde + resultVentes[i].getPrix()*resultVentes[i].getQuantite() ;
    				 this.stockQM=this.stockQM - resultVentes[i].getQuantite() ;
+   				 chiffreDAffaire+=resultVentes[i].getPrix()*resultVentes[i].getQuantite();
    			 }
    		 }
-   	 }
+   	 } this.solde=this.solde-0.35*chiffreDAffaire; // paiement des salaires à 35% du CA
     }
 
 	public void sendCoursMarche() {
