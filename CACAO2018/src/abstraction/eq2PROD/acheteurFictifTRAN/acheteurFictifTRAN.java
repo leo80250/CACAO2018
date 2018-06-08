@@ -66,8 +66,9 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 		c[0]=cB ; c[1]=cM1 ; c[2]=cM2 ; c[3]=cH;
 		return c;		
 	}
-
+	/* Guillaume SALLE*/
 	public void sendContratFictif(ContratFeve[] listContrats) {
+		this.contratPrecedent = listContrats;
 	}
 
 	/* Agathe CHEVALIER */
