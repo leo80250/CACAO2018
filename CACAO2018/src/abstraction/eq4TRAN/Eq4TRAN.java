@@ -44,7 +44,7 @@ public class Eq4TRAN implements Acteur,
 	/** Contrats en cours pour la méthode next interne
 	 * 
 	 */
-	private ArrayList<ContratFeve> contratFeveEnCours ; 
+	private ContratFeve[] contratFeveEnCours ; 
 	private ArrayList<ContratPoudre> contratPoudreEnCours ;
 
 	
@@ -81,7 +81,7 @@ public class Eq4TRAN implements Acteur,
 		 *  ?????????????????????????
 		 */
 		
-		contratFeveEnCours.add(null) ;
+		// contratFeveEnCours.add(null) ;
 		contratPoudreEnCours.add(null) ;
 		
 		/**
@@ -90,7 +90,7 @@ public class Eq4TRAN implements Acteur,
 		/**
 		 * pour contrat fève 
 		 */
-		for(int i = 0 ; i < contratFeveEnCours.size() ; i++) {
+		for(int i = 0 ; i < contratFeveEnCours.length ; i++) {
 			/**
 			 * Selon la qualité
 			 * On récupère les qtés de fèves achetées
@@ -98,25 +98,25 @@ public class Eq4TRAN implements Acteur,
 			 * Les produits sont ajoutés aux stocks
 			 * Le coût total de l'achat est retiré au solde
 			 */
-			if (contratFeveEnCours.get(i).getReponse()) {
-				if(contratFeveEnCours.get(i).getQualite() == 0) {
-					prodTabBQ.setValeur(Eq4TRAN, contratFeveEnCours.get(i).getQuantite()); 
+			if (contratFeveEnCours[i].getReponse()) {
+				if(contratFeveEnCours[i].getQualite() == 0) {
+					prodTabBQ.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite()); 
 					double ancienStockTabBQ = stockTabBQ.getValeur() ;
 					stockTabBQ.setValeur(Eq4TRAN, ancienStockTabBQ + prodTabBQ.getValeur());
-					solde.setValeur(Eq4TRAN, contratFeveEnCours.get(i).getPrix()*contratFeveEnCours.get(i).getQuantite());
+					solde.setValeur(Eq4TRAN, contratFeveEnCours[i].getPrix()*contratFeveEnCours[i].getQuantite());
 				}
-				else if(contratFeveEnCours.get(i).getQualite() == 1) {
-					prodTabMQ.setValeur(Eq4TRAN, contratFeveEnCours.get(i).getQuantite());
+				else if(contratFeveEnCours[i].getQualite() == 1) {
+					prodTabMQ.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite());
 					double ancienStockTabMQ = stockTabMQ.getValeur() ;
 					stockTabMQ.setValeur(Eq4TRAN, ancienStockTabMQ + prodTabMQ.getValeur());
-					solde.setValeur(Eq4TRAN, contratFeveEnCours.get(i).getPrix()*contratFeveEnCours.get(i).getQuantite());
+					solde.setValeur(Eq4TRAN, contratFeveEnCours[i].getPrix()*contratFeveEnCours[i].getQuantite());
 
 				}
-				else if(contratFeveEnCours.get(i).getQualite() == 2) {
-					prodTabHQ.setValeur(Eq4TRAN, contratFeveEnCours.get(i).getQuantite());
+				else if(contratFeveEnCours[i].getQualite() == 2) {
+					prodTabHQ.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite());
 					double ancienStockTabHQ = stockTabHQ.getValeur() ;
 					stockTabHQ.setValeur(Eq4TRAN, ancienStockTabHQ + prodTabMQ.getValeur());
-					solde.setValeur(Eq4TRAN, contratFeveEnCours.get(i).getPrix()*contratFeveEnCours.get(i).getQuantite());
+					solde.setValeur(Eq4TRAN, contratFeveEnCours[i].getPrix()*contratFeveEnCours[i].getQuantite());
 
 				}
 			}
@@ -125,14 +125,15 @@ public class Eq4TRAN implements Acteur,
 		/**
 		 * pour contrat poudre
 		 */
-	//	for(int i = 0 ; i < contratPoudreEnCours.size() ; i++ ) {
+		for(int i = 0 ; i < contratPoudreEnCours.size() ; i++ ) {
+
 			/**
 			 * On récupère les qtés de poudre achetée
 			 * On les transforme en produits
 			 * Puis on les stocke
 			 */
-			/**
-			if(contratPoudreEnCours.get(i).isReponse()) {
+			
+			if(contratPoudreEnCours.get(i).getReponse()) {
 				if (contratPoudreEnCours.get(i).getQualite() == 1) {
 					prodChocMQ.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getQuantite());
 					double ancienStockChocMQ = stockChocMQ.getValeur() ;
@@ -140,13 +141,13 @@ public class Eq4TRAN implements Acteur,
 					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
 				
 				} else if (contratPoudreEnCours.get(i).getQualite() == 2 ) {
-					prodChocHQ.setValeur(Eq4TRAN, contratFeveEnCours.get(i).getQuantite());
+					prodChocHQ.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite());
 					double ancienStockChocHQ = stockChocHQ.getValeur() ;
 					stockChocHQ.setValeur(Eq4TRAN, ancienStockChocHQ + prodChocHQ.getValeur()); 
 					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
 					}
 				}
-		}
+		} 
 		
 		
 		/** Màj des stocks pour les distributeurs
@@ -179,13 +180,13 @@ public class Eq4TRAN implements Acteur,
 
 	@Override
 	public void sendOffrePublique(ContratFeve[] offrePublique) {
-		System.out.println(offrePublique); 
+		this.contratFeveEnCours=offrePublique;
 	}
 
 
 	@Override
 	public ContratFeve[] getDemandePrivee() {
-		
+
 		return null ;
 	}
 

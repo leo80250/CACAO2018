@@ -3,10 +3,10 @@ package abstraction.eq2PROD.echangeProd;
 public interface IVendeurFevesProd {
 	/* modélisation par Romain BERNARD avec les équipes 3+4+5+7, code par Alexandre BIGOT 18.05 */ 
 	/* getPrix donne le prix de vente des fèves, et le grp3 ne peut nous acheter que des feves de
-	 * qualité moyenne au prix du marché multiplié par 1.06 */
+	 * qualité moyenne à notre prix multiplié par 1.06 */
 	public double getPrix();
 	/* acheter prend en compte la quantite demandée par le grp3 et renvoie une quantité :
-	 * -soit la quantité demandée, elle est alors vendue au grp3 au prix de vente du moment*1.06,
+	 * -soit la quantité demandée, elle est alors vendue au grp3 à notre prix de vente2*1.06,
 	 * il faut mettre à jour stock et solde
 	 * -soit une quantité inférieure : elle est quand même vendue prix*1.06, il faut mettre à 
 	 * jour stock et solde
