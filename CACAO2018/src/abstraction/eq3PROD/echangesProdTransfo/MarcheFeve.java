@@ -1,5 +1,7 @@
 package abstraction.eq3PROD.echangesProdTransfo;
 
+import java.util.ArrayList;
+
 import abstraction.fourni.Acteur;
 
 /**
@@ -8,21 +10,26 @@ import abstraction.fourni.Acteur;
 
 public class MarcheFeve implements IMarcheFeve, Acteur {
 	
-	private ContratFeve[] contratPrecedent;
-	private ContratFeve[] contratActuel;
+	private ArrayList<ContratFeve> contratPrecedent;
+	private ArrayList<ContratFeve> contratActuel;
 	private String nom;
+	private IAcheteurFeve[] listAcheteurs;
+	private IVendeurFeve[] listVendeurs;
 	
 	public MarcheFeve() {
-		this.contratPrecedent = new ContratFeve[1]; 
-		contratPrecedent[0] = new ContratFeve(null, null, 1);
-		this.contratActuel = new ContratFeve[1];
-		contratActuel[0] = new ContratFeve();
+		this.contratPrecedent = new ArrayList<ContratFeve>();
+		this.contratActuel = new ArrayList<ContratFeve>();
 		this.nom = "Marche intermediaire";
+		this.listAcheteurs = new IAcheteurFeve[0];
+		this.listVendeurs = new IVendeurFeve[0];
 	}
 	
-	public MarcheFeve(ContratFeve[] contratPrecedent, ContratFeve[] contratActuel) {
+	public MarcheFeve(ArrayList<ContratFeve> contratPrecedent, ArrayList<ContratFeve> contratActuel, String nom, IAcheteurFeve[] ach, IVendeurFeve[] ven) {
 		this.contratPrecedent = contratPrecedent;
 		this.contratActuel = contratActuel;
+		this.nom = nom;
+		this.listAcheteurs = ach;
+		this.listVendeurs = ven;
 	}
 
 	@Override
@@ -30,10 +37,10 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		// Rappel : qualite moyenne de feves
 		double ventes = 0;
 		double quantite = 0;
-		for(int i = 0; i < this.contratPrecedent.length; i++) {
-			if (this.contratPrecedent[i].getQualite() == 1) {
-				ventes += this.contratPrecedent[i].getProposition_Quantite()*this.contratPrecedent[i].getProposition_Prix();
-				quantite += this.contratPrecedent[i].getProposition_Quantite();
+		for(int i = 0; i < this.contratPrecedent.size(); i++) {
+			if (this.contratPrecedent.get(i).getQualite() == 1) {
+				ventes += this.contratPrecedent.get(i).getProposition_Quantite()*this.contratPrecedent.get(i).getProposition_Prix();
+				quantite += this.contratPrecedent.get(i).getProposition_Quantite();
 			}
 		}
 		return ventes/quantite;
@@ -41,7 +48,7 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 
 	@Override
 	public ContratFeve[] getContratPrecedent() {
-		return this.contratPrecedent;
+		return (ContratFeve[]) this.contratPrecedent.toArray();
 	}
 
 	@Override
@@ -51,8 +58,13 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 
 	@Override
 	public void next() {
-		// TODO Auto-generated method stub
 		
+		// Liste d'offres publiques
+		 for (IVendeurFeve vendeur : listVendeurs) {
+			 for (ContratFeve contrat : vendeur.getOffrePublique()) {
+				contratActuel.add(contrat); 
+			 }
+		 }
 	}
 
 }
