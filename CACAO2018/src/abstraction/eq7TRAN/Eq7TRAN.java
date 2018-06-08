@@ -78,7 +78,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.efficacite = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 1.0);
 		
 		for(int i = 0; i < 3; i++) {
-			this.stockFeves[i] = new Indicateur(this.getNom()+" a un stock de fÃ¨ves de ", this, 0.0);
+			this.stockFeves[i] = new Indicateur(this.getNom()+" a un stock de fèves de ", this, 0.0);
 			this.stockPoudre[i] = new Indicateur(this.getNom()+" a un stock de poudre de ", this, 0.0);
 			this.stockTablettes[i] = new Indicateur(this.getNom()+" a un stock de tablettes de ", this, 0.0);
 			this.prixAchatFeves[i] = new Indicateur(this.getNom()+" a dernièrement acheté des fèves au prix de ", this, this.MOY_PRIX_ACHAT_FEVES[i]);
@@ -303,7 +303,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		int n = devis.length;
 		for(int i = 0; i<n; i++) {
 			int qualite = devis[i].getQualite();
-			// Si on a pas la bonne quantitÃ© on refuse
+			// Si on a pas la bonne quantité on refuse
 			if(devis[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
 				devis[i].setReponse(false);
 			}
@@ -311,7 +311,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		return devis;
 	}
 	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
-		// est-ce qu'il a eu des probs pour la rÃ©alisation du contrat ?
+		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
 		return contrat;
 	}
 	

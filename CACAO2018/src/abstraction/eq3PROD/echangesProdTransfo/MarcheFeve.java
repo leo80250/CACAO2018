@@ -7,7 +7,7 @@ public class MarcheFeve implements IMarcheFeve {
 	
 	public MarcheFeve() {
 		this.contratPrecedent = new ContratFeve[1]; 
-		contratPrecedent[0] = new ContratFeve(1, 1, 2300, null, null, true);
+		contratPrecedent[0] = new ContratFeve(null, null, 1);
 		this.contratActuel = new ContratFeve[1];
 		contratActuel[0] = new ContratFeve();
 	}
@@ -24,8 +24,8 @@ public class MarcheFeve implements IMarcheFeve {
 		double quantite = 0;
 		for(int i = 0; i < this.contratPrecedent.length; i++) {
 			if (this.contratPrecedent[i].getQualite() == 1) {
-				ventes += this.contratPrecedent[i].getQuantite()*this.contratPrecedent[i].getPrix();
-				quantite += this.contratPrecedent[i].getQuantite();
+				ventes += this.contratPrecedent[i].getProposition_Quantite()*this.contratPrecedent[i].getProposition_Prix();
+				quantite += this.contratPrecedent[i].getProposition_Quantite();
 			}
 		}
 		return ventes/quantite;

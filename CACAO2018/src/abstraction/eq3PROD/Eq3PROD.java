@@ -48,9 +48,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.virtuel=virtuel;
 		}
 		
+
 		public ContratFeve[] getOffrePublique() {
-			ContratFeve c1=new ContratFeve(1,this.stockmoyen,/*Prixmarche*/0,null,this,false);
-			ContratFeve c2=new ContratFeve(2,this.stockfin,/*Prixmarche*/0,null,this,false);
+			ContratFeve c1=new ContratFeve((IAcheteurFeve) this, null, 1, this.stockmoyen, 0, 0, /*Prix marche*/ 0.0, 0.0, 0.0, false);
+			ContratFeve c2=new ContratFeve((IAcheteurFeve) this, null, 2, this.stockfin, 0, 0, /*Prix marche*/ 0.0, 0.0, 0.0, false);
+
 			ContratFeve[] c=new ContratFeve[2];
 			c[0]=c1;
 			c[1]=c2;

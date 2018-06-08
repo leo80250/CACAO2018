@@ -10,10 +10,10 @@ public class TestContrat {
 		AcheteurTest ach = new AcheteurTest("TransfoTest");
 		VendeurTest vend = new VendeurTest("ProdTest");
 		
-		ContratFeve Test2 = new ContratFeve(1, 1250, 2300.0, ach, vend, false);
+		ContratFeve Test2 = new ContratFeve(ach, vend, 1, 3000, 3000, 3000, 2300.0, 2300.0, 2300.0, true);
 		System.out.println(Test2.toString()+"\n");
 		
-		ContratFeve Test3 = new ContratFeve(1, 1400, 2250.0, ach, vend, true);
+		ContratFeve Test3 = new ContratFeve(ach, vend, 1, 200, 1500, 1500, 2500.0, 2500.0, 2300.0, true);
 		System.out.println(Test3.toString()+"\n");
 		
 		//String[] ta = {""};
