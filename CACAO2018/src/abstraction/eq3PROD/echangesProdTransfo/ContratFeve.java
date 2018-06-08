@@ -3,6 +3,10 @@ package abstraction.eq3PROD.echangesProdTransfo;
 import abstraction.eq2PROD.acheteurFictifTRAN.acheteurFictifTRAN;
 import abstraction.fourni.Acteur;
 
+/**
+ * @author Grégoire
+ */
+
 public class ContratFeve {
 	
 	private IAcheteurFeve transformateur;

@@ -2,6 +2,10 @@ package abstraction.eq3PROD.echangesProdTransfo;
 
 import abstraction.fourni.Acteur;
 
+/**
+ * @author Grégoire
+ */
+
 public class VendeurTest implements Acteur, IVendeurFeve {
 	
 	private String nom;
