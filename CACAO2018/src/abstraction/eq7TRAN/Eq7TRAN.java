@@ -40,8 +40,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private Indicateur[] productionTablettesAttendue;
 	
 	private ContratPoudre[] commandesEnCours;
+	private ContratFeve[] offresFevesPubliquesEnCours;
+	
+	
 
-	private int MOY_TAUX_EFFICACITE_EMPLOYES = 1;
+	private final int MOY_TAUX_EFFICACITE_EMPLOYES = 1;
 	
 	// en tonnes par 2 semaines
 	private final int[] MOY_ACHAT_FEVES = {0, 1400, 3200};
@@ -59,6 +62,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private final double MOY_PRIX_FRAIS_VENTE_FEVES = 0;
 	private final double MOY_MARGE_POUDRE = 0.2;
 	private final double MOY_MARGE_TABLETTE = 0.2;
+	
 
 	public Eq7TRAN(Monde monde, String nom) {
 		this.nom = nom;
@@ -238,6 +242,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public Indicateur getProductionTablettesAttendue(int qualite) {
 		return this.getProductionPoudreAttendue()[qualite];
 	}
+	public void setOffresFevesPubliquesEnCours(ContratFeve[] offres) {
+		this.offresFevesPubliquesEnCours = offres;
+	}
+	public ContratFeve[] getOffresFevesPubliquesEnCours() {
+		return this.offresFevesPubliquesEnCours;
+	}
 	
 	/** calculateAbsenteisme
 	 * @author boulardmaelle, leofargeas
@@ -372,11 +382,30 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 	}
 	
+	////////////////////////////
+	// METHODES ACHETEUR FEVE //
+	////////////////////////////
+	
+	public ContratFeve[] analyseOffresFevesPubliques() {
+		
+		
+		return offresFevesPubliquesEnCours;
+	}
+		
 	/**
 	 * Interface IAcheteurFeve
 	 * @author boulardmaelle, margauxgrand
 	 */
 	
+	@Override
+	public void sendOffrePublique(ContratFeve[] offresPubliques) {
+		// On garde les anciennes offres ?
+		/*
+		ContratFeve[] oldOffres = this.getOffresFevesPubliquesEnCours();
+		int n = oldOffres.length;
+		*/
+		this.setOffresFevesPubliquesEnCours(offresPubliques);
+	}
 	
 	@Override
 	public ContratFeve[] getDemandePrivee() {
@@ -425,11 +454,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		// TODO Auto-generated method stub
 		return null;
 	}
-	@Override
-	public void sendOffrePublique(ContratFeve[] offrePublique) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	//Joseph Bernard
 	/*
