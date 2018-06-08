@@ -166,9 +166,6 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
    		 }
    	 } this.solde=this.solde-0.35*chiffreDAffaire; // paiement des salaires à 35% du CA
     }
-
-	public void sendCoursMarche() {
-	}
 	
 	/* Alexandre BIGOT
 	 * Le cas où la quantité demandée est inférieure au stock n'est au final pas codée
