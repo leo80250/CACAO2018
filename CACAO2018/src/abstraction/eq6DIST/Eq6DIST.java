@@ -3,7 +3,6 @@ package abstraction.eq6DIST;
 import java.util.ArrayList;
 
 import abstraction.eq1DIST.IVenteConso;
-import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.fourni.Acteur;
