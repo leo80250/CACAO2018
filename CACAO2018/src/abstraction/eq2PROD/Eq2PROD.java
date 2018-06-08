@@ -65,8 +65,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		return this.meteo();
 	}
 	
-	public double getCoeffMaladie() {
-		return this.maladie();
+	public boolean getCoeffMaladie() {
+		return this.maladie;
 	}
 	
 	/* Alexandre BIGOT+Guillaume SALLE */
@@ -126,7 +126,13 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		this.getJournal().ajouter("Quantité basse qualité = "+ this.getStockQB());
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ this.getStockQM());
 		this.getJournal().ajouter("Coefficient de la météo ="+ this.getCoeffMeteo());
-		this.getJournal().ajouter("Coefficient des maladies ="+ this.getCoeffMaladie());
+		if(this.maladie==false) {
+			this.getJournal().ajouter("Aucune maladie n'a frappé les plantations");
+		} else {
+			this.getJournal().ajouter("Une maladie a frappé les plantations");
+		}
+		this.getJournal().ajouter("------------------------------------------------------------------------------");
+		
 	}
 
 	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
@@ -224,8 +230,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	
 	public Eq2PROD(Monde monde, String nom) {
 		this.nom = nom;
-		this.stockQBas = new Indicateur("Stock de"+this.nom+"de basse qualité",this,0.0);
-		this.stockQMoy = new Indicateur("Stock de"+this.nom+"de moyenne qualité",this,0.0);
+		this.stockQBas = new Indicateur("Stock de "+this.nom+" de basse qualité",this,stockQB);
+		this.stockQMoy = new Indicateur("Stock de "+this.nom+" de moyenne qualité",this,stockQM);
 		
 		this.journal= new Journal("Journal de"+this.nom);
 		this.ventesOccasionnelles = new Journal("Journal de ventes occasionnelles de"+this.nom);
