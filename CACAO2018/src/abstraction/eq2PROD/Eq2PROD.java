@@ -1,6 +1,6 @@
 package abstraction.eq2PROD;
 
-import abstraction.fourni.Acteur;
+import abstraction.fourni.*;
 import abstraction.eq3PROD.echangesProdTransfo.*;
 import abstraction.eq2PROD.echangeProd.*;
 
@@ -180,4 +180,19 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		}
 	}
 	
+	/*private Journal journal;
+	private Indicateur production;
+	private String nom;
+	
+	public Producteur(String nom, Monde monde) {
+		this.nom = nom;
+		this.production = new Indicateur("Production de"+this.nom,this,0.0);
+		if(this.nom.equals(Constantes.NOM_PRODUCTEUR_1)) {
+			this.production = new Indicateur(Constantes.IND_PRODUCTION_P1);
+			this.journal=new Journal("Journal de"+this.nom);
+			Monde.LE_MONDE.ajouterJournal(this.journal);
+		} else {
+			this.journal=null;
+		}
+	}*/
 }
