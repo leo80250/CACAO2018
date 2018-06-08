@@ -1,6 +1,10 @@
 package abstraction.eq2PROD.acheteurFictifTRAN;
 
 import abstraction.fourni.Acteur;
+import abstraction.fourni.Monde;
+
+import java.util.ArrayList;
+
 import abstraction.eq3PROD.echangesProdTransfo.*;
 
 public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
@@ -16,6 +20,24 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 		this.offreProd = offrePublique;
 	}
 	
+	/* getContratReference() va permettre à l'acteur fictif de récupérer les contrats signés précédents
+	 * Ses commandes seront celles données par le contrat précédent à un pourcentage près */
+	public void getContratReference() {
+		/*this.contratPrecedent = MarcheFeve.getContratPrecedent;*/
+	}
+	
+	/* Guillaume Sallé */
+	public ArrayList<Acteur> getVendeurs() {
+		ArrayList<Acteur> vendeurs = Monde.LE_MONDE.getActeurs();
+		for (Acteur v : vendeurs) {
+			if (!(v instanceof IVendeurFeve)) {
+				vendeurs.remove(v);
+			}
+		}
+		return vendeurs;
+	}
+	
+	
 	/* Agathe CHEVALIER */
 	public ContratFeve[] getDemandePrivee() {
 		/*this.contratPrecedent = MarcheFeve.getContrat();*/
@@ -23,16 +45,22 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 		int tonnageQM_1 = 0; double prixQM_1 = 0;
 		int tonnageQM_2 = 0; double prixQM_2 = 0;
 		int tonnageQH = 0; double prixQH = 0;
-		
-		
-		
+				
 		/* basse qualité uniquement à Eq2 */
-		ContratFeve cB = new ContratFeve(0,tonnageQB,prixQB,this,null/*eq2*/,true);
+		ContratFeve cB = new ContratFeve(this, null /*eq2*/, 0,
+				0, tonnageQB, 0, 
+				0.0, prixQB, 0.0, true);
 		/* moyenne qualité à Eq2 ET Eq3 */
-		ContratFeve cM1 = new ContratFeve(1,tonnageQM_1,prixQM_1,this,null/*mettre Eq2*/,true);
-		ContratFeve cM2 = new ContratFeve(1,tonnageQM_2,prixQM_2,this,null/*mettre Eq3*/,true);
+		ContratFeve cM1 = new ContratFeve(this, null /*eq2*/, 0,
+				0, tonnageQM_1, 0, 
+				0.0, prixQM_1, 0.0, true);
+		ContratFeve cM2 = new ContratFeve(this, null /*eq3*/, 0,
+				0, tonnageQM_2, 0, 
+				0.0, prixQM_2, 0.0, true);
 		/* haute qualité uniquement à Eq3 */
-		ContratFeve cH = new ContratFeve(2,tonnageQH,prixQH,this,null/*mettre Eq3*/,true); 
+		ContratFeve cH = new ContratFeve(this, null /*eq3*/, 0,
+				0, tonnageQH, 0, 
+				0.0, prixQH, 0.0, true);
 		
 		ContratFeve[] c = new ContratFeve[4];
 		c[0]=cB ; c[1]=cM1 ; c[2]=cM2 ; c[3]=cH;
