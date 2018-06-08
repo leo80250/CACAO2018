@@ -187,7 +187,6 @@ IVendeurPoudre{
 //			}
 //		} 
 
-
 		/** Màj des stocks pour les distributeurs
 		 * 
 		 */
