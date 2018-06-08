@@ -355,13 +355,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	//tableau de GPrix pour les trois qualites
-	//public GPrix[] getPrix() {
-		//GPrix[] array = new GPrix[3];
-		//array[0] = new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(0));
-		//array[1] = new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(1));
-		//array[2] = new GPrix({0.0,Float.MAX_VALUE},this.estimatePrixVenteTablette(2));
-		//return new GPrix[3];
-	//}
+	public GPrix[] getPrix() {
+		GPrix[] array = new GPrix[3];
+		array[0] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(0)});
+		array[1] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(1)});
+		array[2] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(2)});
+		return array;
+	}
 	/*
 	public GQte[] getLivraison(GQte[] commandes) {
 		int[] stock= {this.getStockTablette(0).getValeur(),this.getStockTablette(1).getValeur(),this.getStockTablette(2).getValeur()};
