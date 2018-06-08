@@ -81,8 +81,7 @@ public class Eq4TRAN implements Acteur,
 		 *  ?????????????????????????
 		 */
 		
-		contratFeveEnCours.add(null) ;
-		contratPoudreEnCours.add(null) ;
+		//contratFeveEnCours.add(null) ;
 		
 		/**
 		 * pour chaque contrat on récupère prix et qté
@@ -173,20 +172,38 @@ public class Eq4TRAN implements Acteur,
 	@Override
 	public void sell(int q) {
 		// TODO Auto-generated method stub
-		
 	}
 
-
+//Charles
 	@Override
 	public void sendOffrePublique(ContratFeve[] offrePublique) {
 		this.contratFeveEnCours=offrePublique;
 	}
 
-
+//Charles
 	@Override
 	public ContratFeve[] getDemandePrivee() {
-
-		return null ;
+		int[] demande= {13000,70000,25000};
+		double[] prixMin= { 100000.0 , 100000.0 , 100000.0 } ;
+		int[] min= {-1,-1,-1};
+		int[] max= {-1,-1,-1};
+		for (int i=0;i<this.contratFeveEnCours.length;i++) {
+			int qualite=this.contratFeveEnCours[i].getOffrePublique_Quantite();
+			if (this.contratFeveEnCours[i].getOffrePublique_Prix()<prixMin[qualite]) {
+				prixMin[qualite]=this.contratFeveEnCours[i].getOffrePublique_Prix();
+				if (min[i]!=-1) {
+					max[qualite]=i;
+				}
+				min[i]=this.contratFeveEnCours[i].getQualite();
+			}
+		}
+		for (int j=0;j<3;j++) {
+			this.contratFeveEnCours[min[j]].setDemande_Quantite(Math.min(demande[min[j]],this.contratFeveEnCours[min[j]].getOffrePublique_Quantite()/3));
+			if (max[j]!=-1) {
+				this.contratFeveEnCours[max[j]].setDemande_Quantite(demande[min[j]]-Math.min(demande[min[j]],this.contratFeveEnCours[min[j]].getOffrePublique_Quantite()/3));
+			}
+		}
+		return this.contratFeveEnCours ;
 	}
 
 
@@ -196,18 +213,21 @@ public class Eq4TRAN implements Acteur,
 		
 	}
 
-
+//Charles
 	@Override
 	public void sendOffreFinale(ContratFeve[] offreFinale) {
-		// TODO Auto-generated method stub
-		
+		this.contratFeveEnCours=offreFinale;
 	}
 
-
+//Charles
 	@Override
 	public ContratFeve[] getResultVentes() {
-		// TODO Auto-generated method stub
-		return null;
+		for (int i=0;i<this.contratFeveEnCours.length;i++) {
+			if (this.contratFeveEnCours[i].getProposition_Prix()*this.contratFeveEnCours[i].getProposition_Quantite()<this.solde.getValeur()) {
+				this.contratFeveEnCours[i].setReponse(true);
+			}
+		}
+		return this.contratFeveEnCours;
 	}
 
 	@Override
