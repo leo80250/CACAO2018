@@ -2,7 +2,7 @@ package abstraction.eq3PROD.echangesProdTransfo;
 
 import abstraction.fourni.Acteur;
 
-public class Contrat {
+public class ContratFeve {
 	
 	private int qualite;
 	private int quantite;
@@ -12,7 +12,7 @@ public class Contrat {
 	private boolean reponse;
 	
 	/**
-	 * Constructeurs d'un Contrat
+	 * Constructeurs d'un Contrat de vente de feves
 	 * @param qualite la qualite des feves du contrat (0 = basse, 1 = moyenne, 2 = haute)
 	 * @param quantite la quantite de feves du contrat (en tonne)
 	 * @param prix le prix du contrat (a la tonne)
@@ -20,7 +20,7 @@ public class Contrat {
 	 * @param producteur le producteur qui vend les feves
 	 * @param reponse la reponse confirmant ou infirmant le contrat
 	 */
-	public Contrat(int qualite, int quantite, double prix, IAcheteurFeve transformateur, IVendeurFeve producteur, boolean reponse) {
+	public ContratFeve(int qualite, int quantite, double prix, IAcheteurFeve transformateur, IVendeurFeve producteur, boolean reponse) {
 		this.qualite = qualite;
 		this.quantite = quantite;
 		this.prix = prix;
@@ -28,7 +28,7 @@ public class Contrat {
 		this.producteur = producteur;
 		this.reponse = reponse;
 	}
-	public Contrat() {
+	public ContratFeve() {
 		this.qualite = 0;
 		this.quantite = 0;
 		this.prix = 0.0;
