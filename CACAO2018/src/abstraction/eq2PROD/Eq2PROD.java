@@ -58,7 +58,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	
 	/* Alexandre BIGOT */
 	public double getPrix() {
-		return /*getPrixMarche()* */this.coeffStock ;
+		return prixMarche()*this.coeffStock ;
 	}
 	
 	public double getCoeffMeteo() {
@@ -132,9 +132,9 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	/* Code par Guillaume SALLE+Romain BERNARD+Agathe CHEVALIER */
 	public ContratFeve[] getOffrePublique() {
 		ContratFeve c1 = new ContratFeve(null, this, 0, this.stockQB, 0, 0, 
-				/*MarcheFeve.getPrixMarche()* */this.coeffStock*0.85, 0.0, 0.0, false);
+				prixMarche()*this.coeffStock*0.85, 0.0, 0.0, false);
 		ContratFeve c2 =  new ContratFeve(null, this, 1, this.stockQM, 0, 0, 
-				/*MarcheFeve.getPrixMarche()* */this.coeffStock, 0.0, 0.0, false);
+				prixMarche()*this.coeffStock, 0.0, 0.0, false);
 		ContratFeve[] c = new ContratFeve[2];
 		c[0]=c1; c[1] = c2;
 		return c;
@@ -180,16 +180,16 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
    		 if (resultVentes[i].getReponse()) {
    			 
    			 if (resultVentes[i].getQualite()==0) {
-   				 this.solde= this.solde + resultVentes[i].getPrix()*resultVentes[i].getQuantite() ;
-   				 this.stockQB=this.stockQB - resultVentes[i].getQuantite() ;
-   				 chiffreDAffaire+=resultVentes[i].getPrix()*resultVentes[i].getQuantite();
+   				 this.solde= this.solde + resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite() ;
+   				 this.stockQB=this.stockQB - resultVentes[i].getProposition_Quantite() ;
+   				 chiffreDAffaire+=resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite();
    			 }
    			 if (resultVentes[i].getQualite()==1) {
-   				 this.solde= this.solde + resultVentes[i].getPrix()*resultVentes[i].getQuantite() ;
-   				 this.stockQM=this.stockQM - resultVentes[i].getQuantite() ;
-   				 chiffreDAffaire+=resultVentes[i].getPrix()*resultVentes[i].getQuantite();
-   			 }
-   		 }
+   				 this.solde= this.solde + resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite() ;
+   				 this.stockQM=this.stockQM - resultVentes[i].getProposition_Quantite() ;
+   				 chiffreDAffaire+=resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite();
+   			 } 
+   		 } 
    	 } this.solde=this.solde-0.35*chiffreDAffaire; // paiement des salaires à 35% du CA
     }
 	
@@ -200,7 +200,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	public int acheter(int quantite) {
 		if (quantite <= this.stockQB) {
 			this.stockQB=this.stockQB - quantite ;
-			this.solde = this.solde /*+ quantite*MarcheFeve.getPrixMarche()*this.coeffStock */ ;
+			this.solde = this.solde + quantite*prixMarche()*this.coeffStock ;
 			return quantite ;
 		} else {
 			return 0 ;
