@@ -20,6 +20,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	private final static int coutFixe = 70800000; // entretien des plantations
 	private final static double prix_minQM = 1000;
 	private final static double prix_minQB = 850;
+	private boolean quantiteEq3;
 	
 /* CONSTRUCTEURS */
 	public Eq2PROD() {
@@ -197,8 +198,10 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		if (quantite <= this.stockQB) {
 			this.stockQB=this.stockQB - quantite ;
 			this.solde = this.solde + quantite*prixMarche()*this.coeffStock ;
+			quantiteEq3 = true;
 			return quantite ;
 		} else {
+			quantiteEq3 = false;
 			return 0 ;
 		}
 	}
@@ -264,5 +267,11 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			this.getJournal().ajouter("Une maladie a frappé les plantations");
 		}
 		this.getJournal().ajouter("------------------------------------------------------------------------------");
+		if(this.quantiteEq3==true) {
+			this.getJournalOccasionel().ajouter("Une transaction a été réalisée avec l'équipe 3");
+		} else {
+			this.getJournalOccasionel().ajouter("Aucune transaction n'a été réalisée avec l'équipe3");
+		}
+		this.getJournalOccasionel().ajouter("------------------------------------------------------------------------------");
 	}
 }
