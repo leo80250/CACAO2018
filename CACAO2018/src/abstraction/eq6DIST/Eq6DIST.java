@@ -59,12 +59,12 @@ public class Eq6DIST implements Acteur{ //IAcheteurChoco {
 		/**
 		 * Karel Kédémos
 		 */
-		journalEq6.ajouter(Integer.toString(this.stock.getqBonbonBQ()));
-		journalEq6.ajouter(Integer.toString(this.stock.getqBonbonMQ()));
-		journalEq6.ajouter(Integer.toString(this.stock.getqBonbonBQ()));
-		journalEq6.ajouter(Integer.toString(this.stock.getqTabletteBQ()));
-		journalEq6.ajouter(Integer.toString(this.stock.getqTabletteMQ()));
-		journalEq6.ajouter(Integer.toString(this.stock.getqTabletteHQ()));
+		journalEq6.ajouter("quantité bonbon basse qualité = " + Integer.toString(this.stock.getqBonbonBQ()));
+		journalEq6.ajouter("quantité bonbon moyenne qualité = " + Integer.toString(this.stock.getqBonbonMQ()));
+		journalEq6.ajouter("quantité bonbon haute qualité = " + Integer.toString(this.stock.getqBonbonBQ()));
+		journalEq6.ajouter("quantité tablette basse qualité = " + Integer.toString(this.stock.getqTabletteBQ()));
+		journalEq6.ajouter("quantité tablette moyenne qualité = " + Integer.toString(this.stock.getqTabletteMQ()));
+		journalEq6.ajouter("quantité tablette haute qualité = " + Integer.toString(this.stock.getqTabletteHQ()));
 
 	}
 	
