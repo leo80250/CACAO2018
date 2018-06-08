@@ -202,7 +202,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	public Journal getJournal() {
 		return this.journal;
 	}
-	public Journal getVentesOccasionelles() {
+
+	public Journal getJournalOccasionel() {
 		return this.ventesOccasionnelles;
 	}
 	
