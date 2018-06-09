@@ -35,7 +35,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		this.quantiteEq3 = false;
 	}
 	
-// GETTEURS
+// GETTEURS ET SETTEURS
 	/* Guillaume Sallé (jusqu'à getNom())*/
 	public int getStockQM() {
 		return this.stockQM;
