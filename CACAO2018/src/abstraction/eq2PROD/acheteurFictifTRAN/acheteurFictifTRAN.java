@@ -50,19 +50,19 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 		
 		for(int i=0; i<this.contratPrecedent.length; i++) {
 			if(this.contratPrecedent[i].getQualite()==0) {
-				tonnageQB = this.contratPrecedent[i].getDemande_Quantite();
+				tonnageQB = (int)(this.contratPrecedent[i].getDemande_Quantite()*0.40);
 				prixQB = this.contratPrecedent[i].getDemande_Prix();
 			}
 			if(this.contratPrecedent[i].getQualite()==2) {
-				tonnageQH = this.contratPrecedent[i].getDemande_Quantite();
+				tonnageQH = (int)(this.contratPrecedent[i].getDemande_Quantite()*0.40);
 				prixQH = this.contratPrecedent[i].getDemande_Prix();
 			}
 			if(this.contratPrecedent[i].getQualite()==1) {
 				if(this.contratPrecedent[i].getProducteur()==null /*Eq2PROD*/) {
-					tonnageQM_1 = this.contratPrecedent[i].getDemande_Quantite();
+					tonnageQM_1 = (int)(this.contratPrecedent[i].getDemande_Quantite()*0.40);
 					prixQM_1 = this.contratPrecedent[i].getDemande_Prix();
 				} else {
-					tonnageQM_2 = this.contratPrecedent[i].getDemande_Quantite();
+					tonnageQM_2 = (int)(this.contratPrecedent[i].getDemande_Quantite()*0.40);
 					prixQM_2 = this.contratPrecedent[i].getDemande_Prix();
 				}
 			}
