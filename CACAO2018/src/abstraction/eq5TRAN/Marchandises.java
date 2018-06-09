@@ -3,7 +3,7 @@ package abstraction.eq5TRAN;
 import java.lang.reflect.Field;
 
 /**
- * @author: Thomas Schillaci
+ * @author Thomas Schillaci
  */
 public class Marchandises {
 
