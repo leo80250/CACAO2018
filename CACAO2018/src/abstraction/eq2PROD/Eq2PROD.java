@@ -195,8 +195,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	 * car il est impossible que cela arrive
 	 */
 	public int acheter(int quantite) {
-		if (quantite <= this.stockQB) {
-			this.stockQB=this.stockQB - quantite ;
+		if (quantite <= this.stockQM) {
+			this.stockQM=this.stockQM - quantite ;
 			this.solde = this.solde + quantite*prixMarche()*this.coeffStock ;
 			quantiteEq3 = true;
 			return quantite ;
