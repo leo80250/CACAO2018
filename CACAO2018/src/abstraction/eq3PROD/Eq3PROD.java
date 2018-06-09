@@ -1,5 +1,7 @@
 package abstraction.eq3PROD;
 
+import java.util.ArrayList;
+
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.fourni.Acteur;
@@ -25,10 +27,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private int stockmoyen;
 	private int stockfin;
 	
-	private ContratFeve[] eq4;
-	private ContratFeve[] eq5;
-	private ContratFeve[] eq7;
-	private ContratFeve[] virtuel;
+	private ArrayList<ContratFeve> listeContrats ; 
 	private final double[] prix_Ventes_Feves = {1800, 2100, 2500};
 	private final double[] prodFeves = {0,0,0};
 	MarcheFeve marche=new MarcheFeve();
@@ -79,43 +78,71 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			return "Eq3PROD";
 		}
 		
-		public void setEq4() {
-			this.eq4=eq4;
+		public ArrayList<ContratFeve> getListeContrats(){
+			return this.listeContrats;
 		}
 		
-		public void setEq5() {
-			this.eq5=eq5;
-		}
-	
-		public void setEq7() {
-			this.eq7=eq7;
-		}
-		
-		public void setVirtuel() {
-			this.virtuel=virtuel;
-		}
-		
+		/**
+		 * @author Morgane et Pierre
+		 */
+		public ContratFeve[] getOffrePublique() { 
+			ContratFeve c1=new ContratFeve(null, this, 1, this.stockmoyen, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false);
+			ContratFeve c2=new ContratFeve(null, this, 2, this.stockfin, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false); 
+			ContratFeve[] c=new ContratFeve[2]; c[0]=c1; c[1]=c2; 
+			return c; } 
 
-		public ContratFeve[] getOffrePublique() {
-			ContratFeve c1=new ContratFeve((IAcheteurFeve) this, null, 1, this.stockmoyen, 0, 0, /*Prix marche*/ 0.0, 0.0, 0.0, false);
-			ContratFeve c2=new ContratFeve((IAcheteurFeve) this, null, 2, this.stockfin, 0, 0, /*Prix marche*/ 0.0, 0.0, 0.0, false);
 
-			ContratFeve[] c=new ContratFeve[2];
-			c[0]=c1;
-			c[1]=c2;
-			return c;
-		}
+		/**
+		 * @author Morgane et Pierre
+		 */
+		public void sendDemandePrivee(ContratFeve[] demandePrivee) { 
+			//HashMap<Integer, HashMap<Acteur, ContratFeve>> asso = new HashMap<Integer, HashMap<Acteur, ContratFeve>>(); 
+			//asso.put(demandePrivee[i].getTransformateur(), demandePrivee[i); 
+			for (int i = 0; i < demandePrivee.length ; i++) { 
+				if (demandePrivee[i].getDemande_Prix() >= demandePrivee[i].getOffrePublique_Prix()*0.9){ 
+					listeContrats.add(demandePrivee[i]) ; 
+				} 
+			} 
+			}  
 
-		public void sendDemandePrivee(ContratFeve[] demandePrivee) {
-			
-		}
-		
-		/*public ContratFeve[] getOffreFinale() {
-			ContratFeve eq4m=
+		/**
+		 * @author Morgane
+		 */
+		public ContratFeve[] getOffreFinale() { 
+			/*int quantite_1 = 0; 
+			int quantite_2 = 0; 
+			for (int i ; i < listeContrats.size() ; i++) { 
+			if (listeContrats.get(i).getQualite() == 1) { 
+			quantite_1 += listeContrats.get(i).getDemande_Quantite() ; 
+			if(quantite_1 < this.stockmoyen) { 
+			ArrayList<ContratFeve> listeContrats_bis = new ArrayList<ContratFeve>() ;
+			listeContrats_bis.setTransformateur() = listeContrats; liste.setOffrePublique_Quantite() = ; 
+			c1.setDemande_Quantite() = ; 
+			liste.setProposition_Quantite() = ;
+			 listeContrats_bis.setProposition_Prix() = listeContrats;
+			 } 
+			else { 
+			ContratFeve c1 = new ContratFeve((IAcheteurFeve) this, this, 1, this.stockmoyen, 0, 0, MarcheFeve.getDemande_Prix(), 0.0, 0.0, 0.0, false) ;
+			 }
+			 else { quantite_2 += listeContrats.get(i).getDemande_Quantite() ;
+			 if(quantite_2 < this.stockfin) { 
+			ContratFeve c2 = new ContratFeve((IAcheteurFeve) this, this, 2, this.stockfin, 0, 0, MarcheFeve.getDemande_Prix(), 0.0, 0.0, 0.0, false);
+			 } 
+			else { 
+			ContratFeve c2 = new ContratFeve((IAcheteurFeve) this, this, 2, this.stockfin, 0, 0, MarcheFeve.getDemande_Prix(), 0.0, 0.0, 0.0, false);
+			 }
+			 */
 			return null;
-		}*/
+			} 
+
+		/**
+		 * @author Morgane
+		 */
 		
 		public void sendResultVentes(ContratFeve[] resultVentes) {
+			for (int i = 0; i < resultVentes.length ; i++) { 
+					listeContrats.add(resultVentes[i]) ; 
+			} 
 			
 		}
 		/**
@@ -185,10 +212,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			
 		}
 
-		@Override
-		public ContratFeve[] getOffreFinale() {
-			// TODO Auto-generated method stub
-			return null;
-		}
+
 	
 }
