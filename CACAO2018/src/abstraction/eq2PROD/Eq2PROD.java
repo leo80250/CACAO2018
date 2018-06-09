@@ -127,10 +127,10 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	
 	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
 	public ContratFeve[] getOffrePublique() {
-		ContratFeve c1 = new ContratFeve(null, this, 0, this.stockQB, 0, 0, 
-				prixMarche()*this.coeffStock*0.85, 0.0, 0.0, false);
-		ContratFeve c2 =  new ContratFeve(null, this, 1, this.stockQM, 0, 0, 
-				prixMarche()*this.coeffStock, 0.0, 0.0, false);
+		ContratFeve c1 = new ContratFeve(null, this, 0, getStockQB(), 0, 0, 
+				prixMarche()*getCoeffSolde()*0.85, 0.0, 0.0, false);
+		ContratFeve c2 =  new ContratFeve(null, this, 1, getStockQM(), 0, 0, 
+				prixMarche()*getCoeffSolde(), 0.0, 0.0, false);
 		ContratFeve[] c = new ContratFeve[2];
 		c[0]=c1; c[1] = c2;
 		return c;
@@ -148,7 +148,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		for (int i=0;i<demandeTran.length;i++ ) {
 			c[i]=demandeTran[i];
 			if (demandeTran[i].getQualite()==0) {
-				if (demandeTran[i].getDemande_Prix()>=prixMarche()*this.coeffStock*0.85) {
+				if (demandeTran[i].getDemande_Prix()>=prixMarche()*getCoeffSolde()*0.85) {
 					
 			} 	else if (demandeTran[i].getDemande_Prix()<prix_minQB) {
 				c[i].setProposition_Prix(prix_minQB);
@@ -157,7 +157,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			}
 		}
 			 else {
-				if (demandeTran[i].getDemande_Prix()>=prixMarche()* this.coeffStock) {
+				if (demandeTran[i].getDemande_Prix()>=prixMarche()*getCoeffSolde()) {
 				
 				} else if (demandeTran[i].getDemande_Prix()<prix_minQM) {
 					
@@ -195,8 +195,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	 * car il est impossible que cela arrive
 	 */
 	public int acheter(int quantite) {
-		if (quantite <= this.stockQB) {
-			this.stockQB=this.stockQB - quantite ;
+		if (quantite <= this.stockQM) {
+			this.stockQM=this.stockQM - quantite ;
 			this.solde = this.solde + quantite*prixMarche()*this.coeffStock ;
 			quantiteEq3 = true;
 			return quantite ;
