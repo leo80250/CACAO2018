@@ -1,13 +1,13 @@
 package abstraction.eq5TRAN;
 
-import static abstraction.eq5TRAN.Marchandises.FEVES_BQ;
-import static abstraction.eq5TRAN.Marchandises.FEVES_MQ;
-import static abstraction.eq5TRAN.Marchandises.FRIANDISES_MQ;
-import static abstraction.eq5TRAN.Marchandises.POUDRE_HQ;
-import static abstraction.eq5TRAN.Marchandises.POUDRE_MQ;
-import static abstraction.eq5TRAN.Marchandises.TABLETTES_BQ;
-import static abstraction.eq5TRAN.Marchandises.TABLETTES_HQ;
-import static abstraction.eq5TRAN.Marchandises.TABLETTES_MQ;
+import static abstraction.eq5TRAN.util.Marchandises.FEVES_BQ;
+import static abstraction.eq5TRAN.util.Marchandises.FEVES_MQ;
+import static abstraction.eq5TRAN.util.Marchandises.FRIANDISES_MQ;
+import static abstraction.eq5TRAN.util.Marchandises.POUDRE_HQ;
+import static abstraction.eq5TRAN.util.Marchandises.POUDRE_MQ;
+import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_BQ;
+import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_HQ;
+import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_MQ;
 
 import java.util.*;
 
@@ -18,6 +18,8 @@ import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
+import abstraction.eq5TRAN.util.Marchandises;
+import abstraction.eq5TRAN.util.ValueComparator;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
@@ -135,37 +137,37 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void achatAuxProducteurs() {
         // Achats aux producteurs
         List<ContratFeve[]> contrats = new ArrayList<ContratFeve[]>();
-        ArrayList<TreeMap<IVendeurFeve, Double>> listePrix = new ArrayList<TreeMap<IVendeurFeve, Double>>();
-        listePrix.add(new TreeMap<IVendeurFeve,Double>()); // BQ
-        listePrix.add(new TreeMap<IVendeurFeve,Double>()); // MQ
+        ArrayList<HashMap<IVendeurFeve, Double>> listePrix = new ArrayList<>();
+        listePrix.add(new HashMap<IVendeurFeve,Double>()); // BQ
+        listePrix.add(new HashMap<IVendeurFeve,Double>()); // MQ
         for(Acteur acteur : Monde.LE_MONDE.getActeurs()) {
             if(!(acteur instanceof IVendeurFeve)) continue;
             IVendeurFeve vendeur = (IVendeurFeve)acteur;
             ContratFeve[] contrat = vendeur.getOffrePublique();
             contrats.add(contrat);
-            listePrix.get(0).put(contrat[0].getProducteur(),contrat[0].getOffrePublique_Prix());
-            listePrix.get(1).put(contrat[0].getProducteur(),contrat[1].getOffrePublique_Prix());
+            listePrix.get(0).put(vendeur,contrat[0].getOffrePublique_Prix());
+            listePrix.get(1).put(vendeur,contrat[1].getOffrePublique_Prix());
         }
 
         // On trie les deux TreeMap par prix croissant
-        TreeMap<IVendeurFeve,Double> prixBQ = new TreeMap<IVendeurFeve,Double>(new ValueComparator(listePrix.get(0)));
-        TreeMap<IVendeurFeve,Double> prixMQ = new TreeMap<IVendeurFeve,Double>(new ValueComparator(listePrix.get(1)));
-        listePrix.clear();
-        listePrix.add(prixBQ);
-        listePrix.add(prixMQ);
+        TreeMap<IVendeurFeve, Double> prixBQ = new TreeMap<IVendeurFeve,Double>(new ValueComparator(listePrix.get(0)));
+        TreeMap<IVendeurFeve, Double> prixMQ = new TreeMap<IVendeurFeve,Double>(new ValueComparator(listePrix.get(1)));
+        ArrayList<TreeMap<IVendeurFeve,Double>> listePrixTriee = new ArrayList<TreeMap<IVendeurFeve,Double>>();
+        listePrixTriee.add(prixBQ);
+        listePrixTriee.add(prixMQ);
 
         // On établit les quantites demandees sachant qu'on essaie toujours d'acheter 70% au moins cher
         HashMap<IVendeurFeve, Integer[]> quantitesDemandees = new HashMap<IVendeurFeve,Integer[]>();
-        for(IVendeurFeve vendeur : listePrix.get(0).keySet()) quantitesDemandees.put(vendeur, new Integer[2]);
+        for(IVendeurFeve vendeur : listePrixTriee.get(0).keySet()) quantitesDemandees.put(vendeur, new Integer[2]);
         for (int i = 0; i < 2; i++) { // Pour les feves BQ et MQ
             double resteACommander = achatsSouhaites[i].getValeur();
 
             boolean premier = true;
-            for(IVendeurFeve vendeur : listePrix.get(i).keySet()) {
-                Integer quantite = (int)Math.min(resteACommander,listePrix.get(i).get(vendeur));
+            for(IVendeurFeve vendeur : listePrixTriee.get(i).keySet()) {
+                Integer quantite = (int)Math.min(resteACommander,listePrixTriee.get(i).get(vendeur));
                 if(premier) {
                     premier=false;
-                    quantite = (int)Math.min(0.7*resteACommander,listePrix.get(i).get(vendeur));
+                    quantite = (int)Math.min(0.7*resteACommander,listePrixTriee.get(i).get(vendeur));
                 }
                 resteACommander-=quantite;
                 quantitesDemandees.get(vendeur)[i]+=quantite;
@@ -173,10 +175,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
             // si il reste a commander on se permet de depasser les 70%
             premier = true;
-            for(IVendeurFeve vendeur : listePrix.get(i).keySet()) {
+            for(IVendeurFeve vendeur : listePrixTriee.get(i).keySet()) {
                 if(premier) {
                     premier=false;
-                    Integer quantite = (int)Math.min(resteACommander,listePrix.get(i).get(vendeur)-quantitesDemandees.get(vendeur)[i]);
+                    Integer quantite = (int)Math.min(resteACommander,listePrixTriee.get(i).get(vendeur)-quantitesDemandees.get(vendeur)[i]);
                     resteACommander-=quantite;
                     quantitesDemandees.get(vendeur)[i]+=quantite;
                 }
