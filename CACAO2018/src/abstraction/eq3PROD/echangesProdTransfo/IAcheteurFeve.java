@@ -31,7 +31,8 @@ public interface IAcheteurFeve {
 	 * Informe l'acteur fictif des contrats en cours (MODELISATION)
 	 * Utiliser marche.getContrat()
 	 */
-	public void sendContratFictif();
+	
+	public void sendContratFictif(ContratFeve[] listContrats);
 	
 	/** 
 	 * Informe un transformateur des offres finales des producteurs qui lui sont destinees

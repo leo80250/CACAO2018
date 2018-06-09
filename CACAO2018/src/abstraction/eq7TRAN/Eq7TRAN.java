@@ -40,14 +40,22 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private Indicateur[] productionTablettesAttendue;
 	
 	private ContratPoudre[] commandesEnCours;
+	private ContratFeve[] offresFevesPubliquesEnCours;
+	
+	// En disant arbitrairement 
+	private Indicateur nombreEmployes;
 
-	private int MOY_TAUX_EFFICACITE_EMPLOYES = 1;
+	private final int MOY_TAUX_EFFICACITE_EMPLOYES = 1;
 	
 	// en tonnes par 2 semaines
 	private final int[] MOY_ACHAT_FEVES = {0, 1400, 3200};
 	private final int[] MOY_ACHAT_POUDRE = {0, 0, 0};
 	private final int[] MOY_VENTE_POUDRE = {0, 0, 1000};
 	private final int[] MOY_VENTE_TABLETTE = {0, 1400, 2300};
+	
+	// en tonnes par 2 semaines
+	private final double[] MOY_PROD_POUDRE_PAR_EMPLOYE = {1,1,1};
+	private final double[] MOY_PROD_TABLETTE_PAR_EMPLOYE = {1,1.5,2.2};
 	
 	private final int SUM_MOY_VENTE_POUDRE = MOY_VENTE_POUDRE[0]+MOY_VENTE_POUDRE[1]+MOY_VENTE_POUDRE[2];
 	private final int SUM_MOY_VENTE_TABLETTES = MOY_VENTE_TABLETTE[0]+MOY_VENTE_TABLETTE[1]+MOY_VENTE_TABLETTE[2];
@@ -59,11 +67,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private final double MOY_PRIX_FRAIS_VENTE_FEVES = 0;
 	private final double MOY_MARGE_POUDRE = 0.2;
 	private final double MOY_MARGE_TABLETTE = 0.2;
+	
 
 	public Eq7TRAN(Monde monde, String nom) {
 		this.nom = nom;
 		this.achats = new Indicateur("Achat de "+this.getNom(), this, 0.0);
 		this.ventes = new Indicateur("Vente de "+this.getNom(), this, 0.0);
+		this.nombreEmployes = new Indicateur("Nombre d'employés : ", this, 1000.0);
 		this.stockFeves = new Indicateur[3];
 		this.stockPoudre = new Indicateur[3];
 		this.stockTablettes = new Indicateur[3];
@@ -108,6 +118,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 
 	public void next() {
 		this.calculateAbsenteisme();
+
+		this.calculateTauxEfficacite();
+
+		this.getJournal().ajouter("Absenteisme = " + this.getAbsenteisme().getValeur());
+		this.getJournal().ajouter("Efficacite = " + this.getEfficacite().getValeur());
 		/*this.calculateTauxEfficacite();
 		this.calculateProductionPoudreReelle(0);
 		this.calculateProductionPoudreReelle(1);
@@ -115,10 +130,16 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.calculateProductionTablettesReelle(0);
 		this.calculateProductionTablettesReelle(1);
 		this.calculateProductionTablettesReelle(2);
-		this.getJournal().ajouter("Absenteisme = " + this.getAbsenteisme().getValeur());
+
+		
+
+		//this.getJournal().ajouter("Estimation prix achat feves = " + this.estimatePrixAchatFeves(0));
+		//this.getJournal().ajouter("Estimation prix vente poudre BQ = " + this.estimatePrixVentePoudre(0));
+
 		this.getJournal().ajouter("Estimation prix achat feves = " + this.estimatePrixAchatFeves(0)+", "+this.estimatePrixAchatFeves(1)+", "+this.estimatePrixAchatFeves(2));
 		this.getJournal().ajouter("Estimation prix vente poudre BQ = " + this.estimatePrixVentePoudre(0)+", "+this.estimatePrixVentePoudre(1)+", "+this.estimatePrixVentePoudre(2));
 		*/
+
 	}
 	
 	
@@ -228,6 +249,18 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public Indicateur getProductionTablettesAttendue(int qualite) {
 		return this.getProductionPoudreAttendue()[qualite];
 	}
+	public void setOffresFevesPubliquesEnCours(ContratFeve[] offres) {
+		this.offresFevesPubliquesEnCours = offres;
+	}
+	public ContratFeve[] getOffresFevesPubliquesEnCours() {
+		return this.offresFevesPubliquesEnCours;
+	}
+	public Indicateur getNombreEmployes() {
+		return this.nombreEmployes;
+	}
+	public void setNombreEmployes(int n) {
+		this.nombreEmployes.setValeur(this, (double)n);
+	}
 	
 	/** calculateAbsenteisme
 	 * @author boulardmaelle, leofargeas
@@ -243,11 +276,33 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			this.getAbsenteisme().setValeur(this, newAbsenteisme);
 	}
 	
-	/** calculateefficacite 
-	 * 
+	/** calculateEfficacite  
+	 * @author margauxgrand, boulardmaelle
+	 * @return le taux d'efficacite entre 70 et 120
 	 */
 	public void calculateTauxEfficacite() {
-		
+		double abs = this.getAbsenteisme().getValeur();
+		int emplPresents= (int) (this.getNombreEmployes().getValeur()*(1-abs)*100/this.getNombreEmployes().getValeur());
+		double efficaciteAbs = emplPresents/3;
+		double chancebeautemps = Math.random();
+		double efficaciteTemps;
+		double efficaciteJourFerie;
+		double efficaciteFinale;
+		if (chancebeautemps > 0.5) {
+			efficaciteTemps=21;
+		} else if (chancebeautemps<0.1) {
+			efficaciteTemps=-8;
+		} else {
+			efficaciteTemps=4;
+		}
+		int jourFerie=(int) Math.ceil(Math.random()*3); //maximum 3 jours feries
+		efficaciteJourFerie= -jourFerie;
+		efficaciteFinale= 110-efficaciteAbs+efficaciteTemps+efficaciteJourFerie; //Disons que de base, on a une 
+		//efficacite de 110%, parce que nos employes sont bons.
+		this.getEfficacite().setValeur(this, efficaciteFinale/100);
+		if (efficaciteFinale<60.0 || efficaciteFinale>120.0) {
+			this.getEfficacite().setValeur(this, 95/100); //on met 95% d'efficacite pour repartir sur de bonnes bases
+		}
 	}
 	
 	public double estimateCoutTransformationPoudre(int qualite) {
@@ -339,11 +394,58 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 	}
 	
+	////////////////////////////
+	// METHODES ACHETEUR FEVE //
+	////////////////////////////
+	
+	public ContratFeve[] analyseOffresFevesPubliques(ContratFeve[] offresPubliques) {
+		// on boucle sur les offres publiques et on vérifie pour le 
+		// moment seulement qu'on peut tout produire avec nos employés
+		
+		ContratFeve[] offresRetenusParQualite = new ContratFeve[3];
+				
+		for(ContratFeve offre : offresPubliques) {
+			int productionPoudreMax = (int) (this.MOY_PROD_POUDRE_PAR_EMPLOYE[offre.getQualite()]*this.getNombreEmployes().getValeur()*this.getEfficacite().getValeur());
+			int productionTabletteMax = (int) (this.MOY_PROD_TABLETTE_PAR_EMPLOYE[offre.getQualite()]*this.getNombreEmployes().getValeur()*this.getEfficacite().getValeur());
+			int productionTotaleMax = Math.max(productionPoudreMax, productionTabletteMax);
+			
+			int productionMaxPrevisionnelle = 0;
+			int prixMaxPrevisionnelle = 0;
+			
+			// il faut prendre toutes les offres et quelles sont les plus rentables
+			// cad optimiser 1) produire et vendre un max 2) payer le moins cher
+			
+			if((offre.getQualite() != 0)) {
+				productionMaxPrevisionnelle += (offresRetenusParQualite[0].getDemande_Quantite() != 0) ? offresRetenusParQualite[0].getDemande_Quantite() : offresRetenusParQualite[0].getOffrePublique_Quantite();
+			}
+			if((offre.getQualite() != 1)) {
+				productionMaxPrevisionnelle += (offresRetenusParQualite[1].getDemande_Quantite() != 0) ? offresRetenusParQualite[1].getDemande_Quantite() : offresRetenusParQualite[1].getOffrePublique_Quantite();
+			}
+			if((offre.getQualite() != 2)) {
+				productionMaxPrevisionnelle += (offresRetenusParQualite[2].getDemande_Quantite() != 0) ? offresRetenusParQualite[2].getDemande_Quantite() : offresRetenusParQualite[2].getOffrePublique_Quantite();
+			}
+			if(offre.getOffrePublique_Quantite() < productionTotaleMax) {
+				
+			}
+		}
+		
+		return offresFevesPubliquesEnCours;
+	}
+		
 	/**
 	 * Interface IAcheteurFeve
 	 * @author boulardmaelle, margauxgrand
 	 */
 	
+	@Override
+	public void sendOffrePublique(ContratFeve[] offresPubliques) {
+		// On garde les anciennes offres ?
+		/*
+		ContratFeve[] oldOffres = this.getOffresFevesPubliquesEnCours();
+		int n = oldOffres.length;
+		*/
+		this.setOffresFevesPubliquesEnCours(offresPubliques);
+	}
 	
 	@Override
 	public ContratFeve[] getDemandePrivee() {
@@ -351,7 +453,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		return null;
 	}
 	@Override
-	public void sendContratFictif() {
+	public void sendContratFictif(ContratFeve[] listContrats) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -392,11 +494,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		// TODO Auto-generated method stub
 		return null;
 	}
-	@Override
-	public void sendOffrePublique(ContratFeve[] offrePublique) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	//Joseph Bernard
 	/*
