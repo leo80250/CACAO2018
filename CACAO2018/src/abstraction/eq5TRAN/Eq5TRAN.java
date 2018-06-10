@@ -1,13 +1,6 @@
 package abstraction.eq5TRAN;
 
-import static abstraction.eq5TRAN.util.Marchandises.FEVES_BQ;
-import static abstraction.eq5TRAN.util.Marchandises.FEVES_MQ;
-import static abstraction.eq5TRAN.util.Marchandises.FRIANDISES_MQ;
-import static abstraction.eq5TRAN.util.Marchandises.POUDRE_HQ;
-import static abstraction.eq5TRAN.util.Marchandises.POUDRE_MQ;
-import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_BQ;
-import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_HQ;
-import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_MQ;
+import static abstraction.eq5TRAN.util.Marchandises.*;
 
 import java.util.*;
 
@@ -70,6 +63,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         productionSouhaitee[TABLETTES_BQ] = new Indicateur("Eq5 - Production souhaitee de tablettes BQ", this, 345);
         productionSouhaitee[TABLETTES_MQ] = new Indicateur("Eq5 - Production souhaitee de tablettes MQ", this, 575);
         productionSouhaitee[TABLETTES_HQ] = new Indicateur("Eq5 - Production souhaitee de tablettes HQ", this, 115);
+        productionSouhaitee[POUDRE_BQ] = new Indicateur("Eq5 - Production souhaitee de poudre BQ", this, 360);
         productionSouhaitee[POUDRE_MQ] = new Indicateur("Eq5 - Production souhaitee de poudre MQ", this, 50);
         productionSouhaitee[POUDRE_HQ] = new Indicateur("Eq5 - Production souhaitee de poudre HQ", this, 0);
         productionSouhaitee[FRIANDISES_MQ] = new Indicateur("Eq5 - Production souhaitee de friandises MQ", this, 115);
@@ -79,8 +73,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         achatsSouhaites[TABLETTES_BQ] = new Indicateur("Eq5 - Achats souhaites de tablettes BQ", this, 0);
         achatsSouhaites[TABLETTES_MQ] = new Indicateur("Eq5 - Achats souhaites de tablettes MQ", this, 0);
         achatsSouhaites[TABLETTES_HQ] = new Indicateur("Eq5 - Achats souhaites de tablettes HQ", this, 0);
+        achatsSouhaites[POUDRE_BQ] = new Indicateur("Eq5 - Achats souhaites de poudre BQ", this, 0);
         achatsSouhaites[POUDRE_MQ] = new Indicateur("Eq5 - Achats souhaites de poudre MQ", this, 0);
-        achatsSouhaites[POUDRE_HQ] = new Indicateur("Eq5 - Achats souhaites de poudre HQ", this, 0);
+        achatsSouhaites[POUDRE_HQ] = new Indicateur("Eq5 - Achats souhaites de poudre HQ", this, 115);
         achatsSouhaites[FRIANDISES_MQ] = new Indicateur("Eq5 - Achats souhaites de friandises MQ", this, 0);
 
         prix[FEVES_BQ] = new Indicateur("Eq5 - Prix de feves BQ", this, 0);
@@ -88,6 +83,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         prix[TABLETTES_BQ] = new Indicateur("Eq5 - Prix de tablettes BQ", this, 100);
         prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ", this, 100);
         prix[TABLETTES_HQ] = new Indicateur("Eq5 - Prix de tablettes HQ", this, 0);
+        prix[POUDRE_BQ] = new Indicateur("Eq5 - Prix de poudre BQ", this, 0);
         prix[POUDRE_MQ] = new Indicateur("Eq5 - Prix de poudre MQ", this, 100);
         prix[POUDRE_HQ] = new Indicateur("Eq5 - Prix de poudre HQ", this, 0);
         prix[FRIANDISES_MQ] = new Indicateur("Eq5 - Prix de friandises MQ", this, 100);
@@ -116,6 +112,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         Monde.LE_MONDE.ajouterIndicateur(stocks[TABLETTES_BQ]);
         Monde.LE_MONDE.ajouterIndicateur(stocks[TABLETTES_MQ]);
         Monde.LE_MONDE.ajouterIndicateur(stocks[TABLETTES_HQ]);
+        Monde.LE_MONDE.ajouterIndicateur(stocks[FRIANDISES_MQ]);
 
         journal = new Journal("Journal Eq5");
         Monde.LE_MONDE.ajouterJournal(journal);
@@ -129,6 +126,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     @Override
     public void next() {
         achatAuxProducteurs();
+//        achatAuxTransformateurs(); // inutilisable pour l'instant par manque de doc
+//        venteAuxDistributeurs(); // pas encore implémenté
+        production();
     }
 
     /**
@@ -138,90 +138,139 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         // Achats aux producteurs
         List<ContratFeve[]> contrats = new ArrayList<ContratFeve[]>();
         ArrayList<HashMap<IVendeurFeve, Double>> listePrix = new ArrayList<>();
-        listePrix.add(new HashMap<IVendeurFeve,Double>()); // BQ
-        listePrix.add(new HashMap<IVendeurFeve,Double>()); // MQ
-        for(Acteur acteur : Monde.LE_MONDE.getActeurs()) {
-            if(!(acteur instanceof IVendeurFeve)) continue;
-            IVendeurFeve vendeur = (IVendeurFeve)acteur;
+        listePrix.add(new HashMap<IVendeurFeve, Double>()); // BQ
+        listePrix.add(new HashMap<IVendeurFeve, Double>()); // MQ
+        for (Acteur acteur : Monde.LE_MONDE.getActeurs()) {
+            if (!(acteur instanceof IVendeurFeve)) continue;
+            IVendeurFeve vendeur = (IVendeurFeve) acteur;
             ContratFeve[] contrat = vendeur.getOffrePublique();
             contrats.add(contrat);
-            listePrix.get(0).put(vendeur,contrat[0].getOffrePublique_Prix());
-            listePrix.get(1).put(vendeur,contrat[1].getOffrePublique_Prix());
+            listePrix.get(0).put(vendeur, contrat[0].getOffrePublique_Prix());
+            listePrix.get(1).put(vendeur, contrat[1].getOffrePublique_Prix());
         }
 
         // On trie les deux TreeMap par prix croissant
-        TreeMap<IVendeurFeve, Double> prixBQ = new TreeMap<IVendeurFeve,Double>(new ValueComparator(listePrix.get(0)));
-        TreeMap<IVendeurFeve, Double> prixMQ = new TreeMap<IVendeurFeve,Double>(new ValueComparator(listePrix.get(1)));
-        ArrayList<TreeMap<IVendeurFeve,Double>> listePrixTriee = new ArrayList<TreeMap<IVendeurFeve,Double>>();
+        TreeMap<IVendeurFeve, Double> prixBQ = new TreeMap<IVendeurFeve, Double>(new ValueComparator(listePrix.get(0)));
+        TreeMap<IVendeurFeve, Double> prixMQ = new TreeMap<IVendeurFeve, Double>(new ValueComparator(listePrix.get(1)));
+        ArrayList<TreeMap<IVendeurFeve, Double>> listePrixTriee = new ArrayList<TreeMap<IVendeurFeve, Double>>();
         listePrixTriee.add(prixBQ);
         listePrixTriee.add(prixMQ);
 
         // On établit les quantites demandees sachant qu'on essaie toujours d'acheter 70% au moins cher
-        HashMap<IVendeurFeve, Integer[]> quantitesDemandees = new HashMap<IVendeurFeve,Integer[]>();
-        for(IVendeurFeve vendeur : listePrixTriee.get(0).keySet()) quantitesDemandees.put(vendeur, new Integer[2]);
+        HashMap<IVendeurFeve, Integer[]> quantitesDemandees = new HashMap<IVendeurFeve, Integer[]>();
+        for (IVendeurFeve vendeur : listePrixTriee.get(0).keySet()) quantitesDemandees.put(vendeur, new Integer[2]);
         for (int i = 0; i < 2; i++) { // Pour les feves BQ et MQ
             double resteACommander = achatsSouhaites[i].getValeur();
 
             boolean premier = true;
-            for(IVendeurFeve vendeur : listePrixTriee.get(i).keySet()) {
-                Integer quantite = (int)Math.min(resteACommander,listePrixTriee.get(i).get(vendeur));
-                if(premier) {
-                    premier=false;
-                    quantite = (int)Math.min(0.7*resteACommander,listePrixTriee.get(i).get(vendeur));
+            for (IVendeurFeve vendeur : listePrixTriee.get(i).keySet()) {
+                Integer quantite = (int) Math.min(resteACommander, listePrixTriee.get(i).get(vendeur));
+                if (premier) {
+                    premier = false;
+                    quantite = (int) Math.min(0.7 * resteACommander, listePrixTriee.get(i).get(vendeur));
                 }
-                resteACommander-=quantite;
-                quantitesDemandees.get(vendeur)[i]+=quantite;
+                resteACommander -= quantite;
+                quantitesDemandees.get(vendeur)[i] += quantite;
             }
 
             // si il reste a commander on se permet de depasser les 70%
             premier = true;
-            for(IVendeurFeve vendeur : listePrixTriee.get(i).keySet()) {
-                if(premier) {
-                    premier=false;
-                    Integer quantite = (int)Math.min(resteACommander,listePrixTriee.get(i).get(vendeur)-quantitesDemandees.get(vendeur)[i]);
-                    resteACommander-=quantite;
-                    quantitesDemandees.get(vendeur)[i]+=quantite;
+            for (IVendeurFeve vendeur : listePrixTriee.get(i).keySet()) {
+                if (premier) {
+                    premier = false;
+                    Integer quantite = (int) Math.min(resteACommander, listePrixTriee.get(i).get(vendeur) - quantitesDemandees.get(vendeur)[i]);
+                    resteACommander -= quantite;
+                    quantitesDemandees.get(vendeur)[i] += quantite;
                 }
             }
 
-            if(resteACommander>0) journal.ajouter("L'équipe 5 n'a pas réussi a commander assez de fèves " + (i==0?"BQ":"MQ") + ", manque de " + resteACommander + "T");
+            if (resteACommander > 0)
+                journal.ajouter("L'équipe 5 n'a pas réussi a commander assez de fèves " + (i == 0 ? "BQ" : "MQ") + ", manque de " + resteACommander + "T");
         }
 
         // On formule ensuite les demandes
-        for(ContratFeve[] contrat : contrats) {
-            for(IVendeurFeve vendeur : quantitesDemandees.keySet()) {
-                if(!((Acteur)vendeur).getNom().equals(((Acteur)contrat[0].getProducteur()))) continue;
+        for (ContratFeve[] contrat : contrats) {
+            for (IVendeurFeve vendeur : quantitesDemandees.keySet()) {
+                if (!((Acteur) vendeur).getNom().equals(((Acteur) contrat[0].getProducteur()))) continue;
                 Integer[] quantites = quantitesDemandees.get(vendeur);
-                if(quantites[0]==0 && quantites[1]==0) continue;
+                if (quantites[0] == 0 && quantites[1] == 0) continue;
                 for (int i = 0; i < 2; i++) {
                     contrat[i].setDemande_Quantite(quantites[i]);
-                    contrat[i].setDemande_Prix(quantites[i]*prix[i].getValeur());
+                    contrat[i].setDemande_Prix(quantites[i] * prix[i].getValeur());
                 }
                 vendeur.sendDemandePrivee(contrat);
             }
         }
 
         // On va maintenant etudier les propositions: version rudimentaire v1
-        for(IVendeurFeve vendeur : quantitesDemandees.keySet()) {
+        for (IVendeurFeve vendeur : quantitesDemandees.keySet()) {
             ContratFeve[] offreFinale = vendeur.getOffreFinale();
-            int depense=0;
-            for(ContratFeve contrat : offreFinale) {
+            int depense = 0;
+            for (ContratFeve contrat : offreFinale) {
                 contrat.setReponse(true); // On accpete automatiquement les contrats issus des demandes que l'in avait formule
-                depense+=contrat.getProposition_Quantite()*contrat.getProposition_Prix();
+                depense += contrat.getProposition_Quantite() * contrat.getProposition_Prix();
             }
             vendeur.sendResultVentes(offreFinale);
             depenser(depense);
-            journal.ajouter("L'equipe 5 vient de passer une commande (officielle) au vendeur " + ((Acteur)vendeur).getNom() + " pour " + depense + "€");
+            journal.ajouter("L'equipe 5 vient de passer une commande (officielle) au vendeur " + ((Acteur) vendeur).getNom() + " pour " + depense + "€");
         }
+    }
+
+    /**
+     * @author Thomas Schillaci
+     * N.B. On travaille plus souplement qu'avec les producteurs
+     */
+    public void achatAuxTransformateurs() {
+        // On achete de la poudre HQ a l'eq. 7
+        IVendeurPoudre vendeur = (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq7TRAN");
+        ContratPoudre contrat=null;
+        for(ContratPoudre c : vendeur.getCataloguePoudre(this)) {
+            if(c.getQualite()==2) {
+                contrat=c;
+                break;
+            }
+        }
+        if(contrat==null) {
+            journal.ajouter("L'eq 5 n'a pas pu acheter de poudre HQ a l'equipe 7 comme convenu car celle-ci n'en vend pas");
+            return;
+        }
+    }
+
+    public void venteAuxDistributeurs() {
+        
+    }
+
+    /**
+     * @author Thomas Schillaci
+     */
+    public void production() {
+        production(POUDRE_BQ,TABLETTES_BQ);
+        production(POUDRE_MQ,TABLETTES_MQ);
+        production(POUDRE_HQ,TABLETTES_HQ);
+        production(POUDRE_MQ,FRIANDISES_MQ);
+        production(FEVES_BQ,POUDRE_BQ);
+        production(FEVES_MQ,POUDRE_MQ);
+    }
+
+    /**
+     * @author Thomas Schillaci
+     * Transforme la merch1 en merch2
+     */
+    public void production(int merch1, int merch2) {
+        double quantite = Math.min(stocks[merch1].getValeur(),productionSouhaitee[merch2].getValeur());
+        if(quantite<productionSouhaitee[merch2].getValeur()) journal.ajouter("L'eq. 5 n'a pas pu produire assez de " + Marchandises.getMarchandise(merch2) + " par manque de stock de " + Marchandises.getMarchandise(merch1));
+        stocks[merch1].setValeur(this,stocks[merch1].getValeur()-quantite);
+        stocks[merch2].setValeur(this,stocks[merch2].getValeur()+quantite);
     }
 
     /**
      * @author Thomas Schillaci
      */
     public void depenser(double depense) {
-        double resultat=banque.getValeur()-depense;
-        banque.setValeur(this,resultat);
-        if(resultat<0) journal.ajouter("L'equipe 5 est a decouvert !\nCompte en banque: "+banque.getValeur()+"€");
+        double resultat = banque.getValeur() - depense;
+        banque.setValeur(this, resultat);
+        if (resultat < 0)
+            journal.ajouter("L'equipe 5 est a decouvert !\nCompte en banque: " + banque.getValeur() + "€");
     }
 
     @Override
