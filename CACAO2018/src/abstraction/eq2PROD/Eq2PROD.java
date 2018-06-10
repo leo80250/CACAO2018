@@ -21,6 +21,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	private final static double prix_minQM = 1000;
 	private final static double prix_minQB = 850;
 	private boolean quantiteEq3;
+	private Indicateur indicateurQB;
+	private Indicateur indicateurQM;
 	
 // CONSTRUCTEURS
 	public Eq2PROD() {
@@ -289,11 +291,21 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	public void setStockQMoy(Indicateur i) {
 		this.stockQMoy = i;
 	}
+	
+	protected void setStockAffichage() {
+		calculCoeffPrixVentes();
+		addStockQM( (int) (getCoeffSolde()*MOY_QM));
+		addStockQB( (int) (getCoeffSolde()*MOY_QB));
+	}
+	
 	/* Agathe Chevalier + Alexandre Bigot */
 	public Eq2PROD(Monde monde, String nom) {
 		setNomEq(nom);
-		setStockQBas(new Indicateur("Stock de "+getNomEq()+" de basse qualité",this,getStockQB()));
-		setStockQMoy(new Indicateur("Stock de "+getNomEq()+" de moyenne qualité",this,getStockQM()));
+		setStockAffichage();
+		this.indicateurQB = new Indicateur("Stock de "+getNomEq()+" de basse qualité",this,getStockQB());
+		this.indicateurQM = new Indicateur("Stock de "+getNomEq()+" de moyenne qualité",this,getStockQM());
+		setStockQBas(indicateurQB);
+		setStockQMoy(indicateurQM);
 		
 		setJournal(new Journal("Journal de"+getNomEq()));
 		setJournalOccasionel(new Journal("Journal de ventes occasionnelles de"+getNomEq()));
@@ -306,10 +318,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 // NEXT DE NOTRE ACTEUR
 	/* Code par Guillaume SALLE + Agathe CHEVALIER */
 	public void next() {
-		calculCoeffPrixVentes();
-		addStockQM( (int) (getCoeffSolde()*MOY_QM));
-		addStockQB( (int) (getCoeffSolde()*MOY_QB));
 		retireSolde(coutFixe);
+		
 		this.getJournal().ajouter("Quantité basse qualité = "+ getStockQB());
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ getStockQM());
 		this.getJournal().ajouter("Coefficient de la météo ="+ getCoeffMeteo());
@@ -325,5 +335,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			this.getJournalOccasionel().ajouter("Aucune transaction n'a été réalisée avec l'équipe3");
 		}
 		this.getJournalOccasionel().ajouter("------------------------------------------------------------------------------");
+		setStockAffichage();
+		indicateurQB.setValeur(this, getStockQB());
+		indicateurQM.setValeur(this, getStockQM());
 	}
 }
