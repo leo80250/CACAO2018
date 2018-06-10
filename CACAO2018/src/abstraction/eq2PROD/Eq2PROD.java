@@ -35,7 +35,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		this.quantiteEq3 = false;
 	}
 	
-// GETTEURS ET SETTEURS
+// GETTEURS
 	/* Guillaume Sallé (jusqu'à getNom())*/
 	public int getStockQM() {
 		return this.stockQM;
@@ -64,10 +64,15 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	public void retireStockQM(int s) {
 		this.stockQM = this.stockQM - s;
 	}
-	public double getCoeffSolde() {
+	// Coeff pour l'augmentation du stock (en fct de meteo et maladie), calculé ligne 156
+	public double getCoeffStock() {
 		return this.coeffStock;
 	}
-	public void setCoeffSolde(double x) {
+	// Coeff pour le calcul des prixOffrePublique dans les contrats (plus on récolte, moins c'est cher).
+	public double getCoeffSolde() {
+		return 2.0-getCoeffStock();
+	}
+	public void setCoeffStock(double x) {
 		this.coeffStock = x;
 	}
 	public boolean getQuantiteEq3() {
@@ -87,9 +92,9 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	public void setDemandeTran(ContratFeve[] demande) {
 		this.demandeTran = demande;
 	}
-	/* Alexandre Bigot */
+	/* Alexandre Bigot + Guillaume Sallé*/
 	public double getPrix() {
-		return prixMarche()*this.coeffStock ;
+		return prixMarche()*getCoeffSolde() ;
 	}
 	/* Alexandre Bigot + Guillaume Sallé */
 	public double getCoeffMeteo() {
@@ -148,7 +153,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	private void calculCoeffPrixVentes() {
 		double coeffMeteo = meteo();
 		double coeffMaladie = maladie();
-		setCoeffSolde(-0.2*(coeffMeteo-coeffMaladie)+1.2);
+		setCoeffStock(-0.2*(coeffMeteo-coeffMaladie)+1.2);
 	}
 	
 /* IMPLEMENTATION DES DIFFERENTES INTERFACES UTILES A NOTRE ACTEUR
@@ -223,8 +228,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	 * car il est impossible que cela arrive
 	 */
 	public int acheter(int quantite) {
-		if (quantite <= this.stockQM) {
-			retireStockQM(quantite) ;
+		if (quantite <= getStockQM()) {
+			retireStockQM(quantite);
 			addSolde(quantite*getPrix()) ;
 			setQuantiteEq3(true);
 			return quantite ;
@@ -307,8 +312,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	/* Code par Guillaume SALLE + Agathe CHEVALIER */
 	public void next() {
 		calculCoeffPrixVentes();
-		addStockQM( (int) (getCoeffSolde()*MOY_QM));
-		addStockQB( (int) (getCoeffSolde()*MOY_QB));
+		addStockQM( (int) (getCoeffStock()*MOY_QM));
+		addStockQB( (int) (getCoeffStock()*MOY_QB));
 		retireSolde(coutFixe);
 		this.getJournal().ajouter("Quantité basse qualité = "+ getStockQB());
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ getStockQM());
