@@ -150,15 +150,14 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	}
 	
 	/* Alexandre Bigot + Guillaume Sallé */
-	private void calculCoeffPrixVentes() {
+	private void calculCoeffStock() {
 		double coeffMeteo = meteo();
 		double coeffMaladie = maladie();
 		setCoeffStock(-0.2*(coeffMeteo-coeffMaladie)+1.2);
 	}
 	
 /* IMPLEMENTATION DES DIFFERENTES INTERFACES UTILES A NOTRE ACTEUR
- * Ici nous avons implemente IVendeurFeve et IVendeurFevesProd
- */
+ * Ici nous avons implemente IVendeurFeve et IVendeurFevesProd */
 	
 	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
 	public ContratFeve[] getOffrePublique() {
@@ -182,15 +181,20 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		ContratFeve[] c=new ContratFeve[demandeTran.length];
 		for (int i=0;i<demandeTran.length;i++ ) {
 			c[i]=demandeTran[i];
+			// Les transfo ne représentent pas tout le marché : on peut toujours leur vendre la quantité demandée
+			c[i].setProposition_Quantite(demandeTran[i].getDemande_Quantite());
 			if (demandeTran[i].getQualite()==0) {
+				// Si leur prix est supérieur au notre, on prend le leur et on est content
 				if (demandeTran[i].getDemande_Prix()>=demandeTran[i].getOffrePublique_Prix()) {
 				c[i].setProposition_Prix(demandeTran[i].getDemande_Prix());
+				// Si le prix est en-dessous de notre seuil de rentabilité, on propose notre seuil
 			} 	else if (demandeTran[i].getDemande_Prix()<prix_minQB) {
 				c[i].setProposition_Prix(prix_minQB);
+				// Sinon on propose un prix intermédiaire à notre seuil et leur demande
 			}	else {
 				c[i].setProposition_Prix(0.25*prix_minQB+0.75*demandeTran[i].getDemande_Prix());
 			}
-		}
+		} // On fait pareil avec l'autre qualité (prix_minQB -> prix_minQM)
 			 else {
 				if (demandeTran[i].getDemande_Prix()>=demandeTran[i].getOffrePublique_Prix()) {
 					c[i].setProposition_Prix(demandeTran[i].getDemande_Prix());
@@ -207,8 +211,9 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
     public void sendResultVentes(ContratFeve[] resultVentes) {
     double chiffreDAffaire=0;
    	 for (int i=0; i<resultVentes.length;i++) {
+   		 // Si le contrat i est accepté par le transfo
    		 if (resultVentes[i].getReponse()) {
-   			 
+   			 // On augmente notre solde et on diminue notre stock (QB ou QM)
    			 if (resultVentes[i].getQualite()==0) {
    				 addSolde(resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite()) ;
    				 retireStockQB(resultVentes[i].getProposition_Quantite()) ;
@@ -220,12 +225,14 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
    				 chiffreDAffaire+=resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite();
    			 } 
    		 } 
-   	 } retireSolde(0.35*chiffreDAffaire); // Salaires = 35% du CA
+   		 // On paye les salaires : 35% du CA
+   	 } retireSolde(0.35*chiffreDAffaire);
     }
 	
 	/* Alexandre Bigot
 	 * Le cas où la quantité demandée est inférieure au stock n'est au final pas codée
-	 * car il est impossible que cela arrive
+	 * car il est théoriquement impossible que cela arrive :
+	 * les producteurs représentent tout le marché mondial mais pas les transformateurs.
 	 */
 	public int acheter(int quantite) {
 		if (quantite <= getStockQM()) {
@@ -311,7 +318,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 // NEXT DE NOTRE ACTEUR
 	/* Code par Guillaume SALLE + Agathe CHEVALIER */
 	public void next() {
-		calculCoeffPrixVentes();
+		calculCoeffStock();
 		addStockQM( (int) (getCoeffStock()*MOY_QM));
 		addStockQB( (int) (getCoeffStock()*MOY_QB));
 		retireSolde(coutFixe);
