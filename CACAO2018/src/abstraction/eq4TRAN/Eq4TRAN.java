@@ -98,23 +98,23 @@ IVendeurPoudre{
 		 *  ?????????????????????????
 		 */
 		
-		//contratFeveEnCours.add(null) ;
 		
-
+		
+		
 		/**
 		 * pour chaque contrat on récupère prix et qté
 		 */
 		/**
 		 * pour contrat fève 
 		 */
-		for(int i = 0 ; i < contratFeveEnCours.length ; i++) {
+		/*for(int i = 0 ; i < contratFeveEnCours.length ; i++) {
 			/**
 			 * Selon la qualité
 			 * On récupère les qtés de fèves achetées
 			 * Elles sont transformées immédiatement en produits
 			 * Les produits sont ajoutés aux stocks
 			 * Le coût total de l'achat est retiré au solde
-			 */
+			 
 			if (contratFeveEnCours[i].getReponse()) {
 				if(contratFeveEnCours[i].getQualite() == 0) {
 					prodTabBQ.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite()); 
@@ -139,7 +139,7 @@ IVendeurPoudre{
 			}
 
 		}
-
+		/**
 
 
 		/**
