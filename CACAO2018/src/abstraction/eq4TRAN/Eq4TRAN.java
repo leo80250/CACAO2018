@@ -251,10 +251,9 @@ IVendeurPoudre{
 
 
 	@Override
-	public void sendContratFictif() {
-		// TODO Auto-generated method stub
-
+	public void sendContratFictif(ContratFeve[] listContrats) {
 	}
+
 
 //Charles
 	@Override
