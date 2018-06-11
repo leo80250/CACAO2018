@@ -1,9 +1,9 @@
-package abstraction.eq5TRAN;
+package abstraction.eq5TRAN.util;
 
 import java.lang.reflect.Field;
 
 /**
- * @author: Thomas Schillaci
+ * @author Thomas Schillaci
  */
 public class Marchandises {
 
