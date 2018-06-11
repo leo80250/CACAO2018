@@ -15,6 +15,7 @@ public interface IAcheteurFeve {
 	 * Format des contrats en parametre :
 	 * ContratFeve(1[qualite], 1[quantite], 1000[prix], null[IAcheteurFeve], ven[IVendeurFeve], false[Reponse])
 	 * IDEE DU CODE : stocker les ContratFeve du parametre dans les variables d'instance / les analyser
+	 * @author Grégoire
 	 */
 	public void sendOffrePublique(ContratFeve[] offrePublique);
 
@@ -23,15 +24,18 @@ public interface IAcheteurFeve {
 	 * @return une liste de tous les Contrat destines a un meme producteur
 	 * Format des Contrat retourne :
 	 * ContratFeve(1[qualite], 1[quantite], 1000[prix], VOUS[IAcheteurFeve], ven[IVendeurFeve], false[Reponse])
-	 * IDEE DU CODE : renvoyer une liste des ContratFeve que VOUS demandez aux differents poducteur
+	 * IDEE DU CODE : renvoyer une liste des ContratFeve que VOUS demandez aux differents poducteurs
+	 * @author Grégoire
 	 */
 	public ContratFeve[] getDemandePrivee();
 	
 	/**
 	 * Informe l'acteur fictif des contrats en cours (MODELISATION)
 	 * Utiliser marche.getContrat()
+	 * @author Grégoire
 	 */
-	public void sendContratFictif();
+	
+	public void sendContratFictif(ContratFeve[] listContrats);
 	
 	/** 
 	 * Informe un transformateur des offres finales des producteurs qui lui sont destinees
@@ -40,6 +44,7 @@ public interface IAcheteurFeve {
 	 * Format des Contrat en parametre :
 	 * ContratFeve(1[qualite], 1[quantite], 1000[prix], VOUS[IAcheteurFeve], ven[IVendeurFeve], false[Reponse])
 	 * IDEE DU CODE : stocker les ContratFeve du parametre dans les variables d'instance / les analyser
+	 * @author Grégoire
 	 */
 	public void sendOffreFinale(ContratFeve[] offreFinale);
 	
@@ -51,6 +56,8 @@ public interface IAcheteurFeve {
 	 * Format des Contrat retourne :
 	 * ContratFeve(1[qualite], 1[quantite], 1000[prix], VOUS[IAcheteurFeve], ven[IVendeurFeve], reponse [Reponse])
 	 * IDEE DU CODE : renvoyer une liste des ContratFeve proposee par les differents producteurs avec VOTRE reponse
+	 * @author Grégoire
+	 * ## MaJ des stocks et des comptes ##
 	 */
 	public ContratFeve[] getResultVentes();
 

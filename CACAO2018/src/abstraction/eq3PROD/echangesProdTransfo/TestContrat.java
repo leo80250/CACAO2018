@@ -1,6 +1,11 @@
 package abstraction.eq3PROD.echangesProdTransfo;
 
+import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @author Grégoire
+ */
 
 public class TestContrat {
 	public static void main(String[] args) {
@@ -19,12 +24,17 @@ public class TestContrat {
 		//String[] ta = {""};
 		//List<String> l =null; String[] t = l.toArray(ta);
 		
-		ContratFeve[] listcontrat = new ContratFeve[3];
-		listcontrat[0] = Test1;
-		listcontrat[1] = Test2;
-		listcontrat[2] = Test3;
+		ArrayList<ContratFeve> listcontrat = new ArrayList<ContratFeve>();
+		listcontrat.add(Test1);
+		listcontrat.add(Test2);
+		listcontrat.add(Test3);
 		
-		MarcheFeve marche = new MarcheFeve(listcontrat, listcontrat);
+		IAcheteurFeve[] acheteurs = new IAcheteurFeve[1];
+		acheteurs[0] = ach;
+		IVendeurFeve[] vendeurs = new IVendeurFeve[1];
+		vendeurs[0] = vend;
+		
+		MarcheFeve marche = new MarcheFeve(listcontrat, listcontrat, "Marche de feves", acheteurs, vendeurs);
 		
 		System.out.println(marche.getPrixMarche());
 	}

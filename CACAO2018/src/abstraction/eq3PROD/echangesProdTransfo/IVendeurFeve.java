@@ -16,6 +16,7 @@ public interface IVendeurFeve {
 	 * Format des contrats retournes :
 	 * ContratFeve(1[qualite], 1[quantite], 1000[prix], null[IAcheteurFeve], VOUS[IVendeurFeve], false[Reponse])
 	 * IDEE DU CODE : renvoyez les offres que VOUS proposez au marche
+	 * @author Grégoire
 	 */
 	public ContratFeve[] getOffrePublique();
 	
@@ -26,6 +27,7 @@ public interface IVendeurFeve {
 	 * Format des contrats en parametre :
 	 * ContratFeve(1[qualite], 1[quantite], 1000[prix], ach[IAcheteurFeve], VOUS[IVendeurFeve], false[Reponse])
 	 * IDEE DU CODE : stocker les ContratFeve du parametre dans les variables d'instance / les analyser
+	 * @author Grégoire
 	 */
 	public void sendDemandePrivee(ContratFeve[] demandePrivee);
 	
@@ -38,6 +40,7 @@ public interface IVendeurFeve {
 	 * Format des contrats retournes :
 	 * ContratFeve(1[qualite], 1[quantite], 1000[prix], ach[IAcheteurFeve], VOUS[IVendeurFeve], false[Reponse])
 	 * IDEE DU CODE : renvoyer VOS offres aux differents producteurs
+	 * @author Grégoire
 	 */
 	public ContratFeve[] getOffreFinale();
 	
@@ -48,6 +51,8 @@ public interface IVendeurFeve {
 	 * Format des contrats en parametre :
 	 * ContratFeve(1[qualite], 1[quantite], 1000[prix], ach[IAcheteurFeve], VOUS[IVendeurFeve], reponse[Reponse])
 	 * IDEE DU CODE : stocker les ContratFeve du parametre dans les variables d'instance / les analyser
+	 * @author Grégoire
+	 * ## MaJ des stocks et des comptes ##
 	 */
 	public void sendResultVentes(ContratFeve[] resultVentes);
 	
