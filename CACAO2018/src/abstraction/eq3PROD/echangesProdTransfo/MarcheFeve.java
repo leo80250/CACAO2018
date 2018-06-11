@@ -31,6 +31,7 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		this.listAcheteurs = ach;
 		this.listVendeurs = ven;
 	}
+	
 
 	@Override
 	public double getPrixMarche() {
@@ -59,11 +60,74 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 	@Override
 	public void next() {
 		
-		// Liste d'offres publiques
+		// Reception des offres publiques (Producteurs -> Marche)
 		 for (IVendeurFeve vendeur : listVendeurs) {
 			 for (ContratFeve contrat : vendeur.getOffrePublique()) {
 				contratActuel.add(contrat); 
 			 }
+		 }
+		 
+		// Envoi des offres publiques (Marche -> Transformateurs)
+		 for (IAcheteurFeve acheteur : listAcheteurs) {
+			 acheteur.sendOffrePublique((ContratFeve[]) contratActuel.toArray());
+			 acheteur.sendContratFictif((ContratFeve[]) contratPrecedent.toArray());
+		 }
+		 
+		 // Reception des demandes privees (Transformateurs -> Marche)
+		 contratActuel = new ArrayList<ContratFeve>();
+		 for (IAcheteurFeve acheteur : listAcheteurs) {
+			 for (ContratFeve contrat : acheteur.getDemandePrivee()) {
+				contratActuel.add(contrat); 
+			 }
+		 }
+		 
+		 // Envoi des demandes privees (Marche -> Producteurs)
+		 for (IVendeurFeve vendeur : listVendeurs) { 
+			 ArrayList<ContratFeve> contratsPourVendeur = new ArrayList<ContratFeve>();
+			 for (ContratFeve contrat : contratActuel) {
+				if (contrat.getProducteur() == vendeur) {
+					contratsPourVendeur.add(contrat);
+				}
+			 }
+			 vendeur.sendDemandePrivee((ContratFeve[]) contratsPourVendeur.toArray()); 
+		 }
+		 
+		 // Reception des propositions (Vendeurs -> Marche)
+		 contratActuel = new ArrayList<ContratFeve>();
+		 for (IVendeurFeve vendeur : listVendeurs) {
+			 for (ContratFeve contrat : vendeur.getOffreFinale()) {
+				contratActuel.add(contrat); 
+			 }
+		 }
+		 
+		// Envoi des propositions (Marche -> Transformateur)
+				 for (IAcheteurFeve acheteur : listAcheteurs) { 
+					 ArrayList<ContratFeve> contratsPourAcheteur = new ArrayList<ContratFeve>();
+					 for (ContratFeve contrat : contratActuel) {
+						if (contrat.getTransformateur() == acheteur) {
+							contratsPourAcheteur.add(contrat);
+						}
+					 }
+					 acheteur.sendOffreFinale((ContratFeve[]) contratsPourAcheteur.toArray()); 
+				 }
+		 
+		 // Reception des reponses (Transformateur -> Marche)
+		 contratActuel = new ArrayList<ContratFeve>();
+		 for (IAcheteurFeve acheteur : listAcheteurs) {
+			 for (ContratFeve contrat : acheteur.getResultVentes()) {
+				contratActuel.add(contrat); 
+			 }
+		 }
+		 
+		 // Envoi des reponses (Marche -> Producteurs)
+		 for (IVendeurFeve vendeur : listVendeurs) { 
+			 ArrayList<ContratFeve> contratsPourVendeur = new ArrayList<ContratFeve>();
+			 for (ContratFeve contrat : contratActuel) {
+				if (contrat.getProducteur() == vendeur) {
+					contratsPourVendeur.add(contrat);
+				}
+			 }
+			 vendeur.sendResultVentes((ContratFeve[]) contratsPourVendeur.toArray()); 
 		 }
 	}
 
