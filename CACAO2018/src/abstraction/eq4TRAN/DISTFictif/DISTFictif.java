@@ -1,4 +1,4 @@
-package abstraction.DISTFictif;
+package abstraction.eq4TRAN.DISTFictif;
 
 import java.util.ArrayList;
 
@@ -42,7 +42,7 @@ public class DISTFictif implements Acteur, IAcheteurChoco{
 	@Override
 	public void next() {
 		// TODO Auto-generated method stub
-		
+		// Next inutile pour un acteur fictif
 	}
 
 	public void buy(GQte quantites, GPrix prix) {
@@ -133,7 +133,7 @@ public class DISTFictif implements Acteur, IAcheteurChoco{
 	@Override
 	public void livraison(GQte livraison, double d) {
 		// TODO Auto-generated method stub
-		
+		// Inutile pour un acteur qui ne tient pas à jours ses stocks et a de l'argent illimité
 	}
 	
 	

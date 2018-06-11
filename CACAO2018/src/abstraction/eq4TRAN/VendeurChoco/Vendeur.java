@@ -102,12 +102,12 @@ public class Vendeur implements IVendeurChoco{
 		}
 		ArrayList<Double[] > prix = new ArrayList<>();
 		//Discuter de la stratégie d'etagement des prix
-		Double[] prix4 = {0.9, 0.875, 0.85, 0.8, 0.775, 0.75, 0.725, 0.7};
-		Double[] prix5 = {1.5, 1.475, 1.45, 1.4, 1.375, 1.35, 1.325, 1.3};
-		Double[] prix6 = {3.0, 2.975, 2.95, 2.9, 2.875, 2.85, 2.825, 2.8};
+		Double[] prix4 = {0.72, 0.695, 0.650, 0.625, 0.6, 0.575, 0.55, 0.525};
+		Double[] prix5 = {1.12, 1.1, 1.075, 1.05, 1.025, 1.0, 0.975, 0.95};
+		Double[] prix6 = {2.0, 1.975, 1.95, 1.9, 1.875, 1.85, 1.825, 1.8};
 		Double[] prix1 = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		Double[] prix2 = {7.0, 6.975, 6.95, 6.9, 6.875, 6.85, 6.825, 6.8};
-		Double[] prix3 = {11.0, 10.975, 10.95, 10.9, 10.875, 10.85, 10.825, 10.8};
+		Double[] prix2 = {4.0, 3.975, 3.95, 3.9, 3.875, 3.85, 3.825, 3.8};
+		Double[] prix3 = {6.4, 6.375, 6.35, 6.325, 6.3, 6.275, 6.25, 6.2};
 		prix.add(prix1);
 		prix.add(prix2);
 		prix.add(prix3);
