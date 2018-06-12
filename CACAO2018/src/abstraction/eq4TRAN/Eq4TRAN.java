@@ -66,12 +66,12 @@ IVendeurPoudre{
 		 */
 		contratPoudreEnCoursEq7TRAN = new ContratPoudre[3];
 		contratPoudreEnCoursEq5TRAN = new ContratPoudre[3];
-		contratPoudreEnCoursEq5TRAN[0] = null;
+		contratPoudreEnCoursEq5TRAN[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq5TRAN[1] = new ContratPoudre(1,27000,100.0, (IAcheteurPoudre)this, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN[2] = null;
-		contratPoudreEnCoursEq7TRAN[0] = null;
+		contratPoudreEnCoursEq5TRAN[2] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq7TRAN[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN[1] = null;
+		contratPoudreEnCoursEq7TRAN[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
 		stockTabBQ = new Indicateur("stockTabBQ",this,1000) ;
 		stockTabMQ = new Indicateur("stockTabMQ",this,1000) ;
