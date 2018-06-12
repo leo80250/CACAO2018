@@ -58,7 +58,7 @@ IVendeurPoudre{
 	private ContratPoudre[] contratPoudreEnCoursEq7TRAN ;
 	private ContratPoudre[] contratPoudreEnCoursEq5TRAN;
 	/** Initialisation des indicateurs 
-	 * 
+	 * 0,
 	 */
 	public Eq4TRAN() {
 
@@ -72,6 +72,15 @@ IVendeurPoudre{
 		contratPoudreEnCoursEq7TRAN[0] = null;
 		contratPoudreEnCoursEq7TRAN[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq7TRAN[1] = null;
+		
+		contratFeveEnCours = new ContratFeve[6];
+		contratFeveEnCours[0]=new ContratFeve( (IAcheteurFeve)this , (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD") , 0 , 0 , 0 , 0 , 0.0 , 0.0 , 0.0 ,false);
+		contratFeveEnCours[1]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD"),1 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
+		contratFeveEnCours[2]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD"),2 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
+		contratFeveEnCours[3]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),0 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
+		contratFeveEnCours[4]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),1 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
+		contratFeveEnCours[5]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),2 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
+		
 
 		stockTabBQ = new Indicateur("stockTabBQ",this,1000) ;
 		stockTabMQ = new Indicateur("stockTabMQ",this,1000) ;
