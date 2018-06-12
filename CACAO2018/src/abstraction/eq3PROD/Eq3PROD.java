@@ -1,6 +1,7 @@
 package abstraction.eq3PROD;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
@@ -9,6 +10,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.MarcheFeve;
 
 //import abstraction.eq1DIST.IVenteConso;
@@ -30,12 +32,31 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private ArrayList<ContratFeve> listeContrats ; 
 	private final double[] prix_Ventes_Feves = {1800, 2100, 2500};
 	private final double[] prodFeves = {0,0,0};
-	MarcheFeve marche=new MarcheFeve();
+	
+	public MarcheFeve marche;
+	
+	
 	
 	/**
 	 * @author Claire
 	 */
 	public Eq3PROD() {
+		
+		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
+		ArrayList<Acteur> producteurs = new ArrayList<Acteur>();
+		ArrayList<Acteur> transformateurs = new ArrayList<Acteur>();
+		
+		for (Acteur acteur : listActeurs) {
+			Class[] listInterfaces = acteur.getClass().getInterfaces();
+			if (Arrays.toString(listInterfaces).contains("IVendeurFeve")) {
+				producteurs.add(acteur);
+			} else if (Arrays.toString(listInterfaces).contains("IAcheteurFeve")) {
+				transformateurs.add(acteur);
+			}
+		}
+		
+		this.marche = new MarcheFeve("Marche central", (IAcheteurFeve[]) transformateurs.toArray(), (IVendeurFeve[]) producteurs.toArray());
+		
 		Monde.LE_MONDE.ajouterActeur(marche);
 		this.stockmoyen= 75000;
 		this.stockfin= 24000;
