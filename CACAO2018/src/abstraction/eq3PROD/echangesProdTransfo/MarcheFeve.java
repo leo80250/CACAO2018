@@ -24,6 +24,14 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		this.listVendeurs = new IVendeurFeve[0];
 	}
 	
+	public MarcheFeve(String nom, IAcheteurFeve[] ach, IVendeurFeve[] ven) {
+		this.contratPrecedent = new ArrayList<ContratFeve>();
+		this.contratActuel = new ArrayList<ContratFeve>();
+		this.nom = nom;
+		this.listAcheteurs = ach;
+		this.listVendeurs = ven;
+	}
+	
 	public MarcheFeve(ArrayList<ContratFeve> contratPrecedent, ArrayList<ContratFeve> contratActuel, String nom, IAcheteurFeve[] ach, IVendeurFeve[] ven) {
 		this.contratPrecedent = contratPrecedent;
 		this.contratActuel = contratActuel;
