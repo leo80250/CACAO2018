@@ -175,7 +175,7 @@ IVendeurPoudre{
 		contratfinalEq5TRAN = Eq5TRAN.getEchangeFinalPoudre(contratPoudreEnCoursEq5TRAN, (IAcheteurPoudre)this);
 		contratfinalEq7TRAN = Eq7TRAN.getEchangeFinalPoudre(contratPoudreEnCoursEq7TRAN, (IAcheteurPoudre)this);
 		
-		ArrayList<ContratPoudre> contratPoudreEnCours = null;
+		ArrayList<ContratPoudre> contratPoudreEnCours = new ArrayList<ContratPoudre>();
 		contratPoudreEnCours.add(contratfinalEq5TRAN[0]);
 		contratPoudreEnCours.add(contratfinalEq5TRAN[1]);
 		contratPoudreEnCours.add(contratfinalEq5TRAN[2]);
