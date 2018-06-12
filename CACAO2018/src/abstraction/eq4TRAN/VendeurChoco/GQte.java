@@ -19,6 +19,7 @@ public class GQte {
 	private double qTabletteMQ;
 	private double qTabletteHQ;
 	
+	//Penser à une manière de parcourir le tableau à l'aide d'un indice (associer un indice à {type+qualité})
 	
 	public GQte(double qBonbonBQ, double qBonbonMQ, double qBonbonHQ, double qTabletteBQ, double qTabletteMQ, double qTabletteHQ) {
 		this.qBonbonBQ = (qBonbonBQ>=0) ? qBonbonBQ : 0;
