@@ -5,12 +5,11 @@ import java.util.ArrayList;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
-import abstraction.eq5TRAN.Eq5TRAN;
-import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
