@@ -2,7 +2,7 @@ package abstraction.eq4TRAN;
 
 import java.util.ArrayList;
 
-
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.eq4TRAN.ITransformateur;
@@ -80,6 +80,7 @@ IVendeurPoudre{
 		contratFeveEnCours[3]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),0 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
 		contratFeveEnCours[4]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),1 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
 		contratFeveEnCours[5]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),2 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
+		
 		
 
 		stockTabBQ = new Indicateur("stockTabBQ",this,1000) ;
