@@ -70,8 +70,6 @@ public class Monde extends Observable {
 		this.ajouterActeur(eq3);
 		Eq6DIST eq6 = new Eq6DIST();
 		this.ajouterActeur(eq6);
-		/*DISTFictif dFictif = new DISTFictif();*/
-		/*this.ajouterActeur(dFictif);*/
 	}
 	/**
 	 * @return Retourne le numero de l'etape en cours.

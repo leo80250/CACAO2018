@@ -7,6 +7,7 @@ import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq6DIST.IAcheteurChoco;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
+import abstraction.fourni.Monde;
 
 /**
  * 
@@ -14,23 +15,9 @@ import abstraction.fourni.Indicateur;
  *
  */
 public class DISTFictif implements Acteur, IAcheteurChoco{
-
-	private Indicateur stockTabBQ ;
-	private Indicateur stockTabMQ ;
-	private Indicateur stockTabHQ ;
-	private Indicateur stockChocBQ ;
-	private Indicateur stockChocMQ ;
-	private Indicateur stockChocHQ ;
-	private Indicateur solde;
 	
 	public DISTFictif() {
-		stockTabBQ = new Indicateur("stockTabBQ",this,1000) ;
-		stockTabMQ = new Indicateur("stockTabMQ",this,1000) ;
-		stockTabHQ = new Indicateur("stockTabHQ",this,1000) ;
-		stockChocBQ = new Indicateur("stockChocBQ",this,1000);
-		stockChocMQ = new Indicateur("stockChocMQ",this,1000) ;
-		stockChocHQ = new Indicateur("stockTabHQ",this,1000) ;
-		solde = new Indicateur("solde",this,1000000);
+		Monde.LE_MONDE.ajouterActeur(this);
 	}
 
 	@Override
@@ -43,78 +30,6 @@ public class DISTFictif implements Acteur, IAcheteurChoco{
 	public void next() {
 		// TODO Auto-generated method stub
 		// Next inutile pour un acteur fictif
-	}
-
-	public void buy(GQte quantites, GPrix prix) {
-		setStockChocBQ(getStockChocBQ().getValeur() + quantites.getqBonbonBQ());
-		setSolde(prix.getPrixProduit(quantites.getqBonbonBQ(), 1));
-		setStockChocMQ(getStockChocMQ().getValeur() + quantites.getqBonbonMQ());
-		setSolde(prix.getPrixProduit(quantites.getqBonbonMQ(), 2));
-		setStockChocHQ(getStockChocHQ().getValeur() + quantites.getqBonbonHQ());
-		setSolde(prix.getPrixProduit(quantites.getqBonbonHQ(), 3));
-		setStockTabBQ(getStockTabBQ().getValeur() + quantites.getqTabletteBQ());
-		setSolde(prix.getPrixProduit(quantites.getqTabletteBQ(), 4));
-		setStockTabMQ(getStockTabMQ().getValeur() + quantites.getqTabletteMQ());
-		setSolde(prix.getPrixProduit(quantites.getqTabletteMQ(), 5));
-		setStockTabHQ(getStockTabHQ().getValeur() + quantites.getqTabletteHQ());
-		setSolde(prix.getPrixProduit(quantites.getqTabletteHQ(), 6));
-		
-	}
-	
-	public Indicateur getStockTabBQ() {
-		return stockTabBQ;
-	}
-
-	public void setStockTabBQ(double stockTabBQ) {
-		this.stockTabBQ.setValeur(this, stockTabBQ);
-	}
-
-	public Indicateur getStockTabMQ() {
-		return stockTabMQ;
-	}
-
-	public void setStockTabMQ(double stockTabMQ) {
-		this.stockTabMQ.setValeur(this, stockTabMQ);
-	}
-
-	public Indicateur getStockTabHQ() {
-		return stockTabHQ;
-	}
-
-	public void setStockTabHQ(double stockTabHQ) {
-		this.stockTabHQ.setValeur(this, stockTabHQ);
-	}
-
-	public Indicateur getStockChocBQ() {
-		return stockChocBQ;
-	}
-
-	public void setStockChocBQ(double stockChocBQ) {
-		this.stockChocBQ.setValeur(this, stockChocBQ);
-	}
-
-	public Indicateur getStockChocMQ() {
-		return stockChocMQ;
-	}
-
-	public void setStockChocMQ(double stockChocMQ) {
-		this.stockChocMQ.setValeur(this, stockChocMQ);
-	}
-
-	public Indicateur getStockChocHQ() {
-		return stockChocHQ;
-	}
-
-	public void setStockChocHQ(double stockChocHQ) {
-		this.stockChocHQ.setValeur(this, stockChocHQ);
-	}
-
-	public Indicateur getSolde() {
-		return solde;
-	}
-
-	public void setSolde(double solde) {
-		this.solde.setValeur(this, solde);
 	}
 
 	@Override
