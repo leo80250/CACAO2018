@@ -351,14 +351,11 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 	@Override
 	/**
 	 * @author Juliette Pour la V1 on suppose que le contrat est entièrement honnoré
-	 * + diminution de nos stocks et augmentation de la banque en fonction des ventes effectives
 	 */
 	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		ContratPoudre[] echangesEffectifs = new ContratPoudre[contrat.length];
 		for (int i = 0; i < contrat.length; i++) {
 			echangesEffectifs[i] = contrat[i];
-			stocks[POUDRE_MQ].setValeur(this, stocks[POUDRE_MQ].getValeur()-echangesEffectifs[i].getQuantite());
-			banque.setValeur(this, banque.getValeur()+echangesEffectifs[i].getPrix());
 		}
 		
 		return echangesEffectifs;
