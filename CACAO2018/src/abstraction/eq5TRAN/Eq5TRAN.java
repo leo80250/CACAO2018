@@ -253,6 +253,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 			return;
 		}
 	}
+	
+	
 
 	public void venteAuxDistributeurs() {
 
@@ -295,6 +297,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 	@Override
 	/**
 	 * @author Juliette et Thomas
+	 * On envoie notre catalogue qui correspont à notre stock de poudre disponible et son prix
 	 */
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		if (stocks[POUDRE_MQ].getValeur() == 0)
@@ -348,12 +351,15 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 	@Override
 	/**
 	 * @author Juliette Pour la V1 on suppose que le contrat est entièrement honnoré
+	 * + diminution de nos stocks 
 	 */
 	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		ContratPoudre[] echangesEffectifs = new ContratPoudre[contrat.length];
 		for (int i = 0; i < contrat.length; i++) {
 			echangesEffectifs[i] = contrat[i];
+			stocks[POUDRE_MQ].setValeur(this, stocks[POUDRE_MQ].getValeur()-echangesEffectifs[i].getQuantite());
 		}
+		
 		return echangesEffectifs;
 	}
 
