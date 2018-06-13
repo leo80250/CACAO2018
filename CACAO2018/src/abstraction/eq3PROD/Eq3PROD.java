@@ -68,13 +68,25 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			}
 		}
 		
-		this.marche = new MarcheFeve("Marche central", (IAcheteurFeve[]) transformateurs.toArray(), (IVendeurFeve[]) producteurs.toArray());
+		int taille = transformateurs.size();
+		IAcheteurFeve[] listTran = new IAcheteurFeve[taille];
+		for (int i = 0 ; i < taille ; i++) {
+			listTran[i] = (IAcheteurFeve) transformateurs.get(i);
+		}
+		
+		int taille_bis = producteurs.size(); 	 	   						 	  	 	
+		IVendeurFeve[] listProd = new IVendeurFeve[taille_bis]; 	 	   						 	  	 	
+		for (int i = 0 ; i < taille_bis ; i++) { 	 	   						 	  	 	
+			listProd[i] = (IVendeurFeve) producteurs.get(i); 	 	   						 	  	 	
+		}		 	 	   						 	  	 	
+
+		
+		this.marche = new MarcheFeve("Marche central", listTran, listProd);
 		
 		Monde.LE_MONDE.ajouterActeur(marche);
 		this.stockmoyen= 75000;
 		this.stockfin= 24000;
-		this.nom = nom;
-		
+		this.nom = "Eq3PROD";
 	}
 	
 		
@@ -112,11 +124,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			int quantite_1 = 0;  	 	  	  		   		 	 	
 			int quantite_2 = 0; 	 	  	  		   		 	 	
 			 	 	  	  		   		 	 	
-			for (int i = 0; i < listeContrats.size() ; i++) { 	 	  	  		   		 	 	
-				if (listeContrats.get(i).getQualite() == 1) { 	 	  	  		   		 	 	
-					quantite_1 += listeContrats.get(i).getDemande_Quantite() ; 	 	  	  		   		 	 	
+			for (ContratFeve contrat : listeContrats) { 	 	  	  		   		 	 	
+				if (contrat.getQualite() == 1) { 	 	  	  		   		 	 	
+					quantite_1 += contrat.getDemande_Quantite() ; 	 	  	  		   		 	 	
 				} else { 	 	  	  		   		 	 	
-					quantite_2 += listeContrats.get(i).getDemande_Quantite() ; 	 	  	  		   		 	 	
+					quantite_2 += contrat.getDemande_Quantite() ; 	 	  	  		   		 	 	
 				} 	 	  	  		   		 	 	
 			} 	 	  	  		   		 	 	
 			 	 	  	  		   		 	 	
@@ -135,10 +147,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 						// total demande : 140 	 	  	  		   		 	 	
 						// répartition: 40*100/140 	 	 	  	  		   		 	 	
 						contrat.setProposition_Quantite(contrat.getDemande_Quantite()*this.stockmoyen/quantite_1); 	 	  	  		   		 	 	
-					} 	 	  	  		   		 	 	
-					 	 	  	  		   		 	 	
-					contrat.setProposition_Prix(contrat.getDemande_Prix()); 	 	  	  		   		 	 	
-					listeContrats_bis.add(contrat); 	 	  	  		   		 	 	
+					}	 	  	  		   		 	 	
 		 	  	  		   		 	 	
 				} else if (contrat.getQualite() == 2) {	 	 	  	  		   		 	 	
 			   		 	 	 	 	  	  		   		 	 	
@@ -148,10 +157,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 					} else if (quantite_2 > this.stockfin) { 	 	  	  		   		 	 	
 						contrat.setProposition_Quantite(contrat.getDemande_Quantite()*this.stockfin/quantite_2); 	 	  	  		   		 	 		 	 	
 					} 	 	  	  		   		 	 	
-					 	 	  	  		   		 	 	
-					contrat.setProposition_Prix(contrat.getDemande_Prix()); 	 	  	  		   		 	 	
-					listeContrats_bis.add(contrat); 	 	  	  		   		 	 	
-				} 	  	 	  	  		   		 	 	
+					 	 	  	  		   		 	 		 	  	  		   		 	 	
+				}
+				
+				contrat.setProposition_Prix(contrat.getDemande_Prix()); 	 	  	  		   		 	 	
+				listeContrats_bis.add(contrat); 
 				 	 	  	  		   		 	 	
 			} 	 	  	  		   		 	 	
 				 	 	  	  		   		 	 	
@@ -162,30 +172,24 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		 * @author Morgane
 		 */
 		public void sendResultVentes(ContratFeve[] resultVentes) { 	 	  	  		   		 	 	
-			for (int i = 0; i < resultVentes.length ; i++) {  	 	  	  		   		 	 	
-				if(resultVentes[i].getQualite() == 1) { 	 	  	  		   		 	 	
-					if(resultVentes[i].getReponse() == true) { 	 	  	  		   		 	 	
-						this.stockmoyen -= resultVentes[i].getProposition_Quantite() ; 	 	  	  		   		 	 	
-						solde += resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite() ;  	 	  	  		   		 	 	
+			for (ContratFeve contrat : resultVentes) {  	 	  	  		   		 	 	
+				if(contrat.getQualite() == 1) { 	 	  	  		   		 	 	
+					if(contrat.getReponse() == true) { 	 	  	  		   		 	 	
+						this.stockmoyen -= contrat.getProposition_Quantite() ; 	 	  	  		   		 	 	
+						solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;  	 	  	  		   		 	 	
 					}  	 	  	  		   		 	 	
 				} else { 	 	  	  		   		 	 	
-					this.stockfin -= resultVentes[i].getProposition_Quantite() ;  	 	  	  		   		 	 	
-					solde += resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite() ; 	 	  	  		   		 	 	
+					this.stockfin -= contrat.getProposition_Quantite() ;  	 	  	  		   		 	 	
+					solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() ; 	 	  	  		   		 	 	
 				} 	 	  	  		   		 	 	
 			} 	 	  	  		   		 	 	
 		}
-		/**public void sendResultVentes(ContratFeve[] resultVentes) {
-			for (int i = 0; i < resultVentes.length ; i++) { 
-					listeContrats.add(resultVentes[i]) ; 
-			} 
-			
-		}*/
+
 		/**
 		 * @author Claire
 		 */
 		public boolean maladieAmerique() {
-			double p=Math.random();
-			return (p<0.008);
+			return (Math.random()<0.008);
 		}
 		
 		public boolean maladieIndo() {
@@ -196,7 +200,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		**/
 		public void next() {
 			int x=Monde.LE_MONDE.getStep();
-			//double k=MarcheFeve.getPrixMarche();
 			int prodBresil=0;
 			int prodIndo=0;
 			int prodfin=0;
