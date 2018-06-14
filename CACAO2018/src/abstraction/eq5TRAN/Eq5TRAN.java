@@ -223,15 +223,15 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      */
     public void achatAuxTransformateurs() {
         // On achete de la poudre HQ a l'eq. 7
-        IVendeurPoudre vendeur = (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq7TRAN");
-        ContratPoudre contrat=null;
-        for(ContratPoudre c : vendeur.getCataloguePoudre(this)) {
-            if(c.getQualite()==2) {
-                contrat=c;
+        IVendeurPoudre vendeur = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN");
+        ContratPoudre contrat = null;
+        for (ContratPoudre c : vendeur.getCataloguePoudre(this)) {
+            if (c.getQualite() == 2) {
+                contrat = c;
                 break;
             }
         }
-        if(contrat==null) {
+        if (contrat == null) {
             journal.ajouter("L'eq 5 n'a pas pu acheter de poudre HQ a l'equipe 7 comme convenu car celle-ci n'en vend pas");
             return;
         }
@@ -242,19 +242,19 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     }
 
     public void venteAuxDistributeurs() {
-        
+
     }
 
     /**
      * @author Thomas Schillaci
      */
     public void production() {
-        production(POUDRE_BQ,TABLETTES_BQ);
-        production(POUDRE_MQ,TABLETTES_MQ);
-        production(POUDRE_HQ,TABLETTES_HQ);
-        production(POUDRE_MQ,FRIANDISES_MQ);
-        production(FEVES_BQ,POUDRE_BQ);
-        production(FEVES_MQ,POUDRE_MQ);
+        production(POUDRE_BQ, TABLETTES_BQ);
+        production(POUDRE_MQ, TABLETTES_MQ);
+        production(POUDRE_HQ, TABLETTES_HQ);
+        production(POUDRE_MQ, FRIANDISES_MQ);
+        production(FEVES_BQ, POUDRE_BQ);
+        production(FEVES_MQ, POUDRE_MQ);
     }
 
     /**
@@ -262,10 +262,11 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * Transforme la merch1 en merch2
      */
     public void production(int merch1, int merch2) {
-        double quantite = Math.min(stocks[merch1].getValeur(),productionSouhaitee[merch2].getValeur());
-        if(quantite<productionSouhaitee[merch2].getValeur()) journal.ajouter("L'eq. 5 n'a pas pu produire assez de " + Marchandises.getMarchandise(merch2) + " par manque de stock de " + Marchandises.getMarchandise(merch1));
-        stocks[merch1].setValeur(this,stocks[merch1].getValeur()-quantite);
-        stocks[merch2].setValeur(this,stocks[merch2].getValeur()+quantite);
+        double quantite = Math.min(stocks[merch1].getValeur(), productionSouhaitee[merch2].getValeur());
+        if (quantite < productionSouhaitee[merch2].getValeur())
+            journal.ajouter("L'eq. 5 n'a pas pu produire assez de " + Marchandises.getMarchandise(merch2) + " par manque de stock de " + Marchandises.getMarchandise(merch1));
+        stocks[merch1].setValeur(this, stocks[merch1].getValeur() - quantite);
+        stocks[merch2].setValeur(this, stocks[merch2].getValeur() + quantite);
     }
 
     /**
