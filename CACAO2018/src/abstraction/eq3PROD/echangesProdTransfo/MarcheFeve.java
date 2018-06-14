@@ -1,6 +1,7 @@
 package abstraction.eq3PROD.echangesProdTransfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import abstraction.fourni.Acteur;
 
@@ -77,9 +78,22 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		 
 		// Envoi des offres publiques (Marche -> Transformateurs)
 		 for (IAcheteurFeve acheteur : listAcheteurs) {
-			 acheteur.sendOffrePublique((ContratFeve[]) contratActuel.toArray());
-			 acheteur.sendContratFictif((ContratFeve[]) contratPrecedent.toArray());
-		 }
+				int tailleActuel = contratActuel.size();
+				ContratFeve[] contratActuelArray = new ContratFeve[tailleActuel];
+				for (int i = 0 ; i < tailleActuel ; i ++) {
+					contratActuelArray[i] = (ContratFeve) contratActuel.get(i);
+				}
+				
+				int taillePrecedent = contratPrecedent.size();
+				ContratFeve[] contratPrecedentArray = new ContratFeve[taillePrecedent];
+				for (int i = 0 ; i < taillePrecedent ; i ++) {
+					contratPrecedentArray[i] = (ContratFeve) contratPrecedent.get(i);
+				}
+				
+				acheteur.sendOffrePublique(contratActuelArray);
+				acheteur.sendContratFictif(contratPrecedentArray);
+			 }
+			
 		 
 		 // Reception des demandes privees (Transformateurs -> Marche)
 		 contratActuel = new ArrayList<ContratFeve>();
@@ -97,7 +111,12 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 					contratsPourVendeur.add(contrat);
 				}
 			 }
-			 vendeur.sendDemandePrivee((ContratFeve[]) contratsPourVendeur.toArray()); 
+			 int tailleCpV = contratsPourVendeur.size();
+				ContratFeve[] cpvArray = new ContratFeve[tailleCpV];
+				for (int i = 0 ; i < tailleCpV ; i++) {
+					 cpvArray[i] = (ContratFeve) contratsPourVendeur.get(i);
+				 }
+				vendeur.sendDemandePrivee((ContratFeve[]) cpvArray); 
 		 }
 		 
 		 // Reception des propositions (Vendeurs -> Marche)
@@ -116,7 +135,12 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 							contratsPourAcheteur.add(contrat);
 						}
 					 }
-					 acheteur.sendOffreFinale((ContratFeve[]) contratsPourAcheteur.toArray()); 
+					 int tailleCpA = contratsPourAcheteur.size();
+						ContratFeve[] cpaArray = new ContratFeve[tailleCpA];
+						for (int i = 0 ; i < tailleCpA ; i++) {
+							cpaArray[i] = (ContratFeve) contratsPourAcheteur.get(i);
+						}
+						acheteur.sendOffreFinale(cpaArray);
 				 }
 		 
 		 // Reception des reponses (Transformateur -> Marche)
@@ -135,7 +159,11 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 					contratsPourVendeur.add(contrat);
 				}
 			 }
-			 vendeur.sendResultVentes((ContratFeve[]) contratsPourVendeur.toArray()); 
+			 int tailleCpV = contratsPourVendeur.size();
+				ContratFeve[] cpvArray = new ContratFeve[tailleCpV];
+				for (int i = 0 ; i < tailleCpV ; i++) {
+					cpvArray[i] = (ContratFeve) contratsPourVendeur.get(i);
+				}
 		 }
 	}
 
