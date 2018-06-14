@@ -341,7 +341,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			this.getJournal().ajouter("Une maladie a frappé les plantations");
 		}
 		this.getJournal().ajouter("------------------------------------------------------------------------------");
-		if(!(getQuantiteEq3())) {
+		if((getQuantiteEq3())) {
 			this.getJournalOccasionel().ajouter("Une transaction a été réalisée avec l'équipe 3");
 		} else {
 			this.getJournalOccasionel().ajouter("Aucune transaction n'a été réalisée avec l'équipe3");
