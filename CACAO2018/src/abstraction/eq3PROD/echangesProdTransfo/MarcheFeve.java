@@ -58,7 +58,14 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 
 	@Override
 	public ContratFeve[] getContratPrecedent() {
-		return (ContratFeve[]) this.contratPrecedent.toArray();
+		
+		int tailleContratPrecedent = this.contratPrecedent.size();
+		ContratFeve[] cpArray = new ContratFeve[tailleContratPrecedent];
+		for (int i = 0 ; i < tailleContratPrecedent ; i++) {
+			cpArray[i] = (ContratFeve) this.contratPrecedent.get(i);
+		}
+		
+		return cpArray;
 	}
 
 	@Override

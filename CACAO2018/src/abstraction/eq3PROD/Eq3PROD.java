@@ -179,8 +179,14 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				listeContrats_bis.add(contrat); 
 				 	 	  	  		   		 	 	
 			} 	 	  	  		   		 	 	
-				 	 	  	  		   		 	 	
-			return (ContratFeve[]) listeContrats_bis.toArray(); 
+
+			int taille_bis = listeContrats_bis.size();
+			ContratFeve[] lc_bis = new ContratFeve[taille_bis];
+			for (int i = 0 ; i < taille_bis ; i++) {
+				lc_bis[i] = (ContratFeve) listeContrats_bis.get(i);
+			}
+			
+			return lc_bis;
 		}
 
 		/**
