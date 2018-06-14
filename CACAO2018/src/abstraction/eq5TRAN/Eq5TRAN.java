@@ -127,6 +127,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void next() {
         achatAuxProducteurs();
 //        achatAuxTransformateurs(); // inutilisable pour l'instant par manque de doc
+//        venteAuxTransformateurs(); // idem
 //        venteAuxDistributeurs(); // pas encore implémenté
         production();
     }
@@ -234,6 +235,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             journal.ajouter("L'eq 5 n'a pas pu acheter de poudre HQ a l'equipe 7 comme convenu car celle-ci n'en vend pas");
             return;
         }
+    }
+
+    public void venteAuxTransformateurs() {
+
     }
 
     public void venteAuxDistributeurs() {
