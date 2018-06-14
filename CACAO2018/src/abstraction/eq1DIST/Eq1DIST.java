@@ -98,6 +98,12 @@ public Eq1DIST()  {
 		}
 		this.banque -= solde;
 	}
+
+	@Override
+	public void livraison(ArrayList<GQte> d) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 	
