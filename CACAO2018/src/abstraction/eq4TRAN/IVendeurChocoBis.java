@@ -3,21 +3,18 @@ package abstraction.eq4TRAN;
 import java.util.ArrayList;
 
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
-import 
-
-abstraction.eq4TRAN.VendeurChoco.GQte;
+import abstraction.eq4TRAN.VendeurChoco.GQte;
 
 /**
  * 
  * @author Etienne
  *
  */
-public interface IVendeurChoco {
-
+public interface IVendeurChocoBis {
+	
 	public GQte getStock();
 	
 	public GPrix getPrix();
-@Deprecated	
-	public GQte getLivraison(GQte[] commandes);
 	
+	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes);
 }
