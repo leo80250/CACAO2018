@@ -12,16 +12,16 @@ public class GQte {
 	 * triés par qualité croissante
 	 */
 	
-	private double qBonbonBQ;
-	private double qBonbonMQ;
-	private double qBonbonHQ;
-	private double qTabletteBQ;
-	private double qTabletteMQ;
-	private double qTabletteHQ;
+	private int qBonbonBQ;
+	private int qBonbonMQ;
+	private int qBonbonHQ;
+	private int qTabletteBQ;
+	private int qTabletteMQ;
+	private int qTabletteHQ;
 	
 	//Penser à une manière de parcourir le tableau à l'aide d'un indice (associer un indice à {type+qualité})
 	
-	public GQte(double qBonbonBQ, double qBonbonMQ, double qBonbonHQ, double qTabletteBQ, double qTabletteMQ, double qTabletteHQ) {
+	public GQte(int qBonbonBQ, int qBonbonMQ, int qBonbonHQ, int qTabletteBQ, int qTabletteMQ, int qTabletteHQ) {
 		this.qBonbonBQ = (qBonbonBQ>=0) ? qBonbonBQ : 0;
 		this.qBonbonMQ=(qBonbonMQ>=0) ? qBonbonMQ : 0;
 		this.qBonbonHQ=(qBonbonHQ>=0) ? qBonbonHQ : 0;
@@ -30,55 +30,55 @@ public class GQte {
 		this.qTabletteHQ=(qTabletteHQ>=0) ? qTabletteHQ : 0;
 	}
 
-	public double getqBonbonBQ() {
+	public int getqBonbonBQ() {
 		return qBonbonBQ;
 	}
 
-	public void setqBonbonBQ(double qBonbonBQ) {
+	public void setqBonbonBQ(int qBonbonBQ) {
 		this.qBonbonBQ = qBonbonBQ;
 	}
 
-	public double getqBonbonMQ() {
+	public int getqBonbonMQ() {
 		return qBonbonMQ;
 	}
 
-	public void setqBonbonMQ(double qBonbonMQ) {
+	public void setqBonbonMQ(int qBonbonMQ) {
 		this.qBonbonMQ = qBonbonMQ;
 	}
 
-	public double getqBonbonHQ() {
+	public int getqBonbonHQ() {
 		return qBonbonHQ;
 	}
 
-	public void setqBonbonHQ(double qBonbonHQ) {
+	public void setqBonbonHQ(int qBonbonHQ) {
 		this.qBonbonHQ = qBonbonHQ;
 	}
 
-	public double getqTabletteBQ() {
+	public int getqTabletteBQ() {
 		return qTabletteBQ;
 	}
 
-	public void setqTabletteBQ(double qTabletteBQ) {
+	public void setqTabletteBQ(int qTabletteBQ) {
 		this.qTabletteBQ = qTabletteBQ;
 	}
 
-	public double getqTabletteMQ() {
+	public int getqTabletteMQ() {
 		return qTabletteMQ;
 	}
 
-	public void setqTabletteMQ(double qTabletteMQ) {
+	public void setqTabletteMQ(int qTabletteMQ) {
 		this.qTabletteMQ = qTabletteMQ;
 	}
 
-	public double getqTabletteHQ() {
+	public int getqTabletteHQ() {
 		return qTabletteHQ;
 	}
 
-	public void setqTabletteHQ(double qTabletteHQ) {
+	public void setqTabletteHQ(int qTabletteHQ) {
 		this.qTabletteHQ = qTabletteHQ;
 	}
 	
-	public double getqTot() {
+	public int getqTot() {
 		return getqBonbonBQ()+getqBonbonMQ()+getqBonbonHQ()+getqTabletteBQ()+getqTabletteMQ()+getqTabletteHQ();
 	}
 }

@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
-import abstraction.eq5TRAN.Eq5TRAN;
-import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
@@ -94,7 +93,7 @@ IVendeurPoudre{
 		prodChocMQ = new Indicateur("prodChocMQ",this,1000) ;
 		prodChocHQ = new Indicateur("prodChocHQ",this,1000) ;
 		solde = new Indicateur("solde",this,1000) ;
-		vendeur = new Vendeur(0.0, stockChocMQ.getValeur(), stockChocHQ.getValeur(), stockTabBQ.getValeur(), stockTabMQ.getValeur(), stockTabHQ.getValeur());
+		vendeur = new Vendeur(0, (int)stockChocMQ.getValeur(), (int)stockChocHQ.getValeur(), (int)stockTabBQ.getValeur(), (int)stockTabMQ.getValeur(), (int)stockTabHQ.getValeur());
 	}
 
 	/** Nom de l'acteur
@@ -176,7 +175,7 @@ IVendeurPoudre{
 		contratfinalEq5TRAN = Eq5TRAN.getEchangeFinalPoudre(contratPoudreEnCoursEq5TRAN, (IAcheteurPoudre)this);
 		contratfinalEq7TRAN = Eq7TRAN.getEchangeFinalPoudre(contratPoudreEnCoursEq7TRAN, (IAcheteurPoudre)this);
 		
-		ArrayList<ContratPoudre> contratPoudreEnCours = null;
+		ArrayList<ContratPoudre> contratPoudreEnCours = new ArrayList<ContratPoudre>();
 		contratPoudreEnCours.add(contratfinalEq5TRAN[0]);
 		contratPoudreEnCours.add(contratfinalEq5TRAN[1]);
 		contratPoudreEnCours.add(contratfinalEq5TRAN[2]);
@@ -306,7 +305,7 @@ IVendeurPoudre{
 	}
 
 	//Etienne
-	@Override
+	/*@Override
 	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
 		ArrayList<GQte> livraison = new ArrayList<GQte>();
 		livraison.addAll(vendeur.getLivraison(commandes));
@@ -326,8 +325,12 @@ IVendeurPoudre{
 		}
 		solde.setValeur(Eq4TRAN, s);
 		return livraison;
-	}
+	}*/
 
+	@Override
+	public GQte getLivraison(GQte[] commandes) {
+		return new GQte((int)0.0,(int)stockChocMQ.getValeur(),(int)stockChocHQ.getValeur(),(int)stockTabBQ.getValeur(),(int)stockTabMQ.getValeur(),(int)stockTabHQ.getValeur());
+	}
 	@Override
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		// TODO Auto-generated method stub

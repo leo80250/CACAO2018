@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import abstraction.eq4TRAN.IVendeurChoco;
+import abstraction.eq4TRAN.IVendeurChocoBis;
 import abstraction.fourni.Journal;
 
 /**
@@ -11,20 +12,20 @@ import abstraction.fourni.Journal;
  * @author Etienne
  *
  */
-public class Vendeur implements IVendeurChoco{
+public class Vendeur implements IVendeurChocoBis{
 	/*
 	 * classe définissant les méthodes nécessaires à l'interface IVendeur Choco
 	 */
 	
-	private double qBonbonBQ;
-	private double qBonbonMQ;
-	private double qBonbonHQ;
-	private double qTabletteBQ;
-	private double qTabletteMQ;
-	private double qTabletteHQ;
+	private int qBonbonBQ;
+	private int qBonbonMQ;
+	private int qBonbonHQ;
+	private int qTabletteBQ;
+	private int qTabletteMQ;
+	private int qTabletteHQ;
 	public Journal ventes = new Journal("ventes");
 	
-	public Vendeur(double qBBQ, double qBMQ, double qBHQ, double qTBQ, double qTMQ, double qTHQ) {
+	public Vendeur(int qBBQ, int qBMQ, int qBHQ, int qTBQ, int qTMQ, int qTHQ) {
 		qBonbonBQ = (qBBQ>=0) ? qBBQ : 0;
 		qBonbonMQ = (qBMQ>=0) ? qBMQ : 0;
 		qBonbonHQ = (qBHQ>=0) ? qBHQ : 0;
@@ -42,7 +43,7 @@ public class Vendeur implements IVendeurChoco{
 		qTabletteHQ=0;
 	}
 
-	public double getqBonbonBQ() {
+	public int getqBonbonBQ() {
 		return qBonbonBQ;
 	}
 
@@ -50,7 +51,7 @@ public class Vendeur implements IVendeurChoco{
 		this.qBonbonBQ = qBonbonBQ;
 	}
 
-	public double getqBonbonMQ() {
+	public int getqBonbonMQ() {
 		return qBonbonMQ;
 	}
 
@@ -58,7 +59,7 @@ public class Vendeur implements IVendeurChoco{
 		this.qBonbonMQ = qBonbonMQ;
 	}
 
-	public double getqBonbonHQ() {
+	public int getqBonbonHQ() {
 		return qBonbonHQ;
 	}
 
@@ -66,7 +67,7 @@ public class Vendeur implements IVendeurChoco{
 		this.qBonbonHQ = qBonbonHQ;
 	}
 
-	public double getqTabletteBQ() {
+	public int getqTabletteBQ() {
 		return qTabletteBQ;
 	}
 
@@ -74,7 +75,7 @@ public class Vendeur implements IVendeurChoco{
 		this.qTabletteBQ = qTabletteBQ;
 	}
 
-	public double getqTabletteMQ() {
+	public int getqTabletteMQ() {
 		return qTabletteMQ;
 	}
 
@@ -82,7 +83,7 @@ public class Vendeur implements IVendeurChoco{
 		this.qTabletteMQ = qTabletteMQ;
 	}
 
-	public double getqTabletteHQ() {
+	public int getqTabletteHQ() {
 		return qTabletteHQ;
 	}
 
@@ -95,26 +96,22 @@ public class Vendeur implements IVendeurChoco{
 	}
 	
 	public GPrix getPrix() {
-		ArrayList<Double[]> intervalles = new ArrayList<>();
-		Double[] interval = {0.0,10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
-		for(int i=0;i<6;i++) {
-			intervalles.add(interval);
-		}
+		float[] intervalles = {(float)0.0,(float)10.0,(float)50.0,(float)100.0,(float)250.0,(float)500.0,(float)750.0,(float)1000.0};
 		ArrayList<Double[] > prix = new ArrayList<>();
 		//Discuter de la stratégie d'etagement des prix
-		Double[] prix4 = {0.72, 0.695, 0.650, 0.625, 0.6, 0.575, 0.55, 0.525};
-		Double[] prix5 = {1.12, 1.1, 1.075, 1.05, 1.025, 1.0, 0.975, 0.95};
-		Double[] prix6 = {2.0, 1.975, 1.95, 1.9, 1.875, 1.85, 1.825, 1.8};
-		Double[] prix1 = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		Double[] prix2 = {4.0, 3.975, 3.95, 3.9, 3.875, 3.85, 3.825, 3.8};
-		Double[] prix3 = {6.4, 6.375, 6.35, 6.325, 6.3, 6.275, 6.25, 6.2};
-		prix.add(prix1);
+		//float[] prix4 = {0.72, 0.695, 0.650, 0.625, 0.6, 0.575, 0.55, 0.525};
+		//float[] prix5 = {1.12, 1.1, 1.075, 1.05, 1.025, 1.0, 0.975, 0.95};
+		//float[] prix6 = {2.0, 1.975, 1.95, 1.9, 1.875, 1.85, 1.825, 1.8};
+		float[] prix1 = {(float)0.0,(float) 0.0,(float) 0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0};
+		//float[] prix2 = {4.0, 3.975, 3.95, 3.9, 3.875, 3.85, 3.825, 3.8};
+		//float[] prix3 = {6.4, 6.375, 6.35, 6.325, 6.3, 6.275, 6.25, 6.2};
+		/*prix.add(prix1);
 		prix.add(prix2);
 		prix.add(prix3);
 		prix.add(prix4);
 		prix.add(prix5);
-		prix.add(prix6);
-		return new GPrix(intervalles, prix);
+		prix.add(prix6);*/
+		return new GPrix(intervalles, prix1);
 	}
 	
 	
