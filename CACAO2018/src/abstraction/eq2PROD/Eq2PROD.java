@@ -23,6 +23,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	private boolean quantiteEq3;
 	private Indicateur indicateurQB;
 	private Indicateur indicateurQM;
+	private Indicateur soldejournal;
 	
 // CONSTRUCTEURS
 	public Eq2PROD() {
@@ -297,12 +298,19 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	public void setStockQBas(Indicateur i) {
 		this.stockQBas = i;
 	}
+	public Indicateur getSoldeJournal() {
+		return this.soldejournal;
+	}
+	public void setSoldeJournal(Indicateur i) {
+		this.soldejournal = i;
+	}
 	public Indicateur getStockQMoy() {
 		return this.stockQMoy;
 	}
 	public void setStockQMoy(Indicateur i) {
 		this.stockQMoy = i;
 	}
+	
 	
 	protected void setStockAffichage() {
 		calculCoeffStock();
@@ -316,6 +324,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		setStockAffichage();
 		this.indicateurQB = new Indicateur("Stock de "+getNomEq()+" de basse qualité",this,getStockQB());
 		this.indicateurQM = new Indicateur("Stock de "+getNomEq()+" de moyenne qualité",this,getStockQM());
+		this.soldejournal = new Indicateur("Solde de"+getNomEq(), this, getSolde());
 		setStockQBas(indicateurQB);
 		setStockQMoy(indicateurQM);
 		
@@ -325,6 +334,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		Monde.LE_MONDE.ajouterJournal(getJournalOccasionel());
 		Monde.LE_MONDE.ajouterIndicateur(getStockQBas());
 		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
+		Monde.LE_MONDE.ajouterIndicateur(getSoldeJournal());
 	}
 	
 // NEXT DE NOTRE ACTEUR
@@ -334,6 +344,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		
 		this.getJournal().ajouter("Quantité basse qualité = "+ getStockQB());
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ getStockQM());
+		this.getJournal().ajouter("Solde ="+getSolde()+" €");
 		this.getJournal().ajouter("Coefficient de la météo ="+ getCoeffMeteo());
 		if(!(getCoeffMaladie())) {
 			this.getJournal().ajouter("Aucune maladie n'a frappé les plantations");
@@ -350,5 +361,6 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		setStockAffichage();
 		indicateurQB.setValeur(this, getStockQB());
 		indicateurQM.setValeur(this, getStockQM());
+		soldejournal.setValeur(this, getSolde());
 	}
 }
