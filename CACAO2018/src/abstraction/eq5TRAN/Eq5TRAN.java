@@ -52,6 +52,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 	 * @author Thomas Schillaci
 	 */
 	public Eq5TRAN() {
+
+		// GESTION DES INDICATEURS
+
 		int nbMarchandises = Marchandises.getNombreMarchandises();
 		productionSouhaitee = new Indicateur[nbMarchandises];
 		achatsSouhaites = new Indicateur[nbMarchandises];
@@ -97,42 +100,22 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
 		banque = new Indicateur("Eq5 - Banque", this, 16_000); // environ benefice 2017 sur nombre d'usines
 
-		//		for (Field field : getClass().getDeclaredFields()) {
-		//			if(field==null) continue;
-		//			try {
-		//				if(field.get(this) instanceof  Indicateur)
-		//					Monde.LE_MONDE.ajouterIndicateur((Indicateur) field.get(this));
-		//				else if(field.get(this) instanceof Indicateur[])
-		//					for (Indicateur indicateur : (Indicateur[]) field.get(this))
-		//						Monde.LE_MONDE.ajouterIndicateur(indicateur);
-		//			} catch (IllegalAccessException e) {
-		//				e.printStackTrace();
-		//			}
-		//		}
-
 		Monde.LE_MONDE.ajouterIndicateur(banque);
 		Monde.LE_MONDE.ajouterIndicateur(stocks[TABLETTES_BQ]);
 		Monde.LE_MONDE.ajouterIndicateur(stocks[TABLETTES_MQ]);
 		Monde.LE_MONDE.ajouterIndicateur(stocks[TABLETTES_HQ]);
 		Monde.LE_MONDE.ajouterIndicateur(stocks[FRIANDISES_MQ]);
 
+		// GESTION DES JOURNAUX
+
 		journal = new Journal("Journal Eq5");
 		Monde.LE_MONDE.ajouterJournal(journal);
-		// On intialise les attributs de nos contrats qui ne varient pas... :
-		contratFeveBQEq2 = new ContratFeve() ;
-		contratFeveMQEq2 = new ContratFeve();
-		contratFeveMQEq3 = new ContratFeve();
 
+		// GESTION DES CONTRATS AVEC LA PROD
 
-		contratFeveBQEq2.setTransformateur(this ) ;
-		contratFeveBQEq2.setProducteur((IVendeurFeve) Monde.LE_MONDE.getActeur("Eq2PROD"));
-		contratFeveBQEq2.setQualite(0);
-		contratFeveMQEq2.setTransformateur(this);
-		contratFeveMQEq2.setProducteur((IVendeurFeve) Monde.LE_MONDE.getActeur("Eq2PROD"));
-		contratFeveMQEq2.setQualite(1);
-		contratFeveMQEq3.setTransformateur(this);
-		contratFeveMQEq3.setProducteur((IVendeurFeve) Monde.LE_MONDE.getActeur("Eq3PROD"));
-		contratFeveMQEq3.setQualite(1);
+		contratFeveBQEq2 = new ContratFeve(this,(IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD"),0) ;
+		contratFeveMQEq2 = new ContratFeve(this,(IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD"),1);
+		contratFeveMQEq3 = new ContratFeve(this,(IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),1);
 	}
 
 
@@ -173,6 +156,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
 	/**
 	 * @author Thomas Schillaci
+	 * N.B. accepte les valeurs négatives pour encaisser
 	 */
 	public void depenser(double depense) {
 		double resultat = banque.getValeur() - depense;
