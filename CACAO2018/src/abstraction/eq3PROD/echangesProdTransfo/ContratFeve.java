@@ -29,6 +29,10 @@ public class ContratFeve {
 	 *  OffrePublique_ : Offre initiale du producteur sur le marche
 	 *  Demande_ : Demande du transformateur au producteur
 	 *  Proposition_ : Proposition du producteur au transformateur
+	 *  
+	 *  @Unites :
+	 *  Quantites : tonne
+	 *  Prix : €/tonne
 	 */
 	
 		// Constructeurs //
