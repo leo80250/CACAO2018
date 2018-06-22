@@ -196,6 +196,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		commandes[2] = commande;
 		commandeLivree = this.getLivraison(commandes);
 		
+		// on simule une commande de poudre
+		ContratPoudre commande2 = new ContratPoudre(1,300,1.4,this,this,true);
+		commandesPoudreEnCours.add(commande2);
+		
 		this.getJournal().ajouter("COMMANDES FEVES = " +this.getQuantiteFevesCommandees()+"t");
 		this.getJournal().ajouter("LIVRAISONS FEVES = " +this.getQuantiteFevesLivrees()+"t");
 		this.getJournal().ajouter("COMMANDES POUDRE = " +this.getQuantitePoudreCommandees()+"t");
@@ -618,22 +622,26 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * @author bernardjoseph
 	 * @param qualite
 	 */
-	public void calculateProductionPoudreReelle(int qualite) {
-		double productionReelle = (1.0 - this.getAbsenteisme().getValeur())*this.getEfficacite().getValeur()*this.getProductionPoudreAttendue(qualite).getValeur();
-		double reste = this.getStockFeves(qualite).getValeur()*(2-this.TAUX_TRANSFORMATION_FEVES_POUDRE[qualite]) - productionReelle;
-		if(reste > 0)	
-			this.getProductionPoudreReelle()[qualite].setValeur(this, productionReelle);
-		else
-			this.getProductionPoudreReelle()[qualite].setValeur(this, productionReelle+reste);
+	
+	// retourne un tableau de tableau avec le taux de transformation de tablette en indice 1 et poudre indice 0, la qualité appararait 
+	public double[] calculateTauxProductionTablettesPoudre() {
+		double sommePoudre=0;
+		double sommeTablette=0;
+		double sommeTotale=sommePoudre+sommeTablette;
+		double[] TauxFinauxTetP= new double[2];
+		for (int i=0; i<commandesPoudreEnCours.size(); i++) {
+			sommePoudre+=commandesPoudreEnCours.get(i).getQuantite();
+		}
+		for (int i=0; i<commandesTablettesEnCours.size(); i++) {
+			sommeTablette+=commandesTablettesEnCours.get(i).getqTabletteBQ()+commandesTablettesEnCours.get(i).getqTabletteMQ()+commandesTablettesEnCours.get(i).getqTabletteHQ();
+		}
+		double tauxPoudre=sommePoudre/sommeTotale;
+		double tauxTablette=sommeTablette/sommeTotale;
+		TauxFinauxTetP[0]=tauxPoudre;
+		TauxFinauxTetP[1]=tauxTablette;
+		return TauxFinauxTetP;
 	}
-	public void calculateProductionTablettesReelle(int qualite) {
-		double productionReelle = (1.0 - this.getAbsenteisme().getValeur())*this.getEfficacite().getValeur()*this.getProductionTablettesAttendue(qualite).getValeur();
-		double reste = this.getStockFeves(qualite).getValeur()*(2-this.TAUX_TRANSFORMATION_FEVES_TABLETTES[qualite]) - productionReelle;
-		if(reste > 0)	
-			this.getProductionTablettesReelle()[qualite].setValeur(this,productionReelle);
-		else
-			this.getProductionTablettesReelle()[qualite].setValeur(this,productionReelle+reste);
-	}
+	
 	public void estimateProductionPoudreAttendue(int qualite) {
 		int productionAttendue = 0;
 		ArrayList<ContratPoudre> commandesEnCours = this.getCommandesPoudreEnCours();
@@ -644,6 +652,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		}
 		this.setProductionPoudreAttendue((int)(productionAttendue*(1+MOY_STOCK_POUDRE_SUR_ENSEMBLE_COMMANDES)), qualite);
 	}
+	
+	public void calculateProductionPoudreReelle(int qualite) {
+		double productionPossible = this.getStockFeves(qualite).getValeur()*(2-this.TAUX_TRANSFORMATION_FEVES_POUDRE[qualite])*calculateTauxProductionTablettesPoudre()[0]*getEfficacite().getValeur();
+			this.getProductionPoudreReelle()[qualite].setValeur(this, productionPossible);
+		
+	}
+	
 	public void estimateProductionTabletteAttendue(int qualite) {
 		int productionAttendue = 0;
 		ArrayList<GQte> commandesEnCours = this.getCommandesTablettesEnCours();
@@ -658,6 +673,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		//productionAttendue -= (int)this.getStockTablettes(qualite).getValeur();
 		this.setProductionTablettesAttendue((int)(productionAttendue*(1+MOY_STOCK_TABLETTES_SUR_ENSEMBLE_COMMANDES)), qualite);
 	}
+	
+	public void calculateProductionTablettesReelle(int qualite) {
+		double productionPossible = this.getStockFeves(qualite).getValeur()*(2-this.TAUX_TRANSFORMATION_FEVES_TABLETTES[qualite])*calculateTauxProductionTablettesPoudre()[1]*getEfficacite().getValeur(); 
+			this.getProductionTablettesReelle()[qualite].setValeur(this,productionPossible);
+	}
+
+	
 	public void produire() {
 		System.out.println(this.getProductionPoudreAttendue()[0].getValeur());
 		for(int qualite = 0; qualite < 3; qualite++) {
