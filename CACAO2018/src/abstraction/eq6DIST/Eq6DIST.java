@@ -57,7 +57,7 @@ public class Eq6DIST implements Acteur{ //IAcheteurChoco {
 		this.stock_TBQ.setValeur(this, this.stock.getqTabletteBQ());
 		this.stock_TMQ.setValeur(this, this.stock.getqTabletteMQ());
 		this.stock_THQ.setValeur(this, this.stock.getqTabletteHQ());
-		/**
+		/** 
 		 * Karel Kédémos
 		 */
 		journalEq6.ajouter("quantité bonbon basse qualité = " + Integer.toString(this.stock.getqBonbonBQ()));
