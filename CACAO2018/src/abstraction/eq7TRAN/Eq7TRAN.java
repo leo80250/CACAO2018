@@ -174,7 +174,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		GQte commande;
 		GQte commandeLivree;
 		// Pour le moment le code des autres équipes ne nous fait aucune commande !
-		/*
+		
 		for(Acteur Acteur : Monde.LE_MONDE.getActeurs()) {
 			// on récupère les commandes des distributeurs en tablettes
 			
@@ -188,20 +188,15 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				commandes[2] = commande;
 				commandeLivree = this.getLivraison(commandes);
 			}
-		}*/
+		}
 		// on simule une commande régulière ici
+		/*
 		commande = new GQte(0, 0, 0, 150,300,600);
 		commandes[0] = commande;
 		commandes[1] = commande;
 		commandes[2] = commande;
 		commandeLivree = this.getLivraison(commandes);
-		
-		this.getJournal().ajouter("COMMANDES FEVES = " +this.getQuantiteFevesCommandees()+"t");
-		this.getJournal().ajouter("LIVRAISONS FEVES = " +this.getQuantiteFevesLivrees()+"t");
-		this.getJournal().ajouter("COMMANDES POUDRE = " +this.getQuantitePoudreCommandees()+"t");
-		this.getJournal().ajouter("LIVRAISONS POUDRE = " +this.getQuantitePoudreLivrees()+"t");
-		this.getJournal().ajouter("COMMANDES TABLETTES = " +this.getQuantiteTablettesCommandees()+"t");
-		this.getJournal().ajouter("LIVRAISONS TABLETTES = " +this.getQuantiteTablettesLivrees()+"t");
+		*/
 		
 		
 		// Pas d'échange entre transformateur pour le moment
@@ -242,20 +237,27 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				
 				if(offresPubliquesRetenues.length > 0) {
 					((IVendeurFeve) Acteur).sendDemandePrivee(offresPubliquesRetenues);
-					// BUG AVEC L'EQUIPE 3
 					
-					/*
 					offresPrivees = ((IVendeurFeve) Acteur).getOffreFinale();
-					if(offresPrivees.length > 0) {
+					if(offresPrivees != null && offresPrivees.length > 0) {
 						offresPriveesRetenues = this.analyseOffresPriveesFeves(offresPrivees);
-						System.out.println(offresPriveesRetenues);
+						for(ContratFeve contrat : offresPrivees) {
+							
+						}
 					}
-					*/
+					
 				}
 			}
 		}
 		
 		// Fin de la période, on supprime toutes les commandes
+		this.getJournal().ajouter("COMMANDES FEVES = " +this.getQuantiteFevesCommandees()+"t");
+		this.getJournal().ajouter("LIVRAISONS FEVES = " +this.getQuantiteFevesLivrees()+"t");
+		this.getJournal().ajouter("COMMANDES POUDRE = " +this.getQuantitePoudreCommandees()+"t");
+		this.getJournal().ajouter("LIVRAISONS POUDRE = " +this.getQuantitePoudreLivrees()+"t");
+		this.getJournal().ajouter("COMMANDES TABLETTES = " +this.getQuantiteTablettesCommandees()+"t");
+		this.getJournal().ajouter("LIVRAISONS TABLETTES = " +this.getQuantiteTablettesLivrees()+"t");
+		
 		this.resetCommandesEnCours();
 		
 		this.getJournal().ajouter(" - Estimation production poudre = " + this.getProductionPoudreAttendue(0).getValeur()+"t, "+this.getProductionPoudreAttendue(1).getValeur()+"t, "+this.getProductionPoudreAttendue(2).getValeur()+"t");
@@ -659,7 +661,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.setProductionTablettesAttendue((int)(productionAttendue*(1+MOY_STOCK_TABLETTES_SUR_ENSEMBLE_COMMANDES)), qualite);
 	}
 	public void produire() {
-		System.out.println(this.getProductionPoudreAttendue()[0].getValeur());
 		for(int qualite = 0; qualite < 3; qualite++) {
 			this.setStockTablettes((int)(this.getStockTablettes(qualite).getValeur()+this.getProductionTablettesReelle()[qualite].getValeur()), qualite);
 			this.setStockPoudre((int)(this.getStockPoudre(qualite).getValeur()+this.getProductionPoudreReelle()[qualite].getValeur()), qualite);
@@ -737,7 +738,26 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 */
 	
 	public int getMaximumOfProduction(int type, int qualite) {
-		return 0;
+		int[] productionTotaleMax = new int[3];
+		int[] productionPoudreMax = new int[3];
+		int[] productionTabletteMax = new int[3];
+		//int[] productionTotaleMin = new int[3];
+		//int[] productionPoudreMin = new int[3];
+		//int[] productionTabletteMin = new int[3];
+			
+		productionPoudreMax[qualite] = (int) (this.TAUX_TRANSFORMATION_FEVES_POUDRE[qualite]*this.MOY_PROD_POUDRE_PAR_EMPLOYE[qualite]*this.getNombreEmployes().getValeur()*this.getEfficacite().getValeur());
+		productionTabletteMax[qualite] = (int) (this.TAUX_TRANSFORMATION_FEVES_TABLETTES[qualite]*this.MOY_PROD_TABLETTE_PAR_EMPLOYE[qualite]*this.getNombreEmployes().getValeur()*this.getEfficacite().getValeur());
+		productionTotaleMax[qualite] = Math.max(productionPoudreMax[qualite], productionTabletteMax[qualite]);
+		//productionPoudreMin[qualite] = (int) this.getProductionPoudreAttendue(qualite).getValeur();
+		//productionTabletteMin[qualite] = (int) this.getProductionTablettesAttendue(qualite).getValeur();
+		//productionTotaleMin[qualite] = productionPoudreMin[qualite] + productionTabletteMin[qualite];
+		
+		if(type == 0)
+			return productionPoudreMax[qualite];
+		else if(type == 1)
+			return productionTabletteMax[qualite];
+		else
+			return productionTotaleMax[qualite];
 	}
 	
 	public ContratFeve[] analyseOffresPubliquesFeves(ContratFeve[] offresPubliques2) {
@@ -745,25 +765,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		// moment seulement qu'on peut tout produire avec nos employés
 		ArrayList<ContratFeve> offresPubliques = new ArrayList<>(Arrays.asList(offresPubliques2));
 		ArrayList<ArrayList<ContratFeve>> offresRetenuesParQualite = new ArrayList<ArrayList<ContratFeve>>();
-		
-		// A mettre dans des méthodes séparées
-		int[] productionTotaleMax = new int[3];
-		int[] productionPoudreMax = new int[3];
-		int[] productionTabletteMax = new int[3];
-		int[] productionTotaleMin = new int[3];
-		int[] productionPoudreMin = new int[3];
-		int[] productionTabletteMin = new int[3];
-		for(int qualite = 0; qualite<3; qualite++) {
-			productionPoudreMax[qualite] = (int) (this.TAUX_TRANSFORMATION_FEVES_POUDRE[qualite]*this.MOY_PROD_POUDRE_PAR_EMPLOYE[qualite]*this.getNombreEmployes().getValeur()*this.getEfficacite().getValeur());
-			productionTabletteMax[qualite] = (int) (this.TAUX_TRANSFORMATION_FEVES_TABLETTES[qualite]*this.MOY_PROD_TABLETTE_PAR_EMPLOYE[qualite]*this.getNombreEmployes().getValeur()*this.getEfficacite().getValeur());
-			productionTotaleMax[qualite] = Math.max(productionPoudreMax[qualite], productionTabletteMax[qualite]);
-			productionPoudreMin[qualite] = (int) this.getProductionPoudreAttendue(qualite).getValeur();
-			productionTabletteMin[qualite] = (int) this.getProductionTablettesAttendue(qualite).getValeur();
-			productionTotaleMin[qualite] = productionPoudreMin[qualite] + productionTabletteMin[qualite];
-			
+		for(int qualite = 0; qualite < 3; qualite++) {
 			offresRetenuesParQualite.add(new ArrayList<ContratFeve>());
 		}
-
+		
 		Collections.sort(offresPubliques, new Comparator<ContratFeve>() {
 	        public int compare(ContratFeve contrat1, ContratFeve contrat2)
 	        {
@@ -774,12 +779,29 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 		int[] sommeQuantiteOffresRetenuesParQualite = new int[3];
 		int[] n = new int[3];
-		for(ContratFeve offre : offresPubliques) {			
-			if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] < productionTotaleMin[offre.getQualite()]) {
+		boolean stopLoop = false;
+		for(ContratFeve offre : offresPubliques) {
+			if(!stopLoop) {
+				offre.setTransformateur(this);
+				
+				/*
+				if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] >= productionTotaleMin[offre.getQualite()]) {
+					sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] += offre.getOffrePublique_Quantite();
+					System.out.println(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()]+" "+productionTotaleMax[offre.getQualite()]);
+					if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] < productionTotaleMax[offre.getQualite()]) {
+						offre.setDemande_Quantite(offre.getOffrePublique_Quantite() - (productionTotaleMin[offre.getQualite()] - offre.getOffrePublique_Quantite()));
+					}
+					offresRetenuesParQualite.get(offre.getQualite()).add(offre);
+					n[offre.getQualite()]++;
+				}*/
 				sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] += offre.getOffrePublique_Quantite();
-				if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] < productionTotaleMax[offre.getQualite()]) {
-					offre.setDemande_Quantite(offre.getOffrePublique_Quantite() - (productionTotaleMin[offre.getQualite()] - offre.getOffrePublique_Quantite()));
+				if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] > getMaximumOfProduction(3,offre.getQualite())) {
+					offre.setDemande_Quantite(getMaximumOfProduction(3,offre.getQualite()) - (sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] - offre.getOffrePublique_Quantite()));
+					stopLoop = true;
 				}
+				else
+					offre.setDemande_Quantite(offre.getOffrePublique_Quantite());
+				
 				offresRetenuesParQualite.get(offre.getQualite()).add(offre);
 				n[offre.getQualite()]++;
 			}
