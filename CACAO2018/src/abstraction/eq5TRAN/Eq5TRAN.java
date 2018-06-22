@@ -155,7 +155,6 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 	 */
 	public void achatAuxProducteurs() {
 		MarcheFeve marche = (MarcheFeve) Monde.LE_MONDE.getActeur("Marche intermediaire");
-		marche.
 	}
 
 	/**
