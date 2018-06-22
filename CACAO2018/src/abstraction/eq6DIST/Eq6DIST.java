@@ -13,7 +13,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
  
-public class Eq6DIST implements Acteur, IAcheteurChoco, IAcheteurOccasionnelChoco {
+public class Eq6DIST implements Acteur, IAcheteurChoco {
 
 	
 	private Indicateur stock_BBQ;
@@ -103,36 +103,6 @@ public class Eq6DIST implements Acteur, IAcheteurChoco, IAcheteurOccasionnelChoc
 		this.stock.setqTabletteMQ(this.stock.getqTabletteMQ()+d.getqTabletteMQ());
 		this.stock.setqTabletteHQ(this.stock.getqTabletteHQ()+d.getqTabletteHQ());
 		this.banque.setValeur(this, solde);
-	}
-	
-	@Override
-	public ArrayList<GQte> getCommandeOccasionnel() {
-		
-		ArrayList<GQte> commande = new ArrayList<GQte>();
-		
-		final int quantité_demandée_transfo1_CMG=0; //toujours 0
-		final int quantité_demandée_transfo1_TBG=0; //toujours 0
-		final int quantité_demandée_transfo1_TMG=0;
-		final int quantité_demandée_transfo2_CMG=0;
-	 	final int quantité_demandée_transfo2_TBG=0;
-		final int quantité_demandée_transfo2_TMG=0;
-		final int quantité_demandée_transfo3_CMG=0;
-		final int quantité_demandée_transfo3_TBG=0;
-		final int quantité_demandée_transfo3_TMG=0;
-		return commande;
-		
-		//Plusieurs cas de demandes occasionelles : plus de stock, périodes de fêtes, promos
-		//
-		
-		
-		
-		
-		
-	}
-	@Override
-	public void livraisonOccasionnel(GQte d) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	
