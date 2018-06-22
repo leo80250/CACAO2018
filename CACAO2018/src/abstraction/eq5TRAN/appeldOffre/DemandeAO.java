@@ -1,7 +1,7 @@
 package abstraction.eq5TRAN.appeldOffre;
 
 public class DemandeAO {
-    public double quantite;
+    public double quantite; /** prix en tonnes **/
     public int qualite;
 
     /**
