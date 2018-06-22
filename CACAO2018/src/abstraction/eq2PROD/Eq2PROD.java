@@ -23,6 +23,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	private boolean quantiteEq3;
 	private Indicateur indicateurQB;
 	private Indicateur indicateurQM;
+	private Indicateur soldejournal;
 	
 // CONSTRUCTEURS
 	public Eq2PROD() {
@@ -188,16 +189,16 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			if (demandeTran[i].getQualite()==0) {
 				// Si leur prix est supérieur au notre, on prend le leur et on est content
 				if (demandeTran[i].getDemande_Prix()>=demandeTran[i].getOffrePublique_Prix()) {
-				c[i].setProposition_Prix(demandeTran[i].getDemande_Prix());
-				// Si le prix est en-dessous de notre seuil de rentabilité, on propose notre seuil
-			} 	else if (demandeTran[i].getDemande_Prix()<prix_minQB) {
-				c[i].setProposition_Prix(prix_minQB);
-				// Sinon on propose un prix intermédiaire à notre seuil et leur demande
-			}	else {
-				c[i].setProposition_Prix(0.25*prix_minQB+0.75*demandeTran[i].getDemande_Prix());
-			}
-		} // On fait pareil avec l'autre qualité (prix_minQB -> prix_minQM)
-			 else {
+					c[i].setProposition_Prix(demandeTran[i].getDemande_Prix());
+					// Si le prix est en-dessous de notre seuil de rentabilité, on propose notre seuil
+				} 	else if (demandeTran[i].getDemande_Prix()<prix_minQB) {
+					c[i].setProposition_Prix(prix_minQB);
+					// Sinon on propose un prix intermédiaire à notre seuil et leur demande
+				}	else {
+					c[i].setProposition_Prix(0.25*prix_minQB+0.75*demandeTran[i].getDemande_Prix());
+				}
+			} // On fait pareil avec l'autre qualité (prix_minQB -> prix_minQM)
+			else {
 				if (demandeTran[i].getDemande_Prix()>=demandeTran[i].getOffrePublique_Prix()) {
 					c[i].setProposition_Prix(demandeTran[i].getDemande_Prix());
 				} else if (demandeTran[i].getDemande_Prix()<prix_minQM) {
@@ -205,8 +206,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 				} else {
 					c[i].setProposition_Prix(0.25*prix_minQM+0.75*demandeTran[i].getDemande_Prix());
 				}
-		}
-	} return c;
+			}
+		} return c;
 	}
 
 	/* Agathe Chevalier + Alexandre Bigot + Romain Bernard */
@@ -297,12 +298,19 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	public void setStockQBas(Indicateur i) {
 		this.stockQBas = i;
 	}
+	public Indicateur getSoldeJournal() {
+		return this.soldejournal;
+	}
+	public void setSoldeJournal(Indicateur i) {
+		this.soldejournal = i;
+	}
 	public Indicateur getStockQMoy() {
 		return this.stockQMoy;
 	}
 	public void setStockQMoy(Indicateur i) {
 		this.stockQMoy = i;
 	}
+	
 	
 	protected void setStockAffichage() {
 		calculCoeffStock();
@@ -316,6 +324,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		setStockAffichage();
 		this.indicateurQB = new Indicateur("Stock de "+getNomEq()+" de basse qualité",this,getStockQB());
 		this.indicateurQM = new Indicateur("Stock de "+getNomEq()+" de moyenne qualité",this,getStockQM());
+		this.soldejournal = new Indicateur("Solde de"+getNomEq(), this, getSolde());
 		setStockQBas(indicateurQB);
 		setStockQMoy(indicateurQM);
 		
@@ -325,6 +334,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		Monde.LE_MONDE.ajouterJournal(getJournalOccasionel());
 		Monde.LE_MONDE.ajouterIndicateur(getStockQBas());
 		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
+		Monde.LE_MONDE.ajouterIndicateur(getSoldeJournal());
 	}
 	
 // NEXT DE NOTRE ACTEUR
@@ -334,6 +344,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		
 		this.getJournal().ajouter("Quantité basse qualité = "+ getStockQB());
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ getStockQM());
+		this.getJournal().ajouter("Solde ="+getSolde()+" €");
 		this.getJournal().ajouter("Coefficient de la météo ="+ getCoeffMeteo());
 		if(!(getCoeffMaladie())) {
 			this.getJournal().ajouter("Aucune maladie n'a frappé les plantations");
@@ -341,7 +352,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			this.getJournal().ajouter("Une maladie a frappé les plantations");
 		}
 		this.getJournal().ajouter("------------------------------------------------------------------------------");
-		if(!(getQuantiteEq3())) {
+		if((getQuantiteEq3())) {
 			this.getJournalOccasionel().ajouter("Une transaction a été réalisée avec l'équipe 3");
 		} else {
 			this.getJournalOccasionel().ajouter("Aucune transaction n'a été réalisée avec l'équipe3");
@@ -350,5 +361,6 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		setStockAffichage();
 		indicateurQB.setValeur(this, getStockQB());
 		indicateurQM.setValeur(this, getStockQM());
+		soldejournal.setValeur(this, getSolde());
 	}
 }
