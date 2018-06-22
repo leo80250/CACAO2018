@@ -61,7 +61,7 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOc
 		this.stock_TBQ.setValeur(this, this.stock.getqTabletteBQ());
 		this.stock_TMQ.setValeur(this, this.stock.getqTabletteMQ());
 		this.stock_THQ.setValeur(this, this.stock.getqTabletteHQ());
-		/**
+		/** 
 		 * Karel Kédémos
 		 */
 		journalEq6.ajouter("quantité bonbon basse qualité = " + Integer.toString(this.stock.getqBonbonBQ()));
@@ -70,7 +70,7 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOc
 		journalEq6.ajouter("quantité tablette basse qualité = " + Integer.toString(this.stock.getqTabletteBQ()));
 		journalEq6.ajouter("quantité tablette moyenne qualité = " + Integer.toString(this.stock.getqTabletteMQ()));
 		journalEq6.ajouter("quantité tablette haute qualité = " + Integer.toString(this.stock.getqTabletteHQ()));
-
+ 
 	}
 	
 	
