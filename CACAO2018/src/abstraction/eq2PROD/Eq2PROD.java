@@ -188,16 +188,16 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			if (demandeTran[i].getQualite()==0) {
 				// Si leur prix est supérieur au notre, on prend le leur et on est content
 				if (demandeTran[i].getDemande_Prix()>=demandeTran[i].getOffrePublique_Prix()) {
-				c[i].setProposition_Prix(demandeTran[i].getDemande_Prix());
-				// Si le prix est en-dessous de notre seuil de rentabilité, on propose notre seuil
-			} 	else if (demandeTran[i].getDemande_Prix()<prix_minQB) {
-				c[i].setProposition_Prix(prix_minQB);
-				// Sinon on propose un prix intermédiaire à notre seuil et leur demande
-			}	else {
-				c[i].setProposition_Prix(0.25*prix_minQB+0.75*demandeTran[i].getDemande_Prix());
-			}
-		} // On fait pareil avec l'autre qualité (prix_minQB -> prix_minQM)
-			 else {
+					c[i].setProposition_Prix(demandeTran[i].getDemande_Prix());
+					// Si le prix est en-dessous de notre seuil de rentabilité, on propose notre seuil
+				} 	else if (demandeTran[i].getDemande_Prix()<prix_minQB) {
+					c[i].setProposition_Prix(prix_minQB);
+					// Sinon on propose un prix intermédiaire à notre seuil et leur demande
+				}	else {
+					c[i].setProposition_Prix(0.25*prix_minQB+0.75*demandeTran[i].getDemande_Prix());
+				}
+			} // On fait pareil avec l'autre qualité (prix_minQB -> prix_minQM)
+			else {
 				if (demandeTran[i].getDemande_Prix()>=demandeTran[i].getOffrePublique_Prix()) {
 					c[i].setProposition_Prix(demandeTran[i].getDemande_Prix());
 				} else if (demandeTran[i].getDemande_Prix()<prix_minQM) {
@@ -205,8 +205,8 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 				} else {
 					c[i].setProposition_Prix(0.25*prix_minQM+0.75*demandeTran[i].getDemande_Prix());
 				}
-		}
-	} return c;
+			}
+		} return c;
 	}
 
 	/* Agathe Chevalier + Alexandre Bigot + Romain Bernard */
