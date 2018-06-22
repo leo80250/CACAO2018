@@ -24,7 +24,7 @@ import static abstraction.eq5TRAN.util.Marchandises.*;
  * @author Francois Le Guernic
  * @author Maxim Poulsen
  * @author Thomas Schillaci (lieutenant)
- * <p>
+ *
  * TODO LIST
  * - Gestion periodes de l'annee (Noel, Pacques ...)
  * - Gestion de facteurs sociaux (greves ...)
@@ -47,13 +47,15 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     private Indicateur[] prix; // en €/T TODO deteminer prix de vente
 
     private Journal journal;
+    
+    private int[] dureesPeremption; // durees en nombre de next
 
-    /**
-     * @author Thomas Schillaci
-     */
     public Eq5TRAN() {
 
-        // GESTION DES INDICATEURS
+        /**
+         * GESTION DES INDICATEURS
+         * @author Thomas Schillaci
+         */
 
         int nbMarchandises = Marchandises.getNombreMarchandises();
         productionSouhaitee = new Indicateur[nbMarchandises];
@@ -92,7 +94,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         prix[POUDRE_MQ] = new Indicateur("Eq5 - Prix de poudre MQ", this, 100);
         prix[POUDRE_HQ] = new Indicateur("Eq5 - Prix de poudre HQ", this, 0);
         prix[FRIANDISES_MQ] = new Indicateur("Eq5 - Prix de friandises MQ", this, 100);
-
+        
         for (int i = 0; i < nbMarchandises; i++) {
             stocksSouhaites[i] = new Indicateur("Eq5 - Stocks souhaites de " + Marchandises.getMarchandise(i), this, productionSouhaitee[i].getValeur() + achatsSouhaites[i].getValeur());
             stocks[i] = new Indicateur("Eq5 - Stocks de " + Marchandises.getMarchandise(i), this, stocksSouhaites[i].getValeur()); // on initialise les vrais stocks comme étant ce que l'on souhaite avoir pour la premiere iteration
@@ -106,16 +108,39 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         Monde.LE_MONDE.ajouterIndicateur(stocks[TABLETTES_HQ]);
         Monde.LE_MONDE.ajouterIndicateur(stocks[FRIANDISES_MQ]);
 
-        // GESTION DES JOURNAUX
+        /**
+         * GESTION DES JOURNAUX
+         * @author Thomas Schillaci
+         */
 
         journal = new Journal("Journal Eq5");
         Monde.LE_MONDE.ajouterJournal(journal);
 
-        // GESTION DES CONTRATS AVEC LA PROD
+        /**
+         * GESTION DES CONTRATS AVEC LA PRODUCTION
+         * @author Francois le Guernic
+         */
 
         contratFeveBQEq2 = new ContratFeve(this, (IVendeurFeve) Monde.LE_MONDE.getActeur("Eq2PROD"), 0);
         contratFeveMQEq2 = new ContratFeve(this, (IVendeurFeve) Monde.LE_MONDE.getActeur("Eq2PROD"), 1);
         contratFeveMQEq3 = new ContratFeve(this, (IVendeurFeve) Monde.LE_MONDE.getActeur("Eq3PROD"), 1);
+
+        /**
+         * GESTION DE LA PEREMPTION
+         * @author Maxim Poulsen, Thomas Schillaci
+         */
+
+        dureesPeremption = new int[nbMarchandises];
+
+        dureesPeremption[FEVES_BQ] = 42;
+        dureesPeremption[FEVES_MQ] = (int)(42*0.95f);
+        dureesPeremption[TABLETTES_BQ] = 6;
+        dureesPeremption[TABLETTES_MQ] = (int)(6*0.95f);
+        dureesPeremption[TABLETTES_HQ] = (int)(6*0.90f);
+        dureesPeremption[POUDRE_BQ] = 48;
+        dureesPeremption[POUDRE_MQ] = (int)(48*0.95f);
+        dureesPeremption[POUDRE_HQ] = (int)(48*0.90f);
+        dureesPeremption[FRIANDISES_MQ] = (int)(6*0.95f);
     }
 
     @Override
@@ -133,12 +158,23 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * TODO la prod coute de l'argent
      */
     public void production() {
+        roulement();
+
         production(POUDRE_BQ, TABLETTES_BQ);
         production(POUDRE_MQ, TABLETTES_MQ);
         production(POUDRE_HQ, TABLETTES_HQ);
         production(POUDRE_MQ, FRIANDISES_MQ);
         production(FEVES_BQ, POUDRE_BQ);
         production(FEVES_MQ, POUDRE_MQ);
+    }
+
+    /**
+     * @author Maxim Poulsen, Thomas Schillaci
+     */
+    public void roulement() {
+        for (int i = 0; i < Marchandises.getNombreMarchandises(); i++) {
+
+        }
     }
 
     /**
