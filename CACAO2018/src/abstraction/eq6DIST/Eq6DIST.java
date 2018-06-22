@@ -66,7 +66,7 @@ public class Eq6DIST implements Acteur{ //IAcheteurChoco {
 		journalEq6.ajouter("quantité tablette basse qualité = " + Integer.toString(this.stock.getqTabletteBQ()));
 		journalEq6.ajouter("quantité tablette moyenne qualité = " + Integer.toString(this.stock.getqTabletteMQ()));
 		journalEq6.ajouter("quantité tablette haute qualité = " + Integer.toString(this.stock.getqTabletteHQ()));
-
+ 
 	}
 	
 	
