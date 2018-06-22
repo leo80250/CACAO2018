@@ -20,11 +20,12 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 	}
 	
 	/* Guillaume Sallé */
-	public ArrayList<Acteur> getVendeurs() {
-		ArrayList<Acteur> vendeurs = Monde.LE_MONDE.getActeurs();
-		for (Acteur v : vendeurs) {
-			if (!(v instanceof IVendeurFeve)) {
-				vendeurs.remove(v);
+	public ArrayList<IVendeurFeve> getVendeurs() {
+		ArrayList<Acteur> acteurs = Monde.LE_MONDE.getActeurs();
+		ArrayList<IVendeurFeve> vendeurs = new ArrayList<>();
+		for (Acteur v : acteurs) {
+			if (v instanceof IVendeurFeve) {
+				vendeurs.add((IVendeurFeve)v);
 			}
 		}
 		return vendeurs;
@@ -43,12 +44,12 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 	/* Agathe CHEVALIER */
 	public ContratFeve[] getDemandePrivee() {
 		/*this.contratPrecedent = MarcheFeve.getContratPrecedent();*/
-		int tonnageQB = 0; double prixQB =0;
-		int tonnageQM_1 = 0; double prixQM_1 = 0;
-		int tonnageQM_2 = 0; double prixQM_2 = 0;
-		int tonnageQH = 0; double prixQH = 0;
+		//int tonnageQB = 0; double prixQB =0;
+		//int tonnageQM_1 = 0; double prixQM_1 = 0;
+		//int tonnageQM_2 = 0; double prixQM_2 = 0;
+		//int tonnageQH = 0; double prixQH = 0;
 		
-		for(int i=0; i<this.contratPrecedent.length; i++) {
+		/* for(int i=0; i<this.contratPrecedent.length; i++) {
 			if(this.contratPrecedent[i].getQualite()==0) {
 				tonnageQB = (int)(this.contratPrecedent[i].getDemande_Quantite()*0.40);
 				prixQB = this.contratPrecedent[i].getDemande_Prix();
@@ -58,7 +59,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 				prixQH = this.contratPrecedent[i].getDemande_Prix();
 			}
 			if(this.contratPrecedent[i].getQualite()==1) {
-				if(this.contratPrecedent[i].getProducteur()==null /*Eq2PROD*/) {
+				if(this.contratPrecedent[i].getProducteur()==null Eq2PROD) {
 					tonnageQM_1 = (int)(this.contratPrecedent[i].getDemande_Quantite()*0.40);
 					prixQM_1 = this.contratPrecedent[i].getDemande_Prix();
 				} else {
@@ -66,30 +67,19 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 					prixQM_2 = this.contratPrecedent[i].getDemande_Prix();
 				}
 			}
-		}
-						
-		/* basse qualite uniquement a l'equipe 2 */
-		ContratFeve cB = new ContratFeve(this,null/*Eq2PROD*/, 0, 
-				0, tonnageQB, 0, 
-				0, prixQB, 0, 
-				false);
-		/* moyenne qualite a l'equipe 2 ET l'equipe 3 */
-		ContratFeve cM1 = new ContratFeve(this, null /*Eq2PROS*/, 1, 
-				0, tonnageQM_1, 0, 
-				0, prixQM_1, 0, 
-				false);
-		ContratFeve cM2 = new ContratFeve(this, null /*Eq3PROD*/, 1, 
-				0, tonnageQM_2, 0, 
-				0, prixQM_2, 0, 
-				false);
-		/* haute qualite uniquement a l'equipe 3 */
-		ContratFeve cH = new ContratFeve(this, null /*Eq3PROD*/, 2, 
-				0, tonnageQH, 0, 
-				0, prixQH, 0, 
-				false);
+		} */
 		
-		ContratFeve[] c = new ContratFeve[4];
-		c[0]=cB ; c[1]=cM1 ; c[2]=cM2 ; c[3]=cH;
+		// Test pour notre Eq2PROD
+		ContratFeve[] c = new ContratFeve[2];
+		ContratFeve c1 = new ContratFeve(this, getVendeurs().get(0), 0,
+				0, 1, 0, 
+				0, 70800000, 0, false);
+		ContratFeve c2 = new ContratFeve(this, getVendeurs().get(1), 0,
+				0, 1, 0, 
+				0, 70800000, 0, false);
+		c[0] = c1; c[1] = c2;
+
+		
 		return c;		
 	}
 	
@@ -105,8 +95,8 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 
 	/* Agathe Chevalier */
 	public ContratFeve[] getResultVentes() {
-		for(int i=0; i < offreFinale.length; i++) {
-			offreFinale[i].setReponse(true); /* l'acheteur fictif signe tous les contrats */
+		for(ContratFeve c : this.offreFinale) {
+			c.setReponse(true); /* l'acheteur fictif signe tous les contrats */
 		}
 		return offreFinale;
 	}
