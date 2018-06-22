@@ -7,14 +7,14 @@ import java.util.Map;
 
 public class ValueComparator implements Comparator<IVendeurFeve> {
 
-    private Map<IVendeurFeve,Double> base;
+    private Map<IVendeurFeve, Double> base;
 
-    public ValueComparator(Map<IVendeurFeve,Double> base) {
-        this.base=base;
+    public ValueComparator(Map<IVendeurFeve, Double> base) {
+        this.base = base;
     }
 
     @Override
     public int compare(IVendeurFeve v1, IVendeurFeve v2) {
-        return base.get(v1)>=base.get(v2)?-1:1;
+        return base.get(v1) >= base.get(v2) ? -1 : 1;
     }
 }
