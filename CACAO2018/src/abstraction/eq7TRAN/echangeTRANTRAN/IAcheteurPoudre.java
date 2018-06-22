@@ -1,9 +1,8 @@
 package abstraction.eq7TRAN.echangeTRANTRAN;
 
-/** 
- * 
- * @author boulardmaelle, leofargeas, juliettegorline, mickaelabdealy
- * 
+/**
+ * Interface IAcheteurFeve
+ * @author Léo Fargeas, Margaux Grand, Juliette Gorline, Mickaël Abdealy, Maelle Boulard
  */
 
 public interface IAcheteurPoudre {	

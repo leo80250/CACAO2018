@@ -11,8 +11,6 @@ import abstraction.eq3PROD.Eq3PROD;
 import abstraction.eq6DIST.Eq6DIST;
 
 
-import abstraction.eq1DIST.Eq1DIST;
-
 /**
  * Classe modelisant "le monde" vu comme un regroupement d'acteurs, 
  * d'indicateurs et de journaux. 
@@ -58,20 +56,12 @@ public class Monde extends Observable {
 	 * a titre d'exemple. Vous aurez bien evidemment a modifier 
 	 * le corps de cette methode
 	 */
-
-
 	public void peupler() {
-		Eq1DIST eq1 = new Eq1DIST();
-		this.ajouterActeur(eq1);
 		Eq5TRAN eq5 = new Eq5TRAN();
 		this.ajouterActeur(eq5);
 		Eq2PROD eq2 = new Eq2PROD();
 		this.ajouterActeur(eq2);
 		Eq7TRAN eq7 = new Eq7TRAN();
-
-		this.ajouterActeur(eq7);
-
-
 		this.ajouterActeur(eq7);
 		Eq4TRAN eq4 = new Eq4TRAN();
 		this.ajouterActeur(eq4);
@@ -79,7 +69,6 @@ public class Monde extends Observable {
 		this.ajouterActeur(eq3);
 		Eq6DIST eq6 = new Eq6DIST();
 		this.ajouterActeur(eq6);
-
 	}
 	/**
 	 * @return Retourne le numero de l'etape en cours.

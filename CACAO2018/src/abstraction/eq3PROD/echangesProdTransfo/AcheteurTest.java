@@ -2,6 +2,10 @@ package abstraction.eq3PROD.echangesProdTransfo;
 
 import abstraction.fourni.Acteur;
 
+/**
+ * @author Grégoire
+ */
+
 public class AcheteurTest implements Acteur, IAcheteurFeve {
 	
 	private String nom;
@@ -23,7 +27,7 @@ public class AcheteurTest implements Acteur, IAcheteurFeve {
 	}
 
 	@Override
-	public void sendContratFictif() {
+	public void sendContratFictif(ContratFeve[] listContrats) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -50,5 +54,6 @@ public class AcheteurTest implements Acteur, IAcheteurFeve {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 }
