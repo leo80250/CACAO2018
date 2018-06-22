@@ -44,7 +44,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 	private ContratFeve contratFeveMQEq3; // Le contrat avec l'équipe 3 pour les fèves MQ
 
 	private Indicateur banque; // en milliers d'euros
-	private Indicateur[] prix; // en €/T TODO deteminer prix de vente
+	private Indicateur[] prix; // en €/kT TODO deteminer prix de vente
 
 	private Journal journal;
 
@@ -82,13 +82,13 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
 		prix[FEVES_BQ] = new Indicateur("Eq5 - Prix de feves BQ", this, 0);
 		prix[FEVES_MQ] = new Indicateur("Eq5 - Prix de feves MQ", this, 0);
-		prix[TABLETTES_BQ] = new Indicateur("Eq5 - Prix de tablettes BQ", this, 100);
-		prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ", this, 100);
+		prix[TABLETTES_BQ] = new Indicateur("Eq5 - Prix de tablettes BQ", this, 4800);
+		prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ", this, 10000);
 		prix[TABLETTES_HQ] = new Indicateur("Eq5 - Prix de tablettes HQ", this, 0);
 		prix[POUDRE_BQ] = new Indicateur("Eq5 - Prix de poudre BQ", this, 0);
 		prix[POUDRE_MQ] = new Indicateur("Eq5 - Prix de poudre MQ", this, 100);
 		prix[POUDRE_HQ] = new Indicateur("Eq5 - Prix de poudre HQ", this, 0);
-		prix[FRIANDISES_MQ] = new Indicateur("Eq5 - Prix de friandises MQ", this, 100);
+		prix[FRIANDISES_MQ] = new Indicateur("Eq5 - Prix de friandises MQ", this, 8000);
 
 		for (int i = 0; i < nbMarchandises; i++) {
 			stocksSouhaites[i] = new Indicateur("Eq5 - Stocks souhaites de " + Marchandises.getMarchandise(i), this, productionSouhaitee[i].getValeur() + achatsSouhaites[i].getValeur());
