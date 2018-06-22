@@ -243,6 +243,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				if(offresPubliquesRetenues.length > 0) {
 					((IVendeurFeve) Acteur).sendDemandePrivee(offresPubliquesRetenues);
 					// BUG AVEC L'EQUIPE 3
+					
 					/*
 					offresPrivees = ((IVendeurFeve) Acteur).getOffreFinale();
 					if(offresPrivees.length > 0) {
@@ -734,6 +735,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * @param offresPubliques2
 	 * @return
 	 */
+	
+	public int getMaximumOfProduction(int type, int qualite) {
+		return 0;
+	}
 	
 	public ContratFeve[] analyseOffresPubliquesFeves(ContratFeve[] offresPubliques2) {
 		// on boucle sur les offres publiques et on vérifie pour le 

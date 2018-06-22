@@ -2,6 +2,7 @@ package abstraction.eq7TRAN.echangeTRANTRAN;
 
 
 public class ContratPoudre {
+	// BQ = 0; MQ = 1; HQ = 2
 	private int qualite;
 	private int quantite;
 	private double prix;
