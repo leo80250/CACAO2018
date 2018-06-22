@@ -145,7 +145,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			return 0.5;
 		} else {
 			double x=Math.random();
-			if (x<0.005) {
+			if (x<0.05) {
 				setCoeffMaladie(true);
 			}
 			return 0.0 ;
@@ -170,6 +170,12 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 				prixMarche()*getCoeffSolde(), 0.0, 0.0, false);
 		ContratFeve[] c = new ContratFeve[2];
 		c[0]=c1; c[1] = c2;
+		/* //POUR LA NOUVELLE IMPLEMENTATION
+		ArrayList<ContratFeve> listContrat = new ArrayList<>();
+		listContrat.add(c1);
+		listContrat.add(c2);
+		return listContrat;
+		*/
 		return c;
 	}
 	
@@ -182,6 +188,37 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	 * Code par Romain Bernard */
 	public ContratFeve[] getOffreFinale() {
 		ContratFeve[] c=new ContratFeve[demandeTran.length];
+		/* //POUR LA NOUVELLE IMPLEMENTATION
+		ArrayList<ContratFeve> c= new ArrayList<>();	
+		
+		for (ContratFeve d : demandeTran) {
+			c.add(d);
+			// Les transfo ne représentent pas tout le marché : on peut toujours leur vendre la quantité demandée
+			c.get(c.size()-1).setProposition_Quantite(c.get(c.size()-1).getDemande_Quantite());
+			if (c.get(c.size()-1).getQualite()==0) {
+				// Si leur prix est supérieur au notre, on prend le leur et on est content
+				if (c.get(c.size()-1).getDemande_Prix()>=c.get(c.size()-1).getOffrePublique_Prix()) {
+					c.get(c.size()-1).setProposition_Prix(c.get(c.size()-1).getDemande_Prix());
+					// Si le prix est en-dessous de notre seuil de rentabilité, on propose notre seuil
+				} 	else if (c.get(c.size()-1).getDemande_Prix()<prix_minQB) {
+					c.get(c.size()-1).setProposition_Prix(prix_minQB);
+					// Sinon on propose un prix intermédiaire à notre seuil et leur demande
+				}	else {
+					c.get(c.size()-1).setProposition_Prix(0.25*prix_minQB+0.75*c.get(c.size()-1).getDemande_Prix());
+				}
+			} // On fait pareil avec l'autre qualité (prix_minQB -> prix_minQM)
+			else {
+				if (c.get(c.size()-1).getDemande_Prix()>=c.get(c.size()-1).getOffrePublique_Prix()) {
+					c.get(c.size()-1).setProposition_Prix(c.get(c.size()-1).getDemande_Prix());
+				} else if (c.get(c.size()-1).getDemande_Prix()<prix_minQM) {
+					c.get(c.size()-1).setProposition_Prix(prix_minQM);
+				} else {
+					c.get(c.size()-1).setProposition_Prix(0.25*prix_minQM+0.75*c.get(c.size()-1).getDemande_Prix());
+				}
+			}
+		} return c;
+		
+		 */
 		for (int i=0;i<demandeTran.length;i++ ) {
 			c[i]=demandeTran[i];
 			// Les transfo ne représentent pas tout le marché : on peut toujours leur vendre la quantité demandée
@@ -230,6 +267,30 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
    		 } 
    		 // On paye les salaires : 35% du CA
    	 } retireSolde(0.35*chiffreDAffaire);
+   	 
+   	 /*// POUR LA NOUVELLE IMPLEMENTATION
+   	   for (ContratFeve c : resultVentes) {
+   		 // Si le contrat i est accepté par le transfo
+   		 if (c.getReponse()) {
+   			 // On augmente notre solde et on diminue notre stock (QB ou QM)
+   			 if (c.getQualite()==0) {
+   				 addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
+   				 retireStockQB(c.getProposition_Quantite()) ;
+   				 chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
+   			 }
+   			 if (c.getQualite()==1) {
+   				 addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
+   				 retireStockQM(c.getProposition_Quantite()) ;
+   				 chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
+   			 } 
+   		 } 
+   		 // On paye les salaires : 35% du CA
+   	 } retireSolde(0.35*chiffreDAffaire);
+   	  
+   	  
+   	  */
+   	  
+   	 
     }
 	
 	/* Alexandre Bigot
