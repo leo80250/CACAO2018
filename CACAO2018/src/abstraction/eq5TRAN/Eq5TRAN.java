@@ -29,7 +29,6 @@ import static abstraction.eq5TRAN.util.Marchandises.*;
  * - Gestion periodes de l'annee (Noel, Pacques ...)
  * - Gestion de facteurs sociaux (greves ...)
  * - Systeme de fidelite client/fournisseur
- * - Gestion de la péremption des stocks
  */
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChoco, IAcheteurFeve {
 
@@ -44,11 +43,18 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     private ContratFeve contratFeveMQEq3; // Le contrat avec l'équipe 3 pour les fèves MQ
 
 	private Indicateur banque; // en milliers d'euros
-	private Indicateur[] prix; // en €/kT TODO deteminer prix de vente
+	private Indicateur[] prix; // en €/kT
 
     private Journal journal;
     
     private int[] dureesPeremption; // durees en nombre de next
+    /*
+     * On regarde pour chaque marchandise sur toute une duree de sa duree de peremption
+     * Si on a respecte les objectifs fixes sur chaque next de la periode
+     * Sinon on perd 100/(duree du next)% de la marchandise
+     */
+    private boolean[] respectObjectifs;
+
 
     public Eq5TRAN() {
 
@@ -173,7 +179,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      */
     public void roulement() {
         for (int i = 0; i < Marchandises.getNombreMarchandises(); i++) {
-
+            if(Monde.LE_MONDE.getStep()%dureesPeremption[i]==0 && !respectObjectifs[i]) {
+                float perte = 1.0f/dureesPeremption[i];
+                stocks[i].setValeur(this, stocks[i].getValeur() * (1.0f - perte));
+                respectObjectifs[i]=true; // on reinitialise les indicateurs sur les objectifs
+                journal.ajouter("L'equipe 5 vient de perdre " + perte*100 + "% de son stock de " + Marchandises.getMarchandise(i) + " à cause d'une mauvaise gestion des durées de péremption");
+            }
         }
     }
 
