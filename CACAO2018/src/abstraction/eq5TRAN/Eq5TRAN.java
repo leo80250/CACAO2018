@@ -1,15 +1,8 @@
 package abstraction.eq5TRAN;
 
-import static abstraction.eq5TRAN.util.Marchandises.*;
-
-import java.util.*;
-
-import abstraction.eq2PROD.Eq2PROD;
-import abstraction.eq3PROD.Eq3PROD;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
-import abstraction.eq3PROD.echangesProdTransfo.MarcheFeve;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.eq5TRAN.util.Marchandises;
@@ -21,11 +14,22 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static abstraction.eq5TRAN.util.Marchandises.*;
+
 /**
  * @author Juliette Gorline (chef)
  * @author Francois Le Guernic
  * @author Maxim Poulsen
  * @author Thomas Schillaci (lieutenant)
+ *
+ * TODO LIST
+ * - Gestion periodes de l'annee (Noel, Pacques ...)
+ * - Gestion de facteurs sociaux (greves ...)
+ * - Systeme de fidelite client/fournisseur
+ * - Gestion de la péremption des stocks
  */
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChoco, IAcheteurFeve {
 
@@ -40,11 +44,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 	private ContratFeve contratFeveMQEq3; // Le contrat avec l'équipe 3 pour les fèves MQ
 
 	private Indicateur banque; // en milliers d'euros
-	private Indicateur[] prix; // en €/T
-
-	private final int FEVE_BQ_EQ2 = 0;
-	private final int FEVE_MQ_EQ2 = 1;
-	private final int FEVE_MQ_EQ3 = 2;
+	private Indicateur[] prix; // en €/T TODO deteminer prix de vente
 
 	private Journal journal;
 
@@ -220,7 +220,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 	public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
 		ContratPoudre[] reponse = new ContratPoudre[devis.length];
 		for (int i = 0; i < devis.length; i++) {
-			if (devis[i].getQualite() == 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur() && devis[i].getPrix() == prix[POUDRE_MQ].getValeur()) {
+			if (devis[i].getQualite() != 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur() && devis[i].getPrix() == prix[POUDRE_MQ].getValeur()) {
 				reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), true);
 			} else {
 				reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), false);
@@ -351,7 +351,6 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
 	/*
 	 * François Le Guernic
-	 * @see abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve#getResultVentes()
 	 */
 	public ContratFeve[] getResultVentes() {
 		ContratFeve[] listeContrat = {contratFeveBQEq2, contratFeveMQEq2, contratFeveMQEq3};
