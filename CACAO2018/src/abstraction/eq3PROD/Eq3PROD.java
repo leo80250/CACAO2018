@@ -59,7 +59,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	 */
 	public Eq3PROD() {
 		
-		setNom(nom);
+		setNom("Eq3PROD");
 		this.indicateurQM = new Indicateur("Stock de Eq3PROD de moyenne qualité",this,getStockMoyen());
 		this.indicateurQH = new Indicateur("Stock de Eq3PROD de haute qualité",this,getStockFin());
 		setStockQMoy(indicateurQM);
