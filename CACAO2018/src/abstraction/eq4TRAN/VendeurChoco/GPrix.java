@@ -13,26 +13,28 @@ public class GPrix {
 	 * Classe définissant un tableau de prix étalonnés par tranche (tableau fournit par les transformateurs)
 	 */
 	
-	private ArrayList <Double[][]> prix;
+	private float[] intervalles;
+	private float[] prix;
 	
-	public GPrix(ArrayList<Double[]> intervalles, ArrayList<Double[]> prix) {
-		if(intervalles.get(0).length!=prix.get(0).length) {
+	public GPrix(float[] intervalles, float[] prix) {
+		if(intervalles.length!=prix.length) {
 			throw new IllegalArgumentException("Le nombre d'intervalles ne correspond pas au nombre de tarifs annoncés.");
 		}
-		if((prix.size()!=6)||(intervalles.size()!=6)) {
-			throw new IllegalArgumentException("Les informations n'ont pas été fournies pour les 6 produits.");
-		}
 		else {
-			for(int i=0;i<6;i++) {
-				Double[][] element = new Double[2][intervalles.get(0).length];
-				element[0] = intervalles.get(i);
-				element[1] = prix.get(i);
-				this.prix.set(i, element);
-			}
+			this.intervalles=intervalles;
+			this.prix=prix;
 		}
 	}
 	
-	public Double getPrixProduit(double quantite, int idProduit) {
+	public float[] getPrix2() {
+		return this.prix;
+	}
+	
+	public float[] getIntervalles() {
+		return this.intervalles;
+	}
+	
+	public float getPrix(float quantite) {
 		/* idProduit est un entier compris entre 1 et 6 : 
 		 * 1=BonbonsBQ
 		 * 2=BonbonsMQ
@@ -42,9 +44,9 @@ public class GPrix {
 		 * 6=TablettesHQ
 		 */
 		int j =0;
-		while((j<prix.get(0)[0].length)&&(prix.get(idProduit-1)[0][j]>quantite)) {
+		while((j<getIntervalles().length)&&(prix[j]>quantite)) {
 			j++;
 		}
-		return prix.get(idProduit-1)[1][j];
+		return prix[j];
 	}
 }
