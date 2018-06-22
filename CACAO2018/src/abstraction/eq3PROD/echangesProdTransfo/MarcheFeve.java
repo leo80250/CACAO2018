@@ -123,7 +123,7 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 				for (int i = 0 ; i < tailleCpV ; i++) {
 					 cpvArray[i] = (ContratFeve) contratsPourVendeur.get(i);
 				 }
-				vendeur.sendDemandePrivee((ContratFeve[]) cpvArray); 
+			vendeur.sendDemandePrivee((ContratFeve[]) cpvArray); 
 		 }
 		 
 		 // Reception des propositions (Vendeurs -> Marche)
