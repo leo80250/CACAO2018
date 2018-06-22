@@ -135,6 +135,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 		Contrat_FEVE_MQ_EQ3.setQualite(1);
 	}
 
+
 	@Override
 	public String getNom() {
 		return "Eq5TRAN";
