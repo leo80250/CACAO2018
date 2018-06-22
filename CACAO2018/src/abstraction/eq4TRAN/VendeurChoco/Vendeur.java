@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import abstraction.eq4TRAN.IVendeurChoco;
+import abstraction.eq4TRAN.IVendeurChocoBis;
 import abstraction.fourni.Journal;
 
 /**
@@ -11,7 +12,7 @@ import abstraction.fourni.Journal;
  * @author Etienne
  *
  */
-public class Vendeur implements IVendeurChoco{
+public class Vendeur implements IVendeurChocoBis{
 	/*
 	 * classe définissant les méthodes nécessaires à l'interface IVendeur Choco
 	 */
@@ -95,17 +96,13 @@ public class Vendeur implements IVendeurChoco{
 	}
 	
 	public GPrix getPrix() {
-		ArrayList<Double[]> intervalles = new ArrayList<>();
-		Double[] interval = {0.0,10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
-		for(int i=0;i<6;i++) {
-			intervalles.add(interval);
-		}
+		float[] intervalles = {0.0,10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
 		ArrayList<Double[] > prix = new ArrayList<>();
 		//Discuter de la stratégie d'etagement des prix
-		Double[] prix4 = {0.72, 0.695, 0.650, 0.625, 0.6, 0.575, 0.55, 0.525};
-		Double[] prix5 = {1.12, 1.1, 1.075, 1.05, 1.025, 1.0, 0.975, 0.95};
-		Double[] prix6 = {2.0, 1.975, 1.95, 1.9, 1.875, 1.85, 1.825, 1.8};
-		Double[] prix1 = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		float[] prix4 = {0.72, 0.695, 0.650, 0.625, 0.6, 0.575, 0.55, 0.525};
+		float[] prix5 = {1.12, 1.1, 1.075, 1.05, 1.025, 1.0, 0.975, 0.95};
+		float[] prix6 = {2.0, 1.975, 1.95, 1.9, 1.875, 1.85, 1.825, 1.8};
+		float[] prix1 = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 		Double[] prix2 = {4.0, 3.975, 3.95, 3.9, 3.875, 3.85, 3.825, 3.8};
 		Double[] prix3 = {6.4, 6.375, 6.35, 6.325, 6.3, 6.275, 6.25, 6.2};
 		prix.add(prix1);
@@ -114,7 +111,7 @@ public class Vendeur implements IVendeurChoco{
 		prix.add(prix4);
 		prix.add(prix5);
 		prix.add(prix6);
-		return new GPrix(intervalles, prix);
+		return new GPrix(intervalles, prix1);
 	}
 	
 	
