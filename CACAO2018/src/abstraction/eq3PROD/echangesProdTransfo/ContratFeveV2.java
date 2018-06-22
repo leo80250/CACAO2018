@@ -4,14 +4,13 @@ import abstraction.eq2PROD.acheteurFictifTRAN.acheteurFictifTRAN;
 import abstraction.fourni.Acteur;
 
 /**
- * @deprecated
  * @author Grégoire
  */
 
-public class ContratFeve {
+public class ContratFeveV2 {
 	
-	private IAcheteurFeve transformateur;
-	private IVendeurFeve producteur;
+	private IAcheteurFeveV2 transformateur;
+	private IVendeurFeveV2 producteur;
 	private int qualite;
 	
 	private int quantiteOffrePublique;
@@ -38,7 +37,7 @@ public class ContratFeve {
 	
 		// Constructeurs //
 	
-	public ContratFeve(IAcheteurFeve transformateur, IVendeurFeve producteur, int qualite,
+	public ContratFeveV2(IAcheteurFeveV2 transformateur, IVendeurFeveV2 producteur, int qualite,
 			int quantiteOffrePublique, int quantiteDemande, int quantiteProposition,
 			double prixOffrePublique, double prixDemande, double prixProposition, boolean reponse) {
 		
@@ -57,7 +56,7 @@ public class ContratFeve {
 		this.reponse = reponse;
 		
 	}
-	public ContratFeve(IAcheteurFeve transformateur, IVendeurFeve producteur, int qualite) {
+	public ContratFeveV2(IAcheteurFeveV2 transformateur, IVendeurFeveV2 producteur, int qualite) {
 		
 		this.transformateur = transformateur;
 		this.producteur = producteur;
@@ -73,7 +72,7 @@ public class ContratFeve {
 		
 		this.reponse = false;
 	}
-	public ContratFeve() {
+	public ContratFeveV2() {
 		
 		this.transformateur = null;
 		this.producteur = null;
@@ -93,14 +92,14 @@ public class ContratFeve {
 		// Getters //
 
 	@Deprecated
-	public ContratFeve(int qualite2, int quantite, double prixMinqb, IAcheteurFeve transformateur2,
-			IVendeurFeve producteur2, boolean reponse2) {
+	public ContratFeveV2(int qualite2, int quantite, double prixMinqb, IAcheteurFeveV2 transformateur2,
+			IVendeurFeveV2 producteur2, boolean reponse2) {
 		// TODO Auto-generated constructor stub
 	}
-	public IAcheteurFeve getTransformateur() {
+	public IAcheteurFeveV2 getTransformateur() {
 		return this.transformateur;
 	}
-	public IVendeurFeve getProducteur() {
+	public IVendeurFeveV2 getProducteur() {
 		return this.producteur;
 	}
 	public int getQualite() {
@@ -132,10 +131,10 @@ public class ContratFeve {
 
 		// Setters //
 	
-	public void setTransformateur(IAcheteurFeve transformateur) {
+	public void setTransformateur(IAcheteurFeveV2 transformateur) {
 		this.transformateur = transformateur;
 	}
-	public void setProducteur(IVendeurFeve producteur) {
+	public void setProducteur(IVendeurFeveV2 producteur) {
 		this.producteur = producteur;
 	}
 	public void setQualite(int qualite) {
@@ -182,15 +181,5 @@ public class ContratFeve {
 		
 		return "Contrat : "+this.getProposition_Quantite()+" tonnes de feve de "+strqualite[this.getQualite()]+" qualité, à "+this.getProposition_Prix()
 				+"€ la tonne, soit un total de "+this.getProposition_Quantite()*this.getProposition_Prix()+"€.\nAcheteur : "+acheteur+" | Vendeur : "+vendeur+rep;
-	}
-	@Deprecated
-	public double getPrix() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Deprecated
-	public int getQuantite() {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 }
