@@ -8,10 +8,12 @@ public interface InterfaceDistributeurClient {
 	/**
 	 *
 	 * @param Q
-	 *            : tableau d'entier (2x3) ligne 1: ChocolatBdG ; ChocolatMdG ;
-	 *            ChocolatHdG ligne 2: ConfiserieBdG ; ConfiserieMdG ; ConfiserieHdG
-	 * @return tableau d'entier du même modèle qui correspond à ce que le
-	 *         distributeur vend aux clients.
+	 *            : tableau d'entier (1x6) : {ChocolatBdG ; ChocolatMdG ;
+	 *            ChocolatHdG  ConfiserieBdG ; ConfiserieMdG ; ConfiserieHdG}
+	 * @return tableau d'entier (1x6) : {ChocolatBdG ; ChocolatMdG ;
+	 *            ChocolatHdG  ConfiserieBdG ; ConfiserieMdG ; ConfiserieHdG}
+	 *            qui correspond à ce que le distributeur vend aux clients.
+	 *            Le distributeur prendra donc soin d'actualiser ses stocks et son argent en fonction
 	 */
 	public GrilleQuantite commander(GrilleQuantite Q);
 	
