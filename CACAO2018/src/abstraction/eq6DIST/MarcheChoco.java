@@ -7,14 +7,16 @@ import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
 
+
 public class MarcheChoco  implements Acteur{
 	private ArrayList<GQte> stock;
 	private ArrayList<GPrix> prix;
 	private ArrayList <Acteur> distributeurs;
 	private ArrayList <Acteur> transformateurs;
+
 	
 	public MarcheChoco() {
-		
+
 	this.distributeurs= new ArrayList<Acteur>();
 	this.distributeurs.add((Monde.LE_MONDE.getActeur("Eq6DIST")));
 	this.distributeurs.add((Monde.LE_MONDE.getActeur("Eq1DIST")));
@@ -23,8 +25,7 @@ public class MarcheChoco  implements Acteur{
 	this.transformateurs.add( Monde.LE_MONDE.getActeur("Eq5TRAN"));
 	this.transformateurs.add( Monde.LE_MONDE.getActeur("Eq7TRAN"));
 	this.stock= new ArrayList <GQte>();
-	this.prix= new ArrayList <GPrix>();
-	
+	this.prix= new ArrayList <GPrix>();	
 	
 	for (Acteur i : this.transformateurs) {
 		IVendeurChoco ibis= (IVendeurChoco) i;
@@ -34,11 +35,13 @@ public class MarcheChoco  implements Acteur{
 	}	
 	}
 	public void next() {
+
 		ArrayList<ArrayList<GQte>> commande=  new ArrayList<ArrayList<GQte>>();
 		for (Acteur i : this.distributeurs) {
 			IAcheteurChoco ibis = (IAcheteurChoco) i;
 			commande.add(ibis.getCommande(this.prix, this.stock));
 		}
+		
 		ArrayList<ArrayList<GQte>> livraison = new ArrayList<ArrayList<GQte>>();
 		for(int j =0; j<3;j++) {
 			ArrayList<GQte> Livraisoni =new ArrayList<GQte>(); 
@@ -60,6 +63,7 @@ public class MarcheChoco  implements Acteur{
 			}
 			livraison.add(Livraisoni);		
 		}
+		
 		int l=0;
 		ArrayList<ArrayList<GQte>> Delivery = new ArrayList<ArrayList<GQte>>();
 		for (Acteur i : this.transformateurs)	{
@@ -99,5 +103,10 @@ public class MarcheChoco  implements Acteur{
 		// TODO Auto-generated method stub
 		return "MarcheChoco";
 	}
+	
+
+	
+	
+	
 	
 }

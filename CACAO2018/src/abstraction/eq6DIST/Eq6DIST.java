@@ -6,11 +6,13 @@ import abstraction.eq1DIST.IVenteConso;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
+import abstraction.eq5TRAN.appeldOffre.DemandeAO;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Monde;
 
-public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
+public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOccasionnelChoco {
 	
 	private Indicateur stock_BBQ;
 	private Indicateur stock_BMQ;
@@ -91,6 +93,35 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco {
 		this.stock.setqTabletteBQ(this.stock.getqTabletteBQ()+d.getqTabletteBQ());
 		this.stock.setqTabletteMQ(this.stock.getqTabletteMQ()+d.getqTabletteMQ());
 		this.stock.setqTabletteHQ(this.stock.getqTabletteHQ()+d.getqTabletteHQ());
+	}
+	
+	@Override
+	public ArrayList<GQte> getCommandeOccasionnel() {
+		
+		ArrayList<GQte> commande = new ArrayList<GQte>();
+		
+		final int quantité_demandée_transfo1_CMG=0; //toujours 0
+		final int quantité_demandée_transfo1_TBG=0; //toujours 0
+		final int quantité_demandée_transfo1_TMG=0;
+		final int quantité_demandée_transfo2_CMG=0;
+	 	final int quantité_demandée_transfo2_TBG=0;
+		final int quantité_demandée_transfo2_TMG=0;
+		final int quantité_demandée_transfo3_CMG=0;
+		final int quantité_demandée_transfo3_TBG=0;
+		final int quantité_demandée_transfo3_TMG=0;
+		
+		//Plusieurs cas de demandes occasionelles : plus de stock, périodes de fêtes, promos
+		//
+		
+		
+		
+		
+		
+	}
+	@Override
+	public void livraisonOccasionnel(GQte d) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
