@@ -254,7 +254,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 					if(offresPrivees != null && offresPrivees.length > 0) {
 						offresPriveesRetenues = this.analyseOffresPriveesFeves(offresPrivees);
 						for(ContratFeve contrat : offresPrivees) {
+							
 						}
+						((IVendeurFeve) Acteur).sendResultVentes(offresPrivees);
 					}
 					
 				}
