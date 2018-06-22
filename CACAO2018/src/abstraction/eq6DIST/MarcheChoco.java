@@ -31,7 +31,6 @@ public class MarcheChoco  implements Acteur{
 		IVendeurChoco ibis= (IVendeurChoco) i;
 		this.prix.add(ibis.getPrix());
 		this.stock.add(ibis.getStock());
-			
 	}	
 	}
 	public void next() {
@@ -105,6 +104,9 @@ public class MarcheChoco  implements Acteur{
 	public String getNom() {
 		// TODO Auto-generated method stub
 		return "MarcheChoco";
+	}
+	public int testmerge() {
+		return 0;
 	}
 
 }
