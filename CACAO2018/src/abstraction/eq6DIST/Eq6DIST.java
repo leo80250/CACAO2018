@@ -3,16 +3,18 @@ package abstraction.eq6DIST;
 import java.util.ArrayList;
 
 import abstraction.eq1DIST.IVenteConso;
-import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
+import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
+
 public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOccasionnelChoco {
+
 	
 	private Indicateur stock_BBQ;
 	private Indicateur stock_BMQ;
@@ -22,9 +24,10 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOc
 	private Indicateur stock_THQ;
 	private Indicateur banque;
 	private GQte stock;
+	private Journal journalEq6;
 	public Eq6DIST() {
-		MarcheChoco MC = new MarcheChoco();
-		Monde.LE_MONDE.ajouterActeur(MC);
+		//MarcheChoco MC = new MarcheChoco();
+		//Monde.LE_MONDE.ajouterActeur(MC);
 		this.banque= new Indicateur("Solde bancaire Eq6 : ",this, 120000);
 		this.stock= new GQte(0,0,0,0,0,0);	
 		this.stock_BBQ= new Indicateur("Stock de bonbons BQ Eq6 :",this);
@@ -40,6 +43,8 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOc
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_TBQ);
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_TMQ);
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_THQ);
+		this.journalEq6= new Journal("Journal Equipe 6");
+		Monde.LE_MONDE.ajouterJournal(journalEq6);
 	}
 	@Override
 	public String getNom() {
@@ -56,14 +61,18 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOc
 		this.stock_TBQ.setValeur(this, this.stock.getqTabletteBQ());
 		this.stock_TMQ.setValeur(this, this.stock.getqTabletteMQ());
 		this.stock_THQ.setValeur(this, this.stock.getqTabletteHQ());
-		
-		
+		/**
+		 * Karel Kédémos
+		 */
+		journalEq6.ajouter("quantité bonbon basse qualité = " + Integer.toString(this.stock.getqBonbonBQ()));
+		journalEq6.ajouter("quantité bonbon moyenne qualité = " + Integer.toString(this.stock.getqBonbonMQ()));
+		journalEq6.ajouter("quantité bonbon haute qualité = " + Integer.toString(this.stock.getqBonbonBQ()));
+		journalEq6.ajouter("quantité tablette basse qualité = " + Integer.toString(this.stock.getqTabletteBQ()));
+		journalEq6.ajouter("quantité tablette moyenne qualité = " + Integer.toString(this.stock.getqTabletteMQ()));
+		journalEq6.ajouter("quantité tablette haute qualité = " + Integer.toString(this.stock.getqTabletteHQ()));
+
 	}
-	@Override
-	public void sell(int q) {
-		//this.stock = this.stock - q;
-		//System.out.println("eq6 : vente de "+q+" --stock = -->"+this.stock);
-	}
+	
 	
 	public ArrayList<GQte> getCommande(ArrayList<GPrix> gPrix, ArrayList<GQte> stock) {
 		/**
@@ -86,13 +95,14 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOc
 		commande.add(new GQte(0, quantité_demandée_transfo3_CMG,0,quantité_demandée_transfo3_TBG,quantité_demandée_transfo3_TMG,0));
 		return(commande);
 	}
-	public void livraison(GQte d) {
+	public void livraison(GQte d, double solde) {
 		this.stock.setqBonbonBQ(this.stock.getqBonbonBQ()+d.getqBonbonBQ());
 		this.stock.setqBonbonMQ(this.stock.getqBonbonMQ()+d.getqBonbonMQ());
 		this.stock.setqBonbonHQ(this.stock.getqBonbonHQ()+d.getqBonbonHQ());
 		this.stock.setqTabletteBQ(this.stock.getqTabletteBQ()+d.getqTabletteBQ());
 		this.stock.setqTabletteMQ(this.stock.getqTabletteMQ()+d.getqTabletteMQ());
 		this.stock.setqTabletteHQ(this.stock.getqTabletteHQ()+d.getqTabletteHQ());
+		this.banque.setValeur(this, solde);
 	}
 	
 	@Override
@@ -109,6 +119,7 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOc
 		final int quantité_demandée_transfo3_CMG=0;
 		final int quantité_demandée_transfo3_TBG=0;
 		final int quantité_demandée_transfo3_TMG=0;
+		return commande;
 		
 		//Plusieurs cas de demandes occasionelles : plus de stock, périodes de fêtes, promos
 		//
@@ -120,6 +131,11 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOc
 	}
 	@Override
 	public void livraisonOccasionnel(GQte d) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void sell(int q) {
 		// TODO Auto-generated method stub
 		
 	}
