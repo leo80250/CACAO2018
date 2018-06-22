@@ -188,7 +188,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	 * Code par Romain Bernard */
 	public ContratFeve[] getOffreFinale() {
 		ContratFeve[] c=new ContratFeve[demandeTran.length];
-		/* //POUR LA NOUVELLE IMPLEMENTATION
+		/* //POUR LA NOUVELLE IMPLEMENTATION 
 		ArrayList<ContratFeve> c= new ArrayList<>();	
 		
 		for (ContratFeve d : demandeTran) {
