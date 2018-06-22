@@ -14,8 +14,8 @@ import abstraction.fourni.Monde;
 
  
 public class Eq6DIST implements Acteur, IAcheteurChoco {
-
-	
+     
+	 
 	private Indicateur stock_BBQ;
 	private Indicateur stock_BMQ;
 	private Indicateur stock_BHQ;
