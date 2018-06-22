@@ -12,7 +12,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-
+ 
 public class Eq6DIST implements Acteur, IAcheteurChoco, IAcheteurOccasionnelChoco {
 
 	
