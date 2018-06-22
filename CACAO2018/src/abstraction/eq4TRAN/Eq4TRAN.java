@@ -305,7 +305,7 @@ IVendeurPoudre{
 	}
 
 	//Etienne
-	@Override
+	/*@Override
 	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
 		ArrayList<GQte> livraison = new ArrayList<GQte>();
 		livraison.addAll(vendeur.getLivraison(commandes));
@@ -325,8 +325,12 @@ IVendeurPoudre{
 		}
 		solde.setValeur(Eq4TRAN, s);
 		return livraison;
-	}
+	}*/
 
+	@Override
+	public GQte getLivraison(GQte[] commandes) {
+		return new GQte((int)0.0,(int)stockChocMQ.getValeur(),(int)stockChocHQ.getValeur(),(int)stockTabBQ.getValeur(),(int)stockTabMQ.getValeur(),(int)stockTabHQ.getValeur());
+	}
 	@Override
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		// TODO Auto-generated method stub
