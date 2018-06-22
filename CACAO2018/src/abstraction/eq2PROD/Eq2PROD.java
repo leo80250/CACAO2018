@@ -168,7 +168,6 @@ public class Eq2PROD implements Acteur, IVendeurFeveV2, IVendeurFevesProd {
 				prixMarche()*getCoeffSolde()*0.85, 0.0, 0.0, false);
 		ContratFeve c2 =  new ContratFeve(null, this, 1, getStockQM(), 0, 0, 
 				prixMarche()*getCoeffSolde(), 0.0, 0.0, false);
-		c[0]=c1; c[1] = c2;
 		ArrayList<ContratFeve> listContrat = new ArrayList<>();
 		listContrat.add(c1);
 		listContrat.add(c2);
