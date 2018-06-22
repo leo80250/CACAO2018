@@ -208,6 +208,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 		// pour le moment on produit les commandes actuelles, à l'avenir il faudra prévoir les commandes qui suivent
 		// maintenant on s'occupe de notre production
+	/**
+	 * @author boulardmaelle
+	 */
 		for(int qualite = 0; qualite < 3; qualite++) {
 			this.estimateProductionPoudreAttendue(qualite);
 			this.estimateProductionTabletteAttendue(qualite);
@@ -223,6 +226,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		ContratFeve[] offresPubliquesRetenues;
 		ContratFeve[] offresPrivees;
 		ContratFeve[] offresPriveesRetenues;
+		
+		
+		/**
+		 * @author leofargeas
+		 */
 		
 		// bug dans Eq3, il caste leur objet équipe en IAcheteurFeve alors qu'il ne l'implemente pas
 		for(Acteur Acteur : Monde.LE_MONDE.getActeurs()) {
@@ -293,6 +301,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public void setStockPoudre(Indicateur[] stockPoudre) {
 		this.stockPoudre = stockPoudre;
 	}
+	
+	/**
+	 * 
+	 * @param value
+	 * @param qualite
+	 * @author boulardmaelle
+	 */
 	public void setStockPoudre(int value, int qualite) {
 		Indicateur[] stockPoudre = this.getStockPoudre();
 		stockPoudre[qualite].setValeur(this, value);
@@ -315,6 +330,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public void setSolde(Indicateur solde) {
 		this.solde = solde;
 	}
+	
+	
+	
+	/**
+	 * @author boulardmaelle, margauxgrand, bernardjoseph, leofargeas
+	 * 
+	 */
 	public Journal getJournal() {
 		return this.journal;
 	}
@@ -362,6 +384,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public Indicateur[] getProductionPoudreAttendue() {
 		return productionPoudreAttendue;
 	}
+	
+	/**
+	 * toutes les productiosn attentues
+	 * @param productionPoudreAttendue
+	 * @author leofargeas
+	 */
 	public void setProductionPoudreAttendue(Indicateur[] productionPoudreAttendue) {
 		this.productionPoudreAttendue = productionPoudreAttendue;
 	}
@@ -386,6 +414,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public Indicateur getProductionTablettesAttendue(int qualite) {
 		return this.getProductionTablettesAttendue()[qualite];
 	}
+	
+	
+	
+	/**
+	 *@author margauxgrand
+	 * @param offres
+	 */
 	public void setOffresFevesPubliquesEnCours(ContratFeve[] offres) {
 		this.offresFevesPubliquesEnCours = offres;
 	}
@@ -398,6 +433,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public void setNombreEmployes(int n) {
 		this.nombreEmployes.setValeur(this, (double)n);
 	}
+	
+	/**
+	 * @author boulardmaelle
+	 * @return
+	 */
 	public ArrayList<ContratPoudre> getCommandesPoudreEnCours() {
 		return this.commandesPoudreEnCours;
 	}
@@ -434,6 +474,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public void setLivraisonsFevesEnCours(ContratFeve[] contrats) {
 		this.livraisonsFeveEnCours = contrats;
 	}
+	
+	/**
+	 * @author leofargeas
+	 */
 	
 	public void resetCommandesEnCours() {
 		this.commandesFeveEnCours = new ContratFeve[0];
@@ -535,6 +579,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		}
 	}
 	
+	/**
+	 * @author bernardjoseph margauxgrand
+	 * @param qualite
+	 * @return
+	 */
+	
 	public double estimateCoutTransformationPoudre(int qualite) {
 		return 0;
 	}
@@ -557,11 +607,16 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		return (estimatePrixAchatFeves(qualite)+estimateCoutTransformationTablette(qualite))*(1+estimateMargeTablette(qualite));
 	}
 	
-	//Joseph Bernard
+	
 	
 	//////////////////////////////////////
 	// METHODES VENDEUR POUDRE&CHOCOLAT //
 	/////////////////////////////////////
+	
+	/**
+	 * @author bernardjoseph
+	 * @param qualite
+	 */
 	public void calculateProductionPoudreReelle(int qualite) {
 		double productionReelle = (1.0 - this.getAbsenteisme().getValeur())*this.getEfficacite().getValeur()*this.getProductionPoudreAttendue(qualite).getValeur();
 		double reste = this.getStockFeves(qualite).getValeur()*(2-this.TAUX_TRANSFORMATION_FEVES_POUDRE[qualite]) - productionReelle;
@@ -611,7 +666,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		}
 	}
 	
-	// Léo Fargeas
+	/**
+	 * @author leofargeas
+	 * @param qualite
+	 * @return
+	 */
 	public Indicateur getStockFeves(int qualite) {
 		if(qualite < 0 || qualite > 3) 
 			return null;
@@ -638,7 +697,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	/** 
 	 * Interface IVendeurPoudre
-	 * @author @boulardmaelle @margauxgrand @josephbernard
+	 * @author boulardmaelle margauxgrand 
 	 */
 	
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
@@ -669,6 +728,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	////////////////////////////
 	// METHODES ACHETEUR FEVE //
 	////////////////////////////
+	
+	/**
+	 * @author margauxgrand (+ boulardmaelle et leofargeas)
+	 * @param offresPubliques2
+	 * @return
+	 */
 	
 	public ContratFeve[] analyseOffresPubliquesFeves(ContratFeve[] offresPubliques2) {
 		// on boucle sur les offres publiques et on vérifie pour le 
@@ -759,7 +824,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 	/**
 	 * Interface IAcheteurFeve
-	 * @author boulardmaelle, margauxgrand
+	 * @author boulardmaelle
 	 */
 	
 	@Override
@@ -790,7 +855,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * 
 	 */
 	
-	//Joseph Bernard
+	/**
+	 * @author bernardjoseph
+	 */
 	
 	public GQte getStock() {
 		return new GQte(0,0,0,(int)this.getStockTablettes(0).getValeur(),(int)this.getStockTablettes(1).getValeur(),(int)this.getStockTablettes(2).getValeur());
@@ -853,7 +920,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	
-	//Joseph Bernard
+	/**
+	 * @author josephbernard  leofargeas boulardmaelle margauxgrand
+	 */
 	/*
 	public List<GQte> getLivraison(List<GQte> commandes) {
 		int[] stock= {this.getStockTablette(0).getValeur(),this.getStockTablette(1).getValeur(),this.getStockTablette(2).getValeur()};
