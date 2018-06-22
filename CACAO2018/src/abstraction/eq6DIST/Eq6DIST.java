@@ -13,7 +13,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 
-public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOccasionnelChoco {
+public class Eq6DIST implements Acteur, IAcheteurChoco, IAcheteurOccasionnelChoco {
 
 	
 	private Indicateur stock_BBQ;
@@ -134,10 +134,6 @@ public class Eq6DIST implements Acteur, IVenteConso, IAcheteurChoco, IAcheteurOc
 		// TODO Auto-generated method stub
 		
 	}
-	@Override
-	public void sell(int q) {
-		// TODO Auto-generated method stub
-		
-	}
+
 	
 }
