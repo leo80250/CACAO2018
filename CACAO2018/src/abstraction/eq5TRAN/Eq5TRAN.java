@@ -441,6 +441,14 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         }
         return Double.MAX_VALUE;
     }
+    
+    /** @author Maxim */
+
+	@Override
+	public void envoyerReponse(double quantite, int qualite, int prix) {
+		this.depenser(-prix);
+		this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur()-quantite);
+	}
 
 
 }
