@@ -18,7 +18,7 @@ public class Marchandises {
     public static final int POUDRE_HQ = 8;
 
     public static String getMarchandise(int index) {
-        for(Field field : Marchandises.class.getDeclaredFields()) {
+        for (Field field : Marchandises.class.getDeclaredFields()) {
             try {
                 if (index == field.getInt(null)) return field.getName();
             } catch (IllegalAccessException e) {
@@ -36,7 +36,7 @@ public class Marchandises {
      * @return 0 pour de la BQ, 1 pour de la MQ, 2 pour de la HQ
      */
     public static int getQualite(int index) {
-        return getMarchandise(index).contains("BQ")?0:(getMarchandise(index).contains("MQ")?1:2);
+        return getMarchandise(index).contains("BQ") ? 0 : (getMarchandise(index).contains("MQ") ? 1 : 2);
     }
 
 }
