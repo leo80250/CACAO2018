@@ -43,7 +43,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeve {
 	
 	/* Agathe CHEVALIER */
 	public ContratFeve[] getDemandePrivee() {
-		/*this.contratPrecedent = MarcheFeve.getContratPrecedent();*/
+		/*this.contratPrecedent = Monde.LE_MONDE.getActeur("Marche intermediaire").getContratPrecedent*/
 		//int tonnageQB = 0; double prixQB =0;
 		//int tonnageQM_1 = 0; double prixQM_1 = 0;
 		//int tonnageQM_2 = 0; double prixQM_2 = 0;
