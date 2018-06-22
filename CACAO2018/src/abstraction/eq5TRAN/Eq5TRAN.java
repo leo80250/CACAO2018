@@ -137,7 +137,6 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
          */
 
         dureesPeremption = new int[nbMarchandises];
-
         dureesPeremption[FEVES_BQ] = 42;
         dureesPeremption[FEVES_MQ] = (int)(42*0.95f);
         dureesPeremption[TABLETTES_BQ] = 6;
@@ -147,6 +146,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         dureesPeremption[POUDRE_MQ] = (int)(48*0.95f);
         dureesPeremption[POUDRE_HQ] = (int)(48*0.90f);
         dureesPeremption[FRIANDISES_MQ] = (int)(6*0.95f);
+
+        respectObjectifs = new boolean[nbMarchandises];
+        for (int i = 0; i < Marchandises.getNombreMarchandises(); i++) respectObjectifs[i] = true;
     }
 
     @Override
