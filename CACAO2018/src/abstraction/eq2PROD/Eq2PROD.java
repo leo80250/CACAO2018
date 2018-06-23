@@ -4,17 +4,18 @@ import abstraction.fourni.*;
 import abstraction.eq3PROD.echangesProdTransfo.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import abstraction.eq2PROD.echangeProd.*;
 
 public class Eq2PROD implements Acteur, IVendeurFeveV2, IVendeurFevesProd {
-// VARIABLES D'INSTANCE
+// VARIABLES D'INSTANCE 
 	private int stockQM;
 	private int stockQB;
 	private double solde;
 	private boolean maladie;
 	private double coeffStock;
-	private ArrayList<ContratFeve> demandeTran;
+	private List<ContratFeveV2> demandeTran;
 	private final static int MOY_QB = 46000; // pour un step = deux semaines
 	private final static int MOY_QM = 70000; // pour un step = deux semaines
 	private final static int coutFixe = 70800000; // entretien des plantations
@@ -89,10 +90,10 @@ public class Eq2PROD implements Acteur, IVendeurFeveV2, IVendeurFevesProd {
 		return "Eq2PROD";
 	}
 	/* Romain Bernard */
-	public ArrayList<ContratFeve> getDemandeTran() {
+	public List<ContratFeveV2> getDemandeTran() {
 		return this.demandeTran;
 	}
-	public void setDemandeTran(ArrayList<ContratFeve> demande) {
+	public void setDemandeTran(List<ContratFeveV2> demande) {
 		this.demandeTran = demande;
 	}
 	/* Alexandre Bigot + Guillaume Sallé*/
@@ -163,30 +164,29 @@ public class Eq2PROD implements Acteur, IVendeurFeveV2, IVendeurFevesProd {
  * Ici nous avons implemente IVendeurFeve et IVendeurFevesProd */
 	
 	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
-	public ArrayList<ContratFeve> getOffrePublique() {
-		ContratFeve c1 = new ContratFeve(null, this, 0, getStockQB(), 0, 0, 
-				prixMarche()*getCoeffSolde()*0.85, 0.0, 0.0, false);
-		ContratFeve c2 =  new ContratFeve(null, this, 1, getStockQM(), 0, 0, 
-				prixMarche()*getCoeffSolde(), 0.0, 0.0, false);
-		c[0]=c1; c[1] = c2;
-		ArrayList<ContratFeve> listContrat = new ArrayList<>();
+	public List<ContratFeveV2> getOffrePublique() {
+		ContratFeveV2 c1 = new ContratFeveV2(null, this, 0, getStockQB(), 0, 0, 
+			prixMarche()*getCoeffSolde()*0.85, 0.0, 0.0, false);
+		ContratFeveV2 c2 =  new ContratFeveV2(null, this, 1, getStockQM(), 0, 0, 
+			prixMarche()*getCoeffSolde(), 0.0, 0.0, false);
+		List<ContratFeveV2> listContrat = new ArrayList<>();
 		listContrat.add(c1);
 		listContrat.add(c2);
 		return listContrat;
 	}
 	
 	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
-	public void sendDemandePrivee(ArrayList<ContratFeve> demandePrivee) {
+	
+	public void sendDemandePrivee(List<ContratFeveV2> demandePrivee) {
 		setDemandeTran(demandePrivee); 
 	}
 	
 	/* Modélisation par Romain Bernard + Guillaume Sallé
-	 * Code par Romain Bernard */
-	public ArrayList<ContratFeve> getOffreFinale() {
-			//POUR LA NOUVELLE IMPLEMENTATION 
-		ArrayList<ContratFeve> c= new ArrayList<>();	
-		
-		for (ContratFeve d : demandeTran) {
+	 * Code par Romain Bernard
+	 * Revu par Guillaume Sallé pour la nouvelle implémentation */
+	public List<ContratFeveV2> getOffreFinale() {
+		List<ContratFeveV2> c= new ArrayList<>();	
+		for (ContratFeveV2 d : demandeTran) {
 			c.add(d);
 			// Les transfo ne représentent pas tout le marché : on peut toujours leur vendre la quantité demandée
 			c.get(c.size()-1).setProposition_Quantite(c.get(c.size()-1).getDemande_Quantite());
@@ -215,28 +215,27 @@ public class Eq2PROD implements Acteur, IVendeurFeveV2, IVendeurFevesProd {
 		return c;
 	}
 
-	/* Agathe Chevalier + Alexandre Bigot + Romain Bernard */
-    public void sendResultVentes(ArrayList<ContratFeve> resultVentes) {
-    double chiffreDAffaire=0;
-   	 
-   	 // POUR LA NOUVELLE IMPLEMENTATION
-   	   for (ContratFeve c : resultVentes) {
+	/* Agathe Chevalier + Alexandre Bigot + Romain Bernard 
+	 * Revu par Guillaume Sallé pour la nouvelle implémentation */
+    public void sendResultVentes(List<ContratFeveV2> resultVentes) {
+    	double chiffreDAffaire=0;
+    	for (ContratFeveV2 c : resultVentes) {
    		 // Si le contrat i est accepté par le transfo
-   		 if (c.getReponse()) {
+   		   	if (c.getReponse()) {
    			 // On augmente notre solde et on diminue notre stock (QB ou QM)
-   			 if (c.getQualite()==0) {
-   				 addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
-   				 retireStockQB(c.getProposition_Quantite()) ;
-   				 chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
-   			 }
-   			 if (c.getQualite()==1) {
-   				 addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
-   				 retireStockQM(c.getProposition_Quantite()) ;
-   				 chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
-   			 } 
-   		 } 
+   		   		if (c.getQualite()==0) {
+   		   			addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
+   		   			retireStockQB(c.getProposition_Quantite()) ;
+   		   			chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
+   		   		}
+   		   		if (c.getQualite()==1) {
+   		   			addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
+   		   			retireStockQM(c.getProposition_Quantite()) ;
+   		   			chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
+   		   		} 
+   		   	} 
    		 // On paye les salaires : 35% du CA
-   	 } retireSolde(0.35*chiffreDAffaire);
+    	} retireSolde(0.35*chiffreDAffaire);
     }
 	
 	/* Alexandre Bigot
@@ -370,4 +369,5 @@ public class Eq2PROD implements Acteur, IVendeurFeveV2, IVendeurFevesProd {
 		indicateurQM.setValeur(this, getStockQM());
 		soldejournal.setValeur(this, getSolde());
 	}
+
 }
