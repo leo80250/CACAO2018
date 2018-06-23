@@ -20,7 +20,7 @@ public interface IVendeurFeveV2 {
 	 * IDEE DU CODE : renvoyez les offres que VOUS proposez au marche
 	 * @author Grégoire
 	 */
-	public List<ContratFeve> getOffrePublique();
+	public List<ContratFeveV2> getOffrePublique();
 	
 	/**
 	 * Informe un producteur des demandes qui lui sont destinees de la part de tous les transformateurs
@@ -31,7 +31,7 @@ public interface IVendeurFeveV2 {
 	 * IDEE DU CODE : stocker les ContratFeve du parametre dans les variables d'instance / les analyser
 	 * @author Grégoire
 	 */
-	public void sendDemandePrivee(List<ContratFeve> demandePrivee);
+	public void sendDemandePrivee(List<ContratFeveV2> demandePrivee);
 	
 	/**
 	 * Recupere les offres finales d'un producteur
@@ -44,7 +44,7 @@ public interface IVendeurFeveV2 {
 	 * IDEE DU CODE : renvoyer VOS offres aux differents producteurs
 	 * @author Grégoire
 	 */
-	public List<ContratFeve> getOffreFinale();
+	public List<ContratFeveV2> getOffreFinale();
 	
 	/**
 	 * Informe un producteur du resultat des ventes
@@ -56,6 +56,6 @@ public interface IVendeurFeveV2 {
 	 * @author Grégoire
 	 * ## MaJ des stocks et des comptes ##
 	 */
-	public void sendResultVentes(List<ContratFeve> resultVentes);
+	public void sendResultVentes(List<ContratFeveV2> resultVentes);
 	
 }
