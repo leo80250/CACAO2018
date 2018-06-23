@@ -9,7 +9,7 @@ import java.util.List;
 import abstraction.eq2PROD.echangeProd.*;
 
 public class Eq2PROD implements Acteur, IVendeurFeveV2, IVendeurFevesProd {
-// VARIABLES D'INSTANCE
+// VARIABLES D'INSTANCE 
 	private int stockQM;
 	private int stockQB;
 	private double solde;

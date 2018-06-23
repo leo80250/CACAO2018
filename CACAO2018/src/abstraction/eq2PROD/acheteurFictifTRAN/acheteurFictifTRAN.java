@@ -94,7 +94,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV2 {
 				}
 			}
 		}
-		// On prend 40 % des tonnages
+		// On prend 40 % des tonnages 
 		ponderation(tonnageQB,tonnageQH,tonnageQM_1,tonnageQM_2,0.4);
 		
 		if (tonnageQB != 0) {
