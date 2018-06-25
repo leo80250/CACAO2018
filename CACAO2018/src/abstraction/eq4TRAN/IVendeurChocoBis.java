@@ -2,19 +2,21 @@ package abstraction.eq4TRAN;
 
 import java.util.ArrayList;
 
-import abstraction.eq4TRAN.VendeurChoco.GPrix;
-import abstraction.eq4TRAN.VendeurChoco.GQte;
+import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 
 /**
  * 
  * @author Etienne
  *
  */
+
+// Interface décrivant les échanges entre Transformateurs et Distributeurs, en se plaçant du côté Transformateur
+// (vendeur de chocolats)
 public interface IVendeurChocoBis {
 	
-	public GQte getStock();
+	public ArrayList<Integer> getStock();
 	
-	public GPrix getPrix();
+	public GPrix2 getPrix();
 	
-	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes);
+	public ArrayList<ArrayList<Integer>> getLivraison(ArrayList<ArrayList<Integer>> commandes);
 }

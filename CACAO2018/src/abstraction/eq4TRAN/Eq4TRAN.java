@@ -7,8 +7,7 @@ import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq4TRAN.ITransformateur;
-import abstraction.eq4TRAN.VendeurChoco.GPrix;
-import abstraction.eq4TRAN.VendeurChoco.GQte;
+import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
@@ -27,7 +26,7 @@ import abstraction.fourni.Monde;
 public class Eq4TRAN implements Acteur, 
 ITransformateur, 
 IAcheteurFeve,
-IVendeurChoco,
+IVendeurChocoBis,
 IAcheteurPoudre,
 IVendeurPoudre{ 
 
@@ -36,6 +35,8 @@ IVendeurPoudre{
 	/** Déclaration des indicateurs pour le Journal
 	 *  
 	 */
+	
+	//Indicateurs de stock et de production
 	private Indicateur stockTabBQ ;
 	private Indicateur stockTabMQ ;
 	private Indicateur stockTabHQ ;
@@ -46,10 +47,14 @@ IVendeurPoudre{
 	private Indicateur prodTabHQ ;
 	private Indicateur prodChocMQ ;
 	private Indicateur prodChocHQ ;
+	//Indicateur de notre solde bancaire
 	private Indicateur solde ; 
+	//Journal rendant compte de nos activités et de l'évolution de nos indicateurs
 	private Journal JournalEq4 = new Journal("JournalEq4") ;
+	//Rôle de vendeur que nous incarnerons à chaque next() et qui se mettra à jour à cette même fréquence
 	private Vendeur vendeur;
-	
+	//On crée une liste pour ranger nos stocks
+	private ArrayList<Indicateur> Stocks;
 	/** Contrats en cours pour la méthode next interne
 	 * 
 	 */
@@ -81,7 +86,7 @@ IVendeurPoudre{
 		contratFeveEnCours[5]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),2 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
 		
 		
-
+		//On initialise les indicateurs à 1000(arbitraire)
 		stockTabBQ = new Indicateur("stockTabBQ",this,1000) ;
 		stockTabMQ = new Indicateur("stockTabMQ",this,1000) ;
 		stockTabHQ = new Indicateur("stockTabHQ",this,1000) ;
@@ -93,7 +98,25 @@ IVendeurPoudre{
 		prodChocMQ = new Indicateur("prodChocMQ",this,1000) ;
 		prodChocHQ = new Indicateur("prodChocHQ",this,1000) ;
 		solde = new Indicateur("solde",this,1000) ;
-		vendeur = new Vendeur(0, (int)stockChocMQ.getValeur(), (int)stockChocHQ.getValeur(), (int)stockTabBQ.getValeur(), (int)stockTabMQ.getValeur(), (int)stockTabHQ.getValeur());
+		//On crée la liste qui range nos stocks
+		ArrayList<Indicateur> Stocks = new ArrayList<>();
+		//On remplit cette liste avec nos stocks
+		Stocks.add(new Indicateur("",this,0));
+		Stocks.add(stockChocMQ);
+		Stocks.add(stockChocHQ);
+		Stocks.add(stockTabBQ);
+		Stocks.add(stockTabMQ);
+		Stocks.add(stockTabHQ);
+		this.Stocks=Stocks;
+		// On s'initialise en tant que vendeur
+		ArrayList<Integer> stocks = new ArrayList<>();
+		stocks.add(0);
+		stocks.add((int)stockChocMQ.getValeur());
+		stocks.add((int)stockChocHQ.getValeur());
+		stocks.add((int)stockTabBQ.getValeur());
+		stocks.add((int)stockTabMQ.getValeur());
+		stocks.add((int)stockTabHQ.getValeur());
+		vendeur = new Vendeur(stocks);
 	}
 
 	/** Nom de l'acteur
@@ -206,7 +229,17 @@ IVendeurPoudre{
 				}
 			}
 		} 
-
+		
+		// On se transforme désormais en vendeur, le réapprovisionnement de nos stocks ayant été effectué
+		// Nous allons alors vendre des fèves aux distributeurs par l'intermédiaire du MarchéChoco()
+		ArrayList<Integer> stocks = new ArrayList<>();
+		stocks.add(0);
+		stocks.add((int)stockChocMQ.getValeur());
+		stocks.add((int)stockChocHQ.getValeur());
+		stocks.add((int)stockTabBQ.getValeur());
+		stocks.add((int)stockTabMQ.getValeur());
+		stocks.add((int)stockTabHQ.getValeur());
+		vendeur = new Vendeur(stocks);
 
 	}
 
@@ -231,6 +264,12 @@ IVendeurPoudre{
 
 	}
 
+	// Etienne Raveau
+	// Getter pour accéder à la liste de nos stocks
+	public ArrayList<Indicateur> getStocks(){
+		return Stocks;
+	}
+	
 //Charles
 	@Override
 	public void sendOffrePublique(ContratFeve[] offrePublique) {
@@ -288,49 +327,55 @@ IVendeurPoudre{
 		return this.contratFeveEnCours;
 	}
 
+	// Etienne Raveau
+	// Getter permettant d'accéder à la quantité disponible d'un produit 
+	public int getQuantite(int IDProduit) {
+		return vendeur.getQte(IDProduit);
+	}
+	
+	//Etienne Raveau
+	// Setter qui met à jour  l'indicateur de stock pour un certain produit
+	public void setQuantite(int IDProduit, int quantite) {
+		getStocks().get(IDProduit-1).setValeur(Eq4TRAN, quantite);
+	}
+	
 	/*
 	 * @Etienne
 	 */
 	@Override
-	public GQte getStock() {
-
+	public ArrayList<Integer> getStock() {
 		return vendeur.getStock();
 	}
 
-	//Etienne
+	// Etienne Raveau
 	@Override
-	public GPrix getPrix() {
+	public GPrix2 getPrix() {
 
 		return vendeur.getPrix();
 	}
 
-	//Etienne
-	/*@Override
-	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
-		ArrayList<GQte> livraison = new ArrayList<GQte>();
-		livraison.addAll(vendeur.getLivraison(commandes));
-		stockChocMQ.setValeur(Eq4TRAN,stockChocMQ.getValeur()-livraison.get(0).getqBonbonMQ()-livraison.get(1).getqBonbonMQ());
-		stockChocHQ.setValeur(Eq4TRAN, stockChocHQ.getValeur()-livraison.get(0).getqBonbonHQ()-livraison.get(1).getqBonbonHQ());
-		stockTabBQ.setValeur(Eq4TRAN, stockTabBQ.getValeur()-livraison.get(0).getqTabletteBQ()-livraison.get(1).getqTabletteBQ());
-		stockTabMQ.setValeur(Eq4TRAN, stockTabMQ.getValeur()-livraison.get(0).getqTabletteMQ()-livraison.get(1).getqTabletteMQ());
-		stockTabHQ.setValeur(Eq4TRAN, stockTabHQ.getValeur()-livraison.get(0).getqTabletteHQ()-livraison.get(1).getqTabletteHQ());
-		double s = 0.0;
-		for(int i=0;i<2;i++) {
-			s+=livraison.get(i).getqBonbonBQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqBonbonBQ(), 1);
-			s+=livraison.get(i).getqBonbonMQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqBonbonMQ(), 2);
-			s+=livraison.get(i).getqBonbonHQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqBonbonHQ(), 3);
-			s+=livraison.get(i).getqTabletteBQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqTabletteBQ(), 4);
-			s+=livraison.get(i).getqTabletteMQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqTabletteMQ(), 5);
-			s+=livraison.get(i).getqTabletteHQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqTabletteHQ(), 6);
-		}
-		solde.setValeur(Eq4TRAN, s);
-		return livraison;
-	}*/
-
+	
+	//Etienne Raveau
 	@Override
-	public GQte getLivraison(GQte[] commandes) {
-		return new GQte((int)0.0,(int)stockChocMQ.getValeur(),(int)stockChocHQ.getValeur(),(int)stockTabBQ.getValeur(),(int)stockTabMQ.getValeur(),(int)stockTabHQ.getValeur());
+	public ArrayList<ArrayList<Integer>> getLivraison(ArrayList<ArrayList<Integer>> commandes) {
+		ArrayList<ArrayList<Integer>> livraison = new ArrayList<ArrayList<Integer>>();
+		livraison.addAll(vendeur.getLivraison(commandes));  //On remplit notre livraison selon la méthode implémentée dans Vendeur
+		//On met à jour nos stocks en fonction de la livraison effectuée
+		for(int i=1;i<6;i++) {
+			int quantite = getQuantite(i+1)-livraison.get(0).get(i)-livraison.get(1).get(i);
+			setQuantite(i+1,quantite);
+		}
+		double s = 0.0;
+		//On calcule la valeur du chiffre d'affaire généré par cette livraison
+		for(int i=0;i<2;i++) {
+			for(int j=0;j<6;j++) {
+				s+=livraison.get(i).get(j)*vendeur.getPrix().getPrixProduit(livraison.get(i).get(j), j+1);
+			}
+		}
+		solde.setValeur(Eq4TRAN, s); //On met à jour notre solde bancaire
+		return livraison;
 	}
+	
 	@Override
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		// TODO Auto-generated method stub
