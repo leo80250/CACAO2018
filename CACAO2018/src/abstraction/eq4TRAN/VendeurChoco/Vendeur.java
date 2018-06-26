@@ -84,15 +84,25 @@ public class Vendeur implements IVendeurChocoBis{
 		// On considère que commande1 correspond à la commande de l'équipe eq1DIST
 		ArrayList<Integer> commande2 = commandes.get(1);
 		ArrayList<Integer> commande3 = commandes.get(2);
-		ArrayList<ArrayList<Integer>> Livraison = new ArrayList<>(); /*insérer notre livraison effective */
-		//On définit commande2 comme nos stocks auxquels on retire la première commande (en théorie inférieure en 
-		// quantités demandées)
+		ArrayList<ArrayList<Integer>> Livraison = new ArrayList<>();
 		for(int i=0;i<6;i++) {
-			commande2.set(i, getQte(i+1)-commande1.get(i));
+			// Si la somme des commandes 1 et 2 dépasse notre stock pour certains produits, on plafonne la 2 
+			// qui en théorie commande plus. On ne vend alors rien au distibuteur fictif.
+			if(commande1.get(i)+commande2.get(i)>getQte(i+1)) {
+				commande2.set(i, getQte(i+1)-commande1.get(i));
+				commande3.set(i, 0);
+			}
+			else {
+				// On plafonne la commande3, le distributeur fictif n'étant là que pour compléter les commandes.
+				if(commande1.get(i)+commande2.get(i)+commande3.get(i)>getQte(i+1)) {
+					commande3.set(i, getQte(i+1)-commande1.get(i)-commande2.get(i));
+				}
+			}
 		}
 		//On insère les livraisons aux deux distributeurs dans la liste Livraison
 		Livraison.add(commande1);
 		Livraison.add(commande2);
+		Livraison.add(commande3);
 		// On ajoute la vente à notre journal de ventes
 		ventes.ajouter("Livraison : " + Livraison);
 		return Livraison;

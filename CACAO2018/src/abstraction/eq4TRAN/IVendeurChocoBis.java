@@ -12,6 +12,15 @@ import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 
 // Interface décrivant les échanges entre Transformateurs et Distributeurs, en se plaçant du côté Transformateur
 // (vendeur de chocolats)
+
+/* Nous conseillons d'utiliser la classe Vendeur de Eq4TRAN/VendeurChoco, qui implémente toutes les méthodes 
+ * décrites dans cette interface.
+ * Pour ce faire, il suffit de taper dans votre next (une fois que vos stocks sont remplis et que vous êtes prêts à
+ * vendre) : Vendeur vendeur = new Vendeur(ArrayList<Integer> Stocks) , où Stocks doit représenter vos stocks.
+ * Vous pourrez alors implémenter IVendeurChocoBis en renvoyant pour chaque méthode, vendeur.nomMethode().
+ * (Attention: par pour getPrix() car vous devrez entrer vos propres prix)
+ */
+
 public interface IVendeurChocoBis {
 	
 	/* Méthode fournissant aux distributeurs les stocks disponibles par produit, sous forme d'une ArrayList<Integer>

@@ -350,7 +350,6 @@ IVendeurPoudre{
 	// Etienne Raveau
 	@Override
 	public GPrix2 getPrix() {
-
 		return vendeur.getPrix();
 	}
 
