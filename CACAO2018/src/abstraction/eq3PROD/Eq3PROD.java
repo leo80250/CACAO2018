@@ -78,9 +78,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		
 		for (Acteur acteur : listActeurs) {
 			Class[] listInterfaces = acteur.getClass().getInterfaces();
-			if (Arrays.toString(listInterfaces).contains("IVendeurFeve")) {
+			if (Arrays.toString(listInterfaces).contains("IVendeurFeveV2")) {
 				producteurs.add((IVendeurFeveV2) acteur);
-			} else if (Arrays.toString(listInterfaces).contains("IAcheteurFeve")) {
+			} else if (Arrays.toString(listInterfaces).contains("IAcheteurFeveV2")) {
 				transformateurs.add((IAcheteurFeveV2) acteur);
 			}
 		}
