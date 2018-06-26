@@ -65,7 +65,7 @@ public class GPrix2{
 	// Permet -sans avoir à manipuler les tableaux de prix- d'accéder facilement au prix d'un proudit en indiquant
 	//la quantité désirée et l'id du Produit
 	
-	public double getPrixProduit(double quantite, int idProduit) {
+	public double getPrixProduit(int quantite, int idProduit) {
 		/* idProduit est un entier compris entre 1 et 6 : 
 		 * 1=BonbonsBQ
 		 * 2=BonbonsMQ
@@ -75,9 +75,9 @@ public class GPrix2{
 		 * 6=TablettesHQ
 		 */
 		int j =0;
-		while((j<getIntervalles().size())&&(prix.get(idProduit-1)[j]>quantite)) {
+		while((j<getIntervalles().size())&&(getIntervalles().get(idProduit-1)[j]>quantite)) {
 			j++;
 		}
-		return prix.get(idProduit-1)[j];
+		return getPrix().get(idProduit-1)[j];
 	}
 }

@@ -48,6 +48,7 @@ public class Vendeur implements IVendeurChocoBis{
 		return stocks;
 	}
 	
+	// Rendre utilisable pour autres transformateurs
 	//Implémente getPrix 
 	public GPrix2 getPrix() {
 		ArrayList<Double[]> intervalles = new ArrayList<>();
@@ -75,11 +76,14 @@ public class Vendeur implements IVendeurChocoBis{
 		return new GPrix2(intervalles, prix);
 	}
 	
+	// A améliorer pour maximiser les livraisons.
+	
 	// Implémente getLivraison() (Attention : ne gère ni les stocks ni le solde de l'Acteur qui utilise Vendeur)
 	public ArrayList<ArrayList<Integer>> getLivraison(ArrayList<ArrayList<Integer>> commandes) {
 		ArrayList<Integer> commande1 = commandes.get(0);
 		// On considère que commande1 correspond à la commande de l'équipe eq1DIST
 		ArrayList<Integer> commande2 = commandes.get(1);
+		ArrayList<Integer> commande3 = commandes.get(2);
 		ArrayList<ArrayList<Integer>> Livraison = new ArrayList<>(); /*insérer notre livraison effective */
 		//On définit commande2 comme nos stocks auxquels on retire la première commande (en théorie inférieure en 
 		// quantités demandées)
