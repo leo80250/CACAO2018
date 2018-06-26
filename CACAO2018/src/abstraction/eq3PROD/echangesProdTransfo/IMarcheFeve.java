@@ -1,5 +1,7 @@
 package abstraction.eq3PROD.echangesProdTransfo;
 
+import java.util.ArrayList;
+
 /**
  * Interface du marche
  * @author Grégoire
@@ -19,5 +21,5 @@ public interface IMarcheFeve {
 	 * @return une liste de ContratFeve des ventes effectuees au next precedent
 	 * @author Grégoire
 	 */
-	 public ContratFeve[] getContratPrecedent();
+	 public ArrayList<ContratFeveV2> getContratPrecedent();
 }
