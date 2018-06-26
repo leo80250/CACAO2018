@@ -19,7 +19,7 @@ public interface IAcheteurFeveV2 {
 	 * IDEE DU CODE : stocker les ContratFeve du parametre dans les variables d'instance / les analyser
 	 * @author Grégoire
 	 */
-	public void sendOffrePublique(List<ContratFeve> offrePublique);
+	public void sendOffrePublique(List<ContratFeveV2> offrePublique);
 
 	/**
 	 * Recupere les demandes specifiques du transformateur a chaque producteur
@@ -29,7 +29,7 @@ public interface IAcheteurFeveV2 {
 	 * IDEE DU CODE : renvoyer une liste des ContratFeve que VOUS demandez aux differents poducteurs
 	 * @author Grégoire
 	 */
-	public List<ContratFeve> getDemandePrivee();
+	public List<ContratFeveV2> getDemandePrivee();
 	
 	/**
 	 * Informe l'acteur fictif des contrats en cours (MODELISATION)
@@ -37,7 +37,7 @@ public interface IAcheteurFeveV2 {
 	 * @author Grégoire
 	 */
 	
-	public void sendContratFictif(List<ContratFeve> listContrats);
+	public void sendContratFictif(List<ContratFeveV2> listContrats);
 	
 	/** 
 	 * Informe un transformateur des offres finales des producteurs qui lui sont destinees
@@ -48,7 +48,7 @@ public interface IAcheteurFeveV2 {
 	 * IDEE DU CODE : stocker les ContratFeve du parametre dans les variables d'instance / les analyser
 	 * @author Grégoire
 	 */
-	public void sendOffreFinale(List<ContratFeve> offreFinale);
+	public void sendOffreFinale(List<ContratFeveV2> offreFinale);
 	
 	/**
 	 * Recupere les offres de ventes destinees au producteur avec la reponse fournie
@@ -61,6 +61,6 @@ public interface IAcheteurFeveV2 {
 	 * @author Grégoire
 	 * ## MaJ des stocks et des comptes ##
 	 */
-	public List<ContratFeve> getResultVentes();
+	public List<ContratFeveV2> getResultVentes();
 
 }
