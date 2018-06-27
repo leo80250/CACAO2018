@@ -5,12 +5,14 @@ import java.util.Arrays;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV2;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;  
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2;
 import abstraction.eq3PROD.echangesProdTransfo.MarcheFeve;
 
 //import abstraction.eq1DIST.IVenteConso;
@@ -71,32 +73,19 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
 		
 		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
-		ArrayList<Acteur> producteurs = new ArrayList<Acteur>();
-		ArrayList<Acteur> transformateurs = new ArrayList<Acteur>();
+		ArrayList<IVendeurFeveV2> producteurs = new ArrayList<IVendeurFeveV2>();
+		ArrayList<IAcheteurFeveV2> transformateurs = new ArrayList<IAcheteurFeveV2>();
 		
 		for (Acteur acteur : listActeurs) {
 			Class[] listInterfaces = acteur.getClass().getInterfaces();
-			if (Arrays.toString(listInterfaces).contains("IVendeurFeve")) {
-				producteurs.add(acteur);
-			} else if (Arrays.toString(listInterfaces).contains("IAcheteurFeve")) {
-				transformateurs.add(acteur);
+			if (Arrays.toString(listInterfaces).contains("IVendeurFeveV2")) {
+				producteurs.add((IVendeurFeveV2) acteur);
+			} else if (Arrays.toString(listInterfaces).contains("IAcheteurFeveV2")) {
+				transformateurs.add((IAcheteurFeveV2) acteur);
 			}
 		}
 		
-		int taille = transformateurs.size();
-		IAcheteurFeve[] listTran = new IAcheteurFeve[taille];
-		for (int i = 0 ; i < taille ; i++) {
-			listTran[i] = (IAcheteurFeve) transformateurs.get(i);
-		}
-		
-		int taille_bis = producteurs.size(); 	 	   						 	  	 	
-		IVendeurFeve[] listProd = new IVendeurFeve[taille_bis]; 	 	   						 	  	 	
-		for (int i = 0 ; i < taille_bis ; i++) { 	 	   						 	  	 	
-			listProd[i] = (IVendeurFeve) producteurs.get(i); 	 	   						 	  	 	
-		}		 	 	   						 	  	 	
-
-		
-		this.marche = new MarcheFeve("Marche central", listTran, listProd);
+		this.marche = new MarcheFeve("Marche central", transformateurs, producteurs);
 		
 		Monde.LE_MONDE.ajouterActeur(marche);
 		this.stockmoyen= 75000;
