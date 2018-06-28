@@ -31,8 +31,8 @@ public class GrilleQuantite {
 	}
 	
 	public String toString() {
-		return this.getValeur(0)+" de Tablette BG ; "+ this.getValeur(1)+" de Tablette MG ; "+this.getValeur(2)+" de Tablette HG ; "
-				+this.getValeur(3)+" de Confiserie BG ; "+this.getValeur(4)+" de Confiserie MG ; "+this.getValeur(5)+" de Confiserie HG.";
+		return this.getValeur(0)+" Tablette BG ; "+ this.getValeur(1)+" Tablette MG ; "+this.getValeur(2)+" Tablette HG ; "
+				+this.getValeur(3)+" Confiserie BG ; "+this.getValeur(4)+" Confiserie MG ; "+this.getValeur(5)+" Confiserie HG.";
 	}
 	
 

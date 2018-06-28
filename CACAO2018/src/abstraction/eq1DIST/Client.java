@@ -115,6 +115,7 @@ public class Client implements Acteur {
 	}
 	
 	public void next() {
+		this.journal.ajouter("------------------------------ Période n°"+Monde.LE_MONDE.getStep()+" ------------------------------");
 		// a = tableau de la demande en chocolat par rapport à la période de l'année
 		// ligne 1 : choco bas de gamme
 		// ligne 2 : choco milieu de gamme
@@ -148,11 +149,9 @@ public class Client implements Acteur {
 		
 		int[] cm= this.commande(h, 0);
 		GrilleQuantite CommandeMousquetaire = new GrilleQuantite (cm);
-		this.journal.ajouter("La demande pour le distributeur Mousquetaire est : "+CommandeMousquetaire.toString()+"\n");
 		int[] cas= this.commande(h, 1);
 		GrilleQuantite CommandeCasino = new GrilleQuantite (cas);
 		int[] autre= this.commande(h, 2);
-		this.journal.ajouter("La demande pour le distributeur Casino est : "+CommandeCasino.toString()+"\n");
 		
 		
 		DemandeChocoBdG.setValeur(this,cm[0]+cas[0]+autre[0]+0.0);
@@ -165,9 +164,15 @@ public class Client implements Acteur {
 		
 		for(int i=0;i<Distributeurs.size();i++) {
 			if(Distributeurs.get(i).getNom()=="Eq6DIST") {
+				this.journal.ajouter("");
+				this.journal.ajouter("• Les Mousquetaires •");
+				this.journal.ajouter("");
+				this.journal.ajouter("- La demande pour le distributeur Mousquetaire est : "+CommandeMousquetaire.toString()+"\n");
+				this.journal.ajouter("");
 				InterfaceDistributeurClient Mousquetaire=(InterfaceDistributeurClient)(Distributeurs.get(i));
 				GrilleQuantite ReponseMousquetaire = Mousquetaire.commander(CommandeMousquetaire);
-				this.journal.ajouter("Les magasins Mousquetaire ont vendu (effectivement) : "+ReponseMousquetaire.toString()+"\n");
+				this.journal.ajouter("- Les magasins Mousquetaire ont vendu (effectivement) : "+ReponseMousquetaire.toString()+"\n");
+				this.journal.ajouter("");
 				
 				this.ModifierPartsDeMarche(0, 0, CommandeMousquetaire.getValeur(0), ReponseMousquetaire.getValeur(0));
 				this.ModifierPartsDeMarche(0, 1, CommandeMousquetaire.getValeur(1), ReponseMousquetaire.getValeur(1));
@@ -176,13 +181,21 @@ public class Client implements Acteur {
 				this.ModifierPartsDeMarche(0, 4, CommandeMousquetaire.getValeur(4), ReponseMousquetaire.getValeur(4));
 				this.ModifierPartsDeMarche(0, 5, CommandeMousquetaire.getValeur(5), ReponseMousquetaire.getValeur(5));
 				
-				this.journal.ajouter("Les parts de marché des magasins Mousquetaire sont désormais : "+this.getValeur(0,0)+" de Tablette BG ; "+ this.getValeur(0,1)+" de Tablette MG ; "+this.getValeur(0,2)+" de Tablette HG ; "
-						+this.getValeur(0,3)+" de Confiserie BG ; "+this.getValeur(0,4)+" de Confiserie MG ; "+this.getValeur(0,5)+" de Confiserie HG.");
+				this.journal.ajouter("");
+				this.journal.ajouter("- Les parts de marché des magasins Mousquetaire sont désormais : "+this.getValeur(0,0)+"% sur les Tablettes BG ; "+ this.getValeur(0,1)+"% sur les Tablettes MG ; "+this.getValeur(0,2)+"% sur les Tablettes HG ; "
+						+this.getValeur(0,3)+"% sur les Confiseries BG ; "+this.getValeur(0,4)+"% sur les Confiseries MG ; "+this.getValeur(0,5)+"% sur les Confiseries HG.");
+				this.journal.ajouter("");
 			}
 			else if(Distributeurs.get(i).getNom()=="Eq1DIST") {
+				this.journal.ajouter("");
+				this.journal.ajouter("• Casino •");
+				this.journal.ajouter("");
+				this.journal.ajouter("- La demande pour le distributeur Casino est : "+CommandeCasino.toString()+"\n");
+				this.journal.ajouter("");
 				InterfaceDistributeurClient Casino=(InterfaceDistributeurClient)(Distributeurs.get(i));
 				GrilleQuantite ReponseCasino = Casino.commander(CommandeCasino);
-				this.journal.ajouter("Les magasins Casino ont vendu (effectivement) : "+ReponseCasino.toString()+"\n");
+				this.journal.ajouter("- Les magasins Casino ont vendu (effectivement) : "+ReponseCasino.toString()+"\n");
+				this.journal.ajouter("");
 				
 				this.ModifierPartsDeMarche(1, 0, CommandeCasino.getValeur(0), ReponseCasino.getValeur(0));
 				this.ModifierPartsDeMarche(1, 1, CommandeCasino.getValeur(1), ReponseCasino.getValeur(1));
@@ -191,16 +204,21 @@ public class Client implements Acteur {
 				this.ModifierPartsDeMarche(1, 4, CommandeCasino.getValeur(4), ReponseCasino.getValeur(4));
 				this.ModifierPartsDeMarche(1, 5, CommandeCasino.getValeur(5), ReponseCasino.getValeur(5));
 				
-				
-				this.journal.ajouter("Les parts de marché des magasins Casino sont désormais : "+this.getValeur(1,0)+" de Tablette BG ; "+ this.getValeur(1,1)+" de Tablette MG ; "+this.getValeur(1,2)+" de Tablette HG ; "
-						+this.getValeur(1,3)+" de Confiserie BG ; "+this.getValeur(1,4)+" de Confiserie MG ; "+this.getValeur(1,5)+" de Confiserie HG.");
+				this.journal.ajouter("");
+				this.journal.ajouter("- Les parts de marché des magasins Casino sont désormais : "+this.getValeur(1,0)+"% sur les Tablettes BG ; "+ this.getValeur(1,1)+"% sur les Tablettes MG ; "+this.getValeur(1,2)+"% sur les Tablettes HG ; "
+						+this.getValeur(1,3)+"% sur les Confiseries BG ; "+this.getValeur(1,4)+"% sur les Confiseries MG ; "+this.getValeur(1,5)+"% sur les Confiseries HG.");
+				this.journal.ajouter("");
 			}
 			else {
 				GrilleQuantite CommandeAutre = new GrilleQuantite (autre);
-				this.journal.ajouter("La demande pour les autres distributeurs est : "+CommandeAutre.toString()+"\n");
+				this.journal.ajouter("• Autres distributeurs •");
+				this.journal.ajouter("");
+				this.journal.ajouter("- La demande pour les autres distributeurs est : "+CommandeAutre.toString()+"\n");
+				this.journal.ajouter("");
 				InterfaceDistributeurClient Autre=(InterfaceDistributeurClient)(Distributeurs.get(i));
 				GrilleQuantite ReponseAutre = Autre.commander(CommandeAutre);
-				this.journal.ajouter("Les autres magasins ont vendu (effectivement) : "+ReponseAutre.toString()+"\n");
+				this.journal.ajouter("- Les autres magasins ont vendu (effectivement) : "+ReponseAutre.toString()+"\n");
+				this.journal.ajouter("");
 				
 				this.ModifierPartsDeMarche(2, 0, CommandeAutre.getValeur(0), ReponseAutre.getValeur(0));
 				this.ModifierPartsDeMarche(2, 1, CommandeAutre.getValeur(1), ReponseAutre.getValeur(1));
@@ -209,8 +227,10 @@ public class Client implements Acteur {
 				this.ModifierPartsDeMarche(2, 4, CommandeAutre.getValeur(4), ReponseAutre.getValeur(4));
 				this.ModifierPartsDeMarche(2, 5, CommandeAutre.getValeur(5), ReponseAutre.getValeur(5));
 				
-				this.journal.ajouter("Les parts de marché des autres magasins sont désormais : "+ this.getValeur(2,0)+" de Tablette BG ; "+ this.getValeur(2,1)+" de Tablette MG ; "+this.getValeur(2,2)+" de Tablette HG ; "
-						+this.getValeur(2,3)+" de Confiserie BG ; "+this.getValeur(2,4)+" de Confiserie MG ; "+this.getValeur(2,5)+" de Confiserie HG.");
+				this.journal.ajouter("");
+				this.journal.ajouter("Les parts de marché des autres magasins sont désormais : "+ this.getValeur(2,0)+"% sur les Tablettes BG ; "+ this.getValeur(2,1)+"% sur les Tablettes MG ; "+this.getValeur(2,2)+"% sur les Tablettes HG ; "
+						+this.getValeur(2,3)+"% sur les Confiseries BG ; "+this.getValeur(2,4)+"% sur les Confiseries MG ; "+this.getValeur(2,5)+"% sur les Confiseries HG.");
+				this.journal.ajouter("");
 			}
 		}
 		
