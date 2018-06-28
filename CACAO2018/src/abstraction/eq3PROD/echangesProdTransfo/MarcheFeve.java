@@ -1,6 +1,8 @@
 package abstraction.eq3PROD.echangesProdTransfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import abstraction.fourni.Acteur;
 
@@ -10,27 +12,24 @@ import abstraction.fourni.Acteur;
 
 public class MarcheFeve implements IMarcheFeve, Acteur {
 	
-	private ArrayList<ContratFeve> contratPrecedent;
-	private ArrayList<ContratFeve> contratActuel;
+	private ArrayList<ContratFeveV3> contratPrecedent;
+	private ArrayList<ContratFeveV3> contratActuel;
 	private String nom;
-	private IAcheteurFeve[] listAcheteurs;
-	private IVendeurFeve[] listVendeurs;
+	private List<IAcheteurFeveV4> listAcheteurs;
+	private List<IVendeurFeveV4> listVendeurs;
 	
-	public MarcheFeve() {
-		this.contratPrecedent = new ArrayList<ContratFeve>();
-		this.contratActuel = new ArrayList<ContratFeve>();
-		this.nom = "Marche intermediaire";
-		this.listAcheteurs = new IAcheteurFeve[0];
-		this.listVendeurs = new IVendeurFeve[0];
-	}
+
 	
-	public MarcheFeve(ArrayList<ContratFeve> contratPrecedent, ArrayList<ContratFeve> contratActuel, String nom, IAcheteurFeve[] ach, IVendeurFeve[] ven) {
-		this.contratPrecedent = contratPrecedent;
-		this.contratActuel = contratActuel;
+	public MarcheFeve(String nom, List<IAcheteurFeveV4> ach, List<IVendeurFeveV4> ven) {
+		this.contratPrecedent = new ArrayList<ContratFeveV3>();
+		this.contratActuel = new ArrayList<ContratFeveV3>();
 		this.nom = nom;
 		this.listAcheteurs = ach;
 		this.listVendeurs = ven;
 	}
+	
+
+	
 
 	@Override
 	public double getPrixMarche() {
@@ -47,8 +46,8 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 	}
 
 	@Override
-	public ContratFeve[] getContratPrecedent() {
-		return (ContratFeve[]) this.contratPrecedent.toArray();
+	public ArrayList<ContratFeveV3> getContratPrecedent() {
+		return this.contratPrecedent;
 	}
 
 	@Override
@@ -59,12 +58,71 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 	@Override
 	public void next() {
 		
-		// Liste d'offres publiques
-		 for (IVendeurFeve vendeur : listVendeurs) {
-			 for (ContratFeve contrat : vendeur.getOffrePublique()) {
+		// Reception des offres publiques (Producteurs -> Marche)
+		 for (IVendeurFeveV4 vendeur : listVendeurs) {
+			 for (ContratFeveV3 contrat : vendeur.getOffrePubliqueV3()) {
 				contratActuel.add(contrat); 
 			 }
 		 }
+		 
+		// Envoi des offres publiques (Marche -> Transformateurs)
+		 for (IAcheteurFeveV4 acheteur : listAcheteurs) {
+				acheteur.sendOffrePubliqueV3(contratActuel);
+				acheteur.sendContratFictifV3(contratPrecedent);
+			 }
+			
+		 
+		 // Reception des demandes privees (Transformateurs -> Marche)
+		 contratActuel = new ArrayList<ContratFeveV3>();
+		 for (IAcheteurFeveV4 acheteur : listAcheteurs) {
+			 for (ContratFeveV3 contrat : acheteur.getDemandePriveeV3()) {
+				contratActuel.add(contrat); 
+			 }
+		 }
+		 
+		 // Envoi des demandes privees (Marche -> Producteurs)
+		 for (IVendeurFeveV4 vendeur : listVendeurs) { 
+			 ArrayList<ContratFeveV3> contratsPourVendeur = new ArrayList<ContratFeveV3>();
+			 for (ContratFeveV3 contrat : contratActuel) {
+				if (contrat.getProducteur() == vendeur) {
+					contratsPourVendeur.add(contrat);
+				}
+			 }
+			vendeur.sendDemandePriveeV3(contratsPourVendeur); 
+		 }
+		 
+		 // Reception des propositions (Vendeurs -> Marche)
+		 contratActuel = new ArrayList<ContratFeveV3>();
+		 for (IVendeurFeveV4 vendeur : listVendeurs) {
+			 for (ContratFeveV3 contrat : vendeur.getOffreFinaleV3()) {
+				contratActuel.add(contrat); 
+			 }
+		 }
+		 
+		// Envoi des propositions (Marche -> Transformateur)
+		 for (IAcheteurFeveV4 acheteur : listAcheteurs) { 
+			 ArrayList<ContratFeveV3> contratsPourAcheteur = new ArrayList<ContratFeveV3>();
+			 for (ContratFeveV3 contrat : contratActuel) {
+				if (contrat.getTransformateur() == acheteur) contratsPourAcheteur.add(contrat);
+			 }
+			acheteur.sendOffreFinaleV3(contratsPourAcheteur);
+		 }
+		 
+		 // Reception des reponses (Transformateur -> Marche)
+		 contratActuel = new ArrayList<ContratFeveV3>();
+		 for (IAcheteurFeveV4 acheteur : listAcheteurs) {
+			 for (ContratFeveV3 contrat : acheteur.getResultVentesV3()) {
+				contratActuel.add(contrat); 
+			 }
+		 }
+		 
+		 // Envoi des reponses (Marche -> Producteurs)
+		 for (IVendeurFeveV4 vendeur : listVendeurs) { 
+			 ArrayList<ContratFeveV3> contratsPourVendeur = new ArrayList<ContratFeveV3>();
+			 for (ContratFeveV3 contrat : contratActuel) {
+				if (contrat.getProducteur() == vendeur) contratsPourVendeur.add(contrat);
+			 }
+			vendeur.sendResultVentesV3(contratsPourVendeur);
+		 }
 	}
-
 }
