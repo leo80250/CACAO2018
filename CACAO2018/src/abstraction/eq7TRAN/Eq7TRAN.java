@@ -9,7 +9,7 @@ import java.util.List;
 
 import abstraction.eq2PROD.echangeProd.IVendeurFevesProd;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
-import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV2;
@@ -62,21 +62,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	private List<ContratFeveV3> commandesFeveEnCours;
 	private ArrayList<ContratPoudre> commandesPoudreEnCours;
-<<<<<<< HEAD
-	private ArrayList<GQte> commandesTablettesEnCours;
-	private List<ContratFeveV3> livraisonsFeveEnCours;
-=======
 	private ArrayList<ArrayList<Integer>> commandesTablettesEnCours;
-	private List<ContratFeveV2> livraisonsFeveEnCours;
->>>>>>> branch 'master' of https://github.com/leo80250/CACAO2018.git
+	private List<ContratFeveV3> livraisonsFeveEnCours;
 	private ArrayList<ContratPoudre> livraisonsPoudreEnCours;
-<<<<<<< HEAD
-	private ArrayList<GQte> livraisonsTablettesEnCours;
-	private List<ContratFeveV3> offresFevesPubliquesEnCours;
-=======
 	private ArrayList<ArrayList<Integer>> livraisonsTablettesEnCours;
-	private List<ContratFeveV2> offresFevesPubliquesEnCours;
->>>>>>> branch 'master' of https://github.com/leo80250/CACAO2018.git
+	private List<ContratFeveV3> offresFevesPubliquesEnCours;
 
 	
 	// En disant arbitrairement 
@@ -137,21 +127,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 		this.commandesFeveEnCours = new ArrayList<ContratFeveV3>();
 		this.commandesPoudreEnCours = new ArrayList<ContratPoudre>();
-<<<<<<< HEAD
-		this.commandesTablettesEnCours = new ArrayList<GQte>();
-		this.livraisonsFeveEnCours = new ArrayList<ContratFeveV3>();
-=======
 		this.commandesTablettesEnCours = new ArrayList<ArrayList<Integer>>();
-		this.livraisonsFeveEnCours = new ArrayList<ContratFeveV2>();
->>>>>>> branch 'master' of https://github.com/leo80250/CACAO2018.git
+		this.livraisonsFeveEnCours = new ArrayList<ContratFeveV3>();
 		this.livraisonsPoudreEnCours = new ArrayList<ContratPoudre>();
-<<<<<<< HEAD
-		this.livraisonsTablettesEnCours = new ArrayList<GQte>();
-		this.offresFevesPubliquesEnCours = new ArrayList<ContratFeveV3>();
-=======
 		this.livraisonsTablettesEnCours = new ArrayList<ArrayList<Integer>>();
-		this.offresFevesPubliquesEnCours = new ArrayList<ContratFeveV2>();
->>>>>>> branch 'master' of https://github.com/leo80250/CACAO2018.git
+		this.offresFevesPubliquesEnCours = new ArrayList<ContratFeveV3>();
 		
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
@@ -293,7 +273,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 					offresPrivees = ((IVendeurFeveV4) Acteur).getOffreFinaleV3();
 					if(offresPrivees != null && offresPrivees.size() > 0) {
 						offresPriveesRetenues = this.analyseOffresPriveesFeves(offresPrivees);
-						/*for(ContratFeveV2 contrat : offresPrivees) {
+						/*for(ContratFeveV3 contrat : offresPrivees) {
 							
 						}*/
 						((IVendeurFeveV4) Acteur).sendResultVentesV3(offresPriveesRetenues);
@@ -536,21 +516,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 */
 	
 	public void resetCommandesEnCours() {
-<<<<<<< HEAD
 		this.commandesFeveEnCours = new ArrayList<ContratFeveV3>();;
-		this.commandesTablettesEnCours = new ArrayList<GQte>();
-=======
-		this.commandesFeveEnCours = new ArrayList<ContratFeveV2>();;
 		this.commandesTablettesEnCours = new ArrayList<ArrayList<Integer>>();
->>>>>>> branch 'master' of https://github.com/leo80250/CACAO2018.git
 		this.commandesPoudreEnCours = new ArrayList<ContratPoudre>();
-<<<<<<< HEAD
 		this.livraisonsFeveEnCours =new ArrayList<ContratFeveV3>();;
-		this.livraisonsTablettesEnCours = new ArrayList<GQte>();
-=======
-		this.livraisonsFeveEnCours =new ArrayList<ContratFeveV2>();;
 		this.livraisonsTablettesEnCours = new ArrayList<ArrayList<Integer>>();
->>>>>>> branch 'master' of https://github.com/leo80250/CACAO2018.git
 		this.livraisonsPoudreEnCours = new ArrayList<ContratPoudre>();
 	}
 	public int getQuantiteTablettesCommandees() {
