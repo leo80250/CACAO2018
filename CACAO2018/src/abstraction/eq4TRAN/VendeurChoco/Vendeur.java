@@ -88,19 +88,37 @@ public class Vendeur implements IVendeurChocoBis{
 		ArrayList<Integer> commande3 = commandes.get(2);
 		ArrayList<ArrayList<Integer>> Livraison = new ArrayList<>();
 		for(int i=0;i<6;i++) {
-			// Si la somme des commandes 1 et 2 dépasse notre stock pour certains produits, on plafonne la 2 
-			// qui en théorie commande plus. On ne vend alors rien au distibuteur fictif.
-			if(commande1.get(i)+commande2.get(i)>getQte(i+1)) {
-				commande2.set(i, getQte(i+1)-commande1.get(i));
-				commande3.set(i, 0);
-			}
-			else {
-				// On plafonne la commande3, le distributeur fictif n'étant là que pour compléter les commandes.
-				if(commande1.get(i)+commande2.get(i)+commande3.get(i)>getQte(i+1)) {
-					commande3.set(i, getQte(i+1)-commande1.get(i)-commande2.get(i));
+			// On regarde si un distributeur n'a pas envoyé de commande, auquel cas on lui renvoie une livraison nulle.
+			if(commande1==null) {
+				if(commande2.get(i)+commande3.get(i)>getQte(i+1)) {
+					commande3.set(i, 0);
 				}
 			}
-		}
+			if(commande2==null) {
+				if(commande1.get(i)+commande3.get(i)>getQte(i+1)) {
+					commande3.set(i, 0);
+				}
+			}
+			if(commande3==null) {
+				if(commande1.get(i)+commande2.get(i)>getQte(i+1)) {
+					commande2.set(i, getQte(i+1)-commande1.get(i));
+				}
+			}
+			else {
+				// Si la somme des commandes 1 et 2 dépasse notre stock pour certains produits, on plafonne la 2 
+				// qui en théorie commande plus. On ne vend alors rien au distibuteur fictif.
+				if(commande1.get(i)+commande2.get(i)>getQte(i+1)) {
+					commande2.set(i, getQte(i+1)-commande1.get(i));
+					commande3.set(i, 0);
+				}
+				else {
+					// On plafonne la commande3, le distributeur fictif n'étant là que pour compléter les commandes.
+					if(commande1.get(i)+commande2.get(i)+commande3.get(i)>getQte(i+1)) {
+						commande3.set(i, getQte(i+1)-commande1.get(i)-commande2.get(i));
+					}
+				}
+			}
+			}
 		//On insère les livraisons aux deux distributeurs dans la liste Livraison
 		Livraison.add(commande1);
 		Livraison.add(commande2);

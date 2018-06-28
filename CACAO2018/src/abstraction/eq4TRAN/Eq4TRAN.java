@@ -9,6 +9,8 @@ import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
+import abstraction.eq5TRAN.appeldOffre.DemandeAO;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
@@ -28,7 +30,8 @@ ITransformateur,
 IAcheteurFeve,
 IVendeurChocoBis,
 IAcheteurPoudre,
-IVendeurPoudre{ 
+IVendeurPoudre,
+IvendeurOccasionnelChoco{ 
 
 	public Acteur Eq4TRAN ; 
 
@@ -397,6 +400,12 @@ IVendeurPoudre{
 	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public double getReponse(DemandeAO d) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
