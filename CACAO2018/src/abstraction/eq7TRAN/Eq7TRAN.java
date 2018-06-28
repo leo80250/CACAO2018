@@ -10,11 +10,14 @@ import java.util.List;
 import abstraction.eq2PROD.echangeProd.IVendeurFevesProd;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4;
 import abstraction.eq4TRAN.IVendeurChoco;
 import abstraction.eq4TRAN.IVendeurChocoBis;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
@@ -31,7 +34,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV2, IVendeurChocoBis, IvendeurOccasionnelChoco {
+public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeve, IAcheteurFeveV4, IVendeurChocoBis, IvendeurOccasionnelChoco {
 	
 	//rajouter IAcheteurFeve à implémenter
 	
@@ -56,13 +59,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private Indicateur[] productionPoudreAttendue;
 	private Indicateur[] productionTablettesAttendue;
 	
-	private List<ContratFeveV2> commandesFeveEnCours;
+	private List<ContratFeveV3> commandesFeveEnCours;
 	private ArrayList<ContratPoudre> commandesPoudreEnCours;
 	private ArrayList<GQte> commandesTablettesEnCours;
-	private List<ContratFeveV2> livraisonsFeveEnCours;
+	private List<ContratFeveV3> livraisonsFeveEnCours;
 	private ArrayList<ContratPoudre> livraisonsPoudreEnCours;
 	private ArrayList<GQte> livraisonsTablettesEnCours;
-	private List<ContratFeveV2> offresFevesPubliquesEnCours;
+	private List<ContratFeveV3> offresFevesPubliquesEnCours;
 
 	
 	// En disant arbitrairement 
@@ -121,13 +124,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.productionPoudreAttendue = new Indicateur[3];
 		this.productionTablettesAttendue = new Indicateur[3];
 		
-		this.commandesFeveEnCours = new ArrayList<ContratFeveV2>();
+		this.commandesFeveEnCours = new ArrayList<ContratFeveV3>();
 		this.commandesPoudreEnCours = new ArrayList<ContratPoudre>();
 		this.commandesTablettesEnCours = new ArrayList<GQte>();
-		this.livraisonsFeveEnCours = new ArrayList<ContratFeveV2>();
+		this.livraisonsFeveEnCours = new ArrayList<ContratFeveV3>();
 		this.livraisonsPoudreEnCours = new ArrayList<ContratPoudre>();
 		this.livraisonsTablettesEnCours = new ArrayList<GQte>();
-		this.offresFevesPubliquesEnCours = new ArrayList<ContratFeveV2>();
+		this.offresFevesPubliquesEnCours = new ArrayList<ContratFeveV3>();
 		
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
@@ -243,10 +246,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.produire();
 		
 		// maintenant on fait nos commandes aux producteurs
-		List<ContratFeveV2> offresPubliques;
-		List<ContratFeveV2> offresPubliquesRetenues;
-		List<ContratFeveV2> offresPrivees;
-		List<ContratFeveV2> offresPriveesRetenues;
+		List<ContratFeveV3> offresPubliques;
+		List<ContratFeveV3> offresPubliquesRetenues;
+		List<ContratFeveV3> offresPrivees;
+		List<ContratFeveV3> offresPriveesRetenues;
 		
 		
 		/**
@@ -257,22 +260,22 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		for(Acteur Acteur : Monde.LE_MONDE.getActeurs()) {
 			// on récupère les commandes des distributeurs en tablettes
 			
-			if(Acteur instanceof IVendeurFeveV2) {
-				offresPubliques = ((IVendeurFeveV2) Acteur).getOffrePublique();
+			if(Acteur instanceof IVendeurFeveV4) {
+				offresPubliques = ((IVendeurFeveV4) Acteur).getOffrePubliqueV3();
 				offresPubliquesRetenues = this.analyseOffresPubliquesFeves(offresPubliques);
 				
 				this.getJournal().ajouter(offresPubliques.size()+" "+offresPubliquesRetenues.size());
 				
 				if(offresPubliquesRetenues.size() > 0) {
-					((IVendeurFeveV2) Acteur).sendDemandePrivee(offresPubliquesRetenues);
+					((IVendeurFeveV4) Acteur).sendDemandePriveeV3(offresPubliquesRetenues);
 					
-					offresPrivees = ((IVendeurFeveV2) Acteur).getOffreFinale();
+					offresPrivees = ((IVendeurFeveV4) Acteur).getOffreFinaleV3();
 					if(offresPrivees != null && offresPrivees.size() > 0) {
 						offresPriveesRetenues = this.analyseOffresPriveesFeves(offresPrivees);
 						/*for(ContratFeveV2 contrat : offresPrivees) {
 							
 						}*/
-						((IVendeurFeveV2) Acteur).sendResultVentes(offresPriveesRetenues);
+						((IVendeurFeveV4) Acteur).sendResultVentesV3(offresPriveesRetenues);
 					}
 					
 				}
@@ -453,10 +456,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 *@author margauxgrand
 	 * @param offres
 	 */
-	public void setOffresFevesPubliquesEnCours(List<ContratFeveV2> offres) {
+	public void setOffresFevesPubliquesEnCours(List<ContratFeveV3> offres) {
 		this.offresFevesPubliquesEnCours = offres;
 	}
-	public List<ContratFeveV2> getOffresFevesPubliquesEnCours() {
+	public List<ContratFeveV3> getOffresFevesPubliquesEnCours() {
 		return this.offresFevesPubliquesEnCours;
 	}
 	public Indicateur getNombreEmployes() {
@@ -476,10 +479,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public ArrayList<GQte> getCommandesTablettesEnCours() {
 		return this.commandesTablettesEnCours;
 	}
-	public List<ContratFeveV2> getCommandesFeveEnCours() {
+	public List<ContratFeveV3> getCommandesFeveEnCours() {
 		return this.commandesFeveEnCours;
 	}
-	public void setCommandesFeveEnCours(List<ContratFeveV2> offresPrivees) {
+	public void setCommandesFeveEnCours(List<ContratFeveV3> offresPrivees) {
 		this.commandesFeveEnCours = offresPrivees;
 	}
 	public void setCommandesTablettesEnCours(ArrayList<GQte> contrats) {
@@ -491,7 +494,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public ArrayList<GQte> getLivraisonsTablettesEnCours() {
 		return this.livraisonsTablettesEnCours;
 	}
-	public List<ContratFeveV2> getLivraisonsFeveEnCours() {
+	public List<ContratFeveV3> getLivraisonsFeveEnCours() {
 		return this.livraisonsFeveEnCours;
 	}
 	public void setLivraisonsTablettesEnCours(ArrayList<GQte> contrats) {
@@ -503,7 +506,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public void setLivraisonsPoudreEnCours(ArrayList<ContratPoudre> contrats) {
 		this.livraisonsPoudreEnCours = contrats;
 	}
-	public void setLivraisonsFevesEnCours(List<ContratFeveV2> contrats) {
+	public void setLivraisonsFevesEnCours(List<ContratFeveV3> contrats) {
 		this.livraisonsFeveEnCours = contrats;
 	}
 	
@@ -512,10 +515,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 */
 	
 	public void resetCommandesEnCours() {
-		this.commandesFeveEnCours = new ArrayList<ContratFeveV2>();;
+		this.commandesFeveEnCours = new ArrayList<ContratFeveV3>();;
 		this.commandesTablettesEnCours = new ArrayList<GQte>();
 		this.commandesPoudreEnCours = new ArrayList<ContratPoudre>();
-		this.livraisonsFeveEnCours =new ArrayList<ContratFeveV2>();;
+		this.livraisonsFeveEnCours =new ArrayList<ContratFeveV3>();;
 		this.livraisonsTablettesEnCours = new ArrayList<GQte>();
 		this.livraisonsPoudreEnCours = new ArrayList<ContratPoudre>();
 	}
@@ -536,9 +539,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		return quantite;
 	}
 	public int getQuantiteFevesCommandees() {
-		List<ContratFeveV2> commandes = this.getCommandesFeveEnCours();
+		List<ContratFeveV3> commandes = this.getCommandesFeveEnCours();
 		int quantite = 0;
-		for(ContratFeveV2 commande : commandes) {
+		for(ContratFeveV3 commande : commandes) {
 			quantite += commande.getProposition_Quantite();
 		}
 		return quantite;
@@ -560,9 +563,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		return quantite;
 	}
 	public int getQuantiteFevesLivrees() {
-		List<ContratFeveV2> commandes = this.getLivraisonsFeveEnCours();
+		List<ContratFeveV3> commandes = this.getLivraisonsFeveEnCours();
 		int quantite = 0;
-		for(ContratFeveV2 commande : commandes) {
+		for(ContratFeveV3 commande : commandes) {
 			quantite += commande.getProposition_Quantite();
 		}
 		return quantite;
@@ -821,17 +824,17 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			return productionTotaleMax[qualite];
 	}
 	
-	public List<ContratFeveV2> analyseOffresPubliquesFeves(List<ContratFeveV2> offresPubliques2) {
+	public List<ContratFeveV3> analyseOffresPubliquesFeves(List<ContratFeveV3> offresPubliques2) {
 		// on boucle sur les offres publiques et on vérifie pour le 
 		// moment seulement qu'on peut tout produire avec nos employés
-		ArrayList<ContratFeveV2> offresPubliques = new ArrayList<>(offresPubliques2);
-		ArrayList<ArrayList<ContratFeveV2>> offresRetenuesParQualite = new ArrayList<ArrayList<ContratFeveV2>>();
+		ArrayList<ContratFeveV3> offresPubliques = new ArrayList<>(offresPubliques2);
+		ArrayList<ArrayList<ContratFeveV3>> offresRetenuesParQualite = new ArrayList<ArrayList<ContratFeveV3>>();
 		for(int qualite = 0; qualite < 3; qualite++) {
-			offresRetenuesParQualite.add(new ArrayList<ContratFeveV2>());
+			offresRetenuesParQualite.add(new ArrayList<ContratFeveV3>());
 		}
 		
-		Collections.sort(offresPubliques, new Comparator<ContratFeveV2>() {
-	        public int compare(ContratFeveV2 contrat1, ContratFeveV2 contrat2)
+		Collections.sort(offresPubliques, new Comparator<ContratFeveV3>() {
+	        public int compare(ContratFeveV3 contrat1, ContratFeveV3 contrat2)
 	        {
 	            double resultat = contrat1.getOffrePublique_Prix()/contrat1.getOffrePublique_Quantite() - contrat2.getOffrePublique_Prix()/contrat2.getOffrePublique_Quantite();
 	            return (int) ((resultat > 0) ? Math.ceil(resultat) : Math.floor(resultat));
@@ -841,7 +844,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		int[] sommeQuantiteOffresRetenuesParQualite = new int[3];
 		int[] n = new int[3];
 		boolean stopLoop = false;
-		for(ContratFeveV2 offre : offresPubliques) {
+		for(ContratFeveV3 offre : offresPubliques) {
 			if(!stopLoop) {
 				offre.setTransformateur(this);
 				
@@ -868,7 +871,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			}
 		}
 		
-		List<ContratFeveV2> offresRetenues = new ArrayList<ContratFeveV2>(); 
+		List<ContratFeveV3> offresRetenues = new ArrayList<ContratFeveV3>(); 
 		for(int qualite = 0; qualite < 3; qualite++) {
 			for(int i = 0; i < n[qualite]; i++) {
 				offresRetenues.add(offresRetenuesParQualite.get(qualite).get(i));
@@ -878,7 +881,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		return offresRetenues;
 	}
 	
-	public List<ContratFeveV2> analyseOffresPriveesFeves(List<ContratFeveV2> offresPrivees) {		
+	public List<ContratFeveV3> analyseOffresPriveesFeves(List<ContratFeveV3> offresPrivees) {		
 		// A mettre dans des méthodes séparées
 		int[] productionTotaleMax = new int[3];
 		int[] productionPoudreMax = new int[3];
@@ -897,7 +900,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 		int[] sommeQuantiteOffresPriveesParQualite = new int[3];
 		int[] n = new int[3];
-		for(ContratFeveV2 offre : offresPrivees) {			
+		for(ContratFeveV3 offre : offresPrivees) {			
 			// Pour le moment on accepte tout
 			offre.setReponse(true);
 		}
@@ -911,7 +914,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 */
 	
 	@Override
-	public void sendOffrePublique(List<ContratFeveV2> offresPubliques) {
+	public void sendOffrePubliqueV3(List<ContratFeveV3> offresPubliques) {
 		// On garde les anciennes offres ?
 		/*
 		ContratFeve[] oldOffres = this.getOffresFevesPubliquesEnCours();
@@ -924,22 +927,22 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * Code à recopier dans la V4
 	 */
 	@Override
-	public List<ContratFeveV2> getDemandePrivee() {
-		List<ContratFeveV2> offresPubliques = this.getOffresFevesPubliquesEnCours();
+	public List<ContratFeveV3> getDemandePriveeV3() {
+		List<ContratFeveV3> offresPubliques = this.getOffresFevesPubliquesEnCours();
 		return this.analyseOffresPubliquesFeves(offresPubliques);
 	}
 	
 	@Override
-	public void sendContratFictif(List<ContratFeveV2> listContrats) {
+	public void sendContratFictifV3(List<ContratFeveV3> listContrats) {
 	
 	}
 	
 	@Override
-	public void sendOffreFinale(List<ContratFeveV2> offresFinales) {
+	public void sendOffreFinaleV3(List<ContratFeveV3> offresFinales) {
 		this.setCommandesFeveEnCours(this.analyseOffresPriveesFeves(offresFinales));
 	}
 	@Override
-	public List<ContratFeveV2> getResultVentes() {
+	public List<ContratFeveV3> getResultVentesV3() {
 		return this.getCommandesFeveEnCours();
 	}
 	
@@ -1109,13 +1112,14 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	/**
 	 * code à laisser vide, correspond à la V1, doit demeurer vide, et on doit toujour implémenter IAcheteurFeve
 	 * 
-	 * 
+	 */
 	public void sendOffrePublique(ContratFeve[] offrePublique) {
 		
 	}
 	
 	public ContratFeve[] getDemandePrivee() {
-		
+		ContratFeve[] contrat= new ContratFeve[0];
+		return contrat;
 	}
 	
 	public void sendContratFictif(ContratFeve[] listContrats) {
@@ -1126,8 +1130,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 	}
 	public ContratFeve[] getResultVentes() {
-		
+		ContratFeve[] contrat= new ContratFeve[0];
+		return contrat;
 	}
-	*/
+	
 	
 }
