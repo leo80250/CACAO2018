@@ -4,6 +4,8 @@ package abstraction.eq4TRAN.VendeurChoco;
  * @author Etienne
  *
  */
+
+@Deprecated
 public class GQte {
 	
 	/**
