@@ -37,7 +37,7 @@ public class ContratFeve {
 	
 		// Constructeurs //
 	
-	public ContratFeve(IAcheteurFeveV2 transformateur, IVendeurFeveV2 producteur, int qualite,
+	public ContratFeve(IAcheteurFeve transformateur, IVendeurFeve producteur, int qualite,
 			int quantiteOffrePublique, int quantiteDemande, int quantiteProposition,
 			double prixOffrePublique, double prixDemande, double prixProposition, boolean reponse) {
 		
