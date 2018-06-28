@@ -752,12 +752,18 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	/** 
 	 * Interface IVendeurPoudre
-	 * @author boulardmaelle margauxgrand 
+	 * @author boulardmaelle margauxgrand bernardjoseph
 	 */
 	
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
-		return new ContratPoudre[0];
+		ContratPoudre[] catalogue=new ContratPoudre[3];
+		for(int qualite=0;qualite<3;qualite++) {
+			catalogue[qualite]=new ContratPoudre(qualite,this.getStockPoudre(qualite).getValeur(),
+					this.prixVentePoudre[qualite].getValeur(),acheteur,(IVendeurPoudre)this,false);
+		}
+		return catalogue;
 	}
+	
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
 		int n = devis.length;
 		for(int i = 0; i<n; i++) {
