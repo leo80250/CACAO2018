@@ -22,8 +22,8 @@ import abstraction.eq3PROD.echangesProdTransfo.MarcheFeve;
 public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4 {
 	// 0 = BQ, 1 = MQ, 2 = HQ
 	private String nom;
-	private int stockmoyen;
-	private int stockfin;
+	private List<List<Integer>> stockmoyen;
+	private List<List<Integer>> stockfin;
 	private int solde;
 	private ArrayList<ContratFeveV3> listeContrats ; 
 	private final double[] prix_Ventes_Feves = {1800, 2100, 2500};
@@ -48,14 +48,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		this.nom=s;
 	}
 	
-	public int getStockMoyen() {
-		return this.stockmoyen;
-	}
-	
-	public int getStockFin() {
-		return this.stockfin;
-	}
-	
+
 	public int getSolde() {
 		return this.solde;
 	}
@@ -63,6 +56,52 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	public void setSolde(int solde) {
 		this.solde=solde;
 	}
+	
+	
+	/**
+	 * @author Pierre
+	 */
+	public List<List<Integer>> getStockmoyen() {
+		return stockmoyen;
+	}
+
+	public List<List<Integer>> getStockfin() {
+		return stockfin;
+	}
+	
+	public int quantiteStockMoyen() {
+		int stockm = 0;
+		for(int i=0; i<this.stockmoyen.size(); i++) {
+			stockm+=stockmoyen.get(i).get(0);
+		}
+		return stockm;
+		
+	}
+	
+	public int quantiteStockFin() {
+		int stockf = 0;
+		for(int i=0; i<this.stockfin.size(); i++) {
+			stockf+=stockfin.get(i).get(0);
+		}		
+		return stockf;
+	}
+	
+	
+	public void ajouterStockMoyen(int stock) {	
+		List<Integer> stockm = new ArrayList<Integer>(2);
+		stockm.set(0, stock);
+		stockm.set(1, 0);
+		this.stockmoyen.add(stockm);
+	}
+	
+	public void ajouterStockFin(int stock) {	
+		List<Integer> stockf = new ArrayList<Integer>(2);
+		stockf.set(0, stock);
+		stockf.set(1, 0);
+		this.stockfin.add(stockf);
+	}
+	
+
 	
 	/**
 	 * @author Claire
@@ -92,8 +131,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		this.marche = new MarcheFeve("Marche central", transformateurs, producteurs);
 		
 		Monde.LE_MONDE.ajouterActeur(marche);
-		this.stockmoyen= 75000;
-		this.stockfin= 24000;
+		
+		this.stockmoyen = new ArrayList<List<Integer>>();
+		this.stockfin = new ArrayList<List<Integer>>();
+		this.ajouterStockMoyen(75000);
+		this.ajouterStockFin(24000);
+		
 		this.nom = "Eq3PROD";
 	}
 	
@@ -106,8 +149,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		 * @author Morgane et Pierre
 		 */
 		public List<ContratFeveV3> getOffrePublique() { 
-			ContratFeveV3 c1=new ContratFeveV3(null, this, 1, this.stockmoyen, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false);
-			ContratFeveV3 c2=new ContratFeveV3(null, this, 2, this.stockfin, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false); 
+			ContratFeveV3 c1=new ContratFeveV3(null, this, 1, this.quantiteStockMoyen(), 0, 0, marche.getPrixMarche(), 0.0, 0.0, false);
+			ContratFeveV3 c2=new ContratFeveV3(null, this, 2, this.quantiteStockFin(), 0, 0, marche.getPrixMarche(), 0.0, 0.0, false); 
 			List<ContratFeveV3> c= new ArrayList<ContratFeveV3>() ; 
 			c.add(c1); 
 			c.add(c2); 
@@ -149,24 +192,24 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				 	 	  	  		   		 	 	
 				if (contrat.getQualite() == 1 ) { 	 	  	  		   		 	 	
 					 	 	  	  		   		 	 	
-					if(quantite_1 <= this.stockmoyen) { 	 	  	  		   		 	 	
+					if(quantite_1 <= this.quantiteStockMoyen()) { 	 	  	  		   		 	 	
 						contrat.setProposition_Quantite(contrat.getDemande_Quantite()) ; 	 	  	  		   		 	 	
 						 	 	  	  		   		 	 	
-					} else if (quantite_1 > this.stockmoyen) { 	 	  	  		   		 	 	
+					} else { 	 	  	  		   		 	 	
 						// stock: 100  	 	  	  		   		 	 	
 						// demande : 70, 40, 30  	 	  	  		   		 	 	
 						// total demande : 140 	 	  	  		   		 	 	
 						// répartition: 40*100/140 	 	 	  	  		   		 	 	
-						contrat.setProposition_Quantite(contrat.getDemande_Quantite()*this.stockmoyen/quantite_1); 	 	  	  		   		 	 	
+						contrat.setProposition_Quantite(contrat.getDemande_Quantite()*this.quantiteStockMoyen()/quantite_1); 	 	  	  		   		 	 	
 					}	 	  	  		   		 	 	
 		 	  	  		   		 	 	
 				} else if (contrat.getQualite() == 2) {	 	 	  	  		   		 	 	
 			   		 	 	 	 	  	  		   		 	 	
-					if (quantite_2 <= this.stockfin) { 	 	 	 	  	  		   		 	 	
+					if (quantite_2 <= this.quantiteStockFin()) { 	 	 	 	  	  		   		 	 	
 						contrat.setProposition_Quantite(contrat.getDemande_Quantite());	  	  		   		 	 	 	 	  	  		   		 	 	
 						 	 	  	  		   		 	 	
-					} else if (quantite_2 > this.stockfin) { 	 	  	  		   		 	 	
-						contrat.setProposition_Quantite(contrat.getDemande_Quantite()*this.stockfin/quantite_2); 	 	  	  		   		 	 		 	 	
+					} else { 	 	  	  		   		 	 	
+						contrat.setProposition_Quantite(contrat.getDemande_Quantite()*this.quantiteStockFin()/quantite_2); 	 	  	  		   		 	 		 	 	
 					} 	 	  	  		   		 	 	
 					 	 	  	  		   		 	 		 	  	  		   		 	 	
 				}
