@@ -25,13 +25,16 @@ public Eq1DIST()  {
 	Journal client = new Journal("Clients Finaux");
 	Monde.LE_MONDE.ajouterJournal(client);
 	Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche,client));
-		this.stock[0][0] = 0 ;
-		this.stock[0][1] = 50000 ;
-		this.stock[0][2] = 25000;
-		this.stock[1][0] = 0 ;
-		this.stock[1][1] = 35000;
-		this.stock[1][2] = 15000;
-		this.journal= new Journal("equipe1");
+	int[][] stock= new int[2][3];
+	stock[0][0] = 0 ;
+	stock[0][1] = 50000 ;
+	stock[0][2] = 25000;
+	stock[1][0] = 0 ;
+	stock[1][1] = 35000;
+	stock[1][2] = 15000;
+	this.stock=stock;
+		
+		this.journal= new Journal("Journal de Eq1DIST");
 		journal.ajouter("Absentéisme");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 }
@@ -61,21 +64,21 @@ public Eq1DIST()  {
 
 	@Override
 	public GrilleQuantite commander(GrilleQuantite Q) {
-		int[][] res = new int[2][3];
+		int[] res = new int[6];
 		double[][] prix = new double[][] {
 			{0.9,1.5,3.0},
 			{1.0,2.6,4.1}
 		};
-		for (int i =0; i <3;i++) {
+		for (int i =0; i <2;i++) {
 			for (int j = 0; j <3;j++) {
-				int f = this.stock[i][j]-Q.getValeur(i, j);
+				int f = this.stock[i][j]-Q.getValeur(3*i+j);
 				if (f>=0) {
-					res[i][j] = Q.getValeur(i, j);
+					res[3*i+j] = Q.getValeur(3*i+j);
 				}
 				else {
-					res[i][j] = stock[i][j];
+					res[3*i+j] = stock[i][j];
 					}
-				this.banque += res[i][j]*prix[i][j];
+				this.banque += res[3*i+j]*prix[i][j];
 			}
 		}
 		return new GrilleQuantite(res);

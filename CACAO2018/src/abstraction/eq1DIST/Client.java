@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import abstraction.eq6DIST.Eq6DIST;
 import abstraction.fourni.Acteur;
+import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
@@ -15,6 +16,12 @@ public class Client implements Acteur {
 	private double[][] PartdeMarche;
 	private Journal journal;
 	
+	private Indicateur DemandeChocoBdG;
+	private Indicateur DemandeChocoMdG;
+	private Indicateur DemandeChocoHdG;
+	private Indicateur DemandeConfBdG;
+	private Indicateur DemandeConfMdG;
+	private Indicateur DemandeConfHdG;
 	//Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche,client)); penser à rajouter dans EQ1
 	/**
 	 *
@@ -32,6 +39,12 @@ public class Client implements Acteur {
 			this.PartdeMarche = new double[3][6];
 		}
 		this.journal=journal;
+		this.DemandeChocoBdG=new Indicateur("DemandeChocoBdG", this,0.0);
+		this.DemandeChocoMdG=new Indicateur("DemandeChocoMdG", this,0.0);
+		this.DemandeChocoHdG=new Indicateur("DemandeChocoHdG", this,0.0);
+		this.DemandeConfBdG=new Indicateur("DemandeConfBdG", this,0.0);
+		this.DemandeConfMdG=new Indicateur("DemandeConfMdG", this,0.0);
+		this.DemandeConfHdG=new Indicateur("DemandeConfHdG", this,0.0);
 	}
 	
 
@@ -136,6 +149,14 @@ public class Client implements Acteur {
 		int[] autre= this.commande(h, 2);
 		GrilleQuantite CommandeAutre = new GrilleQuantite (autre);
 		
+		DemandeChocoBdG.setValeur(this,cm[0]+cas[0]+autre[0]+0.0);
+		DemandeChocoMdG.setValeur(this,cm[1]+cas[1]+autre[1]+0.0);
+		DemandeChocoHdG.setValeur(this,cm[2]+cas[2]+autre[2]+0.0);
+		DemandeConfBdG.setValeur(this,cm[3]+cas[3]+autre[3]+0.0);
+		DemandeConfMdG.setValeur(this,cm[4]+cas[4]+autre[4]+0.0);
+		DemandeConfHdG.setValeur(this,cm[5]+cas[5]+autre[5]+0.0);
+		
+		
 		for(int i=0;i<Distributeurs.size();i++) {
 			if(Distributeurs.get(i).getNom()=="Eq1DIST") {
 				InterfaceDistributeurClient Mousquetaire=(InterfaceDistributeurClient)(Distributeurs.get(i));
@@ -156,5 +177,9 @@ public class Client implements Acteur {
 	public String getNom() {
 		// TODO Auto-generated method stub
 		return "Clients finaux";
+	}
+	
+	public static void main(String[] args) {
+		
 	}
 }
