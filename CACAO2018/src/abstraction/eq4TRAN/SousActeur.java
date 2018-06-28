@@ -302,4 +302,44 @@ IVendeurPoudre {
 		// TODO Auto-generated method stub
 		return null;
 	}
-}
+	
+	/*
+	 * @Noémie 
+	 * 
+	 * Méthodes pour prendre en compte les coûts fixes et variables 
+	 */
+	
+	/*
+	 * Méthode qui affiche le CA du dernier next en récupérant ce qu'on a payé
+	 * dans les contrats fèves et contrats poudres et ce qu'on a vendu en contrats
+	 * chocolats 
+	 */
+	public double getCA() { 
+		double CA = 0 ;
+		// Achat de fèves aux équipes 2 et 3
+		for (int  i = 0 ; i < this.contratFeveEnCours.length ; i++ ) {
+			if (contratFeveEnCours[i].getReponse()) {
+				/*
+				 * à changer car Interface ContratFeve deprecated
+				 */
+				CA -= contratFeveEnCours[i].getPrix()*contratFeveEnCours[i].getQuantite() ; 
+			}
+		}
+		// Achat de poudre à l'équipe 5 
+		for (int i = 0 ; i < this.contratPoudreEnCoursEq5TRAN.length ; i++) {
+			if (contratPoudreEnCoursEq5TRAN[i].isReponse()) {
+				CA -= contratPoudreEnCoursEq5TRAN[i].getPrix()*contratPoudreEnCoursEq5TRAN[i].getQuantite() ;
+			}
+		}
+		// Achat de poudre à l'équipe 7
+		for (int i = 0 ; i < this.contratPoudreEnCoursEq7TRAN.length ; i++) {
+			if (contratPoudreEnCoursEq7TRAN[i].isReponse()) {
+					CA -= contratPoudreEnCoursEq7TRAN[i].getPrix()*contratPoudreEnCoursEq7TRAN[i].getQuantite() ;
+				}
+		}
+		// Vente de chocolats aux distributeurs
+		
+		
+		return CA ; 
+		}
+ }

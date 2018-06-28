@@ -419,4 +419,10 @@ IvendeurOccasionnelChoco{
 		return 0;
 	}
 
+	@Override
+	public void envoyerReponse(double quantite, int qualite, int prix) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
