@@ -34,8 +34,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	
 	
-	
-	
 	private Indicateur achats;
 	private Indicateur ventes;
 	// 0 = BQ, 1 = MQ, 2 = HQ
@@ -758,7 +756,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		ContratPoudre[] catalogue=new ContratPoudre[3];
 		for(int qualite=0;qualite<3;qualite++) {
-			catalogue[qualite]=new ContratPoudre(qualite,this.getStockPoudre(qualite).getValeur(),
+			catalogue[qualite]=new ContratPoudre(qualite,(int)this.getStockPoudre(qualite).getValeur(),
 					this.prixVentePoudre[qualite].getValeur(),acheteur,(IVendeurPoudre)this,false);
 		}
 		return catalogue;
