@@ -45,6 +45,10 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 		this.offreFinale = l;
 	}
 	
+	/* Guillaume Sallé 
+	 * a devient a*p , b devient b*p, etc. Pour pouvoir changer facilement p
+	 * Appelé dans getDemandePrivee()
+	 */
 	public void ponderation(int a, int b, int c, int d, double p) {
 		a=(int)(a*p); b=(int)(b*p); c=(int)(c*p); d=(int)(d*p);   
 	}
@@ -56,12 +60,14 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 	}
 
 // IMPLEMENTATION DE IACHETEURFEVEV4
+	/* Agathe Chevalier */
 	public void sendOffrePubliqueV3(List<ContratFeveV3> offrePublique) {
 		/*L'acheteur fictif n'a pas besoin de recuperer les offres publiques des producteurs aux transformateurs
 		 * car aucun ne lui adresse de demande:
 		 * ses commandes sont directement calculés selon un pourcentage des demandes du moins precedent */
 	}
 
+	/* Agathe Chevalier, Guillaume Sallé */
 	public List<ContratFeveV3> getDemandePriveeV3() {
 		/*this.contratPrecedent = Monde.LE_MONDE.getActeur("Marche intermediaire").getContratPrecedent*/
 		List<ContratFeveV3> c = new ArrayList<ContratFeveV3>();
@@ -128,6 +134,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 		return c;
 	}
 
+	/* Guillaume Sallé*/
 	public void sendContratFictifV3(List<ContratFeveV3> listContrats) {
 		setContratPrecedent(listContrats);
 		for (int i = 0; i<getContratPrecedent().size() ; i++) {
@@ -137,10 +144,12 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 		}
 	}
 
+	/* Agathe Chevalier */
 	public void sendOffreFinaleV3(List<ContratFeveV3> offreFinale) {
 		setOffreFinale(offreFinale);
 	}
 
+	/* Agathe Chevalier */
 	public List<ContratFeveV3> getResultVentesV3() {
 		for(ContratFeveV3 c : getOffreFinale()) {
 			c.setReponse(true); /* l'acheteur fictif signe tous les contrats */
