@@ -16,7 +16,9 @@ import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2;
 import abstraction.eq4TRAN.IVendeurChoco;
+import abstraction.eq4TRAN.IVendeurChocoBis;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
+import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq6DIST.IAcheteurChoco;
@@ -28,7 +30,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV2, IVendeurChoco {
+public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV2, IVendeurChocoBis {
 	private Indicateur achats;
 	private Indicateur ventes;
 	// 0 = BQ, 1 = MQ, 2 = HQ
@@ -192,7 +194,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				commandes[0] = commande;
 				commandes[1] = commande;
 				commandes[2] = commande;
-				commandeLivree = this.getLivraison(commandes);
+				//commandeLivree = this.getLivraison(commandes);
 			}
 		}
 		// on simule une commande régulière ici
@@ -933,59 +935,76 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * @author bernardjoseph
 	 */
 	
-	public GQte getStock() {
-		return new GQte(0,0,0,(int)this.getStockTablettes(0).getValeur(),(int)this.getStockTablettes(1).getValeur(),(int)this.getStockTablettes(2).getValeur());
+	public ArrayList<Integer> getStock() {
+		ArrayList<Integer> stocks = new ArrayList<Integer>();
+		stocks.add(0);
+		stocks.add(0);
+		stocks.add(0);
+		stocks.add((int)this.getStockTablettes(0).getValeur());
+		stocks.add((int)this.getStockTablettes(1).getValeur());
+		stocks.add((int)this.getStockTablettes(2).getValeur());
+		return stocks;
 	}
 	
-	//tableau de GPrix pour les trois qualites
-	/*public GPrix getPrix() {
-		GPrix[] array = new GPrix[3];
-		array[0] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(0)});
-		array[1] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(1)});
-		array[2] = new GPrix({0.0,Float.MAX_VALUE},{(float)this.estimatePrixVenteTablette(2)});
-		return array;
-	}*/
-	
-	public GPrix getPrix() {
-		float[] intervalles = new float[10];
-		float[] prix = new float[10];
-		prix[0] = (float) estimatePrixVenteTablette(0);
-		prix[1] = (float) estimatePrixVenteTablette(1);
-		prix[2] = (float) estimatePrixVenteTablette(2);
-		return new GPrix(intervalles, prix);
+	public GPrix2 getPrix() {
+		ArrayList<Double[]> intervalles = new ArrayList<Double[]>();
+		ArrayList<Double[]> prixs = new ArrayList<Double[]>();
+		
+		Double[] intervalle = {0.0, Double.MAX_VALUE};
+		Double[] prix;
+		
+		for(int idProduit = 1; idProduit <= 6; idProduit++) {
+			
+			if(idProduit<=3) {
+				prix = new Double[1];
+				prix[0] = 0.0;
+			}
+			else {
+				prix = new Double[1];
+				prix[0] = estimatePrixVenteTablette(4-idProduit);
+			}
+			
+			intervalles.add(intervalle);
+			prixs.add(prix);
+		}
+		return new GPrix2(intervalles, prixs);
 	}
 	
 	@Override
-	public GQte getLivraison(GQte[] commandes) {
+	public ArrayList<ArrayList<Integer>> getLivraison(ArrayList<ArrayList<Integer>> commandes) {
 		int[] stockTablettes = new int[3];
 		for(int qualite = 0; qualite<3; qualite++) {
 			stockTablettes[qualite] = (int) this.getStockTablettes(qualite).getValeur();
 		}
 		
-		int[] commande1 = {commandes[0].getqTabletteBQ(),commandes[0].getqTabletteMQ(),commandes[0].getqTabletteHQ()};
-		int[] deliver1 = new int[3];
+		ArrayList<ArrayList<Integer>> livraisons = new ArrayList<ArrayList<Integer>>();
 			
-		for(int i=0;i<3;i++) {
-			deliver1[i] = commande1[i];
-			// On regarde si on a en stock ou si on peut produire ce qu'on nous demande
-			if (commande1[i] > stockTablettes[i]) {
-				/*double p = commande1[i]/(commande1[i]+commande2[i]);
-				deliver1[i]=(int)(p*stock[i]);
-				deliver2[i]=stock[i]-deliver1[i];*/
-				
-				int diff = commande1[i]-stockTablettes[i];
-				deliver1[i] -= diff;
+		// boucle sur les distributeurs
+		for(int idDist=0;idDist<3;idDist++) {
+			// boucle sur les types de produits
+			for(int idProduit = 1; idProduit <= 6; idProduit++) {
+				if(idProduit <= 3) {
+					// On regarde si on a en stock ou si on peut produire ce qu'on nous demande
+					if (commandes.get(idDist).get(idProduit-1) > stockTablettes[idProduit-1]) {
+						/*double p = commande1[i]/(commande1[i]+commande2[i]);
+						deliver1[i]=(int)(p*stock[i]);
+						deliver2[i]=stock[i]-deliver1[i];*/
+						
+						int diff = commandes.get(idDist).get(idProduit-1)-stockTablettes[idProduit-1];
+						//livraisons.set(index, element) -= diff;
+					}
+				}
 			}
 			
 			// On retire ce qu'on a utilisé de notre stock
-			this.setStockTablettes((int)(this.getStockTablettes(i).getValeur()-deliver1[i]), i);
+			//this.setStockTablettes((int)(this.getStockTablettes(i).getValeur()-deliver1[i]), i);
 		}
-		
+		/*
 		GQte commande = new GQte(0,0,0,commande1[0],commande1[1],commande1[2]); 
 		GQte livraison = new GQte(0,0,0,deliver1[0],deliver1[1],deliver1[2]); 
 		this.getCommandesTablettesEnCours().add(commande);
-		this.getLivraisonsTablettesEnCours().add(livraison);
-		return livraison;
+		this.getLivraisonsTablettesEnCours().add(livraison);*/
+		return livraisons;
 	}
 	
 	
