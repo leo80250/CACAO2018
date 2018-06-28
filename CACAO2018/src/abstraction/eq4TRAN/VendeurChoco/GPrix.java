@@ -7,6 +7,7 @@ import java.util.ArrayList;
  * @author Etienne
  *
  */
+@Deprecated
 public class GPrix {
 	
 	/*
