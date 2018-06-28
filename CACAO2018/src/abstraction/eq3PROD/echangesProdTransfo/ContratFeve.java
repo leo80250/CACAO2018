@@ -9,8 +9,8 @@ import abstraction.fourni.Acteur;
 
 public class ContratFeve {
 	
-	private IAcheteurFeveV2 transformateur;
-	private IVendeurFeveV2 producteur;
+	private IAcheteurFeve transformateur;
+	private IVendeurFeve producteur;
 	private int qualite;
 	
 	private int quantiteOffrePublique;
@@ -56,7 +56,7 @@ public class ContratFeve {
 		this.reponse = reponse;
 		
 	}
-	public ContratFeve(IAcheteurFeveV2 transformateur, IVendeurFeveV2 producteur, int qualite) {
+	public ContratFeve(IAcheteurFeve transformateur, IVendeurFeve producteur, int qualite) {
 		
 		this.transformateur = transformateur;
 		this.producteur = producteur;
@@ -92,14 +92,14 @@ public class ContratFeve {
 		// Getters //
 
 	@Deprecated
-	public ContratFeve(int qualite2, int quantite, double prixMinqb, IAcheteurFeveV2 transformateur2,
-			IVendeurFeveV2 producteur2, boolean reponse2) {
+	public ContratFeve(int qualite2, int quantite, double prixMinqb, IAcheteurFeve transformateur2,
+			IVendeurFeve producteur2, boolean reponse2) {
 		// TODO Auto-generated constructor stub
 	}
-	public IAcheteurFeveV2 getTransformateur() {
+	public IAcheteurFeve getTransformateur() {
 		return this.transformateur;
 	}
-	public IVendeurFeveV2 getProducteur() {
+	public IVendeurFeve getProducteur() {
 		return this.producteur;
 	}
 	public int getQualite() {
@@ -131,10 +131,10 @@ public class ContratFeve {
 
 		// Setters //
 	
-	public void setTransformateur(IAcheteurFeveV2 transformateur) {
+	public void setTransformateur(IAcheteurFeve transformateur) {
 		this.transformateur = transformateur;
 	}
-	public void setProducteur(IVendeurFeveV2 producteur) {
+	public void setProducteur(IVendeurFeve producteur) {
 		this.producteur = producteur;
 	}
 	public void setQualite(int qualite) {

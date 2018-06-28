@@ -1,7 +1,10 @@
 package abstraction.eq5TRAN; 	  				 	 	   			 	
  	  				 	 	   			 	
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve; 	  				 	 	   			 	
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV2; 	  				 	 	   			 	
+
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve; 	  				 	 	   			 	
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2; 	  				 	 	   			 	
 import abstraction.eq5TRAN.appeldOffre.DemandeAO; 	  				 	 	   			 	
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco; 	  				 	 	   			 	
@@ -30,7 +33,7 @@ import static abstraction.eq5TRAN.util.Marchandises.*;
  * - Gestion de facteurs sociaux (greves ...) 	  				 	 	   			 	
  * - Systeme de fidelite client/fournisseur 	  				 	 	   			 	
  */ 	  				 	 	   			 	
-public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChoco, IAcheteurFeveV2 { 	  				 	 	   			 	
+public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChoco, IAcheteurFeve,IAcheteurFeveV2 { 	  				 	 	   			 	
  	  				 	 	   			 	
     // cf Marchandises.java pour obtenir l'indexation 	  				 	 	   			 	
     private Indicateur[] productionSouhaitee; // ce qui sort de nos machines en kT 	  				 	 	   			 	
