@@ -1,6 +1,7 @@
 package abstraction.eq4TRAN.VendeurChoco;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 import abstraction.eq4TRAN.IVendeurChoco;
@@ -14,120 +15,95 @@ import abstraction.fourni.Journal;
  */
 public class Vendeur implements IVendeurChocoBis{
 	/*
-	 * classe définissant les méthodes nécessaires à l'interface IVendeur Choco
+	 * classe implémentant les méthodes nécessaires à l'interface IVendeurChoco
 	 */
 	
-	private int qBonbonBQ;
-	private int qBonbonMQ;
-	private int qBonbonHQ;
-	private int qTabletteBQ;
-	private int qTabletteMQ;
-	private int qTabletteHQ;
+	private ArrayList<Integer> stocks;
 	public Journal ventes = new Journal("ventes");
 	
-	public Vendeur(int qBBQ, int qBMQ, int qBHQ, int qTBQ, int qTMQ, int qTHQ) {
-		qBonbonBQ = (qBBQ>=0) ? qBBQ : 0;
-		qBonbonMQ = (qBMQ>=0) ? qBMQ : 0;
-		qBonbonHQ = (qBHQ>=0) ? qBHQ : 0;
-		qTabletteBQ = (qTBQ>=0) ? qTBQ : 0;
-		qTabletteMQ = (qTMQ>=0) ? qTMQ : 0;
-		qTabletteHQ = (qTHQ>=0) ? qTHQ : 0;
+	// Constructeur créant un Vendeur avec 6 paramètres : les stocks des 6 produits
+	public Vendeur(ArrayList<Integer> quantites) {
+		for(int i=0;i<6;i++) {
+			stocks.set(i,(quantites.get(i)>=0) ? quantites.get(i) : 0);
+		}
 	}
 	
+	// Constructeur sans paramètre initialisant les stocks à 0
 	public Vendeur() {
-		qBonbonBQ=0;
-		qBonbonMQ=0;
-		qBonbonHQ=0;
-		qTabletteBQ=0;
-		qTabletteMQ=0;
-		qTabletteHQ=0;
+		stocks = new ArrayList<>(Collections.nCopies(6, 0));
 	}
 
-	public int getqBonbonBQ() {
-		return qBonbonBQ;
+	// Getters et setters des stocks du Vendeur
+	
+	public int getQte(int IDProduit) {
+		return getStock().get(IDProduit);
 	}
 
-	public void setqBonbonBQ(int qBonbonBQ) {
-		this.qBonbonBQ = qBonbonBQ;
-	}
-
-	public int getqBonbonMQ() {
-		return qBonbonMQ;
-	}
-
-	public void setqBonbonMQ(int qBonbonMQ) {
-		this.qBonbonMQ = qBonbonMQ;
-	}
-
-	public int getqBonbonHQ() {
-		return qBonbonHQ;
-	}
-
-	public void setqBonbonHQ(int qBonbonHQ) {
-		this.qBonbonHQ = qBonbonHQ;
-	}
-
-	public int getqTabletteBQ() {
-		return qTabletteBQ;
-	}
-
-	public void setqTabletteBQ(int qTabletteBQ) {
-		this.qTabletteBQ = qTabletteBQ;
-	}
-
-	public int getqTabletteMQ() {
-		return qTabletteMQ;
-	}
-
-	public void setqTabletteMQ(int qTabletteMQ) {
-		this.qTabletteMQ = qTabletteMQ;
-	}
-
-	public int getqTabletteHQ() {
-		return qTabletteHQ;
-	}
-
-	public void setqTabletteHQ(int qTabletteHQ) {
-		this.qTabletteHQ = qTabletteHQ;
-	}
-
-	public GQte getStock() {
-		return new GQte(getqBonbonBQ(), getqBonbonMQ(), getqBonbonHQ(), getqTabletteBQ(), getqTabletteMQ(), getqTabletteHQ());
+	public void setQte(int IDProduit, int quantite) {
+		getStock().set(IDProduit, quantite);
 	}
 	
-	public GPrix getPrix() {
-		float[] intervalles = {(float)0.0,(float)10.0,(float)50.0,(float)100.0,(float)250.0,(float)500.0,(float)750.0,(float)1000.0};
+	// Implémente getStock
+	public ArrayList<Integer> getStock(){
+		return stocks;
+	}
+	
+	// Rendre utilisable pour autres transformateurs
+	//Implémente getPrix 
+	public GPrix2 getPrix() {
+		ArrayList<Double[]> intervalles = new ArrayList<>();
+		Double[] interval = {0.0,10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
+		for(int i=0;i<intervalles.size();i++) {
+			// On considère les mêmes intervalles pour chaque produit dans un premier temps
+			intervalles.add(interval);
+		}
 		ArrayList<Double[] > prix = new ArrayList<>();
 		//Discuter de la stratégie d'etagement des prix
-		//float[] prix4 = {0.72, 0.695, 0.650, 0.625, 0.6, 0.575, 0.55, 0.525};
-		//float[] prix5 = {1.12, 1.1, 1.075, 1.05, 1.025, 1.0, 0.975, 0.95};
-		//float[] prix6 = {2.0, 1.975, 1.95, 1.9, 1.875, 1.85, 1.825, 1.8};
-		float[] prix1 = {(float)0.0,(float) 0.0,(float) 0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0, (float)0.0};
-		//float[] prix2 = {4.0, 3.975, 3.95, 3.9, 3.875, 3.85, 3.825, 3.8};
-		//float[] prix3 = {6.4, 6.375, 6.35, 6.325, 6.3, 6.275, 6.25, 6.2};
-		/*prix.add(prix1);
+		//On définit nos prix selon les quantités et pour chaque produit
+		Double[] prix4 = {0.72, 0.695, 0.650, 0.625, 0.6, 0.575, 0.55, 0.525};
+		Double[] prix5 = {1.12, 1.1, 1.075, 1.05, 1.025, 1.0, 0.975, 0.95};
+		Double[] prix6 = {2.0, 1.975, 1.95, 1.9, 1.875, 1.85, 1.825, 1.8};
+		Double[] prix1 = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		Double[] prix2 = {4.0, 3.975, 3.95, 3.9, 3.875, 3.85, 3.825, 3.8};
+		Double[] prix3 = {6.4, 6.375, 6.35, 6.325, 6.3, 6.275, 6.25, 6.2};
+		//on concatène tous les tableaux de prix dans un Tableau GPrix2
+		prix.add(prix1);
 		prix.add(prix2);
 		prix.add(prix3);
 		prix.add(prix4);
 		prix.add(prix5);
-		prix.add(prix6);*/
-		return new GPrix(intervalles, prix1);
+		prix.add(prix6);
+		return new GPrix2(intervalles, prix);
 	}
 	
+	// A améliorer pour maximiser les livraisons.
 	
-	public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
-		GQte commande1 = commandes.get(0);
+	// Implémente getLivraison() (Attention : ne gère ni les stocks ni le solde de l'Acteur qui utilise Vendeur)
+	public ArrayList<ArrayList<Integer>> getLivraison(ArrayList<ArrayList<Integer>> commandes) {
+		ArrayList<Integer> commande1 = commandes.get(0);
 		// On considère que commande1 correspond à la commande de l'équipe eq1DIST
-		GQte commande2 = commandes.get(1);
-		ArrayList<GQte> Livraison = new ArrayList<>(); /*insérer notre livraison effective */
-		commande2.setqBonbonBQ(this.getqBonbonBQ()-commande1.getqBonbonBQ());
-		commande2.setqBonbonMQ(this.getqBonbonMQ()-commande1.getqBonbonMQ());
-		commande2.setqBonbonHQ(this.getqBonbonHQ()-commande1.getqBonbonHQ());
-		commande2.setqTabletteBQ(this.getqTabletteBQ()-commande2.getqTabletteBQ());
-		commande2.setqTabletteMQ(this.getqTabletteMQ()-commande2.getqTabletteMQ());
-		commande2.setqTabletteHQ(this.getqTabletteHQ()-commande2.getqTabletteHQ());
+		ArrayList<Integer> commande2 = commandes.get(1);
+		ArrayList<Integer> commande3 = commandes.get(2);
+		ArrayList<ArrayList<Integer>> Livraison = new ArrayList<>();
+		for(int i=0;i<6;i++) {
+			// Si la somme des commandes 1 et 2 dépasse notre stock pour certains produits, on plafonne la 2 
+			// qui en théorie commande plus. On ne vend alors rien au distibuteur fictif.
+			if(commande1.get(i)+commande2.get(i)>getQte(i+1)) {
+				commande2.set(i, getQte(i+1)-commande1.get(i));
+				commande3.set(i, 0);
+			}
+			else {
+				// On plafonne la commande3, le distributeur fictif n'étant là que pour compléter les commandes.
+				if(commande1.get(i)+commande2.get(i)+commande3.get(i)>getQte(i+1)) {
+					commande3.set(i, getQte(i+1)-commande1.get(i)-commande2.get(i));
+				}
+			}
+		}
+		//On insère les livraisons aux deux distributeurs dans la liste Livraison
 		Livraison.add(commande1);
 		Livraison.add(commande2);
+		Livraison.add(commande3);
+		// On ajoute la vente à notre journal de ventes
 		ventes.ajouter("Livraison : " + Livraison);
 		return Livraison;
 	}
