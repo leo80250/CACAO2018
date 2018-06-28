@@ -35,7 +35,7 @@ IVendeurPoudre{
 	/** Déclaration des indicateurs pour le Journal
 	 *  
 	 */
-	
+
 	//Indicateurs de stock et de production
 	private Indicateur stockTabBQ ;
 	private Indicateur stockTabMQ ;
@@ -84,8 +84,8 @@ IVendeurPoudre{
 		contratFeveEnCours[3]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),0 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
 		contratFeveEnCours[4]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),1 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
 		contratFeveEnCours[5]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),2 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
-		
-		
+
+
 		//On initialise les indicateurs à 1000(arbitraire)
 		stockTabBQ = new Indicateur("stockTabBQ",this,1000) ;
 		stockTabMQ = new Indicateur("stockTabMQ",this,1000) ;
@@ -132,10 +132,10 @@ IVendeurPoudre{
 		 *  On récupère les contrats màj par la méthode next du marché
 		 *  ?????????????????????????
 		 */
-		
-		
-		
-		
+
+
+
+
 		/**
 		 * pour chaque contrat on récupère prix et qté
 		 */
@@ -152,7 +152,7 @@ IVendeurPoudre{
 			 */
 			if (contratFeveEnCours[i].getReponse()) {
 				if(contratFeveEnCours[i].getQualite() == 0) {
-					prodTabBQ.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite()); 
+					prodTabBQ.setValeur(this, contratFeveEnCours[i].getQuantite()); 
 					double ancienStockTabBQ = stockTabBQ.getValeur() ;
 					stockTabBQ.setValeur(Eq4TRAN, ancienStockTabBQ + prodTabBQ.getValeur());
 					solde.setValeur(Eq4TRAN, contratFeveEnCours[i].getPrix()*contratFeveEnCours[i].getQuantite());
@@ -174,7 +174,7 @@ IVendeurPoudre{
 			}
 
 		}
-		
+
 
 
 		/**
@@ -192,12 +192,12 @@ IVendeurPoudre{
 			Eq5TRAN.sendReponsePoudre(contratPoudreEnCoursEq5TRAN, (IAcheteurPoudre) this);
 			Eq7TRAN.sendReponsePoudre(contratPoudreEnCoursEq7TRAN, (IAcheteurPoudre)this);
 		}
-		
+
 		ContratPoudre[] contratfinalEq5TRAN = new ContratPoudre[3];
 		ContratPoudre[] contratfinalEq7TRAN = new ContratPoudre[3];
 		contratfinalEq5TRAN = Eq5TRAN.getEchangeFinalPoudre(contratPoudreEnCoursEq5TRAN, (IAcheteurPoudre)this);
 		contratfinalEq7TRAN = Eq7TRAN.getEchangeFinalPoudre(contratPoudreEnCoursEq7TRAN, (IAcheteurPoudre)this);
-		
+
 		ArrayList<ContratPoudre> contratPoudreEnCours = new ArrayList<ContratPoudre>();
 		contratPoudreEnCours.add(contratfinalEq5TRAN[0]);
 		contratPoudreEnCours.add(contratfinalEq5TRAN[1]);
@@ -229,7 +229,7 @@ IVendeurPoudre{
 				}
 			}
 		} 
-		
+
 		// On se transforme désormais en vendeur, le réapprovisionnement de nos stocks ayant été effectué
 		// Nous allons alors vendre des fèves aux distributeurs par l'intermédiaire du MarchéChoco()
 		ArrayList<Integer> stocks = new ArrayList<>();
@@ -269,14 +269,14 @@ IVendeurPoudre{
 	public ArrayList<Indicateur> getStocks(){
 		return Stocks;
 	}
-	
-//Charles
+
+	//Charles
 	@Override
 	public void sendOffrePublique(ContratFeve[] offrePublique) {
 		this.contratFeveEnCours=offrePublique;
 	}
 
-//Charles
+	//Charles
 	@Override
 	public ContratFeve[] getDemandePrivee() {
 		int[] demande= {13000,70000,25000};
@@ -308,7 +308,7 @@ IVendeurPoudre{
 	}
 
 
-//Charles
+	//Charles
 	@Override
 	public void sendOffreFinale(ContratFeve[] offreFinale) {
 		this.contratFeveEnCours=offreFinale;
@@ -316,7 +316,7 @@ IVendeurPoudre{
 
 	}
 
-//Charles
+	//Charles
 	@Override
 	public ContratFeve[] getResultVentes() {
 		for (int i=0;i<this.contratFeveEnCours.length;i++) {
@@ -332,13 +332,13 @@ IVendeurPoudre{
 	public int getQuantite(int IDProduit) {
 		return vendeur.getQte(IDProduit);
 	}
-	
+
 	//Etienne Raveau
 	// Setter qui met à jour  l'indicateur de stock pour un certain produit
 	public void setQuantite(int IDProduit, int quantite) {
 		getStocks().get(IDProduit-1).setValeur(this, quantite);
 	}
-	
+
 	/*
 	 * @Etienne
 	 */
@@ -353,7 +353,7 @@ IVendeurPoudre{
 		return vendeur.getPrix();
 	}
 
-	
+
 	//Etienne Raveau
 	@Override
 	public ArrayList<ArrayList<Integer>> getLivraison(ArrayList<ArrayList<Integer>> commandes) {
@@ -374,7 +374,7 @@ IVendeurPoudre{
 		solde.setValeur(this, s); //On met à jour notre solde bancaire
 		return livraison;
 	}
-	
+
 	@Override
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		// TODO Auto-generated method stub
