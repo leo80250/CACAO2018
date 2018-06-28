@@ -1,11 +1,15 @@
 package abstraction.eq5TRAN; 	  				 	 	   			 	
  	  				 	 	   			 	
-import abstraction.eq3PROD.echangesProdTransfo.ContratFeve; 	  				 	 	   			 	
-import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV2; 	  				 	 	   			 	
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;  	  				 	 	   			 	
 
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve; 	  				 	 	   			 	
-import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2; 	  				 	 	   			 	
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4; 	  				 	 	   			 	
+
 import abstraction.eq5TRAN.appeldOffre.DemandeAO; 	  				 	 	   			 	
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco; 	  				 	 	   			 	
 import abstraction.eq5TRAN.util.Marchandises; 	  				 	 	   			 	
@@ -33,7 +37,7 @@ import static abstraction.eq5TRAN.util.Marchandises.*;
  * - Gestion de facteurs sociaux (greves ...) 	  				 	 	   			 	
  * - Systeme de fidelite client/fournisseur 	  				 	 	   			 	
  */ 	  				 	 	   			 	
-public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChoco, IAcheteurFeve,IAcheteurFeveV2 { 	  				 	 	   			 	
+public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChoco,IAcheteurFeveV4 { 	  				 	 	   			 	
  	  				 	 	   			 	
     // cf Marchandises.java pour obtenir l'indexation 	  				 	 	   			 	
     private Indicateur[] productionSouhaitee; // ce qui sort de nos machines en kT 	  				 	 	   			 	
@@ -41,9 +45,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     private float facteurStock; // facteur lié aux risques= combien d'itérations on peut tenir sans réception de feves/poudre 	  				 	 	   			 	
     private Indicateur[] stocksSouhaites; // margeStock = facteurStock * variationDeStockParIteration, en kT 	  				 	 	   			 	
     private Indicateur[] stocks; // les vrais stocks en kT 	  				 	 	   			 	
-    private ContratFeve contratFeveBQEq2; // Le contrat avec l'équipe 2 pour les fèves BQ 	  				 	 	   			 	
-    private ContratFeve contratFeveMQEq2; // Le contrat avec l'équipe 2 pour les fèves MQ 	  				 	 	   			 	
-    private ContratFeve contratFeveMQEq3; // Le contrat avec l'équipe 3 pour les fèves MQ 	  				 	 	   			 	
+    private ContratFeveV3 contratFeveBQEq2; // Le contrat avec l'équipe 2 pour les fèves BQ 	  				 	 	   			 	
+    private ContratFeveV3 contratFeveMQEq2; // Le contrat avec l'équipe 2 pour les fèves MQ 	  				 	 	   			 	
+    private ContratFeveV3 contratFeveMQEq3; // Le contrat avec l'équipe 3 pour les fèves MQ 	  				 	 	   			 	
  	  				 	 	   			 	
 	private Indicateur banque; // en milliers d'euros 	  				 	 	   			 	
 	private Indicateur[] prix; // en €/kT 	  				 	 	   			 	
@@ -130,9 +134,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
          * @author Francois le Guernic 	  				 	 	   			 	
          */ 	  				 	 	   			 	
  	  				 	 	   			 	
-        contratFeveBQEq2 = new ContratFeve(this, (IVendeurFeveV2) Monde.LE_MONDE.getActeur("Eq2PROD"), 0); 	  				 	 	   			 	
-        contratFeveMQEq2 = new ContratFeve(this, (IVendeurFeveV2) Monde.LE_MONDE.getActeur("Eq2PROD"), 1); 	  				 	 	   			 	
-        contratFeveMQEq3 = new ContratFeve(this, (IVendeurFeveV2) Monde.LE_MONDE.getActeur("Eq3PROD"), 1); 	  				 	 	   			 	
+        contratFeveBQEq2 = new ContratFeveV3((IAcheteurFeveV4) this, (IVendeurFeveV4) Monde.LE_MONDE.getActeur("Eq2PROD"), 0); 	  				 	 	   			 	
+        contratFeveMQEq2 = new ContratFeveV3(this, (IVendeurFeveV4) Monde.LE_MONDE.getActeur("Eq2PROD"), 1); 	  				 	 	   			 	
+        contratFeveMQEq3 = new ContratFeveV3(this, (IVendeurFeveV4) Monde.LE_MONDE.getActeur("Eq3PROD"), 1); 	  				 	 	   			 	
  	  				 	 	   			 	
         /** 	  				 	 	   			 	
          * GESTION DE LA PEREMPTION 	  				 	 	   			 	
@@ -307,12 +311,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * @author François Le Guernic 	  				 	 	   			 	
      */ 	  				 	 	   			 	
     @Override 	  				 	 	   			 	
-    public void sendOffrePublique(List<ContratFeve> offrePublique) { 	  				 	 	   			 	
+    public void sendOffrePubliqueV3(List<ContratFeveV3> offrePublique) { 	  				 	 	   			 	
         /* On achète des fèves de BQ ( seulement à équipe 2 ) et de MQ ( à équipes 2 et 3 ) aux équipes de producteur 	  				 	 	   			 	
          * Pour récupérer les offres qui nous intéressent, on stockent les informations en mémoire dans les variables 	  				 	 	   			 	
          * d'instance 	  				 	 	   			 	
          */ 	  				 	 	   			 	
-        for (ContratFeve c : offrePublique) { 	  				 	 	   			 	
+        for (ContratFeveV3 c : offrePublique) { 	  				 	 	   			 	
             String vendeur = ((Acteur) c.getProducteur()).getNom(); 	  				 	 	   			 	
             int qualite = c.getQualite(); 	  				 	 	   			 	
             if (vendeur.equals("Eq2PROD") && qualite == 0) { 	  				 	 	   			 	
@@ -334,13 +338,13 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * @author Francois Le Guernic 	  				 	 	   			 	
      */ 	  				 	 	   			 	
     @Override 	  				 	 	   			 	
-    public List<ContratFeve> getDemandePrivee() { 	  				 	 	   			 	
+    public List<ContratFeveV3> getDemandePriveeV3() { 	  				 	 	   			 	
         /* Par convention, dans la liste de  contrats, on aura dans l'ordre : 	  				 	 	   			 	
          * - le contrat pour les fèves BQ à l'équipe 2 	  				 	 	   			 	
          * - le contrat pour les fèves MQ à l'équipe 2 	  				 	 	   			 	
          * - le contrat pour les fèves MQ à l'équipe 3 	  				 	 	   			 	
          */ 	  				 	 	   			 	
-        List<ContratFeve> demandesPrivee = new ArrayList<ContratFeve>() ; 	  				 	 	   			 	
+        List<ContratFeveV3> demandesPrivee = new ArrayList<ContratFeveV3>() ; 	  				 	 	   			 	
         demandesPrivee.add(this.contratFeveBQEq2) ; demandesPrivee.add(this.contratFeveMQEq2) ;demandesPrivee.add(this.contratFeveMQEq3); 	  				 	 	   			 	
         this.contratFeveBQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix()); 	  				 	 	   			 	
         this.contratFeveBQEq2.setDemande_Quantite((int) achatsSouhaites[FEVES_BQ].getValeur()); 	  				 	 	   			 	
@@ -354,17 +358,17 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     } 	  				 	 	   			 	
  	  				 	 	   			 	
     @Override 	  				 	 	   			 	
-    public void sendContratFictif(List<ContratFeve> listContrats) { 	  				 	 	   			 	
+    public void sendContratFictifV3(List<ContratFeveV3> listContrats) { 	  				 	 	   			 	
     } 	  				 	 	   			 	
  	  				 	 	   			 	
     /** 	  				 	 	   			 	
      * @author François Le Guernic 	  				 	 	   			 	
      */ 	  				 	 	   			 	
     @Override 	  				 	 	   			 	
-    public void sendOffreFinale(List<ContratFeve> offreFinale) { 	  				 	 	   			 	
+    public void sendOffreFinaleV3(List<ContratFeveV3> offreFinale) { 	  				 	 	   			 	
         // On actualise nos trois variables d'instance avec les attributs QuantiteProposition et PrixProposition 	  				 	 	   			 	
  	  				 	 	   			 	
-        for (ContratFeve c : offreFinale) { 	  				 	 	   			 	
+        for (ContratFeveV3 c : offreFinale) { 	  				 	 	   			 	
             String vendeur = ((Acteur) c.getProducteur()).getNom(); 	  				 	 	   			 	
             int qualite = c.getQualite(); 	  				 	 	   			 	
             if (vendeur.equals("Eq2PROD") && qualite == 0) { 	  				 	 	   			 	
@@ -384,10 +388,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     /** 	  				 	 	   			 	
      * @author François Le Guernic 	  				 	 	   			 	
      */ 	  				 	 	   			 	
-    public List<ContratFeve> getResultVentes() { 	  				 	 	   			 	
-        List<ContratFeve> listeContrat = new ArrayList<ContratFeve>() ; 	  				 	 	   			 	
+    public List<ContratFeveV3> getResultVentesV3() { 	  				 	 	   			 	
+        List<ContratFeveV3> listeContrat = new ArrayList<ContratFeveV3>() ; 	  				 	 	   			 	
         listeContrat.add(this.contratFeveBQEq2) ; listeContrat.add(this.contratFeveMQEq2) ; listeContrat.add(contratFeveMQEq3) ; 	  				 	 	   			 	
-        for (ContratFeve c : listeContrat) { 	  				 	 	   			 	
+        for (ContratFeveV3 c : listeContrat) { 	  				 	 	   			 	
             if ((c.getProposition_Prix() <= c.getDemande_Prix()) && c.getProposition_Quantite() <= c.getDemande_Quantite()) { 	  				 	 	   			 	
                 c.setReponse(true); 	  				 	 	   			 	
             } else { 	  				 	 	   			 	
