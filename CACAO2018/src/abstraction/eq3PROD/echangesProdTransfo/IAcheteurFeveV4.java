@@ -3,13 +3,12 @@ package abstraction.eq3PROD.echangesProdTransfo;
 import java.util.List;
 
 /**
- * @deprecated
  * Interface associee aux transformateurs acheteurs de feves
  * METHODES DU POINT DE VUE DU MARCHE CENTRAL
- * @author Grégoire
+ * @author Claire
  */
 
-public interface IAcheteurFeveV3 {
+public interface IAcheteurFeveV4 {
 	
 	/**
 	 * Informe un transformateur des offres proposees par les producteurs
@@ -20,7 +19,7 @@ public interface IAcheteurFeveV3 {
 	 * IDEE DU CODE : stocker les ContratFeve du parametre dans les variables d'instance / les analyser
 	 * @author Grégoire
 	 */
-	public void sendOffrePubliqueV2(List<ContratFeveV2> offrePublique);
+	public void sendOffrePubliqueV3(List<ContratFeveV3> offrePublique);
 
 	/**
 	 * Recupere les demandes specifiques du transformateur a chaque producteur
@@ -30,7 +29,7 @@ public interface IAcheteurFeveV3 {
 	 * IDEE DU CODE : renvoyer une liste des ContratFeve que VOUS demandez aux differents poducteurs
 	 * @author Grégoire
 	 */
-	public List<ContratFeveV2> getDemandePriveeV2();
+	public List<ContratFeveV3> getDemandePriveeV3();
 	
 	/**
 	 * Informe l'acteur fictif des contrats en cours (MODELISATION)
@@ -38,7 +37,7 @@ public interface IAcheteurFeveV3 {
 	 * @author Grégoire
 	 */
 	
-	public void sendContratFictifV2(List<ContratFeveV2> listContrats);
+	public void sendContratFictifV3(List<ContratFeveV3> listContrats);
 	
 	/** 
 	 * Informe un transformateur des offres finales des producteurs qui lui sont destinees
@@ -49,7 +48,7 @@ public interface IAcheteurFeveV3 {
 	 * IDEE DU CODE : stocker les ContratFeve du parametre dans les variables d'instance / les analyser
 	 * @author Grégoire
 	 */
-	public void sendOffreFinaleV2(List<ContratFeveV2> offreFinale);
+	public void sendOffreFinaleV3(List<ContratFeveV3> offreFinale);
 	
 	/**
 	 * Recupere les offres de ventes destinees au producteur avec la reponse fournie
@@ -62,6 +61,6 @@ public interface IAcheteurFeveV3 {
 	 * @author Grégoire
 	 * ## MaJ des stocks et des comptes ##
 	 */
-	public List<ContratFeveV2> getResultVentesV2();
+	public List<ContratFeveV3> getResultVentesV3();
 
 }
