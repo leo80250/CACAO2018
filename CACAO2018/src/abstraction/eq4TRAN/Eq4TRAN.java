@@ -336,7 +336,7 @@ IVendeurPoudre{
 	//Etienne Raveau
 	// Setter qui met à jour  l'indicateur de stock pour un certain produit
 	public void setQuantite(int IDProduit, int quantite) {
-		getStocks().get(IDProduit-1).setValeur(Eq4TRAN, quantite);
+		getStocks().get(IDProduit-1).setValeur(this, quantite);
 	}
 
 	/*
