@@ -199,8 +199,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		commandes[1] = commande;
 		commandes[2] = commande;
 		commandeLivree = this.getLivraison(commandes);
-<<<<<<< HEAD
-		*/
 		
 		// on simule une commande de poudre
 		ContratPoudre commande2 = new ContratPoudre(1,300,1.4,this,this,true);
@@ -250,16 +248,18 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				offresPubliques = ((IVendeurFeveV2) Acteur).getOffrePublique();
 				offresPubliquesRetenues = this.analyseOffresPubliquesFeves(offresPubliques);
 				
+				this.getJournal().ajouter(offresPubliques.size()+" "+offresPubliquesRetenues.size());
+				
 				if(offresPubliquesRetenues.size() > 0) {
 					((IVendeurFeveV2) Acteur).sendDemandePrivee(offresPubliquesRetenues);
 					
 					offresPrivees = ((IVendeurFeveV2) Acteur).getOffreFinale();
 					if(offresPrivees != null && offresPrivees.size() > 0) {
 						offresPriveesRetenues = this.analyseOffresPriveesFeves(offresPrivees);
-						for(ContratFeveV2 contrat : offresPrivees) {
+						/*for(ContratFeveV2 contrat : offresPrivees) {
 							
-						}
-						((IVendeurFeveV2) Acteur).sendResultVentes(offresPrivees);
+						}*/
+						((IVendeurFeveV2) Acteur).sendResultVentes(offresPriveesRetenues);
 					}
 					
 				}
@@ -643,6 +643,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		double sommeTablette=0;
 		double sommeTotale=sommePoudre+sommeTablette;
 		double[] TauxFinauxTetP= new double[2];
+		
 		for (int i=0; i<commandesPoudreEnCours.size(); i++) {
 			sommePoudre+=commandesPoudreEnCours.get(i).getQuantite();
 		}
@@ -844,8 +845,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		List<ContratFeveV2> offresRetenues = new ArrayList<ContratFeveV2>(); 
 		for(int qualite = 0; qualite < 3; qualite++) {
 			for(int i = 0; i < n[qualite]; i++) {
-					offresRetenues.add(offresRetenuesParQualite.get(qualite).get(i));
-				
+				offresRetenues.add(offresRetenuesParQualite.get(qualite).get(i));
 			} 
 		}
 		
@@ -902,8 +902,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	@Override
 	public void sendContratFictif(List<ContratFeveV2> listContrats) {
-		// TODO Auto-generated method stub
-		
+	
 	}
 	
 	@Override
