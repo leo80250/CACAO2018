@@ -2,29 +2,39 @@ package abstraction.eq3PROD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;  
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4;
 import abstraction.eq3PROD.echangesProdTransfo.MarcheFeve;
 
 //import abstraction.eq1DIST.IVenteConso;
 
-public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve {
+public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4 {
 	// 0 = BQ, 1 = MQ, 2 = HQ
 	private String nom;
 	private int stockmoyen;
 	private int stockfin;
 	private int solde;
-	private ArrayList<ContratFeve> listeContrats ; 
+	private ArrayList<ContratFeveV3> listeContrats ; 
 	private final double[] prix_Ventes_Feves = {1800, 2100, 2500};
 	private final double[] prodFeves = {0,0,0};
 	public MarcheFeve marche;
+	
+	private Journal journal;
+	private String nomEq;
+	private Indicateur stockQM=new Indicateur ("Stock de Eq3PROD de moyenne qualité", this, 75000);
+	private Indicateur stockQH=new Indicateur ("Stock de Eq3PROD de haute qualité", this, 24000);;
+	
 	
 	
 	/**
@@ -60,10 +70,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	public Eq3PROD() {
 		
 		setNom("Eq3PROD");
-		this.indicateurQM = new Indicateur("Stock de Eq3PROD de moyenne qualité",this,getStockMoyen());
-		this.indicateurQH = new Indicateur("Stock de Eq3PROD de haute qualité",this,getStockFin());
-		setStockQMoy(indicateurQM);
-		setStockQHaut(indicateurQH);
 		
 		setJournal(new Journal("Journal de Eq3PROD"));
 		Monde.LE_MONDE.ajouterJournal(getJournal());
@@ -71,32 +77,19 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
 		
 		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
-		ArrayList<Acteur> producteurs = new ArrayList<Acteur>();
-		ArrayList<Acteur> transformateurs = new ArrayList<Acteur>();
+		ArrayList<IVendeurFeveV4> producteurs = new ArrayList<IVendeurFeveV4>();
+		ArrayList<IAcheteurFeveV4> transformateurs = new ArrayList<IAcheteurFeveV4>();
 		
 		for (Acteur acteur : listActeurs) {
 			Class[] listInterfaces = acteur.getClass().getInterfaces();
-			if (Arrays.toString(listInterfaces).contains("IVendeurFeve")) {
-				producteurs.add(acteur);
-			} else if (Arrays.toString(listInterfaces).contains("IAcheteurFeve")) {
-				transformateurs.add(acteur);
+			if (Arrays.toString(listInterfaces).contains("IVendeurFeveV2")) {
+				producteurs.add((IVendeurFeveV4) acteur);
+			} else if (Arrays.toString(listInterfaces).contains("IAcheteurFeveV2")) {
+				transformateurs.add((IAcheteurFeveV4) acteur);
 			}
 		}
 		
-		int taille = transformateurs.size();
-		IAcheteurFeve[] listTran = new IAcheteurFeve[taille];
-		for (int i = 0 ; i < taille ; i++) {
-			listTran[i] = (IAcheteurFeve) transformateurs.get(i);
-		}
-		
-		int taille_bis = producteurs.size(); 	 	   						 	  	 	
-		IVendeurFeve[] listProd = new IVendeurFeve[taille_bis]; 	 	   						 	  	 	
-		for (int i = 0 ; i < taille_bis ; i++) { 	 	   						 	  	 	
-			listProd[i] = (IVendeurFeve) producteurs.get(i); 	 	   						 	  	 	
-		}		 	 	   						 	  	 	
-
-		
-		this.marche = new MarcheFeve("Marche central", listTran, listProd);
+		this.marche = new MarcheFeve("Marche central", transformateurs, producteurs);
 		
 		Monde.LE_MONDE.ajouterActeur(marche);
 		this.stockmoyen= 75000;
@@ -105,41 +98,43 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	}
 	
 		
-		public ArrayList<ContratFeve> getListeContrats(){
+		public ArrayList<ContratFeveV3> getListeContrats(){
 			return this.listeContrats;
 		}
 		
 		/**
 		 * @author Morgane et Pierre
 		 */
-		public ContratFeve[] getOffrePublique() { 
-			ContratFeve c1=new ContratFeve(null, this, 1, this.stockmoyen, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false);
-			ContratFeve c2=new ContratFeve(null, this, 2, this.stockfin, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false); 
-			ContratFeve[] c=new ContratFeve[2]; c[0]=c1; c[1]=c2; 
+		public List<ContratFeveV3> getOffrePublique() { 
+			ContratFeveV3 c1=new ContratFeveV3(null, this, 1, this.stockmoyen, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false);
+			ContratFeveV3 c2=new ContratFeveV3(null, this, 2, this.stockfin, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false); 
+			List<ContratFeveV3> c= new ArrayList<ContratFeveV3>() ; 
+			c.add(c1); 
+			c.add(c2); 
 			return c; } 
 
 
 		/**
 		 * @author Morgane et Pierre
 		 */
-		public void sendDemandePrivee(ContratFeve[] demandePrivee) { 
+		public void sendDemandePrivee(List<ContratFeveV3> demandePrivee) { 
 			//HashMap<Integer, HashMap<Acteur, ContratFeve>> asso = new HashMap<Integer, HashMap<Acteur, ContratFeve>>(); 
 			//asso.put(demandePrivee[i].getTransformateur(), demandePrivee[i); 
-			for (int i = 0; i < demandePrivee.length ; i++) { 
-				if (demandePrivee[i].getDemande_Prix() >= demandePrivee[i].getOffrePublique_Prix()*0.9){ 
-					listeContrats.add(demandePrivee[i]) ; 
+			for (int i = 0; i < demandePrivee.size(); i++) { 
+				if (demandePrivee.get(i).getDemande_Prix() >= demandePrivee.get(i).getOffrePublique_Prix()*0.9){ 
+					listeContrats.add(demandePrivee.get(i)) ; 
 				} 
 			} 
-			}  
+		}  
 
 		/**
 		 * @author Morgane
 		 */
-		public ContratFeve[] getOffreFinale() { 	 	  	  		   		 	 	
+		public List<ContratFeveV3> getOffreFinale() { 	 	  	  		   		 	 	
 			int quantite_1 = 0;  	 	  	  		   		 	 	
 			int quantite_2 = 0; 	 	  	  		   		 	 	
 			 	 	  	  		   		 	 	
-			for (ContratFeve contrat : listeContrats) { 	 	  	  		   		 	 	
+			for (ContratFeveV3 contrat : listeContrats) { 	 	  	  		   		 	 	
 				if (contrat.getQualite() == 1) { 	 	  	  		   		 	 	
 					quantite_1 += contrat.getDemande_Quantite() ; 	 	  	  		   		 	 	
 				} else { 	 	  	  		   		 	 	
@@ -147,9 +142,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				} 	 	  	  		   		 	 	
 			} 	 	  	  		   		 	 	
 			 	 	  	  		   		 	 	
-			ArrayList<ContratFeve> listeContrats_bis = new ArrayList<ContratFeve>() ; 	 	  	  		   		 	 	
+			ArrayList<ContratFeveV3> listeContrats_bis = new ArrayList<ContratFeveV3>() ; 	 	  	  		   		 	 	
 			 	 	  	  		   		 	 	
-			for (ContratFeve contrat : listeContrats) {  	 	  	  		   		 	 	
+			for (ContratFeveV3 contrat : listeContrats) {  	 	  	  		   		 	 	
 				 	 	  	  		   		 	 	
 				if (contrat.getQualite() == 1 ) { 	 	  	  		   		 	 	
 					 	 	  	  		   		 	 	
@@ -179,21 +174,14 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				listeContrats_bis.add(contrat); 
 				 	 	  	  		   		 	 	
 			} 	 	  	  		   		 	 	
-
-			int taille_bis = listeContrats_bis.size();
-			ContratFeve[] lc_bis = new ContratFeve[taille_bis];
-			for (int i = 0 ; i < taille_bis ; i++) {
-				lc_bis[i] = (ContratFeve) listeContrats_bis.get(i);
-			}
-			
-			return lc_bis;
+			return listeContrats_bis;
 		}
 
 		/**
 		 * @author Morgane
 		 */
-		public void sendResultVentes(ContratFeve[] resultVentes) { 	 	  	  		   		 	 	
-			for (ContratFeve contrat : resultVentes) {  	 	  	  		   		 	 	
+		public void sendResultVentes(List<ContratFeveV2> resultVentes) { 	 	  	  		   		 	 	
+			for (ContratFeveV2 contrat : resultVentes) {  	 	  	  		   		 	 	
 				if(contrat.getQualite() == 1) { 	 	  	  		   		 	 	
 					if(contrat.getReponse() == true) { 	 	  	  		   		 	 	
 						this.stockmoyen -= contrat.getProposition_Quantite() ; 	 	  	  		   		 	 	
@@ -266,18 +254,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.stockfin = this.stockfin+prodfin;
 			this.prodFeves[1]=prodBresil+prodIndo;
 			this.prodFeves[2]=prodfin;
-			this.indicateurQM = new Indicateur("Stock de Eq3PROD de moyenne qualité",this,this.stockmoyen);
-			this.indicateurQH = new Indicateur("Stock de Eq3PROD de haute qualité",this,this.stockfin);
-			setStockQMoy(indicateurQM);
-			setStockQHaut(indicateurQH);
-			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy());
-			this.getJournal().ajouter("Quantité haute qualité ="+ getStockQHaut());
+			this.stockQH.setValeur(this,this.stockfin);
+			this.stockQM.setValeur(this, this.stockmoyen);
+			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy().getValeur());
+			this.getJournal().ajouter("Quantité haute qualité ="+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
-			indicateurQM.setValeur(this, getStockMoyen());
-			indicateurQH.setValeur(this, getStockFin());
-			/*System.out.println(" eq 3 production feve moyennes de "+(prodBresil+prodIndo)+" --> stockMoyen="+this.stockmoyen);
-			System.out.println("eq 3 production feve fines de "+prodfin+" --> stockFin="+this.stockfin);*/
-			
+	
 		}
 		
 		//Journal 
@@ -285,13 +267,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		 * @author Claire
 		 */
 		
-		private Indicateur indicateurQM;
-		private Indicateur indicateurQH;
-		private Journal journal;
-		private String nomEq;
-		private Indicateur stockQM=new Indicateur ("Stock de Eq3PROD de moyenne qualité", this, 75000);
-		private Indicateur stockQH=new Indicateur ("Stock de Eq3PROD de haute qualité", this, 24000);;
-		
+	
 		public Journal getJournal() {
 			return this.journal;
 		}
@@ -316,19 +292,31 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		public void setStockQMoy(Indicateur i) {
 			this.stockQM = i;
 		}
-		
-		/*public Eq3PROD(Monde monde, String nom) {
-			setNomEq(nom);
-			this.indicateurQM = new Indicateur("Stock de "+getNomEq()+" de moyenne qualité",this,getStockMoyen());
-			this.indicateurQH = new Indicateur("Stock de "+getNomEq()+" de haute qualité",this,getStockFin());
-			setStockQMoy(indicateurQM);
-			setStockQHaut(indicateurQH);
+
+		@Override
+		public List<ContratFeveV3> getOffrePubliqueV3() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void sendDemandePriveeV3(List<ContratFeveV3> demandePrivee) {
+			// TODO Auto-generated method stub
 			
-			setJournal(new Journal("Journal de"+getNomEq()));
-			Monde.LE_MONDE.ajouterJournal(getJournal());
-			Monde.LE_MONDE.ajouterIndicateur(getStockQHaut());
-			Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
-		}*/
+		}
+
+		@Override
+		public List<ContratFeveV3> getOffreFinaleV3() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void sendResultVentesV3(List<ContratFeveV3> resultVentes) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 
 
 
