@@ -4,6 +4,7 @@ import abstraction.eq2PROD.acheteurFictifTRAN.acheteurFictifTRAN;
 import abstraction.fourni.Acteur;
 
 /**
+ * @deprecated
  * @author Grégoire
  */
 

@@ -3,6 +3,7 @@ package abstraction.eq3PROD.echangesProdTransfo;
 import java.util.List;
 
 /**
+ * @deprecated
  * Interface associee aux transformateurs acheteurs de feves
  * METHODES DU POINT DE VUE DU MARCHE CENTRAL
  * @author Grégoire
