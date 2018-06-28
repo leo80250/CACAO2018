@@ -18,13 +18,7 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 	private List<IAcheteurFeveV2> listAcheteurs;
 	private List<IVendeurFeveV2> listVendeurs;
 	
-	public MarcheFeve() {
-		this.contratPrecedent = new ArrayList<ContratFeveV2>();
-		this.contratActuel = new ArrayList<ContratFeveV2>();
-		this.nom = "Marche intermediaire";
-		this.listAcheteurs = new ArrayList<IAcheteurFeveV2>(0);
-		this.listVendeurs = new ArrayList<IVendeurFeveV2>(0);
-	}
+
 	
 	public MarcheFeve(String nom, List<IAcheteurFeveV2> ach, List<IVendeurFeveV2> ven) {
 		this.contratPrecedent = new ArrayList<ContratFeveV2>();
@@ -34,13 +28,7 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		this.listVendeurs = ven;
 	}
 	
-	public MarcheFeve(ArrayList<ContratFeveV2> contratPrecedent, ArrayList<ContratFeveV2> contratActuel, String nom, List<IAcheteurFeveV2> ach, List<IVendeurFeveV2> ven) {
-		this.contratPrecedent = contratPrecedent;
-		this.contratActuel = contratActuel;
-		this.nom = nom;
-		this.listAcheteurs = ach;
-		this.listVendeurs = ven;
-	}
+
 	
 
 	@Override

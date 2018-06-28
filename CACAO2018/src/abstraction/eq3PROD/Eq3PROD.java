@@ -27,6 +27,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private final double[] prodFeves = {0,0,0};
 	public MarcheFeve marche;
 	
+	private Journal journal;
+	private String nomEq;
+	private Indicateur stockQM=new Indicateur ("Stock de Eq3PROD de moyenne qualité", this, 75000);
+	private Indicateur stockQH=new Indicateur ("Stock de Eq3PROD de haute qualité", this, 24000);;
+	
+	
 	
 	/**
 	 * @author Morgane
@@ -61,10 +67,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	public Eq3PROD() {
 		
 		setNom("Eq3PROD");
-		this.indicateurQM = new Indicateur("Stock de Eq3PROD de moyenne qualité",this,getStockMoyen());
-		this.indicateurQH = new Indicateur("Stock de Eq3PROD de haute qualité",this,getStockFin());
-		setStockQMoy(indicateurQM);
-		setStockQHaut(indicateurQH);
 		
 		setJournal(new Journal("Journal de Eq3PROD"));
 		Monde.LE_MONDE.ajouterJournal(getJournal());
@@ -249,18 +251,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.stockfin = this.stockfin+prodfin;
 			this.prodFeves[1]=prodBresil+prodIndo;
 			this.prodFeves[2]=prodfin;
-			this.indicateurQM = new Indicateur("Stock de Eq3PROD de moyenne qualité",this,this.stockmoyen);
-			this.indicateurQH = new Indicateur("Stock de Eq3PROD de haute qualité",this,this.stockfin);
-			setStockQMoy(indicateurQM);
-			setStockQHaut(indicateurQH);
-			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy());
-			this.getJournal().ajouter("Quantité haute qualité ="+ getStockQHaut());
+			this.stockQH.setValeur(this,this.stockfin);
+			this.stockQM.setValeur(this, this.stockmoyen);
+			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy().getValeur());
+			this.getJournal().ajouter("Quantité haute qualité ="+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
-			indicateurQM.setValeur(this, getStockMoyen());
-			indicateurQH.setValeur(this, getStockFin());
-			/*System.out.println(" eq 3 production feve moyennes de "+(prodBresil+prodIndo)+" --> stockMoyen="+this.stockmoyen);
-			System.out.println("eq 3 production feve fines de "+prodfin+" --> stockFin="+this.stockfin);*/
-			
+	
 		}
 		
 		//Journal 
@@ -268,13 +264,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		 * @author Claire
 		 */
 		
-		private Indicateur indicateurQM;
-		private Indicateur indicateurQH;
-		private Journal journal;
-		private String nomEq;
-		private Indicateur stockQM=new Indicateur ("Stock de Eq3PROD de moyenne qualité", this, 75000);
-		private Indicateur stockQH=new Indicateur ("Stock de Eq3PROD de haute qualité", this, 24000);;
-		
+	
 		public Journal getJournal() {
 			return this.journal;
 		}
@@ -300,18 +290,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.stockQM = i;
 		}
 		
-		/*public Eq3PROD(Monde monde, String nom) {
-			setNomEq(nom);
-			this.indicateurQM = new Indicateur("Stock de "+getNomEq()+" de moyenne qualité",this,getStockMoyen());
-			this.indicateurQH = new Indicateur("Stock de "+getNomEq()+" de haute qualité",this,getStockFin());
-			setStockQMoy(indicateurQM);
-			setStockQHaut(indicateurQH);
-			
-			setJournal(new Journal("Journal de"+getNomEq()));
-			Monde.LE_MONDE.ajouterJournal(getJournal());
-			Monde.LE_MONDE.ajouterIndicateur(getStockQHaut());
-			Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
-		}*/
 
 
 
