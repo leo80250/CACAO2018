@@ -29,6 +29,9 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV2, IVendeurChoco {
+	
+	//rajouter IAcheteurFeve à implémenter 
+	
 	private Indicateur achats;
 	private Indicateur ventes;
 	// 0 = BQ, 1 = MQ, 2 = HQ
@@ -905,6 +908,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.setOffresFevesPubliquesEnCours(offresPubliques);
 	}
 	
+	/**
+	 * Code à recopier dans la V4
+	 */
 	@Override
 	public List<ContratFeveV2> getDemandePrivee() {
 		List<ContratFeveV2> offresPubliques = this.getOffresFevesPubliquesEnCours();
@@ -924,6 +930,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public List<ContratFeveV2> getResultVentes() {
 		return this.getCommandesFeveEnCours();
 	}
+	
+	
+	
+	
 	
 	/** Interface IVendeurChoco
 	 * 
@@ -990,6 +1000,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	
 	
+	
 		
 
 	
@@ -1040,6 +1051,30 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	*/
 	
+
+	//IAcheteurFeve à laisser vide
+	/**
+	 * code à laisser vide, correspond à la V1, doit demeurer vide, et on doit toujour implémenter IAcheteurFeve
+	 * 
+	 * 
+	public void sendOffrePublique(ContratFeve[] offrePublique) {
+		
+	}
 	
+	public ContratFeve[] getDemandePrivee() {
+		
+	}
+	
+	public void sendContratFictif(ContratFeve[] listContrats) {
+		
+	}
+	
+	public void sendOffreFinale(ContratFeve[] offreFinale) {
+		
+	}
+	public ContratFeve[] getResultVentes() {
+		
+	}
+	*/
 	
 }
