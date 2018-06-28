@@ -21,5 +21,5 @@ public interface IMarcheFeve {
 	 * @return une liste de ContratFeve des ventes effectuees au next precedent
 	 * @author Grégoire
 	 */
-	 public ArrayList<ContratFeveV2> getContratPrecedent();
+	 public ArrayList<ContratFeveV3> getContratPrecedent();
 }
