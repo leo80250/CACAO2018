@@ -298,12 +298,14 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	
 // VERSION 1
 	public ContratFeve[] getOffrePublique() {
-		return null;
+		ContratFeve[] c= {};
+		return c;
 	}
 	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
 	}
 	public ContratFeve[] getOffreFinale() {
-		return null;
+		ContratFeve[] c= {};
+		return c;
 	}
 	public void sendResultVentes(ContratFeve[] resultVentes) {
 	}
