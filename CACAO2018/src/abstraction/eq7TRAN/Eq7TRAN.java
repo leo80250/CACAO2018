@@ -19,6 +19,7 @@ import abstraction.eq4TRAN.IVendeurChoco;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.eq6DIST.IAcheteurChoco;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
@@ -28,7 +29,7 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV2, IVendeurChoco {
+public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV2, IVendeurChoco, IvendeurOccasionnelChoco {
 	
 	//rajouter IAcheteurFeve à implémenter
 	
@@ -91,6 +92,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	// en €/tonne
 	private final double[] MOY_PRIX_ACHAT_FEVES = {1800, 2100, 2500};
+	private final double[] MOY_PRIX_VENTE_POUDRE = {2000,2300,2700}; //en tonnes totalement arbitraire
+	private final double[] MOY_PRIX_VENTE_TABLETTE = {3000,3300,3800}; //en tonnes totalement arbitraire
+	
 	
 	// Stratégie
 	private final double MOY_PRIX_FRAIS_ACHAT_FEVES = 0;
@@ -1004,6 +1008,30 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getCommandesTablettesEnCours().add(commande);
 		this.getLivraisonsTablettesEnCours().add(livraison);
 		return livraison;
+	}
+	
+	
+	/** Interface IvendeurOccasionnelChoco
+	 * @author boulardmaelle
+	 * en gros nous on est concerné que par les indices 1 (tablettes BQ) 2 (tablettes MQ) et 3 (tablettes HQ)
+	 */
+	
+	@Override
+	public double getReponse(DemandeAO d) {
+		if (d.getQualite()==4 || d.getQualite()==5 || d.getQualite()==6) { //on a pas de confiseries donc on est pas interessés
+			return Double.MAX_VALUE;
+		} else {
+			if (d.getQuantite()<stockTablettes[d.getQualite()-1].getValeur()) {
+				return MOY_PRIX_VENTE_TABLETTE[d.getQualite()-1];
+			} else {
+				return Double.MAX_VALUE;
+			}
+		}
+	}
+	@Override
+	public void envoyerReponse(double quantite, int qualite, int prix) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
