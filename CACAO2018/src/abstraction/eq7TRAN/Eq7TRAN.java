@@ -671,7 +671,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			tauxTablette=((double)sommeTablette)/((double)sommeTotale);
 			tauxPoudre=((double)sommePoudre)/((double)sommeTotale);
 		}
-		TauxFinauxTetP[0]=tauxPoudre;
+		TauxFinauxTetP[0]=tauxPoudre ;
 		TauxFinauxTetP[1]=tauxTablette;
 		return TauxFinauxTetP;
 	}
