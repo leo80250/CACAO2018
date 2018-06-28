@@ -1,12 +1,23 @@
 package abstraction.eq4TRAN;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
+import abstraction.eq4TRAN.VendeurChoco.GPrix;
+import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
+import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 
-public class SousActeur {
+public abstract class SousActeur implements Acteur, 
+ITransformateur, 
+IAcheteurFeve,
+IVendeurChoco,
+IAcheteurPoudre,
+IVendeurPoudre {
 	private Indicateur stockTabBQ ;
 	private Indicateur stockTabMQ ;
 	private Indicateur stockTabHQ ;
@@ -42,6 +53,16 @@ public class SousActeur {
 	this.contratPoudreEnCoursEq5TRAN = contratPoudreEnCoursEq5TRAN;
 	this.contratPoudreEnCoursEq7TRAN = contratPoudreEnCoursEq7TRAN;
 	}
+	
+	public String getNom() {
+		return "Eq4TRAN";
+	}
+	
+	public void sell(int q) {
+		// TODO Auto-generated method stub
+
+	}
+	
 	public Indicateur getStockTabBQ() {
 		return stockTabBQ;
 	}
@@ -138,5 +159,129 @@ public class SousActeur {
 	public void setContratPoudreEnCoursEq5TRAN(ContratPoudre[] contratPoudreEnCoursEq5TRAN) {
 		this.contratPoudreEnCoursEq5TRAN = contratPoudreEnCoursEq5TRAN;
 	}
+	
+	//Charles
+		@Override
+		public void sendOffrePublique(ContratFeve[] offrePublique) {
+			this.contratFeveEnCours=offrePublique;
+		}
+
+	//Charles
+		@Override
+		public ContratFeve[] getDemandePrivee() {
+			int[] demande= {13000,70000,25000};
+			double[] prixMin= { 100000.0 , 100000.0 , 100000.0 } ;
+			int[] min= {-1,-1,-1};
+			int[] max= {-1,-1,-1};
+			for (int i=0;i<this.contratFeveEnCours.length;i++) {
+				int qualite=this.contratFeveEnCours[i].getOffrePublique_Quantite();
+				if (this.contratFeveEnCours[i].getOffrePublique_Prix()<prixMin[qualite]) {
+					prixMin[qualite]=this.contratFeveEnCours[i].getOffrePublique_Prix();
+					if (min[i]!=-1) {
+						max[qualite]=i;
+					}
+					min[i]=this.contratFeveEnCours[i].getQualite();
+				}
+			}
+			for (int j=0;j<3;j++) {
+				this.contratFeveEnCours[min[j]].setDemande_Quantite(Math.min(demande[min[j]],this.contratFeveEnCours[min[j]].getOffrePublique_Quantite()/3));
+				if (max[j]!=-1) {
+					this.contratFeveEnCours[max[j]].setDemande_Quantite(demande[min[j]]-Math.min(demande[min[j]],this.contratFeveEnCours[min[j]].getOffrePublique_Quantite()/3));
+				}
+			}
+			return this.contratFeveEnCours ;
+		}
+
+
+		@Override
+		public void sendContratFictif(ContratFeve[] listContrats) {
+		}
+
+
+	//Charles
+		@Override
+		public void sendOffreFinale(ContratFeve[] offreFinale) {
+			this.contratFeveEnCours=offreFinale;
+			// TODO Auto-generated method stub
+
+		}
+
+	//Charles
+		@Override
+		public ContratFeve[] getResultVentes() {
+			for (int i=0;i<this.contratFeveEnCours.length;i++) {
+				if (this.contratFeveEnCours[i].getProposition_Prix()*this.contratFeveEnCours[i].getProposition_Quantite()<this.solde.getValeur()) {
+					this.contratFeveEnCours[i].setReponse(true);
+				}
+			}
+			return this.contratFeveEnCours;
+		}
+
+		/*
+		 * @Etienne
+		 */
+		@Override
+		public GQte getStock() {
+
+			return vendeur.getStock();
+		}
+
+		//Etienne
+		@Override
+		public GPrix getPrix() {
+
+			return vendeur.getPrix();
+		}
+
+		//Etienne
+		/*@Override
+		public ArrayList<GQte> getLivraison(ArrayList<GQte> commandes) {
+			ArrayList<GQte> livraison = new ArrayList<GQte>();
+			livraison.addAll(vendeur.getLivraison(commandes));
+			stockChocMQ.setValeur(Eq4TRAN,stockChocMQ.getValeur()-livraison.get(0).getqBonbonMQ()-livraison.get(1).getqBonbonMQ());
+			stockChocHQ.setValeur(Eq4TRAN, stockChocHQ.getValeur()-livraison.get(0).getqBonbonHQ()-livraison.get(1).getqBonbonHQ());
+			stockTabBQ.setValeur(Eq4TRAN, stockTabBQ.getValeur()-livraison.get(0).getqTabletteBQ()-livraison.get(1).getqTabletteBQ());
+			stockTabMQ.setValeur(Eq4TRAN, stockTabMQ.getValeur()-livraison.get(0).getqTabletteMQ()-livraison.get(1).getqTabletteMQ());
+			stockTabHQ.setValeur(Eq4TRAN, stockTabHQ.getValeur()-livraison.get(0).getqTabletteHQ()-livraison.get(1).getqTabletteHQ());
+			double s = 0.0;
+			for(int i=0;i<2;i++) {
+				s+=livraison.get(i).getqBonbonBQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqBonbonBQ(), 1);
+				s+=livraison.get(i).getqBonbonMQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqBonbonMQ(), 2);
+				s+=livraison.get(i).getqBonbonHQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqBonbonHQ(), 3);
+				s+=livraison.get(i).getqTabletteBQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqTabletteBQ(), 4);
+				s+=livraison.get(i).getqTabletteMQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqTabletteMQ(), 5);
+				s+=livraison.get(i).getqTabletteHQ()*vendeur.getPrix().getPrixProduit(livraison.get(i).getqTabletteHQ(), 6);
+			}
+			solde.setValeur(Eq4TRAN, s);
+			return livraison;
+		}*/
+
+		@Override
+		public GQte getLivraison(GQte[] commandes) {
+			return new GQte((int)0.0,(int)stockChocMQ.getValeur(),(int)stockChocHQ.getValeur(),(int)stockTabBQ.getValeur(),(int)stockTabMQ.getValeur(),(int)stockTabHQ.getValeur());
+		}
+		@Override
+		public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
+			// TODO Auto-generated method stub
+
+		}
+
+		@Override
+		public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 
 }
