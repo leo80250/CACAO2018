@@ -2,9 +2,13 @@ package abstraction.eq1DIST;
 
 import java.util.ArrayList;
 
+import abstraction.eq4TRAN.Eq4TRAN;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
+import abstraction.eq5TRAN.Eq5TRAN;
+import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq6DIST.IAcheteurChoco;
+import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
@@ -47,19 +51,51 @@ public Eq1DIST()  {
 	@Override
 	public void next() {
 		int[][] stocklim = new int[][] {
-			{0,245000*2,105000*2},
-			{0,175000*2,75000*2}
+			{0,120000,30000},
+			{0,40000,20000}
 		};
-		/*for (int i =0; i<3;i++) {
+		
+		for (int i =0; i<3;i++) {
 			for (int j=0;j<3;j++) {
 				if (stock[i][j]<stocklim[i][j]) {
-					DemandeAO d= new DemandeAO(1,2);
-					getReponse(d);
+					DemandeAO d= new DemandeAO(stocklim[i][j]-stock[i][j],i*j);
+					ArrayList<Double> prop= new ArrayList<Double>();
+					//prop.add(((Eq4TRAN) Monde.LE_MONDE.getActeur("Eq4TRAN")).getReponseBis(d));
+					prop.add(((Eq5TRAN) Monde.LE_MONDE.getActeur("Eq5TRAN")).getReponseBis(d));
+					//prop.add(((Eq7TRAN) Monde.LE_MONDE.getActeur("Eq7TRAN")).getReponseBis(d));
+					 int a=prop.get(0);
+					 int n=0;
+					 for(int ind=1; ind<3; ind++){
+					  		if(a>prop.get(ind)){
+					  			a=prop.get(ind);
+					  			n=ind;
+					  		}
+					  }
+					 if (a!=Double.MAX_VALUE){
+					  		this.stock[i][j]+=d.getQuantite();
+					  		this.banque-=a;
+					  		String l = "Eq"+n+"TRAN";
+					  		((Eq5TRAN) Monde.LE_MONDE.getActeur("Eq5TRAN")).envoyerReponseBis(d.getQuantite(),d.getQualite(),a);
+					  } 
+					 
 				}
 					
 			}
-		}*/
-			
+		}	
+		if(Monde.LE_MONDE.getStep()%12==2
+				||Monde.LE_MONDE.getStep()%12==2
+				||Monde.LE_MONDE.getStep()%12==3
+				||Monde.LE_MONDE.getStep()%12==4
+				||Monde.LE_MONDE.getStep()%12==5
+				||Monde.LE_MONDE.getStep()%12==18
+				||Monde.LE_MONDE.getStep()%12==19
+				||Monde.LE_MONDE.getStep()%12==20
+				||Monde.LE_MONDE.getStep()%12==21) {
+			int[][] stockspe= new int[][] {
+				{0,29877,13125},
+				{0,21875,9375}
+			};
+		}
 	}
 
 	@Override
