@@ -844,13 +844,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		List<ContratFeveV2> offresRetenues = new ArrayList<ContratFeveV2>(); 
 		for(int qualite = 0; qualite < 3; qualite++) {
 			for(int i = 0; i < n[qualite]; i++) {
-				if(qualite == 0)
 					offresRetenues.add(offresRetenuesParQualite.get(qualite).get(i));
-				if(qualite == 1)
-					offresRetenues.add(offresRetenuesParQualite.get(qualite).get(i));
-				if(qualite == 2)
-					offresRetenues.add(offresRetenuesParQualite.get(qualite).get(i));
-			} //Revoir cette méthode, j'ai juste modifié pour qu'il n'y ai plus d'erreur, mais ça a enlevé le sens du code
+				
+			} 
 		}
 		
 		return offresRetenues;
