@@ -58,10 +58,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	private List<ContratFeveV2> commandesFeveEnCours;
 	private ArrayList<ContratPoudre> commandesPoudreEnCours;
-	private ArrayList<GQte> commandesTablettesEnCours;
+	private ArrayList<ArrayList<Integer>> commandesTablettesEnCours;
 	private List<ContratFeveV2> livraisonsFeveEnCours;
 	private ArrayList<ContratPoudre> livraisonsPoudreEnCours;
-	private ArrayList<GQte> livraisonsTablettesEnCours;
+	private ArrayList<ArrayList<Integer>> livraisonsTablettesEnCours;
 	private List<ContratFeveV2> offresFevesPubliquesEnCours;
 
 	
@@ -123,10 +123,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 		this.commandesFeveEnCours = new ArrayList<ContratFeveV2>();
 		this.commandesPoudreEnCours = new ArrayList<ContratPoudre>();
-		this.commandesTablettesEnCours = new ArrayList<GQte>();
+		this.commandesTablettesEnCours = new ArrayList<ArrayList<Integer>>();
 		this.livraisonsFeveEnCours = new ArrayList<ContratFeveV2>();
 		this.livraisonsPoudreEnCours = new ArrayList<ContratPoudre>();
-		this.livraisonsTablettesEnCours = new ArrayList<GQte>();
+		this.livraisonsTablettesEnCours = new ArrayList<ArrayList<Integer>>();
 		this.offresFevesPubliquesEnCours = new ArrayList<ContratFeveV2>();
 		
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
@@ -473,7 +473,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public ArrayList<ContratPoudre> getCommandesPoudreEnCours() {
 		return this.commandesPoudreEnCours;
 	}
-	public ArrayList<GQte> getCommandesTablettesEnCours() {
+	public ArrayList<ArrayList<Integer>> getCommandesTablettesEnCours() {
 		return this.commandesTablettesEnCours;
 	}
 	public List<ContratFeveV2> getCommandesFeveEnCours() {
@@ -482,19 +482,19 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public void setCommandesFeveEnCours(List<ContratFeveV2> offresPrivees) {
 		this.commandesFeveEnCours = offresPrivees;
 	}
-	public void setCommandesTablettesEnCours(ArrayList<GQte> contrats) {
+	public void setCommandesTablettesEnCours(ArrayList<ArrayList<Integer>> contrats) {
 		this.commandesTablettesEnCours = contrats;
 	}
 	public void setCommandesPoudreEnCours(ArrayList<ContratPoudre> contrats) {
 		this.commandesPoudreEnCours = contrats;
 	}
-	public ArrayList<GQte> getLivraisonsTablettesEnCours() {
+	public ArrayList<ArrayList<Integer>> getLivraisonsTablettesEnCours() {
 		return this.livraisonsTablettesEnCours;
 	}
 	public List<ContratFeveV2> getLivraisonsFeveEnCours() {
 		return this.livraisonsFeveEnCours;
 	}
-	public void setLivraisonsTablettesEnCours(ArrayList<GQte> contrats) {
+	public void setLivraisonsTablettesEnCours(ArrayList<ArrayList<Integer>> contrats) {
 		this.livraisonsTablettesEnCours = contrats;
 	}
 	public ArrayList<ContratPoudre> getLivraisonsPoudreEnCours() {
@@ -513,17 +513,19 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	public void resetCommandesEnCours() {
 		this.commandesFeveEnCours = new ArrayList<ContratFeveV2>();;
-		this.commandesTablettesEnCours = new ArrayList<GQte>();
+		this.commandesTablettesEnCours = new ArrayList<ArrayList<Integer>>();
 		this.commandesPoudreEnCours = new ArrayList<ContratPoudre>();
 		this.livraisonsFeveEnCours =new ArrayList<ContratFeveV2>();;
-		this.livraisonsTablettesEnCours = new ArrayList<GQte>();
+		this.livraisonsTablettesEnCours = new ArrayList<ArrayList<Integer>>();
 		this.livraisonsPoudreEnCours = new ArrayList<ContratPoudre>();
 	}
 	public int getQuantiteTablettesCommandees() {
-		ArrayList<GQte> commandes = this.getCommandesTablettesEnCours();
+		ArrayList<ArrayList<Integer>> commandes = this.getCommandesTablettesEnCours();
 		int quantite = 0;
-		for(GQte commande : commandes) {
-			quantite += commande.getqTabletteBQ() + commande.getqTabletteMQ() + commande.getqTabletteHQ();
+		for(ArrayList<Integer> commande : commandes) {
+			for(int idProduit = 1; idProduit <= 6; idProduit++) {
+				quantite += commande.get(idProduit-1);
+			}
 		}
 		return quantite;
 	}
@@ -544,10 +546,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		return quantite;
 	}
 	public int getQuantiteTablettesLivrees() {
-		ArrayList<GQte> commandes = this.getLivraisonsTablettesEnCours();
+		ArrayList<ArrayList<Integer>> commandes = this.getLivraisonsTablettesEnCours();
 		int quantite = 0;
-		for(GQte commande : commandes) {
-			quantite += commande.getqTabletteBQ() + commande.getqTabletteMQ() + commande.getqTabletteHQ();
+		for(ArrayList<Integer> commande : commandes) {
+			for(int idProduit = 1; idProduit <= 6; idProduit++) {
+				quantite += commande.get(idProduit-1);
+			}
 		}
 		return quantite;
 	}
@@ -652,19 +656,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	// retourne un tableau de tableau avec le taux de transformation de tablette en indice 1 et poudre indice 0, la qualité appararait 
 	public double[] getTauxProductionTablettesPoudre() {
-		int sommePoudre=0;
-		int sommeTablette=0;
+		int sommePoudre = this.getQuantitePoudreCommandees();
+		int sommeTablette = this.getQuantiteTablettesCommandees();
 		int sommeTotale=sommePoudre+sommeTablette;
 		double tauxPoudre;
 		double tauxTablette;
 		double[] TauxFinauxTetP= new double[2];
 		
-		for (int i=0; i<commandesPoudreEnCours.size(); i++) {
-			sommePoudre+=commandesPoudreEnCours.get(i).getQuantite();
-		}
-		for (int i=0; i<commandesTablettesEnCours.size(); i++) {
-			sommeTablette+=commandesTablettesEnCours.get(i).getqTabletteBQ()+commandesTablettesEnCours.get(i).getqTabletteMQ()+commandesTablettesEnCours.get(i).getqTabletteHQ();
-		}
 		if (sommeTotale==0) {
 			tauxPoudre=TAUX_PRODUCTION_POUDRE;
 			tauxTablette=TAUX_PRODUCTION_TABLETTE;
@@ -696,14 +694,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	public void estimateProductionTabletteAttendue(int qualite) {
 		int productionAttendue = 0;
-		ArrayList<GQte> commandesEnCours = this.getCommandesTablettesEnCours();
+		ArrayList<ArrayList<Integer>> commandesEnCours = this.getCommandesTablettesEnCours();
 		for(int i = 0; i < commandesEnCours.size(); i++) {
-			if(qualite == 0)
-				productionAttendue += commandesEnCours.get(i).getqTabletteBQ();
-			else if(qualite == 1)
-				productionAttendue += commandesEnCours.get(i).getqTabletteMQ();
-			else if(qualite == 2)
-				productionAttendue += commandesEnCours.get(i).getqTabletteHQ();
+			for(int idDist = 0; idDist < 3; idDist++) {
+				productionAttendue += commandesEnCours.get(idDist).get(4+qualite);
+			}
 		}
 		//productionAttendue -= (int)this.getStockTablettes(qualite).getValeur();
 		this.setProductionTablettesAttendue((int)(productionAttendue*(1+MOY_STOCK_TABLETTES_SUR_ENSEMBLE_COMMANDES)), qualite);
@@ -1004,6 +999,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			// boucle sur les types de produits
 			for(int idProduit = 1; idProduit <= 6; idProduit++) {
 				if(idProduit <= 3) {
+				}
+				else {
 					// On regarde si on a en stock ou si on peut produire ce qu'on nous demande
 					if (commandes.get(idDist).get(idProduit-1) > stockTablettes[idProduit-1]) {
 						/*double p = commande1[i]/(commande1[i]+commande2[i]);
@@ -1011,19 +1008,19 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 						deliver2[i]=stock[i]-deliver1[i];*/
 						
 						int diff = commandes.get(idDist).get(idProduit-1)-stockTablettes[idProduit-1];
-						//livraisons.set(index, element) -= diff;
+						livraisons.get(idDist).set(idProduit-1, commandes.get(idDist).get(idProduit-1)-diff);
+						
+						// On retire ce qu'on a utilisé de notre stock
+						this.setStockTablettes((int)(this.getStockTablettes(4-idProduit).getValeur()-livraisons.get(idDist).get(idProduit-1)), 4-idProduit);
 					}
 				}
 			}
 			
-			// On retire ce qu'on a utilisé de notre stock
-			//this.setStockTablettes((int)(this.getStockTablettes(i).getValeur()-deliver1[i]), i);
+			
 		}
-		/*
-		GQte commande = new GQte(0,0,0,commande1[0],commande1[1],commande1[2]); 
-		GQte livraison = new GQte(0,0,0,deliver1[0],deliver1[1],deliver1[2]); 
-		this.getCommandesTablettesEnCours().add(commande);
-		this.getLivraisonsTablettesEnCours().add(livraison);*/
+
+		this.setCommandesTablettesEnCours(commandes);
+		this.setLivraisonsTablettesEnCours(livraisons);
 		return livraisons;
 	}
 	
