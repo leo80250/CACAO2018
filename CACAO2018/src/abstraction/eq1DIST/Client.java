@@ -143,11 +143,12 @@ public class Client implements Acteur {
 		
 		int[] cm= this.commande(h, 0);
 		GrilleQuantite CommandeMousquetaire = new GrilleQuantite (cm);
-		this.journal.ajouter("La demande pour le distributeur Mousquetaire est : "+CommandeMousquetaire.toString());
+		this.journal.ajouter("La demande pour le distributeur Mousquetaire est : "+CommandeMousquetaire.toString()+"\n");
 		int[] cas= this.commande(h, 1);
 		GrilleQuantite CommandeCasino = new GrilleQuantite (cas);
 		int[] autre= this.commande(h, 2);
-		GrilleQuantite CommandeAutre = new GrilleQuantite (autre);
+		this.journal.ajouter("La demande pour le distributeur Casino est : "+CommandeCasino.toString()+"\n");
+		
 		
 		DemandeChocoBdG.setValeur(this,cm[0]+cas[0]+autre[0]+0.0);
 		DemandeChocoMdG.setValeur(this,cm[1]+cas[1]+autre[1]+0.0);
@@ -158,19 +159,28 @@ public class Client implements Acteur {
 		
 		
 		for(int i=0;i<Distributeurs.size();i++) {
-			if(Distributeurs.get(i).getNom()=="Eq1DIST") {
-				InterfaceDistributeurClient Mousquetaire=(InterfaceDistributeurClient)(Distributeurs.get(i));
-				Mousquetaire.commander(CommandeMousquetaire);
-			}
 			if(Distributeurs.get(i).getNom()=="Eq6DIST") {
+				InterfaceDistributeurClient Mousquetaire=(InterfaceDistributeurClient)(Distributeurs.get(i));
+				GrilleQuantite ReponseMousquetaire = Mousquetaire.commander(CommandeMousquetaire);
+				this.journal.ajouter("Les magasins Mousquetaire ont vendu (effectivement) : "+ReponseMousquetaire.toString()+"\n");
+				
+			}
+			else if(Distributeurs.get(i).getNom()=="Eq1DIST") {
 				InterfaceDistributeurClient Casino=(InterfaceDistributeurClient)(Distributeurs.get(i));
-				Casino.commander(CommandeCasino);
+				GrilleQuantite ReponseCasino = Casino.commander(CommandeCasino);
+				this.journal.ajouter("Les magasins Casino ont vendu (effectivement) : "+ReponseCasino.toString()+"\n");
 			}
 			else {
+				GrilleQuantite CommandeAutre = new GrilleQuantite (autre);
+				this.journal.ajouter("La demande pour les autres distributeurs est : "+CommandeAutre.toString()+"\n");
 				InterfaceDistributeurClient Autre=(InterfaceDistributeurClient)(Distributeurs.get(i));
-				Autre.commander(CommandeAutre);
+				GrilleQuantite ReponseAutre = Autre.commander(CommandeAutre);
+				this.journal.ajouter("Les autres magasins ont vendu (effectivement) : "+ReponseAutre.toString()+"\n");
 			}
 		}
+		
+		//modification des parts de marché
+		
 	}
 
 	@Override
@@ -179,19 +189,19 @@ public class Client implements Acteur {
 		return "Clients finaux";
 	}
 	
-	public static void main(String[] args) {
-		double[][] PartsdeMarche= {{0.7,0.49,0,0.42,0,0},
-                {0,0.21,0.7,0,0.7,0},
-                {0.3,0.3,0.3,0.58,0.3,0}};
-		Journal clientj = new Journal("Clients Finaux");
-		Client client=new Client(PartsdeMarche,clientj);
-		
-		int[] h= {1000,1000,0,1000,0,0};
-		int[] h0=client.commande(h, 0);
-		int[] h1=client.commande(h, 1);
-		int[] h2=client.commande(h, 2);
-		System.out.println(h0[0]+" "+h0[1]+" "+h0[2]+" "+h0[3]+" "+h0[4]+" "+h0[5]);
-		System.out.println(h1[0]+" "+h1[1]+" "+h1[2]+" "+h1[3]+" "+h1[4]+" "+h1[5]);
-		System.out.println(h2[0]+" "+h2[1]+" "+h2[2]+" "+h2[3]+" "+h2[4]+" "+h2[5]);
-	}
+//	public static void main(String[] args) {
+//		double[][] PartsdeMarche= {{0.7,0.49,0,0.42,0,0},
+//                {0,0.21,0.7,0,0.7,0},
+//                {0.3,0.3,0.3,0.58,0.3,0}};
+//		Journal clientj = new Journal("Clients Finaux");
+//		Client client=new Client(PartsdeMarche,clientj);
+//		
+//		int[] h= {1000,1000,0,1000,0,0};
+//		int[] h0=client.commande(h, 0);
+//		int[] h1=client.commande(h, 1);
+//		int[] h2=client.commande(h, 2);
+//		System.out.println(h0[0]+" "+h0[1]+" "+h0[2]+" "+h0[3]+" "+h0[4]+" "+h0[5]);
+//		System.out.println(h1[0]+" "+h1[1]+" "+h1[2]+" "+h1[3]+" "+h1[4]+" "+h1[5]);
+//		System.out.println(h2[0]+" "+h2[1]+" "+h2[2]+" "+h2[3]+" "+h2[4]+" "+h2[5]);
+//	}
 }
