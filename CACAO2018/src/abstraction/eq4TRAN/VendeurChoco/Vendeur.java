@@ -23,9 +23,11 @@ public class Vendeur implements IVendeurChocoBis{
 	
 	// Constructeur créant un Vendeur avec une liste de 6 paramètres : les stocks des 6 produits
 	public Vendeur(ArrayList<Integer> quantites) {
+		ArrayList<Integer> Stocks = new ArrayList<>();
 		for(int i=0;i<6;i++) {
-			stocks.set(i,(quantites.get(i)>=0) ? quantites.get(i) : 0);
+			Stocks.add(i,(quantites.get(i)>=0) ? quantites.get(i) : 0);
 		}
+		stocks=Stocks;
 	}
 	
 	// Constructeur sans paramètre initialisant les stocks à 0
