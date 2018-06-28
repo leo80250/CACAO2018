@@ -102,6 +102,20 @@ public class Eq6DIST implements Acteur, IAcheteurChoco {
 		this.stock.setqTabletteHQ(this.stock.getqTabletteHQ()+d.getqTabletteHQ());
 		this.banque.setValeur(this, solde);
 	}
+	public DemandeAO getAppelOffre() {
+		final ArrayList<Indicateur> stock= new ArrayList<Indicateur>();
+		stock.add(stock_BBQ);stock.add(stock_BMQ);stock.add(stock_BHQ);stock.add(stock_TBQ);stock.add(stock_TMQ);stock.add(stock_THQ);			
+		for (Indicateur i: stock) {
+			if(i.getValeur()<i.getHistorique().get(Monde.LE_MONDE.getStep()-1).getValeur()) {
+				
+			}
+		}
+		
+		
+		
+		return null;
+	}
+	
 
 	
 }
