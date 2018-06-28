@@ -30,7 +30,9 @@ import abstraction.fourni.Monde;
 
 public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV2, IVendeurChoco {
 	
-	//rajouter IAcheteurFeve à implémenter 
+	//rajouter IAcheteurFeve à implémenter
+	
+	
 	
 	private Indicateur achats;
 	private Indicateur ventes;
