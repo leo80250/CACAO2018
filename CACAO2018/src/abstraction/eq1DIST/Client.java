@@ -22,7 +22,7 @@ public class Client implements Acteur {
 	private Indicateur DemandeConfBdG;
 	private Indicateur DemandeConfMdG;
 	private Indicateur DemandeConfHdG;
-	//Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche,client)); penser à rajouter dans EQ1
+	
 	/**
 	 *
 	 * @param double[][] P 
@@ -101,10 +101,10 @@ public class Client implements Acteur {
 	 *         la deuxième ligne correspond aux confiseries
 	 */
 	
-	public int[] commande(int[][] h,int i){
+	public int[] commande(int[] h,int i){
 		int[] cm= new int[6];
 		for(int j=0;j<=5;j++) {
-			cm[j]=(int)(0.7*h[i][j%3]*this.getValeur(i, j)*(Math.random()*0.3*h[i][j%3]*this.getValeur(i, j)));
+			cm[j]=(int)(0.7*h[j]*this.getValeur(i, j)+(Math.random()*0.6*h[j]*this.getValeur(i, j)));
 		}
 		return cm;
 	}
@@ -139,7 +139,7 @@ public class Client implements Acteur {
 		//h = tableau de lacommande totale de la période
 		//ligne 1 : choco BdG , choco MdG, choco HdG
 		//ligne 2 : confiseries BdG , confiseries MdG, confiseries HdG
-		int[][] h = {{a[0][periode],a[1][periode],a[2][periode]},{b[0][periode],b[1][periode],b[2][periode]}};
+		int[] h = {a[0][periode],a[1][periode],a[2][periode],b[0][periode],b[1][periode],b[2][periode]};
 		
 		int[] cm= this.commande(h, 0);
 		GrilleQuantite CommandeMousquetaire = new GrilleQuantite (cm);
@@ -180,6 +180,18 @@ public class Client implements Acteur {
 	}
 	
 	public static void main(String[] args) {
+		double[][] PartsdeMarche= {{0.7,0.49,0,0.42,0,0},
+                {0,0.21,0.7,0,0.7,0},
+                {0.3,0.3,0.3,0.58,0.3,0}};
+		Journal clientj = new Journal("Clients Finaux");
+		Client client=new Client(PartsdeMarche,clientj);
 		
+		int[] h= {1000,1000,0,1000,0,0};
+		int[] h0=client.commande(h, 0);
+		int[] h1=client.commande(h, 1);
+		int[] h2=client.commande(h, 2);
+		System.out.println(h0[0]+" "+h0[1]+" "+h0[2]+" "+h0[3]+" "+h0[4]+" "+h0[5]);
+		System.out.println(h1[0]+" "+h1[1]+" "+h1[2]+" "+h1[3]+" "+h1[4]+" "+h1[5]);
+		System.out.println(h2[0]+" "+h2[1]+" "+h2[2]+" "+h2[3]+" "+h2[4]+" "+h2[5]);
 	}
 }
