@@ -1,8 +1,8 @@
 package abstraction.eq5TRAN;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.eq5TRAN.util.Marchandises;
@@ -30,7 +30,7 @@ import static abstraction.eq5TRAN.util.Marchandises.*;
  * - Gestion de facteurs sociaux (greves ...)
  * - Systeme de fidelite client/fournisseur
  */
-public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChoco, IAcheteurFeve {
+public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChoco, IAcheteurFeveV2 {
 
     // cf Marchandises.java pour obtenir l'indexation
     private Indicateur[] productionSouhaitee; // ce qui sort de nos machines en kT
@@ -127,9 +127,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
          * @author Francois le Guernic
          */
 
-        contratFeveBQEq2 = new ContratFeve(this, (IVendeurFeve) Monde.LE_MONDE.getActeur("Eq2PROD"), 0);
-        contratFeveMQEq2 = new ContratFeve(this, (IVendeurFeve) Monde.LE_MONDE.getActeur("Eq2PROD"), 1);
-        contratFeveMQEq3 = new ContratFeve(this, (IVendeurFeve) Monde.LE_MONDE.getActeur("Eq3PROD"), 1);
+        contratFeveBQEq2 = new ContratFeve(this, (IVendeurFeveV2) Monde.LE_MONDE.getActeur("Eq2PROD"), 0);
+        contratFeveMQEq2 = new ContratFeve(this, (IVendeurFeveV2) Monde.LE_MONDE.getActeur("Eq2PROD"), 1);
+        contratFeveMQEq3 = new ContratFeve(this, (IVendeurFeveV2) Monde.LE_MONDE.getActeur("Eq3PROD"), 1);
 
         /**
          * GESTION DE LA PEREMPTION
@@ -304,7 +304,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * @author François Le Guernic
      */
     @Override
-    public void sendOffrePublique(ContratFeve[] offrePublique) {
+    public void sendOffrePublique(List<ContratFeve> offrePublique) {
         /* On achète des fèves de BQ ( seulement à équipe 2 ) et de MQ ( à équipes 2 et 3 ) aux équipes de producteur
          * Pour récupérer les offres qui nous intéressent, on stockent les informations en mémoire dans les variables
          * d'instance
@@ -331,13 +331,14 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * @author Francois Le Guernic
      */
     @Override
-    public ContratFeve[] getDemandePrivee() {
+    public List<ContratFeve> getDemandePrivee() {
         /* Par convention, dans la liste de  contrats, on aura dans l'ordre :
          * - le contrat pour les fèves BQ à l'équipe 2
          * - le contrat pour les fèves MQ à l'équipe 2
          * - le contrat pour les fèves MQ à l'équipe 3
          */
-        ContratFeve[] demandesPrivee = {this.contratFeveBQEq2, this.contratFeveMQEq2, this.contratFeveMQEq3};
+        List<ContratFeve> demandesPrivee = new ArrayList<ContratFeve>() ;
+        demandesPrivee.add(this.contratFeveBQEq2) ; demandesPrivee.add(this.contratFeveMQEq2) ;demandesPrivee.add(this.contratFeveMQEq3);
         this.contratFeveBQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix());
         this.contratFeveBQEq2.setDemande_Quantite((int) achatsSouhaites[FEVES_BQ].getValeur());
         this.contratFeveMQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix());
@@ -350,14 +351,14 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     }
 
     @Override
-    public void sendContratFictif(ContratFeve[] listContrats) {
+    public void sendContratFictif(List<ContratFeve> listContrats) {
     }
 
     /**
      * @author François Le Guernic
      */
     @Override
-    public void sendOffreFinale(ContratFeve[] offreFinale) {
+    public void sendOffreFinale(List<ContratFeve> offreFinale) {
         // On actualise nos trois variables d'instance avec les attributs QuantiteProposition et PrixProposition
 
         for (ContratFeve c : offreFinale) {
@@ -380,8 +381,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     /**
      * @author François Le Guernic
      */
-    public ContratFeve[] getResultVentes() {
-        ContratFeve[] listeContrat = {contratFeveBQEq2, contratFeveMQEq2, contratFeveMQEq3};
+    public List<ContratFeve> getResultVentes() {
+        List<ContratFeve> listeContrat = new ArrayList<ContratFeve>() ;
+        listeContrat.add(this.contratFeveBQEq2) ; listeContrat.add(this.contratFeveMQEq2) ; listeContrat.add(contratFeveMQEq3) ;
         for (ContratFeve c : listeContrat) {
             if ((c.getProposition_Prix() <= c.getDemande_Prix()) && c.getProposition_Quantite() <= c.getDemande_Quantite()) {
                 c.setReponse(true);
