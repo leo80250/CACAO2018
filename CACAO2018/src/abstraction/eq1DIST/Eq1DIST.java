@@ -23,9 +23,9 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 
 public Eq1DIST()  {
-	double[][] PartsdeMarche= {{0.7,0.49,0,0.42,0,0},
-			                   {0,0.21,0.7,0.28,0.7,0},
-			                   {0.3,0.3,0.3,0.3,0.3,0}};
+	double[][] PartsdeMarche= {{0.7,0.49,0,0,0.42,0},
+			                   {0,0.21,0.7,0,0.28,0.7},
+			                   {0.3,0.3,0.3,0,0.3,0.3}};
 	Journal client = new Journal("Clients Finaux");
 	Monde.LE_MONDE.ajouterJournal(client);
 	Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche,client));
