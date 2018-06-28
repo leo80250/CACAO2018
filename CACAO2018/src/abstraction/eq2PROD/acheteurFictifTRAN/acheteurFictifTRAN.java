@@ -8,10 +8,10 @@ import java.util.List;
 
 import abstraction.eq3PROD.echangesProdTransfo.*;
 
-public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV2 {
+public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 /* VARIABLES D'INSTANCE */
-	private List<ContratFeveV2> offreFinale;
-	private List<ContratFeveV2> contratPrecedent;
+	private List<ContratFeveV3> offreFinale;
+	private List<ContratFeveV3> contratPrecedent;
 	
 	
 /* GETTEURS */
@@ -21,60 +21,57 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV2 {
 	}
 	
 	/* Guillaume Sallé */
-	public List<IVendeurFeveV2> getVendeurs() {
+	public List<IVendeurFeveV4> getVendeurs() {
 		List<Acteur> acteurs = Monde.LE_MONDE.getActeurs();
-		List<IVendeurFeveV2> vendeurs = new ArrayList<>();
+		List<IVendeurFeveV4> vendeurs = new ArrayList<>();
 		for (Acteur v : acteurs) {
-			if (v instanceof IVendeurFeveV2) {
-				vendeurs.add((IVendeurFeveV2)v);
+			if (v instanceof IVendeurFeveV4) {
+				vendeurs.add((IVendeurFeveV4)v);
 			}
 		}
 		return vendeurs;
 	}
 	
-	public List<ContratFeveV2> getContratPrecedent() {
+	public List<ContratFeveV3> getContratPrecedent() {
 		return this.contratPrecedent;
 	}
-	public void setContratPrecedent(List<ContratFeveV2> l) {
+	public void setContratPrecedent(List<ContratFeveV3> l) {
 		this.contratPrecedent = l;
 	}
-	public List<ContratFeveV2> getOffreFinale() {
+	public List<ContratFeveV3> getOffreFinale() {
 		return this.offreFinale;
 	}
-	public void setOffreFinale(List<ContratFeveV2> l) {
+	public void setOffreFinale(List<ContratFeveV3> l) {
 		this.offreFinale = l;
 	}
+	
+	public void ponderation(int a, int b, int c, int d, double p) {
+		a=(int)(a*p); b=(int)(b*p); c=(int)(c*p); d=(int)(d*p);   
+	}
 
-/* IMPLEMENTATION DES INTERFACES 
- * Ici nous implementons IAcheteurFeve 
- * */
-	/* Agathe Chevalier */
-	public void sendOffrePublique(List<ContratFeveV2> offrePublique) {
+	
+/* NEXT DE L'ACTEUR FICTIF */	
+	public void next() {
+		/* L'acheteur fictif n'a pas de next() car il n'a pas de stock, ni de solde */
+	}
+
+// IMPLEMENTATION DE IACHETEURFEVEV4
+	public void sendOffrePubliqueV3(List<ContratFeveV3> offrePublique) {
 		/*L'acheteur fictif n'a pas besoin de recuperer les offres publiques des producteurs aux transformateurs
 		 * car aucun ne lui adresse de demande:
 		 * ses commandes sont directement calculés selon un pourcentage des demandes du moins precedent */
 	}
-	
-	/* Guillaume Sallé 
-	 * a devient a*p , b devient b*p, etc. Pour pouvoir changer facilement p
-	 * Appelé dans getDemandePrivee()
-	 */
-	public void ponderation(int a, int b, int c, int d, double p) {
-		a=(int)(a*p); b=(int)(b*p); c=(int)(c*p); d=(int)(d*p);   
-	}
-	
-	
-	/* Agathe Chevalier, Guillaume Sallé */
-	public List<ContratFeveV2> getDemandePrivee() {
+
+	public List<ContratFeveV3> getDemandePriveeV3() {
 		/*this.contratPrecedent = Monde.LE_MONDE.getActeur("Marche intermediaire").getContratPrecedent*/
-		List<ContratFeveV2> c = new ArrayList<ContratFeveV2>();
+		List<ContratFeveV3> c = new ArrayList<ContratFeveV3>();
 		//* Pour l'acheteur ficitf :		
 		int tonnageQB = 0; double prixQB =0;
 		int tonnageQM_1 = 0; double prixQM_1 = 0;
 		int tonnageQM_2 = 0; double prixQM_2 = 0;
 		int tonnageQH = 0; double prixQH = 0;
 		
-		for(ContratFeveV2 contrat : getContratPrecedent()) {
+		for(ContratFeveV3 contrat : getContratPrecedent()) {
 			if(contrat.getQualite()==0) {
 				tonnageQB += (int)(contrat.getDemande_Quantite()*0.40);
 				prixQB += contrat.getDemande_Prix();
@@ -95,25 +92,26 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV2 {
 			}
 		}
 		// On prend 40 % des tonnages 
+		
 		ponderation(tonnageQB,tonnageQH,tonnageQM_1,tonnageQM_2,0.4);
 		
 		if (tonnageQB != 0) {
-			c.add(new ContratFeveV2(this, null //Eq2PROD
+			c.add(new ContratFeveV3(this, null //Eq2PROD
 					, 0, 0, tonnageQB, 0, 
 					0, prixQB/tonnageQB, 0, false));
 		}
 		if (tonnageQH != 0) {
-			c.add(new ContratFeveV2(this, null //Eq3PROD
+			c.add(new ContratFeveV3(this, null //Eq3PROD
 					, 0, 0, tonnageQH, 0, 
 					0, prixQH/tonnageQH, 0, false));
 		}
 		if (tonnageQM_1 != 0) {
-			c.add(new ContratFeveV2(this, null //Eq2PROD
+			c.add(new ContratFeveV3(this, null //Eq2PROD
 					, 0, 0, tonnageQM_1, 0, 
 					0, prixQM_1/tonnageQM_1, 0, false));
 		}
 		if (tonnageQM_2 != 0) {
-			c.add(new ContratFeveV2(this, null //Eq3PROD
+			c.add(new ContratFeveV3(this, null //Eq3PROD
 					, 0, 0, tonnageQM_2, 0, 
 					0, prixQM_2/tonnageQM_2, 0, false));
 		}
@@ -129,9 +127,8 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV2 {
 		// */
 		return c;
 	}
-	
-	/* Guillaume Sallé*/
-	public void sendContratFictif(List<ContratFeveV2> listContrats) {
+
+	public void sendContratFictifV3(List<ContratFeveV3> listContrats) {
 		setContratPrecedent(listContrats);
 		for (int i = 0; i<getContratPrecedent().size() ; i++) {
 			if (getContratPrecedent().get(i).getTransformateur() == this) {
@@ -140,21 +137,14 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV2 {
 		}
 	}
 
-	/* Agathe Chevalier */
-	public void sendOffreFinale(List<ContratFeveV2> offreFinale) {
+	public void sendOffreFinaleV3(List<ContratFeveV3> offreFinale) {
 		setOffreFinale(offreFinale);
 	}
 
-	/* Agathe Chevalier */
-	public List<ContratFeveV2> getResultVentes() {
-		for(ContratFeveV2 c : getOffreFinale()) {
+	public List<ContratFeveV3> getResultVentesV3() {
+		for(ContratFeveV3 c : getOffreFinale()) {
 			c.setReponse(true); /* l'acheteur fictif signe tous les contrats */
 		}
 		return offreFinale;
-	}
-	
-/* NEXT DE L'ACTEUR FICTIF */	
-	public void next() {
-		/* L'acheteur fictif n'a pas de next() car il n'a pas de stock, ni de solde */
 	}
 }
