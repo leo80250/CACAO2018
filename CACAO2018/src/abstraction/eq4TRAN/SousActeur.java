@@ -15,7 +15,7 @@ import abstraction.fourni.Journal;
 public abstract class SousActeur implements Acteur, 
 ITransformateur, 
 IAcheteurFeve,
-IVendeurChoco,
+IVendeurChocoBis,
 IAcheteurPoudre,
 IVendeurPoudre {
 	private Indicateur stockTabBQ ;
