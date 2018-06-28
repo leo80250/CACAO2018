@@ -21,7 +21,7 @@ public class Vendeur implements IVendeurChocoBis{
 	private ArrayList<Integer> stocks;
 	public Journal ventes = new Journal("ventes");
 	
-	// Constructeur créant un Vendeur avec 6 paramètres : les stocks des 6 produits
+	// Constructeur créant un Vendeur avec une liste de 6 paramètres : les stocks des 6 produits
 	public Vendeur(ArrayList<Integer> quantites) {
 		for(int i=0;i<6;i++) {
 			stocks.set(i,(quantites.get(i)>=0) ? quantites.get(i) : 0);

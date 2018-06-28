@@ -336,7 +336,7 @@ IVendeurPoudre{
 	//Etienne Raveau
 	// Setter qui met à jour  l'indicateur de stock pour un certain produit
 	public void setQuantite(int IDProduit, int quantite) {
-		getStocks().get(IDProduit-1).setValeur(Eq4TRAN, quantite);
+		getStocks().get(IDProduit-1).setValeur(this, quantite);
 	}
 	
 	/*
@@ -371,7 +371,7 @@ IVendeurPoudre{
 				s+=livraison.get(i).get(j)*vendeur.getPrix().getPrixProduit(livraison.get(i).get(j), j+1);
 			}
 		}
-		solde.setValeur(Eq4TRAN, s); //On met à jour notre solde bancaire
+		solde.setValeur(this, s); //On met à jour notre solde bancaire
 		return livraison;
 	}
 	
