@@ -9,6 +9,7 @@ import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.eq4TRAN.Eq4TRAN;
 import abstraction.eq3PROD.Eq3PROD;
 import abstraction.eq6DIST.Eq6DIST;
+import abstraction.eq6DIST.MarcheChoco;
 
 
 /**
@@ -57,6 +58,8 @@ public class Monde extends Observable {
 	 * le corps de cette methode
 	 */
 	public void peupler() {
+		MarcheChoco marchechoco = new MarcheChoco();
+		this.ajouterActeur(marchechoco);
 		Eq5TRAN eq5 = new Eq5TRAN();
 		this.ajouterActeur(eq5);
 		Eq2PROD eq2 = new Eq2PROD();
