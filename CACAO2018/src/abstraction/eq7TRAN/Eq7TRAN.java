@@ -38,6 +38,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	//rajouter IAcheteurFeve à implémenter
 	
+	
 	private Indicateur achats;
 	private Indicateur ventes;
 	// 0 = BQ, 1 = MQ, 2 = HQ
