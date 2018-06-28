@@ -244,25 +244,23 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		}
 
 		/**
-		 * @author Morgane  solde: chiffre d'affaire  (prix*qtite) - charges salariales - charges fixes (
+		 * @author Morgane 
 		 */
-		public void sendResultVentes(List<ContratFeveV3> resultVentes) { 	 	  	  		   		 	 	
-			for (ContratFeveV3 contrat : resultVentes) {  	 	  	  		   		 	 	
+		public void sendResultVentes(List<ContratFeveV3> resultVentes) { 	
+			
+			for (ContratFeveV3 contrat : resultVentes) {  	 
+				double salaires_Indo = contrat.getProposition_Quantite()*contrat.getProposition_Prix()*0.285 ;  	 	  	  		   		 	 	
+				double salaires_Bresil = contrat.getProposition_Quantite()*contrat.getProposition_Prix()*0.969;  	 	  	  		   		 	 	
+				double salaires_Equateur = contrat.getProposition_Quantite()*contrat.getProposition_Prix()*0.433;   	 	  	  		   		 	 	
+
 				if(contrat.getQualite() == 1) { 	 	  	  		   		 	 	
 					if(contrat.getReponse() == true) { 	 	  	  		   		 	 	
 						this.stockmoyen -= contrat.getProposition_Quantite() ; 	
-						
-						double masse_salariale_Indo = contrat.getProposition_Quantite()* ; 
-						double masse_salariale_Bresil ; 
-						double masse_salariale_Equateur ; 
-						
-						solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() - 
-									contrat.getProposition_Quantite()* - 
-									contrat.getProposition_Quantite()*;  	 	  	  		   		 	 	
+						solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() - salaires_Bresil - salaires_Indo;  	 	  	  		   		 	 	
 					}  	 	  	  		   		 	 	
 				} else { 	 	  	  		   		 	 	
 					this.stockfin -= contrat.getProposition_Quantite() ;  	 	  	  		   		 	 	
-					solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() ; 	 	  	  		   		 	 	
+					solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() - salaires_Equateur ; 	 	  	  		   		 	 	
 				} 	 	  	  		   		 	 	
 			} 	 	  	  		   		 	 	
 		}
