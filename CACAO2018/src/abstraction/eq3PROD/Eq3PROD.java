@@ -82,9 +82,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		
 		for (Acteur acteur : listActeurs) {
 			Class[] listInterfaces = acteur.getClass().getInterfaces();
-			if (Arrays.toString(listInterfaces).contains("IVendeurFeveV2")) {
+			if (Arrays.toString(listInterfaces).contains("IVendeurFeveV4")) {
 				producteurs.add((IVendeurFeveV4) acteur);
-			} else if (Arrays.toString(listInterfaces).contains("IAcheteurFeveV2")) {
+			} else if (Arrays.toString(listInterfaces).contains("IAcheteurFeveV4")) {
 				transformateurs.add((IAcheteurFeveV4) acteur);
 			}
 		}
@@ -111,7 +111,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			List<ContratFeveV3> c= new ArrayList<ContratFeveV3>() ; 
 			c.add(c1); 
 			c.add(c2); 
-			return c; } 
+			return c; 
+		} 
 
 
 		/**
@@ -180,8 +181,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		/**
 		 * @author Morgane
 		 */
-		public void sendResultVentes(List<ContratFeveV2> resultVentes) { 	 	  	  		   		 	 	
-			for (ContratFeveV2 contrat : resultVentes) {  	 	  	  		   		 	 	
+		public void sendResultVentes(List<ContratFeveV3> resultVentes) { 	 	  	  		   		 	 	
+			for (ContratFeveV3 contrat : resultVentes) {  	 	  	  		   		 	 	
 				if(contrat.getQualite() == 1) { 	 	  	  		   		 	 	
 					if(contrat.getReponse() == true) { 	 	  	  		   		 	 	
 						this.stockmoyen -= contrat.getProposition_Quantite() ; 	 	  	  		   		 	 	
