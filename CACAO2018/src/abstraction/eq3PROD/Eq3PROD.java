@@ -5,24 +5,27 @@ import java.util.Arrays;
 import java.util.List;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;  
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2;
+import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4;
 import abstraction.eq3PROD.echangesProdTransfo.MarcheFeve;
 
 //import abstraction.eq1DIST.IVenteConso;
 
-public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2 {
+public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4 {
 	// 0 = BQ, 1 = MQ, 2 = HQ
 	private String nom;
 	private int stockmoyen;
 	private int stockfin;
 	private int solde;
-	private ArrayList<ContratFeveV2> listeContrats ; 
+	private ArrayList<ContratFeveV3> listeContrats ; 
 	private final double[] prix_Ventes_Feves = {1800, 2100, 2500};
 	private final double[] prodFeves = {0,0,0};
 	public MarcheFeve marche;
@@ -74,15 +77,15 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
 		
 		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
-		ArrayList<IVendeurFeveV2> producteurs = new ArrayList<IVendeurFeveV2>();
-		ArrayList<IAcheteurFeveV2> transformateurs = new ArrayList<IAcheteurFeveV2>();
+		ArrayList<IVendeurFeveV4> producteurs = new ArrayList<IVendeurFeveV4>();
+		ArrayList<IAcheteurFeveV4> transformateurs = new ArrayList<IAcheteurFeveV4>();
 		
 		for (Acteur acteur : listActeurs) {
 			Class[] listInterfaces = acteur.getClass().getInterfaces();
 			if (Arrays.toString(listInterfaces).contains("IVendeurFeveV2")) {
-				producteurs.add((IVendeurFeveV2) acteur);
+				producteurs.add((IVendeurFeveV4) acteur);
 			} else if (Arrays.toString(listInterfaces).contains("IAcheteurFeveV2")) {
-				transformateurs.add((IAcheteurFeveV2) acteur);
+				transformateurs.add((IAcheteurFeveV4) acteur);
 			}
 		}
 		
@@ -95,17 +98,17 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	}
 	
 		
-		public ArrayList<ContratFeveV2> getListeContrats(){
+		public ArrayList<ContratFeveV3> getListeContrats(){
 			return this.listeContrats;
 		}
 		
 		/**
 		 * @author Morgane et Pierre
 		 */
-		public List<ContratFeveV2> getOffrePublique() { 
-			ContratFeveV2 c1=new ContratFeveV2(null, this, 1, this.stockmoyen, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false);
-			ContratFeveV2 c2=new ContratFeveV2(null, this, 2, this.stockfin, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false); 
-			List<ContratFeveV2> c= new ArrayList<ContratFeveV2>() ; 
+		public List<ContratFeveV3> getOffrePublique() { 
+			ContratFeveV3 c1=new ContratFeveV3(null, this, 1, this.stockmoyen, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false);
+			ContratFeveV3 c2=new ContratFeveV3(null, this, 2, this.stockfin, 0, 0, marche.getPrixMarche(), 0.0, 0.0, false); 
+			List<ContratFeveV3> c= new ArrayList<ContratFeveV3>() ; 
 			c.add(c1); 
 			c.add(c2); 
 			return c; } 
@@ -114,7 +117,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		/**
 		 * @author Morgane et Pierre
 		 */
-		public void sendDemandePrivee(List<ContratFeveV2> demandePrivee) { 
+		public void sendDemandePrivee(List<ContratFeveV3> demandePrivee) { 
 			//HashMap<Integer, HashMap<Acteur, ContratFeve>> asso = new HashMap<Integer, HashMap<Acteur, ContratFeve>>(); 
 			//asso.put(demandePrivee[i].getTransformateur(), demandePrivee[i); 
 			for (int i = 0; i < demandePrivee.size(); i++) { 
@@ -127,11 +130,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		/**
 		 * @author Morgane
 		 */
-		public List<ContratFeveV2> getOffreFinale() { 	 	  	  		   		 	 	
+		public List<ContratFeveV3> getOffreFinale() { 	 	  	  		   		 	 	
 			int quantite_1 = 0;  	 	  	  		   		 	 	
 			int quantite_2 = 0; 	 	  	  		   		 	 	
 			 	 	  	  		   		 	 	
-			for (ContratFeveV2 contrat : listeContrats) { 	 	  	  		   		 	 	
+			for (ContratFeveV3 contrat : listeContrats) { 	 	  	  		   		 	 	
 				if (contrat.getQualite() == 1) { 	 	  	  		   		 	 	
 					quantite_1 += contrat.getDemande_Quantite() ; 	 	  	  		   		 	 	
 				} else { 	 	  	  		   		 	 	
@@ -139,9 +142,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				} 	 	  	  		   		 	 	
 			} 	 	  	  		   		 	 	
 			 	 	  	  		   		 	 	
-			ArrayList<ContratFeveV2> listeContrats_bis = new ArrayList<ContratFeveV2>() ; 	 	  	  		   		 	 	
+			ArrayList<ContratFeveV3> listeContrats_bis = new ArrayList<ContratFeveV3>() ; 	 	  	  		   		 	 	
 			 	 	  	  		   		 	 	
-			for (ContratFeveV2 contrat : listeContrats) {  	 	  	  		   		 	 	
+			for (ContratFeveV3 contrat : listeContrats) {  	 	  	  		   		 	 	
 				 	 	  	  		   		 	 	
 				if (contrat.getQualite() == 1 ) { 	 	  	  		   		 	 	
 					 	 	  	  		   		 	 	
@@ -288,6 +291,30 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		}
 		public void setStockQMoy(Indicateur i) {
 			this.stockQM = i;
+		}
+
+		@Override
+		public List<ContratFeveV3> getOffrePubliqueV3() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void sendDemandePriveeV3(List<ContratFeveV3> demandePrivee) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public List<ContratFeveV3> getOffreFinaleV3() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public void sendResultVentesV3(List<ContratFeveV3> resultVentes) {
+			// TODO Auto-generated method stub
+			
 		}
 		
 
