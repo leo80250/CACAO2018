@@ -16,6 +16,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -161,7 +162,7 @@ public class FenetrePrincipale extends JFrame {
 		}
 		
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				pIndicateurs, pDroit);
+				new JScrollPane(pIndicateurs), pDroit);
 		splitPane.setResizeWeight(0.5);
 		Dimension minimumSize = new Dimension(100, 100);
 		pIndicateurs.setMinimumSize(minimumSize);
