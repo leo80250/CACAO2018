@@ -176,7 +176,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		 Il n'y a pas d'argent en jeu pour le moment, juste une négociation sur les quantités demandées
 		 */
 		
-		GQte[] commandes = new GQte[3];
+		/*GQte[] commandes = new GQte[3];
 		GQte commande;
 		GQte commandeLivree;
 		// Pour le moment le code des autres équipes ne nous fait aucune commande !
@@ -196,17 +196,21 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			}
 		}
 		// on simule une commande régulière ici
-		/*
+		//*
 		commande = new GQte(0, 0, 0, 150,300,600);
 		commandes[0] = commande;
 		commandes[1] = commande;
 		commandes[2] = commande;
-		commandeLivree = this.getLivraison(commandes);
-<<<<<<< HEAD
-		*/
+		commandeLivree = this.getLivraison(commandes);*/
+		
+		GQte commande=new GQte(0,0,0,600,900,100);
+		commandesTablettesEnCours.add(commande);
+		
+//<<<<<<< HEAD
+		//*
 		
 		// on simule une commande de poudre
-		ContratPoudre commande2 = new ContratPoudre(1,300,1.4,this,this,true);
+		ContratPoudre commande2 = new ContratPoudre(1,900,1.4,this,this,true);
 		commandesPoudreEnCours.add(commande2);
 		
 		this.getJournal().ajouter("COMMANDES FEVES = " +this.getQuantiteFevesCommandees()+"t");
@@ -215,6 +219,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getJournal().ajouter("LIVRAISONS POUDRE = " +this.getQuantitePoudreLivrees()+"t");
 		this.getJournal().ajouter("COMMANDES TABLETTES = " +this.getQuantiteTablettesCommandees()+"t");
 		this.getJournal().ajouter("LIVRAISONS TABLETTES = " +this.getQuantiteTablettesLivrees()+"t");
+		 	  	   		 			 			 	
+
+
+
 		this.getJournal().ajouter("TAUX DE PROD POUDRE = " +this.getTauxProductionTablettesPoudre()[0]+"");
 		this.getJournal().ajouter("TAUX DE PROD TABLETTES = " +this.getTauxProductionTablettesPoudre()[1]+"");
 		
@@ -645,7 +653,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public double[] getTauxProductionTablettesPoudre() {
 		int sommePoudre=0;
 		int sommeTablette=0;
-		int sommeTotale=sommePoudre+sommeTablette;
+		int sommeTotale;
 		double tauxPoudre;
 		double tauxTablette;
 		double[] TauxFinauxTetP= new double[2];
@@ -655,12 +663,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		for (int i=0; i<commandesTablettesEnCours.size(); i++) {
 			sommeTablette+=commandesTablettesEnCours.get(i).getqTabletteBQ()+commandesTablettesEnCours.get(i).getqTabletteMQ()+commandesTablettesEnCours.get(i).getqTabletteHQ();
 		}
+		sommeTotale=sommePoudre+sommeTablette;
 		if (sommeTotale==0) {
 			tauxPoudre=TAUX_PRODUCTION_POUDRE;
 			tauxTablette=TAUX_PRODUCTION_TABLETTE;
 		} else {
-			tauxTablette=sommeTablette/sommeTotale;
-			tauxPoudre=sommePoudre/sommeTotale;
+			tauxTablette=((double)sommeTablette)/((double)sommeTotale);
+			tauxPoudre=((double)sommePoudre)/((double)sommeTotale);
 		}
 		TauxFinauxTetP[0]=tauxPoudre;
 		TauxFinauxTetP[1]=tauxTablette;
