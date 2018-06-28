@@ -22,12 +22,12 @@ public class ContextePolitique  {
 											{/*Pays.OUGANDA*/4, /*Pays.MADAGASCAR*/7}};
 	
 	
-	private boolean[] estInstable;
+	private boolean[] estStable;
 	private double[] coeffDeficitProd;
 	
 	
 	public ContextePolitique(boolean[] estInstable, double[] coeffDeficitProd) {
-		this.estInstable = estInstable;
+		this.estStable = estInstable;
 		this.coeffDeficitProd = coeffDeficitProd ;
 	}
 
@@ -36,23 +36,23 @@ public class ContextePolitique  {
 
 	public void chgmtInstable(int p) { //* p est un entier entre 0 et 9
 		double proba = coeffInstable[p]*ponderation ;
-		if (estInstable[p]) {
+		if (estStable[p]) {
 			proba=proba*2 ;     /*Si le pays est déjà instable, il a plus de chance de rester instable (2x plus) */
 		}
 		if (Math.random()<proba) {
-			estInstable[p]=true ;
+			estStable[p]=true ;
 		} else {
-			estInstable[p]=false ;
+			estStable[p]=false ;
 		}
 	}
 	
 	public void propageInstable(int p) {
-		for (int i=0; i<paysFront.length;i++) {
+		for (int i=0; i<paysFront[p].length;i++) {
 			double proba = coeffInstable[i]*ponderation*2 ;
 			if (Math.random()<proba) {
-				estInstable[paysFront[p][i]] = true ;
+				estStable[paysFront[p][i]] = true ;
 			} else {
-				estInstable[paysFront[p][i]] = false ;
+				estStable[paysFront[p][i]] = false ;
 			}
 		}
 	}
@@ -66,7 +66,7 @@ public class ContextePolitique  {
 			propageInstable(i);
 		}
 		for (int i=0;i<10;i++) {
-			 if (estInstable[i]) {
+			 if (estStable[i]) {
 				 coeffDeficitProd[i]=0.35 ;
 			 }
 		}
