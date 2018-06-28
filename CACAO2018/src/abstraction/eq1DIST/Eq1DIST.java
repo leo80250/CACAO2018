@@ -7,6 +7,7 @@ import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.eq6DIST.IAcheteurChoco;
 import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.fourni.Acteur;
@@ -74,22 +75,25 @@ public Eq1DIST()  {
 				if (stock[i][j]<stocklim[i][j]) {
 					DemandeAO d= new DemandeAO(stocklim[i][j]-stock[i][j],i*j);
 					ArrayList<Double> prop= new ArrayList<Double>();
-					//prop.add(((Eq4TRAN) Monde.LE_MONDE.getActeur("Eq4TRAN")).getReponseBis(d));
+					prop.add(((Eq4TRAN) Monde.LE_MONDE.getActeur("Eq4TRAN")).getReponseBis(d));
+					prop.add((double) 4);
 					prop.add(((Eq5TRAN) Monde.LE_MONDE.getActeur("Eq5TRAN")).getReponseBis(d));
-					//prop.add(((Eq7TRAN) Monde.LE_MONDE.getActeur("Eq7TRAN")).getReponseBis(d));
-					 int a=prop.get(0);
-					 int n=0;
+					prop.add((double) 5);
+					prop.add(((Eq7TRAN) Monde.LE_MONDE.getActeur("Eq7TRAN")).getReponseBis(d));
+					prop.add((double) 7);
+					int a=prop.get(0);
+					double n= (prop.get(1));
 					 for(int ind=1; ind<3; ind++){
-					  		if(a>prop.get(ind)){
-					  			a=prop.get(ind);
-					  			n=ind;
+					  		if(a>prop.get(ind+2)){
+					  			a=prop.get(ind+2);
+					  			n=prop.get(ind+3);
 					  		}
 					  }
 					 if (a!=Double.MAX_VALUE){
 					  		this.stock[i][j]+=d.getQuantite();
 					  		this.banque-=a;
-					  		String l = "Eq"+n+"TRAN";
-					  		((Eq5TRAN) Monde.LE_MONDE.getActeur("Eq5TRAN")).envoyerReponseBis(d.getQuantite(),d.getQualite(),a);
+					  		String l = "Eq"+((int) n)+"TRAN";
+					  		((IvendeurOccasionnelChoco) Monde.LE_MONDE.getActeur(l)).envoyerReponseBis(d.getQuantite(),d.getQualite(),a);
 					  } 
 					 
 				}
@@ -109,6 +113,15 @@ public Eq1DIST()  {
 				{0,29877,13125},
 				{0,21875,9375}
 			};
+			for(int i=0;i<3;i++) {
+				for(int j=0;j<3;j++) {
+					DemandeAO d= new DemandeAO(stockspe[i][j],i*j);
+					ArrayList<Double> prop= new ArrayList<Double>();
+					prop.add(((Eq4TRAN) Monde.LE_MONDE.getActeur("Eq4TRAN")).getReponseBis(d));
+					prop.add(((Eq5TRAN) Monde.LE_MONDE.getActeur("Eq5TRAN")).getReponseBis(d));
+					prop.add(((Eq7TRAN) Monde.LE_MONDE.getActeur("Eq7TRAN")).getReponseBis(d));
+				}
+			}
 		}
 	}
 
