@@ -3,13 +3,12 @@ package abstraction.eq3PROD.echangesProdTransfo;
 import java.util.List;
 
 /**
- * @deprecated
  * Interface associee aux producteurs vendeurs de fèves
  * METHODES DU POINT DE VUE DU MARCHE CENTRAL
  * @author Grégoire
  */
 
-public interface IVendeurFeveV2 {
+public interface IVendeurFeveV3 {
 	
 	/**
 	 * Recupere les offres publiques d'un producteur 
@@ -21,7 +20,7 @@ public interface IVendeurFeveV2 {
 	 * IDEE DU CODE : renvoyez les offres que VOUS proposez au marche
 	 * @author Grégoire
 	 */
-	public List<ContratFeveV2> getOffrePublique();
+	public List<ContratFeveV2> getOffrePubliqueV2();
 	
 	/**
 	 * Informe un producteur des demandes qui lui sont destinees de la part de tous les transformateurs
@@ -32,7 +31,7 @@ public interface IVendeurFeveV2 {
 	 * IDEE DU CODE : stocker les ContratFeve du parametre dans les variables d'instance / les analyser
 	 * @author Grégoire
 	 */
-	public void sendDemandePrivee(List<ContratFeveV2> demandePrivee);
+	public void sendDemandePriveeV2(List<ContratFeveV2> demandePrivee);
 	
 	/**
 	 * Recupere les offres finales d'un producteur
@@ -45,7 +44,7 @@ public interface IVendeurFeveV2 {
 	 * IDEE DU CODE : renvoyer VOS offres aux differents producteurs
 	 * @author Grégoire
 	 */
-	public List<ContratFeveV2> getOffreFinale();
+	public List<ContratFeveV2> getOffreFinaleV2();
 	
 	/**
 	 * Informe un producteur du resultat des ventes
@@ -57,6 +56,6 @@ public interface IVendeurFeveV2 {
 	 * @author Grégoire
 	 * ## MaJ des stocks et des comptes ##
 	 */
-	public void sendResultVentes(List<ContratFeveV2> resultVentes);
-	
+	public void sendResultVentesV2(List<ContratFeveV2> resultVentes);
+
 }
