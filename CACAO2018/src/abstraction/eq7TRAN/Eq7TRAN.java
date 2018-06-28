@@ -78,6 +78,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private final double[] TAUX_TRANSFORMATION_FEVES_POUDRE = {1,1,1};
 	private final double[] TAUX_TRANSFORMATION_FEVES_TABLETTES = {0.6, 0.75, 0.95};
 	
+	private final double TAUX_PRODUCTION_POUDRE = 0.3;
+	private final double TAUX_PRODUCTION_TABLETTE = 0.7;
+	
 	private final int SUM_MOY_VENTE_POUDRE = MOY_VENTE_POUDRE[0]+MOY_VENTE_POUDRE[1]+MOY_VENTE_POUDRE[2];
 	private final int SUM_MOY_VENTE_TABLETTES = MOY_VENTE_TABLETTE[0]+MOY_VENTE_TABLETTE[1]+MOY_VENTE_TABLETTE[2];
 	
@@ -210,7 +213,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getJournal().ajouter("LIVRAISONS POUDRE = " +this.getQuantitePoudreLivrees()+"t");
 		this.getJournal().ajouter("COMMANDES TABLETTES = " +this.getQuantiteTablettesCommandees()+"t");
 		this.getJournal().ajouter("LIVRAISONS TABLETTES = " +this.getQuantiteTablettesLivrees()+"t");
-		
+		this.getJournal().ajouter("TAUX DE PROD POUDRE = " +this.getTauxProductionTablettesPoudre()[0]+"");
+		this.getJournal().ajouter("TAUX DE PROD TABLETTES = " +this.getTauxProductionTablettesPoudre()[1]+"");
 		
 		// Pas d'échange entre transformateur pour le moment
 		
@@ -639,9 +643,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	// retourne un tableau de tableau avec le taux de transformation de tablette en indice 1 et poudre indice 0, la qualité appararait 
 	public double[] getTauxProductionTablettesPoudre() {
-		double sommePoudre=0;
-		double sommeTablette=0;
-		double sommeTotale=sommePoudre+sommeTablette;
+		int sommePoudre=0;
+		int sommeTablette=0;
+		int sommeTotale=sommePoudre+sommeTablette;
+		double tauxPoudre;
+		double tauxTablette;
 		double[] TauxFinauxTetP= new double[2];
 		
 		for (int i=0; i<commandesPoudreEnCours.size(); i++) {
@@ -650,8 +656,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		for (int i=0; i<commandesTablettesEnCours.size(); i++) {
 			sommeTablette+=commandesTablettesEnCours.get(i).getqTabletteBQ()+commandesTablettesEnCours.get(i).getqTabletteMQ()+commandesTablettesEnCours.get(i).getqTabletteHQ();
 		}
-		double tauxPoudre=sommePoudre/sommeTotale;
-		double tauxTablette=sommeTablette/sommeTotale;
+		if (sommeTotale==0) {
+			tauxPoudre=TAUX_PRODUCTION_POUDRE;
+			tauxTablette=TAUX_PRODUCTION_TABLETTE;
+		} else {
+			tauxTablette=sommeTablette/sommeTotale;
+			tauxPoudre=sommePoudre/sommeTotale;
+		}
 		TauxFinauxTetP[0]=tauxPoudre;
 		TauxFinauxTetP[1]=tauxTablette;
 		return TauxFinauxTetP;
