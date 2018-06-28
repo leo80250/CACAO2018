@@ -243,7 +243,17 @@ IvendeurOccasionnelChoco{
 		stocks.add((int)stockTabMQ.getValeur());
 		stocks.add((int)stockTabHQ.getValeur());
 		vendeur = new Vendeur(stocks);
-
+		
+		// On met à jour le journal
+		journalEq4();
+		
+		// On ajoute nos indicateurs et notre journal dans la fenêtre principale du Monde
+		Monde.LE_MONDE.ajouterIndicateur(stockChocMQ);
+		Monde.LE_MONDE.ajouterIndicateur(stockChocHQ);
+		Monde.LE_MONDE.ajouterIndicateur(stockTabBQ);
+		Monde.LE_MONDE.ajouterIndicateur(stockTabMQ);
+		Monde.LE_MONDE.ajouterIndicateur(stockTabHQ);
+		Monde.LE_MONDE.ajouterJournal(JournalEq4);
 	}
 
 	public void journalEq4() {
