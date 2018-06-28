@@ -21,6 +21,7 @@ import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.eq6DIST.IAcheteurChoco;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
@@ -30,7 +31,10 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV2, IVendeurChocoBis {
+public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV2, IVendeurChocoBis, IvendeurOccasionnelChoco {
+	
+	//rajouter IAcheteurFeve à implémenter
+	
 	private Indicateur achats;
 	private Indicateur ventes;
 	// 0 = BQ, 1 = MQ, 2 = HQ
@@ -88,6 +92,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	// en €/tonne
 	private final double[] MOY_PRIX_ACHAT_FEVES = {1800, 2100, 2500};
+	private final double[] MOY_PRIX_VENTE_POUDRE = {2000,2300,2700}; //en tonnes totalement arbitraire
+	private final double[] MOY_PRIX_VENTE_TABLETTE = {3000,3300,3800}; //en tonnes totalement arbitraire
+	
 	
 	// Stratégie
 	private final double MOY_PRIX_FRAIS_ACHAT_FEVES = 0;
@@ -747,12 +754,18 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	/** 
 	 * Interface IVendeurPoudre
-	 * @author boulardmaelle margauxgrand 
+	 * @author boulardmaelle margauxgrand bernardjoseph
 	 */
 	
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
-		return new ContratPoudre[0];
+		ContratPoudre[] catalogue=new ContratPoudre[3];
+		for(int qualite=0;qualite<3;qualite++) {
+			catalogue[qualite]=new ContratPoudre(qualite,(int)this.getStockPoudre(qualite).getValeur(),
+					this.prixVentePoudre[qualite].getValeur(),acheteur,(IVendeurPoudre)this,false);
+		}
+		return catalogue;
 	}
+	
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
 		int n = devis.length;
 		for(int i = 0; i<n; i++) {
@@ -907,6 +920,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.setOffresFevesPubliquesEnCours(offresPubliques);
 	}
 	
+	/**
+	 * Code à recopier dans la V4
+	 */
 	@Override
 	public List<ContratFeveV2> getDemandePrivee() {
 		List<ContratFeveV2> offresPubliques = this.getOffresFevesPubliquesEnCours();
@@ -926,6 +942,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public List<ContratFeveV2> getResultVentes() {
 		return this.getCommandesFeveEnCours();
 	}
+	
+	
+	
+	
 	
 	/** Interface IVendeurChoco
 	 * 
@@ -1008,6 +1028,31 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	
+	/** Interface IvendeurOccasionnelChoco
+	 * @author boulardmaelle
+	 * en gros nous on est concerné que par les indices 1 (tablettes BQ) 2 (tablettes MQ) et 3 (tablettes HQ)
+	 */
+	
+	@Override
+	public double getReponse(DemandeAO d) {
+		if (d.getQualite()==4 || d.getQualite()==5 || d.getQualite()==6) { //on a pas de confiseries donc on est pas interessés
+			return Double.MAX_VALUE;
+		} else {
+			if (d.getQuantite()<stockTablettes[d.getQualite()-1].getValeur()) {
+				return MOY_PRIX_VENTE_TABLETTE[d.getQualite()-1];
+			} else {
+				return Double.MAX_VALUE;
+			}
+		}
+	}
+	@Override
+	public void envoyerReponse(double quantite, int qualite, int prix) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
 	
 		
 
@@ -1059,6 +1104,30 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	*/
 	
+
+	//IAcheteurFeve à laisser vide
+	/**
+	 * code à laisser vide, correspond à la V1, doit demeurer vide, et on doit toujour implémenter IAcheteurFeve
+	 * 
+	 * 
+	public void sendOffrePublique(ContratFeve[] offrePublique) {
+		
+	}
 	
+	public ContratFeve[] getDemandePrivee() {
+		
+	}
+	
+	public void sendContratFictif(ContratFeve[] listContrats) {
+		
+	}
+	
+	public void sendOffreFinale(ContratFeve[] offreFinale) {
+		
+	}
+	public ContratFeve[] getResultVentes() {
+		
+	}
+	*/
 	
 }
