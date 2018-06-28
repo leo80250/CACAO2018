@@ -27,11 +27,11 @@ public Eq1DIST()  {
 	Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche,client));
 	int[][] stock= new int[2][3];
 	stock[0][0] = 0 ;
-	stock[0][1] = 500 ;
-	stock[0][2] = 250;
+	stock[0][1] = 50000 ;
+	stock[0][2] = 25000;
 	stock[1][0] = 0 ;
-	stock[1][1] = 350;
-	stock[1][2] = 150;
+	stock[1][1] = 35000;
+	stock[1][2] = 15000;
 	this.stock=stock;
 		
 		this.journal= new Journal("Journal de Eq1DIST");
