@@ -207,6 +207,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void production(int merch1, int merch2) { 	  				 	 	   			 	
         double quantite = Math.min(stocks[merch1].getValeur(), productionSouhaitee[merch2].getValeur()); 	  				 	 	   			 	
         if(greves()) quantite*=0.3;
+
         if (quantite < productionSouhaitee[merch2].getValeur())
             journal.ajouter("L'eq. 5 n'a pas pu produire assez de " + Marchandises.getMarchandise(merch2) + " par manque de stock de " + Marchandises.getMarchandise(merch1)); 	  				 	 	   			 	
         stocks[merch1].setValeur(this, stocks[merch1].getValeur() - quantite); 	  				 	 	   			 	
@@ -252,6 +253,22 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void salaires() {
     	depenser((782*2400)/24);
     }
+    
+    /*
+     * @author Juliette
+     */
+    public boolean periodeFetes() {
+        int numeroNext = Monde.LE_MONDE.getStep();
+    	if(numeroNext%24>=18 && numeroNext<=21) { // achats des distributeurs en octobre et novembre
+    		return true;
+    	}
+    	if(numeroNext%24>=3 && numeroNext<=6) { //achats des distributeurs en février et mars
+    		return true;
+    	}
+    	return false;
+    	
+    }
+ 
  	  				 	 	   			 	
     /** 	  				 	 	   			 	
      * @author Juliette et Thomas 	  				 	 	   			 	
