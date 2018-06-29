@@ -163,9 +163,11 @@ public Eq1DIST()  {
 				int f = this.stock[i][j]-Q.getValeur(3*i+j);
 				if (f>=0) {
 					res[3*i+j] = Q.getValeur(3*i+j);
+					this.stock[i][j]-=Q.getValeur(3*i+j);
 				}
 				else {
 					res[3*i+j] = stock[i][j];
+					this.stock[i][j]=0;
 					}
 				solde.setValeur(this, solde.getValeur()+res[3*i+j]*prix[i][j]);
 			}
