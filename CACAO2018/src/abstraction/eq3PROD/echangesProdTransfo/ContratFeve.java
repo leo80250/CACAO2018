@@ -167,10 +167,22 @@ public class ContratFeve {
 	
 	@Override
 	public String toString() {
-		return "ContratFeve [transformateur=" + transformateur + ", producteur=" + producteur + ", qualite=" + qualite
-				+ ", quantiteOffrePublique=" + quantiteOffrePublique + ", prixOffrePublique=" + prixOffrePublique
-				+ ", quantiteDemande=" + quantiteDemande + ", prixDemande=" + prixDemande + ", quantiteProposition="
-				+ quantiteProposition + ", prixProposition=" + prixProposition + ", reponse=" + reponse + "]";
+		String [] strqualite = {"basse", "moyenne", "haute"};
+-		String rep = "";
+-		if (this.reponse) {
+-			rep += "\nOffre acceptée";
+-		}
+-		String acheteur = "";
+-		if(this.transformateur != null) {
+-			acheteur += ((Acteur)(this.transformateur)).getNom();
+-		}
+-		String vendeur = "";
+-		if(this.producteur != null) {
+-			vendeur += ((Acteur)(this.producteur)).getNom();
+-		}
+-		
+-		return "Contrat : "+this.getProposition_Quantite()+" tonnes de feve de "+strqualite[this.getQualite()]+" qualité, à "+this.getProposition_Prix()
+-				+"€ la tonne, soit un total de "+this.getProposition_Quantite()*this.getProposition_Prix()+"€.\nAcheteur : "+acheteur+" | Vendeur : "+vendeur+rep;
 	}
 	@Deprecated
 	public double getPrix() {
