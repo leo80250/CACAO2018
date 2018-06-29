@@ -89,8 +89,81 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 	}
 	@Override
 	public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
-		// TODO Auto-generated method stub
-		return null;
+		/**
+		 * Karel Kédémos
+		 */
+		
+		int quantité_demandée_transfo5_CMG=0;
+		int quantité_demandée_transfo5_TBG=0;
+		int quantité_demandée_transfo5_TMG=3000;
+		int quantité_demandée_transfo7_CMG=24650;
+	 	int quantité_demandée_transfo7_TBG=4000;
+		int quantité_demandée_transfo7_TMG=48000;
+		int quantité_demandée_transfo4_CMG=5800;
+		int quantité_demandée_transfo4_TBG=200;
+		int quantité_demandée_transfo4_TMG=6750;	
+		int nombre_transfo=Prix.size();
+		ArrayList<ArrayList<Integer>> commande = new ArrayList<ArrayList<Integer>>();
+		for (int i=0;i<nombre_transfo;i++) {
+			commande.add(new ArrayList<Integer>());
+			for (int j=0;j<6;j++) {
+				commande.get(i).add(0);
+		}
+		}
+		double stock_TMG_min=10000000.0; // calcul le stock min en TMG des 3 transfos et l'indice de l'équipe avec le plus petit stock;
+		int equipe_stock_TMG_min=0;
+		for (int i=0; i<3; i++) {
+			if (stock_TMG_min>=Stock.get(i).get(3)) {
+				stock_TMG_min=Stock.get(i).get(3);
+				equipe_stock_TMG_min=i;
+			}
+		}
+		int indice_equipe_moins_chere_TMG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
+		double prix_moins_chere_TMG=10000000.0;
+		for (int i=0; i<3; i++) {
+			if (Prix.get(i).getPrixProduit((int)stock_TMG_min-1,4)<=prix_moins_chere_TMG) {
+				indice_equipe_moins_chere_TMG=i;
+				prix_moins_chere_TMG=Prix.get(i).getPrixProduit((int)stock_TMG_min-1,4);
+			}
+		}
+		int stock_TMG1=0;
+		if (equipe_stock_TMG_min==indice_equipe_moins_chere_TMG) {
+			stock_TMG1= (int) (0.8*stock_TMG_min);
+		} else {
+			stock_TMG1= (int) (0.2*stock_TMG_min);
+		}
+		commande.get(equipe_stock_TMG_min).set(3, stock_TMG1);
+		// calcule le 2e plus petit stock de TMG et l'indice du transfo associé 
+		double stock_TMG_min2=10000000.0;
+		int equipe_stock_TMG_min2=0;
+		for (int k=0; k<3; k++) {
+			if (stock_TMG_min2>=Stock.get(k).get(3) && stock_TMG_min<Stock.get(k).get(3)) {
+				stock_TMG_min2=Stock.get(k).get(3);
+				equipe_stock_TMG_min2=k;
+			}
+		}
+		// renvoie l'indice du transfo le moins chere pour le 2e plus petit stock
+		int indice_equipe_moins_chere_TMG2=0;
+		double prix_moins_chere_TMG2=100000000.0;
+		for (int i=0; i<3; i++) {
+			if (Prix.get(i).getPrixProduit((int) stock_TMG_min2-1, 4) <= prix_moins_chere_TMG2
+					&& i!=indice_equipe_moins_chere_TMG) {
+				indice_equipe_moins_chere_TMG2=i;
+				prix_moins_chere_TMG2=Prix.get(i).getPrixProduit((int)stock_TMG_min2-1,4);
+			}
+		}
+		int stock_TMG2;
+		if (equipe_stock_TMG_min2==indice_equipe_moins_chere_TMG2) {
+			stock_TMG2=(int) (0.8*stock_TMG_min2);
+		} else {
+			stock_TMG2=(int) (0.2*stock_TMG_min2);
+		}
+		commande.get(equipe_stock_TMG_min2).set(3, stock_TMG2);
+		// calcule l'indice du transfo avec le plus grand stock
+		int equipe_stock_TMG_max=3-equipe_stock_TMG_min-equipe_stock_TMG_min2;
+		commande.get(equipe_stock_TMG_max).set(3, 22220-stock_TMG1-stock_TMG2);
+		
+		return commande;
 	}
 	@Override
 	public void livraison(ArrayList<Integer> livraison, double paiement) {
