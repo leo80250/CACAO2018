@@ -302,6 +302,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     		devis[2].setReponse(true);
     		equipe7.sendReponsePoudre(devis, this);
     		depenser(devis[2].getPrix());
+    		this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
     	}    	
     	
     	equipe7.getEchangeFinalPoudre(demande, this);
