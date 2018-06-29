@@ -140,40 +140,40 @@ IvendeurOccasionnelChoco{
 				
 				ArrayList<Indicateur> Stocks_Acteur2 = new ArrayList<>();
 				//On remplit cette liste avec nos stocks
-				Stocks_Acteur1.add(new Indicateur("",this.Acteur2,0));
-				Stocks_Acteur1.add(this.Acteur2.getStockChocMQ());
-				Stocks_Acteur1.add(this.Acteur2.getStockChocHQ());
-				Stocks_Acteur1.add(this.Acteur2.getStockTabBQ());
-				Stocks_Acteur1.add(this.Acteur2.getStockTabMQ());
-				Stocks_Acteur1.add(this.Acteur2.getStockTabHQ());
+				Stocks_Acteur2.add(new Indicateur("",this.Acteur2,0));
+				Stocks_Acteur2.add(this.Acteur2.getStockChocMQ());
+				Stocks_Acteur2.add(this.Acteur2.getStockChocHQ());
+				Stocks_Acteur2.add(this.Acteur2.getStockTabBQ());
+				Stocks_Acteur2.add(this.Acteur2.getStockTabMQ());
+				Stocks_Acteur2.add(this.Acteur2.getStockTabHQ());
 				this.Acteur2.setStocks(Stocks_Acteur2);;
 				// On s'initialise en tant que vendeur
 				ArrayList<Integer> stocks2 = new ArrayList<>();
-				stocks.add(0);
-				stocks.add((int)this.Acteur2.getStockChocMQ().getValeur());
-				stocks.add((int)this.Acteur2.getStockChocHQ().getValeur());
-				stocks.add((int)this.Acteur2.getStockTabBQ().getValeur());
-				stocks.add((int)this.Acteur2.getStockTabMQ().getValeur());
-				stocks.add((int)this.Acteur2.getStockTabHQ().getValeur());
+				stocks2.add(0);
+				stocks2.add((int)this.Acteur2.getStockChocMQ().getValeur());
+				stocks2.add((int)this.Acteur2.getStockChocHQ().getValeur());
+				stocks2.add((int)this.Acteur2.getStockTabBQ().getValeur());
+				stocks2.add((int)this.Acteur2.getStockTabMQ().getValeur());
+				stocks2.add((int)this.Acteur2.getStockTabHQ().getValeur());
 				this.Acteur2.setVendeur(new Vendeur(stocks2));
 				
 				ArrayList<Indicateur> Stocks_Acteur3 = new ArrayList<>();
 				//On remplit cette liste avec nos stocks
-				Stocks_Acteur1.add(new Indicateur("",this.Acteur3,0));
-				Stocks_Acteur1.add(this.Acteur3.getStockChocMQ());
-				Stocks_Acteur1.add(this.Acteur3.getStockChocHQ());
-				Stocks_Acteur1.add(this.Acteur3.getStockTabBQ());
-				Stocks_Acteur1.add(this.Acteur3.getStockTabMQ());
-				Stocks_Acteur1.add(this.Acteur3.getStockTabHQ());
+				Stocks_Acteur3.add(new Indicateur("",this.Acteur3,0));
+				Stocks_Acteur3.add(this.Acteur3.getStockChocMQ());
+				Stocks_Acteur3.add(this.Acteur3.getStockChocHQ());
+				Stocks_Acteur3.add(this.Acteur3.getStockTabBQ());
+				Stocks_Acteur3.add(this.Acteur3.getStockTabMQ());
+				Stocks_Acteur3.add(this.Acteur3.getStockTabHQ());
 				this.Acteur3.setStocks(Stocks_Acteur3);;
 				// On s'initialise en tant que vendeur
 				ArrayList<Integer> stocks3 = new ArrayList<>();
-				stocks.add(0);
-				stocks.add((int)this.Acteur3.getStockChocMQ().getValeur());
-				stocks.add((int)this.Acteur3.getStockChocHQ().getValeur());
-				stocks.add((int)this.Acteur3.getStockTabBQ().getValeur());
-				stocks.add((int)this.Acteur3.getStockTabMQ().getValeur());
-				stocks.add((int)this.Acteur3.getStockTabHQ().getValeur());
+				stocks3.add(0);
+				stocks3.add((int)this.Acteur3.getStockChocMQ().getValeur());
+				stocks3.add((int)this.Acteur3.getStockChocHQ().getValeur());
+				stocks3.add((int)this.Acteur3.getStockTabBQ().getValeur());
+				stocks3.add((int)this.Acteur3.getStockTabMQ().getValeur());
+				stocks3.add((int)this.Acteur3.getStockTabHQ().getValeur());
 				this.Acteur3.setVendeur(new Vendeur(stocks3));
 
 		
@@ -206,6 +206,7 @@ IvendeurOccasionnelChoco{
 		contratPoudreEnCoursEq7TRAN_Acteur2[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this.Acteur2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_Acteur2[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this.Acteur2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
+		
 		this.Acteur2.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_Acteur2);
 		this.Acteur2.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_Acteur2);
 		
@@ -220,6 +221,7 @@ IvendeurOccasionnelChoco{
 
 		this.Acteur3.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_Acteur3);
 		this.Acteur3.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_Acteur3);
+		
 		
 		contratFeveEnCours = new ContratFeve[6];
 		contratFeveEnCours[0]=new ContratFeve( (IAcheteurFeve)this , (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD") , 0 , 0 , 0 , 0 , 0.0 , 0.0 , 0.0 ,false);
@@ -265,14 +267,33 @@ IvendeurOccasionnelChoco{
 		vendeur = new Vendeur(stocks1);
 		
 
-		// On ajoute nos indicateurs et notre journal de production et de vente dans la fenêtre principale du Monde
-		Monde.LE_MONDE.ajouterIndicateur(stockChocMQ_Eq4);
-		Monde.LE_MONDE.ajouterIndicateur(stockChocHQ_Eq4);
-		Monde.LE_MONDE.ajouterIndicateur(stockTabBQ_Eq4);
-		Monde.LE_MONDE.ajouterIndicateur(stockTabMQ_Eq4);
-		Monde.LE_MONDE.ajouterIndicateur(stockTabHQ_Eq4);
-		Monde.LE_MONDE.ajouterJournal(JournalEq4);
-		Monde.LE_MONDE.ajouterJournal(getJournalVentes());
+		/**
+		 * On ajoute nos indicateurs et notre journal de production et de vente dans la fenêtre principale du Monde
+		 * @author Mickaël, Etienne
+		 */
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockChocMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockChocHQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockTabBQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockTabMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockTabHQ());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur1.getJournalEq4());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur1.getVendeur().ventes);
+		
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockChocMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockChocHQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockTabBQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockTabMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockTabHQ());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur2.getJournalEq4());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur2.getVendeur().ventes);
+		
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockChocMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockChocHQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockTabBQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockTabMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockTabHQ());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur3.getJournalEq4());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur3.getVendeur().ventes);
 	}
 
 	/** Nom de l'acteur
@@ -398,21 +419,23 @@ IvendeurOccasionnelChoco{
 		stocks.add((int)stockTabHQ_Eq4.getValeur());
 		vendeur = new Vendeur(stocks);
 		
-		// On met à jour le journal
-		journalEq4();
+		// On met à jour le journal des trois acteurs
+		journalEq4(this.Acteur1);
+		journalEq4(this.Acteur2);
+		journalEq4(this.Acteur3);
 	}
 
-	public void journalEq4() {
-		JournalEq4.ajouter("Stock des tablettes Basse Qualité = "+stockTabBQ_Eq4.getValeur());
-		JournalEq4.ajouter("Stock des tablettes Moyenne Qualité = "+stockTabMQ_Eq4.getValeur());
-		JournalEq4.ajouter("Stock des tablettes Basse Qualité = "+stockTabHQ_Eq4.getValeur());
-		JournalEq4.ajouter("Stock des chocolats Moyenne Qualité = "+stockChocMQ_Eq4.getValeur());
-		JournalEq4.ajouter("Stock des chocolats Haute Qualité = "+stockChocHQ_Eq4.getValeur());
-		JournalEq4.ajouter("Production des tablettes Basse Qualité = "+prodTabBQ_Eq4.getValeur());
-		JournalEq4.ajouter("Production des tablettes Moyenne Qualité = "+prodTabBQ_Eq4.getValeur());
-		JournalEq4.ajouter("Production des tablettes Haute Qualité = "+prodTabBQ_Eq4.getValeur());
-		JournalEq4.ajouter("Production de chocolats Moyenne Qualité = "+prodChocMQ_Eq4.getValeur());
-		JournalEq4.ajouter("Production de chocolats Haute Qualité = "+prodChocHQ_Eq4.getValeur());
+	public void journalEq4(SousActeur j) {
+		j.getJournalEq4().ajouter("Stock des tablettes Basse Qualité = "+j.getStockTabBQ());
+		j.getJournalEq4().ajouter("Stock des tablettes Moyenne Qualité = "+j.getStockTabMQ());
+		j.getJournalEq4().ajouter("Stock des tablettes Basse Qualité = "+j.getStockTabHQ());
+		j.getJournalEq4().ajouter("Stock des chocolats Moyenne Qualité = "+j.getStockChocMQ());
+		j.getJournalEq4().ajouter("Stock des chocolats Haute Qualité = "+j.getStockChocHQ());
+		j.getJournalEq4().ajouter("Production des tablettes Basse Qualité = "+j.getProdTabBQ());
+		j.getJournalEq4().ajouter("Production des tablettes Moyenne Qualité = "+j.getProdTabBQ());
+		j.getJournalEq4().ajouter("Production des tablettes Haute Qualité = "+j.getProdTabBQ());
+		j.getJournalEq4().ajouter("Production de chocolats Moyenne Qualité = "+j.getProdChocMQ());
+		j.getJournalEq4().ajouter("Production de chocolats Haute Qualité = "+j.getProdChocHQ());
 
 	}
 
