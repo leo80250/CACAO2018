@@ -281,6 +281,32 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         return false;
 
     }
+    
+    public void achatPoudre() {
+    	IVendeurPoudre equipe7 = (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq7TRAN");
+    	ContratPoudre[] catalogue = equipe7.getCataloguePoudre(this);
+    	double besoinPoudre = this.productionSouhaitee[TABLETTES_HQ].getValeur()-this.stocks[POUDRE_HQ].getValeur();
+    	ContratPoudre[] demande = new ContratPoudre[3];
+    	demande[0]=null;
+    	demande[1]=null;
+    	    	//Si l'équipe 7 n'a pas assez de stocks, on demande le maximum disponible
+    	if(catalogue[2].getQuantite()<5000) {
+    		demande[2] = new ContratPoudre(2,catalogue[2].getQuantite(),catalogue[2].getPrix(),this,equipe7,false);
+    	}
+    	
+    	else {
+    		demande[2]=new ContratPoudre(2,(int)besoinPoudre,catalogue[2].getPrix(),this,equipe7,false);
+    	}  	
+    	ContratPoudre[] devis = equipe7.getDevisPoudre(demande, this);
+    	if(devis[2].getPrix()==demande[2].getPrix() && devis[2].getQuantite()==demande[2].getQuantite()) {
+    		devis[2].setReponse(true);
+    		equipe7.sendReponsePoudre(devis, this);
+    		depenser(devis[2].getPrix());
+    	}    	
+    	
+    	equipe7.getEchangeFinalPoudre(demande, this);
+    	}
+    
 
 
     /**
