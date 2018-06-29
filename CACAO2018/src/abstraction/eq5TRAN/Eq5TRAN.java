@@ -36,7 +36,8 @@ import static abstraction.eq5TRAN.util.Marchandises.*;
  * TODO LIST 	  				 	 	   			 	
  * - Gestion periodes de l'annee (Noel, Pacques ...) 	  				 	 	   			 	
  * - Gestion de facteurs sociaux (greves ...) 	  				 	 	   			 	
- * - Systeme de fidelite client/fournisseur 	  				 	 	   			 	
+ * - Systeme de fidelite client/fournisseur
+ * - Determiner prix d'achat aux producteurs
  */ 	  				 	 	   			 	
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoBis,IAcheteurFeveV4 { 	  				 	 	   			 	
  	  				 	 	   			 	
@@ -206,8 +207,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void production(int merch1, int merch2) { 	  				 	 	   			 	
         double quantite = Math.min(stocks[merch1].getValeur(), productionSouhaitee[merch2].getValeur()); 	  				 	 	   			 	
         if(greves()) quantite*=0.3;
-        if (quantite < productionSouhaitee[merch2].getValeur())
-            journal.ajouter("L'eq. 5 n'a pas pu produire assez de " + Marchandises.getMarchandise(merch2) + " par manque de stock de " + Marchandises.getMarchandise(merch1)); 	  				 	 	   			 	
+        if (quantite < productionSouhaitee[merch2].getValeur()) {
+            respectObjectifs[merch1]=false;
+            journal.ajouter("L'eq. 5 n'a pas pu produire assez de " + Marchandises.getMarchandise(merch2) + " par manque de stock de " + Marchandises.getMarchandise(merch1));
+        }
         stocks[merch1].setValeur(this, stocks[merch1].getValeur() - quantite); 	  				 	 	   			 	
         stocks[merch2].setValeur(this, stocks[merch2].getValeur() + quantite); 	  				 	 	   			 	
     } 	  				 	 	   			 	
