@@ -11,7 +11,8 @@ import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4; 	  				 	 	   			 	
 
 import abstraction.eq5TRAN.appeldOffre.DemandeAO; 	  				 	 	   			 	
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco; 	  				 	 	   			 	
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoBis;
 import abstraction.eq5TRAN.util.Marchandises; 	  				 	 	   			 	
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre; 	  				 	 	   			 	
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre; 	  				 	 	   			 	
@@ -37,7 +38,7 @@ import static abstraction.eq5TRAN.util.Marchandises.*;
  * - Gestion de facteurs sociaux (greves ...) 	  				 	 	   			 	
  * - Systeme de fidelite client/fournisseur 	  				 	 	   			 	
  */ 	  				 	 	   			 	
-public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChoco,IAcheteurFeveV4 { 	  				 	 	   			 	
+public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoBis,IAcheteurFeveV4 { 	  				 	 	   			 	
  	  				 	 	   			 	
     // cf Marchandises.java pour obtenir l'indexation 	  				 	 	   			 	
     private Indicateur[] productionSouhaitee; // ce qui sort de nos machines en kT 	  				 	 	   			 	
@@ -420,46 +421,46 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * @author Maxim 	  				 	 	   			 	
      */ 	  				 	 	   			 	
     @Override 	  				 	 	   			 	
-    public double getReponse(DemandeAO d) { 	  				 	 	   			 	
+    public int getReponseBis(DemandeAO d) { 	  				 	 	   			 	
         switch (d.getQualite()) { 	  				 	 	   			 	
             case 1: { 	  				 	 	   			 	
                 journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)"); 	  				 	 	   			 	
-                return Double.MAX_VALUE; 	  				 	 	   			 	
+                return (int)Double.MAX_VALUE; 	  				 	 	   			 	
             } 	  				 	 	   			 	
             case 2: 	  				 	 	   			 	
                 if (d.getQuantite() < 0.2 * stocks[FRIANDISES_MQ].getValeur()) { 	  				 	 	   			 	
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() + "à getReponse(d)"); 	  				 	 	   			 	
-                    return 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite(); 	  				 	 	   			 	
+                    return (int)(1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite()); 	  				 	 	   			 	
                 } 	  				 	 	   			 	
             case 3: { 	  				 	 	   			 	
                 journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)"); 	  				 	 	   			 	
-                return Double.MAX_VALUE; 	  				 	 	   			 	
+                return (int)Double.MAX_VALUE; 	  				 	 	   			 	
             } 	  				 	 	   			 	
             case 4: 	  				 	 	   			 	
                 if (d.getQuantite() < 0.2 * stocks[TABLETTES_BQ].getValeur()) { 	  				 	 	   			 	
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite() + "à getReponse(d)"); 	  				 	 	   			 	
-                    return 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite(); 	  				 	 	   			 	
+                    return (int)(1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()); 	  				 	 	   			 	
                 } 	  				 	 	   			 	
             case 5: 	  				 	 	   			 	
                 if (d.getQuantite() < 0.2 * stocks[TABLETTES_MQ].getValeur()) { 	  				 	 	   			 	
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite() + "à getReponse(d)"); 	  				 	 	   			 	
-                    return 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite(); 	  				 	 	   			 	
+                    return (int)(1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()); 	  				 	 	   			 	
                 } 	  				 	 	   			 	
             case 6: 	  				 	 	   			 	
                 if (d.getQuantite() < 0.2 * stocks[TABLETTES_HQ].getValeur()) { 	  				 	 	   			 	
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() + "à getReponse(d)"); 	  				 	 	   			 	
-                    return 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite(); 	  				 	 	   			 	
+                    return (int)(1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite()); 	  				 	 	   			 	
                 } 	  				 	 	   			 	
         } 	  				 	 	   			 	
-        return Double.MAX_VALUE; 	  				 	 	   			 	
+        return (int)Double.MAX_VALUE; 	  				 	 	   			 	
     } 	  				 	 	   			 	
      	  				 	 	   			 	
     /** @author Maxim */ 	  				 	 	   			 	
  	  				 	 	   			 	
 	@Override 	  				 	 	   			 	
-	public void envoyerReponse(double quantite, int qualite, int prix) { 	  				 	 	   			 	
+	public void envoyerReponseBis(int quantite, int qualite, int prix) { 	  				 	 	   			 	
 		this.depenser(-prix); 	  				 	 	   			 	
-		this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur()-quantite); 	  				 	 	   			 	
+		this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur()-quantite*(200/10000000)); 	  				 	 	   			 	
 	} 	  				 	 	   			 	
  	  				 	 	   			 	
  	  				 	 	   			 	
