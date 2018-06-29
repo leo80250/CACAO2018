@@ -982,7 +982,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			}
 			else {
 				prix = new Double[1];
-				prix[0] = estimatePrixVenteTablette(4-idProduit);
+				prix[0] = estimatePrixVenteTablette(idProduit-4);
 			}
 			
 			intervalles.add(intervalle);
@@ -1017,7 +1017,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 						livraisons.get(idDist).set(idProduit-1, commandes.get(idDist).get(idProduit-1)-diff);
 						
 						// On retire ce qu'on a utilisé de notre stock
-						this.setStockTablettes((int)(this.getStockTablettes(4-idProduit).getValeur()-livraisons.get(idDist).get(idProduit-1)), 4-idProduit);
+						this.setStockTablettes((int)(this.getStockTablettes(idProduit-4).getValeur()-livraisons.get(idDist).get(idProduit-1)), idProduit-4);
 					}
 				}
 			}
@@ -1038,11 +1038,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	@Override
 	public double getReponse(DemandeAO d) {
-		if (d.getQualite()==4 || d.getQualite()==5 || d.getQualite()==6) { //on a pas de confiseries donc on est pas interessés
+		if (d.getQualite()==1 || d.getQualite()==2 || d.getQualite()==3) { //on a pas de confiseries donc on est pas interessés
 			return Double.MAX_VALUE;
 		} else {
-			if (d.getQuantite()<stockTablettes[d.getQualite()-1].getValeur()) {
-				return MOY_PRIX_VENTE_TABLETTE[d.getQualite()-1];
+			if (d.getQuantite()<stockTablettes[d.getQualite()-4].getValeur()) {
+				return this.estimatePrixVenteTablette(d.getQualite()-4);
 			} else {
 				return Double.MAX_VALUE;
 			}
@@ -1050,8 +1050,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	@Override
 	public void envoyerReponse(double quantite, int qualite, int prix) {
-		this.stockTablettes[qualite-1].setValeur(this, this.stockTablettes[qualite-1].getValeur()-quantite);
-		
+		this.stockTablettes[qualite-1].setValeur(this, this.stockTablettes[qualite-4].getValeur()-quantite);
 	}
 	
 	
