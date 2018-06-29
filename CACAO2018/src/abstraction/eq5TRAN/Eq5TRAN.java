@@ -169,7 +169,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void next() { 
         production();
         bienEtreSalarie();
-    } 	  				 	 	   			 	
+        salaires();
+        }
  	  				 	 	   			 	
     /** 	  				 	 	   			 	
      * @author Thomas Schillaci 	  				 	 	   			 	
@@ -252,8 +253,28 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * @author Juliette
      */
     public void salaires() {
-    	depenser((782*2400)/24);
+    	if(greves()==false) {
+    		depenser((782*2400)/24);
+    	}
+
+
     }
+
+    /*
+     * @author Juliette
+     */
+    public boolean periodeFetes() {
+        int numeroNext = Monde.LE_MONDE.getStep();
+    	if(numeroNext%24>=18 && numeroNext<=21) { // achats des distributeurs en octobre et novembre
+    		return true;
+    	}
+    	if(numeroNext%24>=3 && numeroNext<=6) { //achats des distributeurs en février et mars
+    		return true;
+    	}
+    	return false;
+
+    }
+
  	  				 	 	   			 	
     /** 	  				 	 	   			 	
      * @author Juliette et Thomas 	  				 	 	   			 	
