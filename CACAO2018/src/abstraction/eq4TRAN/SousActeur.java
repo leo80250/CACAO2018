@@ -43,19 +43,19 @@ IVendeurPoudre {
 	private ContratPoudre[] contratPoudreEnCoursEq7TRAN ;
 	private ContratPoudre[] contratPoudreEnCoursEq5TRAN;
 
-	public SousActeur(Journal JournalEq4, Indicateur solde, Indicateur stockTabBQ, Indicateur stockTabMQ, Indicateur stockTabHQ, Indicateur stockChocMQ, Indicateur stockChocHQ, Indicateur prodTabBQ, Indicateur prodTabMQ, Indicateur prodTabHQ,  Indicateur prodChocMQ , Indicateur prodChocHQ) {
+	public SousActeur(Journal JournalEq4, int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k) {
 		this.JournalEq4 = JournalEq4;
-		this.prodChocHQ = prodChocHQ;
-		this.prodChocMQ = prodChocMQ;
-		this.prodTabBQ = prodTabBQ;
-		this.prodTabHQ = prodTabHQ;
-		this.prodTabMQ = prodTabMQ;
-		this.solde = solde;
-		this.stockChocHQ = stockChocHQ;
-		this.stockChocMQ = stockChocMQ;
-		this.stockTabBQ = stockTabBQ;
-		this.stockTabHQ = stockTabHQ;
-		this.stockTabMQ = stockTabMQ;
+		this.prodChocHQ = new Indicateur("prodChocHQ_Eq4",this,a);
+		this.prodChocMQ = new Indicateur("prodChocMQ_Eq4",this,b);
+		this.prodTabBQ = new Indicateur("prodTabBQ_Eq4",this,c);
+		this.prodTabHQ = new Indicateur("prodTabHQ_Eq4",this,d);
+		this.prodTabMQ = new Indicateur("prodTabMQ_Eq4",this,e);
+		this.solde = new Indicateur("solde", this,f);
+		this.stockChocHQ = new Indicateur("stockTabHQ_Eq4",this,g);
+		this.stockChocMQ = new Indicateur("stockTabMQ_Eq4",this,h);
+		this.stockTabBQ = new Indicateur("stockTabBQ_Eq4",this,i);
+		this.stockTabHQ = new Indicateur("stockTabHQ_Eq4",this,j);
+		this.stockTabMQ = new Indicateur("stockTabMQ_Eq4",this,k);
 		}
 
 	public String getNom() {
