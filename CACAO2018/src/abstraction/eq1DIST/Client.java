@@ -58,7 +58,16 @@ public class Client implements Acteur {
 		this.PartdeMarche = new double[3][6];
 	}
 	
-	public void EquilibrerPartsDeMarche(int j, double ValeurInitiale, double ValeurFinale, ArrayList<Acteur> Distributeurs) {
+	/**
+	 *
+	 * @param  int j (colonne), double Valeur initiale de la part de marché, double Valeur finale après modification de la part de marché, ArrayList des distributeur
+	 *           
+	 * @return modifie le tableau des parts de marché: la part de marché qui a diminué chez un acteur lors de la modification est répartie entre tous les autres, de facon 
+	 * à garder un total égal à 1.
+	 *            
+	 */
+	
+	public void EquilibrerPartsDeMarche(int j, double ValeurInitiale, double ValeurFinale, ArrayList<InterfaceDistributeurClient> Distributeurs) {
 		double ecart=(ValeurInitiale-ValeurFinale)/Distributeurs.size();
 		for(int i=0;i<Distributeurs.size();i++) {
 			this.PartdeMarche[i][j]+=(double)Math.round(ecart * 1000) / 1000;
@@ -81,6 +90,30 @@ public class Client implements Acteur {
 			if(valeur<0) {this.PartdeMarche[i][j]=0;}
 			else {this.PartdeMarche[i][j]=(double)Math.round(valeur * 1000) / 1000;}
 		}
+	}
+	
+	
+	/**
+	 *
+	 * @param int i (ligne), int j (colonne), double prix pour 1 catégorie , ArrayList des distributeurs
+	 *           
+	 * @return modifie le tableau des parts de marché en fonction des prix proposés. Calcul d'un prix moyens en fonction
+	 * du nombre d'acteurs et des prix proposés par chaque, puis vérifie si le prix proposé par un acteur est supérieur ou non à ce prix moyen
+	 * Si le prix est supérieur, la part de marché diminue (on veut que pour un prix deux fois supérieur au prix moyen, la part de marché diminue de 10%)
+	 *           
+	 */
+	public void ModifierPartsDeMarchePrix(int i, int j, double prix, ArrayList<InterfaceDistributeurClient> Distributeurs) {
+		double PrixMoyen=0;
+		for(InterfaceDistributeurClient a: Distributeurs) {
+			PrixMoyen+=a.getPrix()[j];
+		}
+		PrixMoyen=PrixMoyen/Distributeurs.size();
+		double facteur = (Distributeurs.get(i).getPrix()[j]-PrixMoyen)/(Distributeurs.get(i).getPrix()[j]+PrixMoyen);
+		if (facteur <0) {
+			facteur =0;
+		}
+		this.PartdeMarche[i][j]=(double)Math.round((1-0.3*facteur)* this.PartdeMarche[i][j]*1000)/1000;
+		
 	}
 
 	/**
@@ -108,6 +141,16 @@ public class Client implements Acteur {
 		return this.PartdeMarche;
 	}
 	
+	public void ChangementPartdeMarche(int i, int j, GrilleQuantite commande, GrilleQuantite reponse, InterfaceDistributeurClient acteur, ArrayList<InterfaceDistributeurClient> Distributeurs) {
+		//modification des parts de marché en fonction des commandes
+		double ValeurInitiale0 = this.getValeur(i,j);
+		this.ModifierPartsDeMarche(i, j, commande.getValeur(j), reponse.getValeur(j));
+		this.EquilibrerPartsDeMarche(j, ValeurInitiale0, this.getValeur(i, j), Distributeurs);
+		//modification des parts de marché en fonction des prix
+		ValeurInitiale0 = this.getValeur(i, j);
+		this.ModifierPartsDeMarchePrix(i, j, acteur.getPrix()[j], Distributeurs);
+		this.EquilibrerPartsDeMarche(j, ValeurInitiale0, this.getValeur(i, j), Distributeurs);
+	}
 	/**
 	 *
 	 * @param int[][] h,int i
@@ -148,11 +191,11 @@ public class Client implements Acteur {
 		
 		int periode=Monde.LE_MONDE.getStep()%24;	// on récupère la période
 		ArrayList<Acteur> Acteurs =Monde.LE_MONDE.getActeurs(); // récupération des acteurs
-		ArrayList<Acteur> Distributeurs = new ArrayList<Acteur>();
+		ArrayList<InterfaceDistributeurClient> Distributeurs = new ArrayList<InterfaceDistributeurClient>();
 		//récupération des instances de distributeurs
 		for(Acteur c: Acteurs) {
 			if(c instanceof InterfaceDistributeurClient) {
-				Distributeurs.add(c);
+				Distributeurs.add((InterfaceDistributeurClient)c);
 			}
 		}
 		//h = tableau de lacommande totale de la période
@@ -187,29 +230,51 @@ public class Client implements Acteur {
 				this.journal.ajouter("- Les magasins Mousquetaire ont vendu (effectivement) : "+ReponseMousquetaire.toString()+"\n");
 				this.journal.ajouter("");
 				
+				
+				//modification des parts de marché en fonction des commandes
 				double ValeurInitiale0 = this.getValeur(0, 0);
 				this.ModifierPartsDeMarche(0, 0, CommandeMousquetaire.getValeur(0), ReponseMousquetaire.getValeur(0));
 				this.EquilibrerPartsDeMarche(0, ValeurInitiale0, this.getValeur(0, 0), Distributeurs);
+				//modification des parts de marché en fonction des prix
+				//ValeurInitiale0 = this.getValeur(0, 0);
+				//this.ModifierPartsDeMarchePrix(0, 0, Mousquetaire.getPrix()[0], Distributeurs);
+				//this.EquilibrerPartsDeMarche(0, ValeurInitiale0, this.getValeur(0, 0), Distributeurs);
+				
 				
 				double ValeurInitiale1 = this.getValeur(0, 1);
 				this.ModifierPartsDeMarche(0, 1, CommandeMousquetaire.getValeur(1), ReponseMousquetaire.getValeur(1));
 				this.EquilibrerPartsDeMarche(1, ValeurInitiale1, this.getValeur(0, 1), Distributeurs);
+				ValeurInitiale1 = this.getValeur(0, 1);
+				//this.ModifierPartsDeMarchePrix(0, 1, Mousquetaire.getPrix()[1], Distributeurs);
+				//this.EquilibrerPartsDeMarche(1, ValeurInitiale1, this.getValeur(0, 1), Distributeurs);
 				
 				double ValeurInitiale2 = this.getValeur(0, 2);
 				this.ModifierPartsDeMarche(0, 2, CommandeMousquetaire.getValeur(2), ReponseMousquetaire.getValeur(2));
 				this.EquilibrerPartsDeMarche(2, ValeurInitiale2, this.getValeur(0, 2), Distributeurs);
+				ValeurInitiale2= this.getValeur(0, 2);
+				//this.ModifierPartsDeMarchePrix(0, 2, Mousquetaire.getPrix()[2], Distributeurs);
+				//this.EquilibrerPartsDeMarche(2, ValeurInitiale2, this.getValeur(0, 2), Distributeurs);
 				
 				double ValeurInitiale3 = this.getValeur(0, 3);
 				this.ModifierPartsDeMarche(0, 3, CommandeMousquetaire.getValeur(3), ReponseMousquetaire.getValeur(3));
 				this.EquilibrerPartsDeMarche(3, ValeurInitiale3, this.getValeur(0, 3), Distributeurs);
+				ValeurInitiale3 = this.getValeur(0, 3);
+				//this.ModifierPartsDeMarchePrix(0, 3, Mousquetaire.getPrix()[3], Distributeurs);
+				//this.EquilibrerPartsDeMarche(3, ValeurInitiale3, this.getValeur(0, 3), Distributeurs);
 				
 				double ValeurInitiale4 = this.getValeur(0, 4);
 				this.ModifierPartsDeMarche(0, 4, CommandeMousquetaire.getValeur(4), ReponseMousquetaire.getValeur(4));
 				this.EquilibrerPartsDeMarche(4, ValeurInitiale4, this.getValeur(0, 4), Distributeurs);
+				ValeurInitiale4 = this.getValeur(0, 4);
+				//this.ModifierPartsDeMarchePrix(0, 4, Mousquetaire.getPrix()[4], Distributeurs);
+				//this.EquilibrerPartsDeMarche(4, ValeurInitiale4, this.getValeur(0, 4), Distributeurs);
 				
 				double ValeurInitiale5 = this.getValeur(0, 5);
 				this.ModifierPartsDeMarche(0, 5, CommandeMousquetaire.getValeur(5), ReponseMousquetaire.getValeur(5));
 				this.EquilibrerPartsDeMarche(5, ValeurInitiale5, this.getValeur(0, 5), Distributeurs);
+				ValeurInitiale5 = this.getValeur(0, 5);
+				//this.ModifierPartsDeMarchePrix(0, 5, Mousquetaire.getPrix()[5], Distributeurs);
+				//this.EquilibrerPartsDeMarche(5, ValeurInitiale5, this.getValeur(0, 5), Distributeurs);
 				
 				this.journal.ajouter("- Les parts de marché des magasins Mousquetaire sont désormais : "+this.getValeur(0,0)+"% sur les Tablettes BG ; "+ this.getValeur(0,1)+"% sur les Tablettes MG ; "+this.getValeur(0,2)+"% sur les Tablettes HG ; "
 						+this.getValeur(0,3)+"% sur les Confiseries BG ; "+this.getValeur(0,4)+"% sur les Confiseries MG ; "+this.getValeur(0,5)+"% sur les Confiseries HG.");
