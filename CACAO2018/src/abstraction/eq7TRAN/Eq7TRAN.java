@@ -263,22 +263,24 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			
 			if(Acteur instanceof IVendeurFeveV4) {
 				offresPubliques = ((IVendeurFeveV4) Acteur).getOffrePubliqueV3();
-				offresPubliquesRetenues = this.analyseOffresPubliquesFeves(offresPubliques);
-				
-				this.getJournal().ajouter(offresPubliques.size()+" "+offresPubliquesRetenues.size());
-				
-				if(offresPubliquesRetenues.size() > 0) {
-					((IVendeurFeveV4) Acteur).sendDemandePriveeV3(offresPubliquesRetenues);
+				if(offresPubliques != null) {
+					offresPubliquesRetenues = this.analyseOffresPubliquesFeves(offresPubliques);
 					
-					offresPrivees = ((IVendeurFeveV4) Acteur).getOffreFinaleV3();
-					if(offresPrivees != null && offresPrivees.size() > 0) {
-						offresPriveesRetenues = this.analyseOffresPriveesFeves(offresPrivees);
-						/*for(ContratFeveV3 contrat : offresPrivees) {
-							
-						}*/
-						((IVendeurFeveV4) Acteur).sendResultVentesV3(offresPriveesRetenues);
+					this.getJournal().ajouter(offresPubliques.size()+" "+offresPubliquesRetenues.size());
+					
+					if(offresPubliquesRetenues.size() > 0) {
+						((IVendeurFeveV4) Acteur).sendDemandePriveeV3(offresPubliquesRetenues);
+						
+						offresPrivees = ((IVendeurFeveV4) Acteur).getOffreFinaleV3();
+						if(offresPrivees != null && offresPrivees.size() > 0) {
+							offresPriveesRetenues = this.analyseOffresPriveesFeves(offresPrivees);
+							/*for(ContratFeveV3 contrat : offresPrivees) {
+								
+							}*/
+							((IVendeurFeveV4) Acteur).sendResultVentesV3(offresPriveesRetenues);
+						}
+						
 					}
-					
 				}
 			}
 		}
@@ -823,8 +825,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public List<ContratFeveV3> analyseOffresPubliquesFeves(List<ContratFeveV3> offresPubliques2) {
 		// on boucle sur les offres publiques et on vérifie pour le 
 		// moment seulement qu'on peut tout produire avec nos employés
-		ArrayList<ContratFeveV3> offresPubliques = new ArrayList<>(offresPubliques2);
-		ArrayList<ArrayList<ContratFeveV3>> offresRetenuesParQualite = new ArrayList<ArrayList<ContratFeveV3>>();
+		List<ContratFeveV3> offresPubliques = new ArrayList<ContratFeveV3>(offresPubliques2);
+		List<ArrayList<ContratFeveV3>> offresRetenuesParQualite = new ArrayList<ArrayList<ContratFeveV3>>();
 		for(int qualite = 0; qualite < 3; qualite++) {
 			offresRetenuesParQualite.add(new ArrayList<ContratFeveV3>());
 		}
