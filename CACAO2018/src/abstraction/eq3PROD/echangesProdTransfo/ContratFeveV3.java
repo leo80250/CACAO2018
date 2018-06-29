@@ -10,7 +10,7 @@ import abstraction.fourni.Monde;
 
 public class ContratFeveV3 {
 	
-	private String nomTamponProducteur;
+	private String nomTamponProducteur="";
 	private IAcheteurFeveV4 transformateur;
 	private IVendeurFeveV4 producteur;
 	private int qualite;
