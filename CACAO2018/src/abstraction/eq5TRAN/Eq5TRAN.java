@@ -167,6 +167,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     @Override 	  				 	 	   			 	
     public void next() { 
         production();
+        bienEtreSalarie();
     } 	  				 	 	   			 	
  	  				 	 	   			 	
     /** 	  				 	 	   			 	
@@ -242,6 +243,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     	if(numeroNext % 24==0 && this.banque.getValeur()>30000) { // tous les ans on donne 10000€ pour des aménagements pour les salariés
     		this.banque.setValeur(this, this.banque.getValeur()-10000);
     	}
+    }
+    public void salaires() {
+    	depenser((782*2400)/24);
     }
  	  				 	 	   			 	
     /** 	  				 	 	   			 	
