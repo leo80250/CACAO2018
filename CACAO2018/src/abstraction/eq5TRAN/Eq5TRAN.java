@@ -81,13 +81,13 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
  	  				 	 	   			 	
 		prix[FEVES_BQ] = new Indicateur("Eq5 - Prix de feves BQ", this, 0); 	  				 	 	   			 	
 		prix[FEVES_MQ] = new Indicateur("Eq5 - Prix de feves MQ", this, 0); 	  				 	 	   			 	
-		prix[TABLETTES_BQ] = new Indicateur("Eq5 - Prix de tablettes BQ", this, 8000000); 	  				 	 	   			 	
-		prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ", this, 10000000); 	  				 	 	   			 	
-		prix[TABLETTES_HQ] = new Indicateur("Eq5 - Prix de tablettes HQ", this, 18000000); 	  				 	 	   			 	
+		prix[TABLETTES_BQ] = new Indicateur("Eq5 - Prix de tablettes BQ", this, 8_000_000);
+		prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ", this, 10_000_000);
+		prix[TABLETTES_HQ] = new Indicateur("Eq5 - Prix de tablettes HQ", this, 18_000_000);
 		prix[POUDRE_BQ] = new Indicateur("Eq5 - Prix de poudre BQ", this, 0); 	  				 	 	   			 	
-		prix[POUDRE_MQ] = new Indicateur("Eq5 - Prix de poudre MQ", this, 8500000); 	  				 	 	   			 	
+		prix[POUDRE_MQ] = new Indicateur("Eq5 - Prix de poudre MQ", this, 8_500_000);
 		prix[POUDRE_HQ] = new Indicateur("Eq5 - Prix de poudre HQ", this, 0); 	  				 	 	   			 	
-		prix[FRIANDISES_MQ] = new Indicateur("Eq5 - Prix de friandises MQ", this, 8000000); 	  				 	 	   			 	
+		prix[FRIANDISES_MQ] = new Indicateur("Eq5 - Prix de friandises MQ", this, 8_000_000);
  	  				 	 	   			 	
         productionSouhaitee[FEVES_BQ] = new Indicateur("Eq5 - Production souhaitee de feves BQ", this, 0); 	  				 	 	   			 	
         productionSouhaitee[FEVES_MQ] = new Indicateur("Eq5 - Production souhaitee de feves MQ", this, 0); 	  				 	 	   			 	
@@ -114,7 +114,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             stocks[i] = new Indicateur("Eq5 - Stocks de " + Marchandises.getMarchandise(i), this, stocksSouhaites[i].getValeur()); // on initialise les vrais stocks comme étant ce que l'on souhaite avoir pour la premiere iteration 	  				 	 	   			 	
         } 	  				 	 	   			 	
  	  				 	 	   			 	
-        banque = new Indicateur("Eq5 - Banque", this, 16_000); // environ benefice 2017 sur nombre d'usines 	  				 	 	   			 	
+        banque = new Indicateur("Eq5 - Banque", this, 14_000_000); // environ benefice 2017 sur nombre d'usines
  	  				 	 	   			 	
         Monde.LE_MONDE.ajouterIndicateur(banque); 	  				 	 	   			 	
         Monde.LE_MONDE.ajouterIndicateur(stocks[TABLETTES_BQ]); 	  				 	 	   			 	
