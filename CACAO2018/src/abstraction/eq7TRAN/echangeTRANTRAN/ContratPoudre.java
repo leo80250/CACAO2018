@@ -57,6 +57,9 @@ public class ContratPoudre {
 	public boolean getReponse() {
 		return this.reponse;
 	}
+	public boolean isReponse() {
+		return this.reponse;
+	}
 	public void setReponse(boolean reponse) {
 		this.reponse = reponse;
 	}
