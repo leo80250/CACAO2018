@@ -26,6 +26,8 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	private Indicateur indicateurQB;
 	private Indicateur indicateurQM;
 	private Indicateur soldejournal;
+	private double totalVenteQB;
+	private double totalVenteQM;
 	
 // CONSTRUCTEURS
 	public Eq2PROD() {
@@ -55,6 +57,8 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		this.coeffStock = 1;
 		this.demandeTran = new ArrayList<>();
 		this.quantiteEq3 = false;
+		this.totalVenteQB=0.0;
+		this.totalVenteQM=0.0;
 	}
 	
 // GETTEURS
@@ -67,6 +71,24 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	}
 	public double getSolde() {
 		return this.solde;
+	}
+	public double getTotalVenteQB() {
+		return this.totalVenteQB;
+	}
+	public double getTotalVenteQM() {
+		return this.totalVenteQM;
+	}
+	public void setTotalVenteQB(double q) {
+		this.totalVenteQB+=q;
+	}
+	public void razTotalVenteQB() {
+		this.totalVenteQB = 0;
+	}
+	public void setTotalVenteQM(double q) {
+		this.totalVenteQM+=q;
+	}
+	public void razTotalVenteQM() {
+		this.totalVenteQM = 0;
 	}
 	public void addSolde(double s) {
 		this.solde = this.solde + s;
@@ -272,7 +294,8 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	/* Code par Guillaume SALLE + Agathe CHEVALIER */
 	public void next() {
 		retireSolde(coutFixe);
-		
+		this.getJournal().ajouter("Quantité vendue Basse Qualite ="+getTotalVenteQB());
+		this.getJournal().ajouter("Quantité vendue Moyenne Qualité ="+getTotalVenteQM());
 		this.getJournal().ajouter("Quantité basse qualité = "+ getStockQB());
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ getStockQM());
 		this.getJournal().ajouter("Solde ="+getSolde()+" €");
@@ -293,6 +316,8 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		indicateurQB.setValeur(this, getStockQB());
 		indicateurQM.setValeur(this, getStockQM());
 		soldejournal.setValeur(this, getSolde());
+		razTotalVenteQB();
+		razTotalVenteQM();
 	}
 
 	
@@ -374,11 +399,13 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
    		   			addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
    		   			retireStockQB(c.getProposition_Quantite()) ;
    		   			chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
+   		   			setTotalVenteQB(c.getProposition_Quantite());
    		   		}
    		   		if (c.getQualite()==1) {
    		   			addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
    		   			retireStockQM(c.getProposition_Quantite()) ;
    		   			chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
+   		   			setTotalVenteQM(c.getProposition_Quantite());
    		   		} 
    		   	} 
    		 // On paye les salaires : 35% du CA
