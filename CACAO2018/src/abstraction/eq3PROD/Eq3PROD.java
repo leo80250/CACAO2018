@@ -258,9 +258,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 						this.stockmoyen -= contrat.getProposition_Quantite() ; 	
 						solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() - salaires_Bresil - salaires_Indo;  	 	  	  		   		 	 	
 					}  	 	  	  		   		 	 	
-				} else { 	 	  	  		   		 	 	
-					this.stockfin -= contrat.getProposition_Quantite() ;  	 	  	  		   		 	 	
-					solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() - salaires_Equateur ; 	 	  	  		   		 	 	
+				} else { 	 
+					if(contrat.getReponse() == true) {
+						this.stockfin -= contrat.getProposition_Quantite() ;  	 	  	  		   		 	 	
+						solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() - salaires_Equateur ; 	 	   	 	  	  		   		 	 	
+					}	  		   		 	 	
 				} 	 	  	  		   		 	 	
 			} 	 	  	  		   		 	 	
 		}
