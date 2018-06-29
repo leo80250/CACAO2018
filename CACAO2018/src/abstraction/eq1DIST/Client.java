@@ -45,6 +45,12 @@ public class Client implements Acteur {
 		this.DemandeConfBdG=new Indicateur("DemandeConfBdG", this,0.0);
 		this.DemandeConfMdG=new Indicateur("DemandeConfMdG", this,0.0);
 		this.DemandeConfHdG=new Indicateur("DemandeConfHdG", this,0.0);
+		Monde.LE_MONDE.ajouterIndicateur(DemandeChocoBdG);
+		Monde.LE_MONDE.ajouterIndicateur(DemandeChocoMdG);
+		Monde.LE_MONDE.ajouterIndicateur(DemandeChocoHdG);
+		Monde.LE_MONDE.ajouterIndicateur(DemandeConfBdG);
+		Monde.LE_MONDE.ajouterIndicateur(DemandeConfMdG);
+		Monde.LE_MONDE.ajouterIndicateur(DemandeConfHdG);
 	}
 	
 
