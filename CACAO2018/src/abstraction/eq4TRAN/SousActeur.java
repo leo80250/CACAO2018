@@ -1,9 +1,10 @@
 package abstraction.eq4TRAN;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
@@ -15,9 +16,8 @@ import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 
-public abstract class SousActeur implements Acteur, 
-ITransformateur, 
-IAcheteurFeve,
+public class SousActeur implements Acteur, 
+ITransformateur, IAcheteurFeveV4,
 IVendeurChocoBis,
 IAcheteurPoudre,
 IVendeurPoudre {
@@ -39,11 +39,11 @@ IVendeurPoudre {
 	private Vendeur vendeur;
 	//On crée une liste pour ranger nos stocks
 	private ArrayList<Indicateur> Stocks;
-	private ContratFeve[] contratFeveEnCours ; 
+	private List<ContratFeveV3> contratFeveEnCours ; 
 	private ContratPoudre[] contratPoudreEnCoursEq7TRAN ;
 	private ContratPoudre[] contratPoudreEnCoursEq5TRAN;
 
-	public SousActeur(Indicateur stockTabBQ, Indicateur stockTabMQ, Indicateur stockTabHQ, Indicateur stockChocMQ, Indicateur stockChocHQ, Indicateur prodTabBQ, Indicateur prodTabMQ, Indicateur prodTabHQ,  Indicateur prodChocMQ , Indicateur prodChocHQ, ContratFeve[] contratFeveEnCours, ContratPoudre[] contratPoudreEnCoursEq7TRAN, ContratPoudre[] contratPoudreEnCoursEq5TRAN) {
+	public SousActeur(Indicateur stockTabBQ, Indicateur stockTabMQ, Indicateur stockTabHQ, Indicateur stockChocMQ, Indicateur stockChocHQ, Indicateur prodTabBQ, Indicateur prodTabMQ, Indicateur prodTabHQ,  Indicateur prodChocMQ , Indicateur prodChocHQ, List<ContratFeveV3> contratFeveEnCours, ContratPoudre[] contratPoudreEnCoursEq7TRAN, ContratPoudre[] contratPoudreEnCoursEq5TRAN) {
 		this.JournalEq4 = JournalEq4;
 		this.prodChocHQ = prodChocHQ;
 		this.prodChocMQ = prodChocMQ;
@@ -149,14 +149,14 @@ IVendeurPoudre {
 	public void setVendeur(Vendeur vendeur) {
 		this.vendeur = vendeur;
 	}
-	public ContratFeve[] getContratFeveEnCours() {
-		return contratFeveEnCours;
+	public List<ContratFeveV3> getContratFeveEnCours() {
+		return this.contratFeveEnCours ;
 	}
-	public void setContratFeveEnCours(ContratFeve[] contratFeveEnCours) {
+	public void setContratFeveEnCours(List<ContratFeveV3> contratFeveEnCours) {
 		this.contratFeveEnCours = contratFeveEnCours;
 	}
 	public ContratPoudre[] getContratPoudreEnCoursEq7TRAN() {
-		return contratPoudreEnCoursEq7TRAN;
+		return contratPoudreEnCoursEq7TRAN ;
 	}
 	public void setContratPoudreEnCoursEq7TRAN(ContratPoudre[] contratPoudreEnCoursEq7TRAN) {
 		this.contratPoudreEnCoursEq7TRAN = contratPoudreEnCoursEq7TRAN;
@@ -174,16 +174,29 @@ IVendeurPoudre {
 		return Stocks;
 	}
 
-	//Charles
-	@Override
-	public void sendOffrePublique(ContratFeve[] offrePublique) {
-		this.contratFeveEnCours=offrePublique;
+	/*
+	 * @author Noémie 
+	 * Implémentation des méthodes de l'interface IAcheteurFeveV4
+	 */
+	
+	// Avant il faut,  récupérer offre publique & discuter de ce que l'on veut
+	
+	@Override 
+	public void sendOffrePubliqueV3(List<ContratFeveV3> offrePublique) {
+		this.contratFeveEnCours = offrePublique ; 
 	}
-
-	//Charles
+	
+	
+	/*
+	 * @author Charles, Noémie 
+	 */
 	@Override
-	public ContratFeve[] getDemandePrivee() {
-		int[] demande= {13000,70000,25000};
+	public List<ContratFeveV3> getDemandePriveeV3() {
+		return null ; 
+		/* Ancien code getDemandePrivee
+		 * 
+		 * int[] demande= {13000,70000,25000};
+		 
 		double[] prixMin= { 100000.0 , 100000.0 , 100000.0 } ;
 		int[] min= {-1,-1,-1};
 		int[] max= {-1,-1,-1};
@@ -204,32 +217,49 @@ IVendeurPoudre {
 			}
 		}
 		return this.contratFeveEnCours ;
+		*/
+	}
+	
+	/*
+	 * @author Noémie 
+	 * Rien car concerne l'acteur fictif
+	 */
+	@Override
+	public void sendContratFictifV3(List<ContratFeveV3> listContrats) {
+		
 	}
 
 
+	/*
+	 * @author Noémie , Charles 
+	 */
 	@Override
-	public void sendContratFictif(ContratFeve[] listContrats) {
+	public void sendOffreFinaleV3(List<ContratFeveV3> offreFinale) {
+		this.contratFeveEnCours = offreFinale ; 
 	}
+	
 
-
-	//Charles
+	/*
+	 * @author Charles, Noémie
+	 */
 	@Override
-	public void sendOffreFinale(ContratFeve[] offreFinale) {
-		this.contratFeveEnCours=offreFinale;
-		// TODO Auto-generated method stub
-
-	}
-
-	//Charles
-	@Override
-	public ContratFeve[] getResultVentes() {
-		for (int i=0;i<this.contratFeveEnCours.length;i++) {
-			if (this.contratFeveEnCours[i].getProposition_Prix()*this.contratFeveEnCours[i].getProposition_Quantite()<this.solde.getValeur()) {
-				this.contratFeveEnCours[i].setReponse(true);
+	/*
+	 *  Stratégie à réécrire pour l'acceptation ou non des contrats 
+	 *  et revoir comment ranger les contrats selon le producteur 
+	 */
+	public List<ContratFeveV3> getResultVentesV3() {
+		for (ContratFeveV3 contrat : this.contratFeveEnCours) {
+			if ( contrat.getReponse() ) {
+			double coutTotal = contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;
+				if (coutTotal < this.solde.getValeur()) {
+					contrat.setReponse(true);
+				}
 			}
 		}
-		return this.contratFeveEnCours;
+		return null ; 
+		
 	}
+	
 
 	// Etienne Raveau
 	// Getter permettant d'accéder à la quantité disponible d'un produit 
@@ -317,12 +347,12 @@ IVendeurPoudre {
 	public double getCA() { 
 		double CA = 0 ;
 		// Achat de fèves aux équipes 2 et 3
-		for (int  i = 0 ; i < this.contratFeveEnCours.length ; i++ ) {
-			if (contratFeveEnCours[i].getReponse()) {
+		for (int  i = 0 ; i < this.contratFeveEnCours.size() ; i++ ) {
+			if (contratFeveEnCours.get(i).getReponse()) {
 				/*
 				 * à changer car Interface ContratFeve deprecated
 				 */
-				CA -= contratFeveEnCours[i].getPrix()*contratFeveEnCours[i].getQuantite() ; 
+				CA -= contratFeveEnCours.get(i).getProposition_Prix()*contratFeveEnCours.get(i).getProposition_Quantite() ; 
 			}
 		}
 		// Achat de poudre à l'équipe 5 
@@ -342,4 +372,10 @@ IVendeurPoudre {
 		
 		return CA ; 
 		}
+
+	@Override
+	public void next() {
+		// NE PAS TOUCHER //
+		
+	}
  }
