@@ -294,7 +294,8 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	/* Code par Guillaume SALLE + Agathe CHEVALIER */
 	public void next() {
 		retireSolde(coutFixe);
-		
+		this.getJournal().ajouter("Quantité vendue Basse Qualite ="+getTotalVenteQB());
+		this.getJournal().ajouter("Quantité vendue Moyenne Qualité ="+getTotalVenteQM());
 		this.getJournal().ajouter("Quantité basse qualité = "+ getStockQB());
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ getStockQM());
 		this.getJournal().ajouter("Solde ="+getSolde()+" €");
@@ -315,8 +316,6 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		indicateurQB.setValeur(this, getStockQB());
 		indicateurQM.setValeur(this, getStockQM());
 		soldejournal.setValeur(this, getSolde());
-		this.getJournal().ajouter("Quantité vendue Basse Qualite ="+getTotalVenteQB());
-		this.getJournal().ajouter("Quantité vendue Moyenne Qualité ="+getTotalVenteQM());
 		razTotalVenteQB();
 		razTotalVenteQM();
 	}
