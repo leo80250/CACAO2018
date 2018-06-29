@@ -1,5 +1,8 @@
 package abstraction.eq1DIST;
 
-public class Stock {
+import java.util.ArrayList;
 
+public class Stock {
+	private ArrayList<Lot> stock;
+	private Date date;
 }
