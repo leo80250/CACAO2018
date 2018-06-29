@@ -13,6 +13,12 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 	private List<ContratFeveV3> offreFinale;
 	private List<ContratFeveV3> contratPrecedent;
 	
+	public acheteurFictifTRAN() {
+		this.offreFinale = new ArrayList<>();
+		this.contratPrecedent = new ArrayList<>();
+		
+	}
+	
 	
 /* GETTEURS */
 	/* Romain Bernard */

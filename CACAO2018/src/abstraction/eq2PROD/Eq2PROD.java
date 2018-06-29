@@ -6,6 +6,7 @@ import abstraction.eq3PROD.echangesProdTransfo.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import abstraction.eq2PROD.acheteurFictifTRAN.acheteurFictifTRAN;
 import abstraction.eq2PROD.echangeProd.*;
 
 public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, IVendeurFeve, IVendeurFeveV4 {
@@ -28,7 +29,24 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	
 // CONSTRUCTEURS
 	public Eq2PROD() {
-		this(Monde.LE_MONDE,"Eq2Prod");
+		
+		setNomEq("Eq2PROD");
+		setStockAffichage();
+		this.indicateurQB = new Indicateur("Stock de "+getNomEq()+" de basse qualité",this,getStockQB());
+		this.indicateurQM = new Indicateur("Stock de "+getNomEq()+" de moyenne qualité",this,getStockQM());
+		this.soldejournal = new Indicateur("Solde de"+getNomEq(), this, getSolde());
+		setStockQBas(indicateurQB);
+		setStockQMoy(indicateurQM);
+		
+		setJournal(new Journal("Journal de"+getNomEq()));
+		setJournalOccasionel(new Journal("Journal de ventes occasionnelles de"+getNomEq()));
+		Monde.LE_MONDE.ajouterJournal(getJournal());
+		Monde.LE_MONDE.ajouterJournal(getJournalOccasionel());
+		Monde.LE_MONDE.ajouterIndicateur(getStockQBas());
+		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
+		Monde.LE_MONDE.ajouterIndicateur(getSoldeJournal());
+		
+		Monde.LE_MONDE.ajouterActeur(new acheteurFictifTRAN());
 		this.nomEq = "Eq2PROD";
 		this.stockQM=0;
 		this.stockQB=0;
@@ -249,24 +267,6 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		addStockQB( (int) (getCoeffSolde()*MOY_QB));
 	}
 	
-	/* Agathe Chevalier + Alexandre Bigot */
-	public Eq2PROD(Monde monde, String nom) {
-		setNomEq(nom);
-		setStockAffichage();
-		this.indicateurQB = new Indicateur("Stock de "+getNomEq()+" de basse qualité",this,getStockQB());
-		this.indicateurQM = new Indicateur("Stock de "+getNomEq()+" de moyenne qualité",this,getStockQM());
-		this.soldejournal = new Indicateur("Solde de"+getNomEq(), this, getSolde());
-		setStockQBas(indicateurQB);
-		setStockQMoy(indicateurQM);
-		
-		setJournal(new Journal("Journal de"+getNomEq()));
-		setJournalOccasionel(new Journal("Journal de ventes occasionnelles de"+getNomEq()));
-		Monde.LE_MONDE.ajouterJournal(getJournal());
-		Monde.LE_MONDE.ajouterJournal(getJournalOccasionel());
-		Monde.LE_MONDE.ajouterIndicateur(getStockQBas());
-		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
-		Monde.LE_MONDE.ajouterIndicateur(getSoldeJournal());
-	}
 	
 // NEXT DE NOTRE ACTEUR
 	/* Code par Guillaume SALLE + Agathe CHEVALIER */
