@@ -31,6 +31,7 @@ IVendeurPoudre {
 	private Indicateur prodTabHQ ;
 	private Indicateur prodChocMQ ;
 	private Indicateur prodChocHQ ;
+	private Indicateur chiffreDAffaire ; 
 	//Indicateur de notre solde bancaire
 	private Indicateur solde ; 
 	//Journal rendant compte de nos activités et de l'évolution de nos indicateurs
@@ -42,6 +43,8 @@ IVendeurPoudre {
 	private List<ContratFeveV3> contratFeveEnCours ; 
 	private ContratPoudre[] contratPoudreEnCoursEq7TRAN ;
 	private ContratPoudre[] contratPoudreEnCoursEq5TRAN;
+	private int taillePME ;
+	
 
 	public SousActeur(Indicateur stockTabBQ, Indicateur stockTabMQ, Indicateur stockTabHQ, Indicateur stockChocMQ, Indicateur stockChocHQ, Indicateur prodTabBQ, Indicateur prodTabMQ, Indicateur prodTabHQ,  Indicateur prodChocMQ , Indicateur prodChocHQ, List<ContratFeveV3> contratFeveEnCours, ContratPoudre[] contratPoudreEnCoursEq7TRAN, ContratPoudre[] contratPoudreEnCoursEq5TRAN) {
 		this.JournalEq4 = JournalEq4;
@@ -344,38 +347,22 @@ IVendeurPoudre {
 	 * dans les contrats fèves et contrats poudres et ce qu'on a vendu en contrats
 	 * chocolats 
 	 */
-	public double getCA() { 
-		double CA = 0 ;
-		// Achat de fèves aux équipes 2 et 3
-		for (int  i = 0 ; i < this.contratFeveEnCours.size() ; i++ ) {
-			if (contratFeveEnCours.get(i).getReponse()) {
-				/*
-				 * à changer car Interface ContratFeve deprecated
-				 */
-				CA -= contratFeveEnCours.get(i).getProposition_Prix()*contratFeveEnCours.get(i).getProposition_Quantite() ; 
-			}
-		}
-		// Achat de poudre à l'équipe 5 
-		for (int i = 0 ; i < this.contratPoudreEnCoursEq5TRAN.length ; i++) {
-			if (contratPoudreEnCoursEq5TRAN[i].isReponse()) {
-				CA -= contratPoudreEnCoursEq5TRAN[i].getPrix()*contratPoudreEnCoursEq5TRAN[i].getQuantite() ;
-			}
-		}
-		// Achat de poudre à l'équipe 7
-		for (int i = 0 ; i < this.contratPoudreEnCoursEq7TRAN.length ; i++) {
-			if (contratPoudreEnCoursEq7TRAN[i].isReponse()) {
-					CA -= contratPoudreEnCoursEq7TRAN[i].getPrix()*contratPoudreEnCoursEq7TRAN[i].getQuantite() ;
-			}
-		}
-		// Vente de chocolats aux distributeurs
-		
-		
-		return CA ; 
-		}
+
 
 	@Override
 	public void next() {
 		// NE RIEN CODER, VOIR EQ4TRAN 
 		
+	}
+	
+	/*
+	 * @author : Noémie
+	 * 
+	 * Génère la taille, aléatoire, de la PME
+	 */
+	
+	public void coutsSupplementaires() {
+		
+		double CA = this.chiffreDAffaire.getValeur() ; 
 	}
  }

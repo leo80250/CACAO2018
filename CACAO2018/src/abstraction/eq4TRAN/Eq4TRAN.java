@@ -385,7 +385,8 @@ IvendeurOccasionnelChoco{
 				s+=livraison.get(i).get(j)*vendeur.getPrix().getPrixProduit(livraison.get(i).get(j), j+1);
 			}
 		}
-		solde.setValeur(this, s); //On met à jour notre solde bancaire
+		solde.setValeur(this, s);
+		//On met à jour notre solde bancaire
 		return livraison;
 	}
 
