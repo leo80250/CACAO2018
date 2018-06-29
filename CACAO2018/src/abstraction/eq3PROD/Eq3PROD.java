@@ -54,7 +54,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		return this.solde;
 	}
 	
-	public void setSolde(int solde) {
+	public void setSolde(double solde) {
 		this.solde=solde;
 	}
 	
