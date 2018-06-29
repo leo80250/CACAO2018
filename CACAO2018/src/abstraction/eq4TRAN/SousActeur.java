@@ -375,7 +375,7 @@ IVendeurPoudre {
 
 	@Override
 	public void next() {
-		// NE PAS TOUCHER //
+		// NE RIEN CODER //
 		
 	}
  }
