@@ -1,5 +1,8 @@
 plugins:
   sonar-java:
     enabled: true
+    checks:
+      squid:S1135:
+        enabled: false
     config:
       minimum_severity: info
