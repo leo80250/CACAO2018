@@ -284,7 +284,6 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     /*
      * @author Juliette
      */
-    
     public void achatPoudre() {
     	IVendeurPoudre equipe7 = (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq7TRAN");
     	ContratPoudre[] catalogue = equipe7.getCataloguePoudre(this);
