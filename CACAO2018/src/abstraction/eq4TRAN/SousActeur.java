@@ -365,7 +365,7 @@ IVendeurPoudre {
 		for (int i = 0 ; i < this.contratPoudreEnCoursEq7TRAN.length ; i++) {
 			if (contratPoudreEnCoursEq7TRAN[i].isReponse()) {
 					CA -= contratPoudreEnCoursEq7TRAN[i].getPrix()*contratPoudreEnCoursEq7TRAN[i].getQuantite() ;
-				}
+			}
 		}
 		// Vente de chocolats aux distributeurs
 		
