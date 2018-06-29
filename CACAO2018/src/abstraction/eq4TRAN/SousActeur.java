@@ -59,6 +59,8 @@ IVendeurPoudre {
 		this.stockTabBQ = stockTabBQ;
 		this.stockTabHQ = stockTabHQ;
 		this.stockTabMQ = stockTabMQ;
+		this.taillePME = this.taillePME = (int)(11 + (Math.random() * (250 - 11))) ;	
+		
 		}
 
 	public String getNom() {
@@ -165,6 +167,9 @@ IVendeurPoudre {
 	}
 	public void setContratPoudreEnCoursEq5TRAN(ContratPoudre[] contratPoudreEnCoursEq5TRAN) {
 		this.contratPoudreEnCoursEq5TRAN = contratPoudreEnCoursEq5TRAN;
+	}
+	public int getTaillePME() {
+		return this.taillePME ;
 	}
 
 	// Etienne Raveau
@@ -354,12 +359,11 @@ IVendeurPoudre {
 		
 	}
 	
-	/*
-	 * @author : Noémie
-	 * 
-	 * Génère la taille, aléatoire, de la PME
-	 */
+
 	
+	/*
+	 * Calcul des coûts variables 
+	 */
 	public void coutsSupplementaires() {
 		
 		double CA = this.chiffreDAffaire.getValeur() ; 
