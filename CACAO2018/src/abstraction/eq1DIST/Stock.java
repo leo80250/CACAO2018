@@ -27,7 +27,7 @@ public class Stock {
 		this.ajouter(e);
 	}
 	
-	public void retirer(int qualite, int quantite) {
+	public void retirer(int quantite, int qualite) {
 		if(this.stock.get(qualite-1)!=null) {
 			while (this.stock.get(qualite-1).getStocki().get(0).getQuantite()<=quantite) {
 				this.stock.get(qualite-1).getStocki().remove(0);
