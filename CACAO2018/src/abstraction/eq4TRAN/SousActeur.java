@@ -31,6 +31,7 @@ IVendeurPoudre {
 	private Indicateur prodTabHQ ;
 	private Indicateur prodChocMQ ;
 	private Indicateur prodChocHQ ;
+	private Indicateur chiffreDAffaire ; 
 	//Indicateur de notre solde bancaire
 	private Indicateur solde ; 
 	//Journal rendant compte de nos activités et de l'évolution de nos indicateurs
@@ -42,6 +43,8 @@ IVendeurPoudre {
 	private List<ContratFeveV3> contratFeveEnCours ; 
 	private ContratPoudre[] contratPoudreEnCoursEq7TRAN ;
 	private ContratPoudre[] contratPoudreEnCoursEq5TRAN;
+	private int taillePME ;
+	
 
 	public SousActeur(Journal JournalEq4, int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k) {
 		this.JournalEq4 = JournalEq4;
@@ -56,6 +59,8 @@ IVendeurPoudre {
 		this.stockTabBQ = new Indicateur("stockTabBQ_Eq4",this,i);
 		this.stockTabHQ = new Indicateur("stockTabHQ_Eq4",this,j);
 		this.stockTabMQ = new Indicateur("stockTabMQ_Eq4",this,k);
+		this.taillePME = this.taillePME = (int)(11 + (Math.random() * (250 - 11))) ;	
+	
 		}
 
 	public String getNom() {
@@ -162,6 +167,9 @@ IVendeurPoudre {
 	}
 	public void setContratPoudreEnCoursEq5TRAN(ContratPoudre[] contratPoudreEnCoursEq5TRAN) {
 		this.contratPoudreEnCoursEq5TRAN = contratPoudreEnCoursEq5TRAN;
+	}
+	public int getTaillePME() {
+		return this.taillePME ;
 	}
 
 	// Etienne Raveau
@@ -340,38 +348,40 @@ IVendeurPoudre {
 	 * dans les contrats fèves et contrats poudres et ce qu'on a vendu en contrats
 	 * chocolats 
 	 */
-	public double getCA() { 
-		double CA = 0 ;
-		// Achat de fèves aux équipes 2 et 3
-		for (int  i = 0 ; i < this.contratFeveEnCours.size() ; i++ ) {
-			if (contratFeveEnCours.get(i).getReponse()) {
-				/*
-				 * à changer car Interface ContratFeve deprecated
-				 */
-				CA -= contratFeveEnCours.get(i).getProposition_Prix()*contratFeveEnCours.get(i).getProposition_Quantite() ; 
-			}
-		}
-		// Achat de poudre à l'équipe 5 
-		for (int i = 0 ; i < this.contratPoudreEnCoursEq5TRAN.length ; i++) {
-			if (contratPoudreEnCoursEq5TRAN[i].isReponse()) {
-				CA -= contratPoudreEnCoursEq5TRAN[i].getPrix()*contratPoudreEnCoursEq5TRAN[i].getQuantite() ;
-			}
-		}
-		// Achat de poudre à l'équipe 7
-		for (int i = 0 ; i < this.contratPoudreEnCoursEq7TRAN.length ; i++) {
-			if (contratPoudreEnCoursEq7TRAN[i].isReponse()) {
-					CA -= contratPoudreEnCoursEq7TRAN[i].getPrix()*contratPoudreEnCoursEq7TRAN[i].getQuantite() ;
-			}
-		}
-		// Vente de chocolats aux distributeurs
-		
-		
-		return CA ; 
-		}
+
 
 	@Override
 	public void next() {
 		// NE RIEN CODER, VOIR EQ4TRAN 
 		
+	}
+	
+
+	
+	/*
+	 * Calcule puis débite les coûts fixes et variables  la solde du SousActeur
+	 * 
+	 * Coûts fixes: 
+	 * Salaires, coûts de maintenance
+	 * Plus une PME est grande, plus ses charges fixes sont 
+	 * élevées et moins ses charges variables sont élevées
+	 */
+	
+	public void coutsSupplementaires() {
+		double CA = this.chiffreDAffaire.getValeur() ; 
+		double soldeActuelle = this.solde.getValeur() ;
+		double chargesFixes = 0 ;
+		double chargesVariables = 0 ; 
+		if (this.taillePME < 50 ) {
+			chargesFixes = 0 ;
+			chargesVariables = 0.4*CA ; 
+		} else if ((50 <=this.taillePME)&&(this.taillePME < 150 )) {
+			chargesFixes = 0 ;
+			chargesVariables = 0.35*CA ;
+		} else {
+			chargesFixes = 0 ; 
+			chargesVariables = 0.3*CA ; 
+		}
+		this.solde.setValeur(this, soldeActuelle - chargesFixes - chargesVariables);
 	}
  }
