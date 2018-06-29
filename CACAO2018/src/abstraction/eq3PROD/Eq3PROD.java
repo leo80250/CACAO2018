@@ -129,9 +129,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			}
 		}
 		
-		this.marche = new MarcheFeve("Marche central", transformateurs, producteurs);
-		
-		Monde.LE_MONDE.ajouterActeur(marche);
 		
 		this.stockmoyen = new ArrayList<List<Integer>>();
 		this.stockfin = new ArrayList<List<Integer>>();
@@ -139,6 +136,10 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		this.ajouterStockFin(24000);
 		
 		this.nom = "Eq3PROD";
+		
+		this.marche = new MarcheFeve("Marche central");
+		
+		Monde.LE_MONDE.ajouterActeur(marche);
 	}
 	
 		
