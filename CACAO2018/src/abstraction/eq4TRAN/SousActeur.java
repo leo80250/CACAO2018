@@ -42,9 +42,10 @@ IVendeurPoudre {
 	private ContratPoudre[] contratPoudreEnCoursEq7TRAN ;
 	private ContratPoudre[] contratPoudreEnCoursEq5TRAN;
 	private int taillePME ;
+	private double label;
 	
 
-	public SousActeur(Journal JournalEq4, int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k) {
+	public SousActeur(Journal JournalEq4, int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k,double label) {
 		this.JournalEq4 = JournalEq4;
 		this.prodChocHQ = new Indicateur("prodChocHQ_Eq4",this,a);
 		this.prodChocMQ = new Indicateur("prodChocMQ_Eq4",this,b);
@@ -58,7 +59,7 @@ IVendeurPoudre {
 		this.stockTabHQ = new Indicateur("stockTabHQ_Eq4",this,j);
 		this.stockTabMQ = new Indicateur("stockTabMQ_Eq4",this,k);
 		this.taillePME = this.taillePME = (int)(11 + (Math.random() * (250 - 11))) ;	
-	
+		this.label=label;
 		}
 
 	public String getNom() {

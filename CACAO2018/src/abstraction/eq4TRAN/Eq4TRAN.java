@@ -77,11 +77,11 @@ IvendeurOccasionnelChocoBis, Labellise{
 		 */
 		
 
-		this.Acteur1 = new SousActeur(new Journal("JournalActeur1"),1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000);
+		this.Acteur1 = new SousActeur(new Journal("JournalActeur1"),1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,Vendeur.COMMERCE_EQUITABLE);
 
-		this.Acteur2 = new SousActeur(new Journal("JournalActeur2"),1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000);
+		this.Acteur2 = new SousActeur(new Journal("JournalActeur2"),1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,Vendeur.PRODUCTEUR_LOCAL);
 
-		this.Acteur3 = new SousActeur(new Journal("JournalActeur3"),1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000);
+		this.Acteur3 = new SousActeur(new Journal("JournalActeur3"),1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,Vendeur.LUXE);
 		/**
 		 * @author Mickaël, Etienne
 		 * on initialise le stock total
