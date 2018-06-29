@@ -88,16 +88,16 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	
 	
 	public void ajouterStockMoyen(int stock) {	
-		List<Integer> stockm = new ArrayList<Integer>(2);
-		stockm.set(0, stock);
-		stockm.set(1, 0);
+		List<Integer> stockm = new ArrayList<Integer>();
+		stockm.add(stock);
+		stockm.add(0);
 		this.stockmoyen.add(stockm);
 	}
 	
 	public void ajouterStockFin(int stock) {	
-		List<Integer> stockf = new ArrayList<Integer>(2);
-		stockf.set(0, stock);
-		stockf.set(1, 0);
+		List<Integer> stockf = new ArrayList<Integer>();
+		stockf.add(stock);
+		stockf.add(0);
 		this.stockfin.add(stockf);
 	}
 	
@@ -148,7 +148,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		/**
 		 * @author Morgane et Pierre
 		 */
-		public List<ContratFeveV3> getOffrePublique() { 
+		public List<ContratFeveV3> getOffrePubliqueV3() { 
 			ContratFeveV3 c1=new ContratFeveV3(null, this, 1, this.quantiteStockMoyen(), 0, 0, marche.getPrixMarche(), 0.0, 0.0, false);
 			ContratFeveV3 c2=new ContratFeveV3(null, this, 2, this.quantiteStockFin(), 0, 0, marche.getPrixMarche(), 0.0, 0.0, false); 
 			List<ContratFeveV3> c= new ArrayList<ContratFeveV3>() ; 
@@ -161,7 +161,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		/**
 		 * @author Morgane et Pierre
 		 */
-		public void sendDemandePrivee(List<ContratFeveV3> demandePrivee) { 
+		public void sendDemandePriveeV3(List<ContratFeveV3> demandePrivee) { 
 			//HashMap<Integer, HashMap<Acteur, ContratFeve>> asso = new HashMap<Integer, HashMap<Acteur, ContratFeve>>(); 
 			//asso.put(demandePrivee[i].getTransformateur(), demandePrivee[i); 
 			for (int i = 0; i < demandePrivee.size(); i++) { 
@@ -180,7 +180,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		/**
 		 * @author Morgane
 		 */
-		public List<ContratFeveV3> getOffreFinale() { 
+		public List<ContratFeveV3> getOffreFinaleV3() { 
 
 			int quantite_1 = 0;  	 	  	  		   		 	 	
 			int quantite_2 = 0; 	 	  	  		   		 	 	
@@ -246,7 +246,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		/**
 		 * @author Morgane & Pierre
 		 */
-		public void sendResultVentes(List<ContratFeveV3> resultVentes) { 	
+		public void sendResultVentesV3(List<ContratFeveV3> resultVentes) { 	
 			
 			for (ContratFeveV3 contrat : resultVentes) {  	 
 				double salaires_Indo = contrat.getProposition_Quantite()*contrat.getProposition_Prix()*0.285 ;  	 	  	  		   		 	 	
@@ -310,6 +310,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		@author Claire
 		**/
 		public void next() {
+			System.out.println(this.getStockmoyen());
 			int x=Monde.LE_MONDE.getStep();
 			int prodBresil=0;
 			int prodIndo=0;
@@ -364,7 +365,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy().getValeur());
 			this.getJournal().ajouter("Quantité haute qualité ="+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
-	
+			System.out.println(this.getStockmoyen());
+			System.out.println();
 		}
 		
 		//Journal 
@@ -398,29 +400,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.stockQM = i;
 		}
 
-		@Override
-		public List<ContratFeveV3> getOffrePubliqueV3() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void sendDemandePriveeV3(List<ContratFeveV3> demandePrivee) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public List<ContratFeveV3> getOffreFinaleV3() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public void sendResultVentesV3(List<ContratFeveV3> resultVentes) {
-			// TODO Auto-generated method stub
-			
-		}
+		
 		
 
 
