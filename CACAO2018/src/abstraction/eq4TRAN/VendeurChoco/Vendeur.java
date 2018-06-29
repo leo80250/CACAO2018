@@ -124,8 +124,11 @@ public class Vendeur implements IVendeurChocoBis{
 		Livraison.add(commande2);
 		Livraison.add(commande3);
 		// On ajoute la vente à notre journal de ventes
-		ventes.ajouter("Livraison : " + Livraison);
+		getVentes().ajouter("Livraison : " + Livraison);
 		return Livraison;
 	}
 
+	public Journal getVentes() {
+		return ventes;
+	}
 }

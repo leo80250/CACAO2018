@@ -11,6 +11,7 @@ import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoBis;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
@@ -31,7 +32,7 @@ IAcheteurFeve,
 IVendeurChocoBis,
 IAcheteurPoudre,
 IVendeurPoudre,
-IvendeurOccasionnelChoco{ 
+IvendeurOccasionnelChocoBis{ 
 
 	public Acteur Eq4TRAN ; 
 
@@ -275,7 +276,7 @@ IvendeurOccasionnelChoco{
 	}
 
 	public Journal getJournalVentes() {
-		return vendeur.ventes;
+		return vendeur.getVentes();
 	}
 
 	@Override
@@ -420,13 +421,18 @@ IvendeurOccasionnelChoco{
 	}
 
 	@Override
-	public double getReponse(DemandeAO d) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int getReponseBis(DemandeAO d) {
+		if(vendeur.getQte(d.getQualite()-1)>d.getQuantite()) {
+			return 0;
+		}
+		else {
+			// Modifier l'interface ! aucun intéret de devoir renvoyer un prix entier.
+			return (int)vendeur.getPrix().getPrixProduit(d.getQuantite(), d.getQualite());
+		}
 	}
 
 	@Override
-	public void envoyerReponse(double quantite, int qualite, int prix) {
+	public void envoyerReponseBis(int quantite, int qualite, int prix) {
 		// TODO Auto-generated method stub
 		
 	}
