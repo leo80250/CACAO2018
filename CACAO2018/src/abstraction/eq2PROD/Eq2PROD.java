@@ -82,7 +82,7 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		this.nomEq = "Eq2PROD";
 		this.stockQM=0;
 		this.stockQB=0;
-		this.solde = 0.0;
+		this.solde = 4070800000.0;
 		this.maladie = false;
 		this.coeffStock = 1;
 		this.demandeTran = new ArrayList<>();
