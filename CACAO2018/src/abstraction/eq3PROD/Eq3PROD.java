@@ -33,7 +33,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private Journal journal;
 	private String nomEq;
 	private Indicateur stockQM=new Indicateur ("Stock de Eq3PROD de moyenne qualité", this, 75000);
-	private Indicateur stockQH=new Indicateur ("Stock de Eq3PROD de haute qualité", this, 24000);;
+	private Indicateur stockQH=new Indicateur ("Stock de Eq3PROD de haute qualité", this, 24000);
+	private Indicateur solde2 = new Indicateur ("Solde de Eq3PROD", this, 0) ; 
 	
 	
 	
@@ -53,7 +54,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		return this.solde;
 	}
 	
-	public void setSolde(int solde) {
+	public void setSolde(double solde) {
 		this.solde=solde;
 	}
 	
@@ -305,7 +306,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			return (Math.random()<=0.042);
 		}
 		/**
-		@author Claire
+		@author Claire, Pierre et Morgane
 		**/
 		public void next() {
 			int x=Monde.LE_MONDE.getStep();
@@ -360,9 +361,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.prodFeves[2]=prodfin;
 			this.stockQH.setValeur(this,this.quantiteStockFin());
 			this.stockQM.setValeur(this, this.quantiteStockMoyen());
+			this.solde2.setValeur(this, this.solde);
 			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy().getValeur());
-			this.getJournal().ajouter("Quantité haute qualité ="+ getStockQHaut().getValeur());
+			this.getJournal().ajouter("Quantité haute qualité = "+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
+			this.getJournal().ajouter("Solde = "+ getSolde2().getValeur());
 		}
 		
 		//Journal 
@@ -395,11 +398,14 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		public void setStockQMoy(Indicateur i) {
 			this.stockQM = i;
 		}
+		public Indicateur getSolde2() {
+			return this.solde2 ; 
+		}
+		public void setSolde2(Indicateur i) {
+			this.solde2 = i ; 
+		}
 
 		
-		
-
-
-
+	
 	
 }
