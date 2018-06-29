@@ -4,11 +4,13 @@ import java.util.ArrayList;
 
 import abstraction.eq4TRAN.Eq4TRAN;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
+import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.eq6DIST.IAcheteurChoco;
+import abstraction.eq6DIST.IAcheteurChocoBis;
 import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
@@ -18,7 +20,7 @@ import abstraction.fourni.Monde;
 
 
   
-public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurChoco {
+public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurChocoBis {
 	private int[][] stock;
 	private double banque;
 	private Journal journal;
@@ -148,14 +150,7 @@ public Eq1DIST()  {
 		}
 		return new GrilleQuantite(res);
 	}
-	@Override
-	public ArrayList<GQte> getCommande(ArrayList<GPrix> gPrix, ArrayList<GQte> stock) {
-		ArrayList<GQte> l = new ArrayList<GQte>();
-		l.add(new GQte(0,7500,7500,0,29167,12500));
-		l.add(new GQte(0,16167,5000,0,0,0));
-		l.add(new GQte(0,16167,5000,0,0,0));
-		return l;
-	}
+	
 	
 	public void livraison(GQte d,double solde) {
 		for(int i=0; i<3;i++) {
@@ -168,6 +163,38 @@ public Eq1DIST()  {
 		}
 		this.banque -= solde;
 	}
+	@Override
+	public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
+		double[]demande;
+		demande = new double[6];
+		double[] p;
+		double somme;
+		ArrayList<ArrayList<Integer>> commandeFinale;
+		commandeFinale = new ArrayList<ArrayList<Integer>>();
+		for (int i=0;i<6;i++){
+			for (int j=0;j<3;j++) {	
+			somme = 0;
+			double a4;
+			double a5;
+			double a7;
+			for (int j=0;j<3;j++){
+				somme += stock[j][i];
+			}
+			p[i]=stock[j][i]/somme;
+			if(p[i]*demande[i]<= stock[j][i]){
+				commandeFinale.get(j).get(i).add(p[i]*demande[i]);
+			}
+			else {
+				commandeFinale.get(j).get(i).add(stock[0][i]);
+			}
+
+	}}}
+	@Override
+	public void livraison(ArrayList<Integer> livraison, double paiement) {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 	
