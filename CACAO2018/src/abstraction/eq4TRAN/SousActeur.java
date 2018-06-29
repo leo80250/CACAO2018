@@ -359,10 +359,29 @@ IVendeurPoudre {
 
 	
 	/*
-	 * Calcul des coûts variables 
+	 * Calcule puis débite les coûts fixes et variables  la solde du SousActeur
+	 * 
+	 * Coûts fixes: 
+	 * Salaires, coûts de maintenance
+	 * Plus une PME est grande, plus ses charges fixes sont 
+	 * élevées et moins ses charges variables sont élevées
 	 */
+	
 	public void coutsSupplementaires() {
-		
 		double CA = this.chiffreDAffaire.getValeur() ; 
+		double soldeActuelle = this.solde.getValeur() ;
+		double chargesFixes = 0 ;
+		double chargesVariables = 0 ; 
+		if (this.taillePME < 50 ) {
+			chargesFixes = 0 ;
+			chargesVariables = 0.4*CA ; 
+		} else if ((50 <=this.taillePME)&&(this.taillePME < 150 )) {
+			chargesFixes = 0 ;
+			chargesVariables = 0.35*CA ;
+		} else {
+			chargesFixes = 0 ; 
+			chargesVariables = 0.3*CA ; 
+		}
+		this.solde.setValeur(this, soldeActuelle - chargesFixes - chargesVariables);
 	}
  }
