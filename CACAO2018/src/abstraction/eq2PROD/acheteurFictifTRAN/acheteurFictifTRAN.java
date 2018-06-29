@@ -71,7 +71,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 	public List<ContratFeveV3> getDemandePriveeV3() {
 		/*this.contratPrecedent = Monde.LE_MONDE.getActeur("Marche intermediaire").getContratPrecedent*/
 		List<ContratFeveV3> c = new ArrayList<ContratFeveV3>();
-		//* Pour l'acheteur ficitf :		
+		/* Pour l'acheteur ficitf :		
 		int tonnageQB = 0; double prixQB =0;
 		int tonnageQM_1 = 0; double prixQM_1 = 0;
 		int tonnageQM_2 = 0; double prixQM_2 = 0;
@@ -123,11 +123,11 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 		}
 		// */
 		
-		/* -> //*    :   Test pour notre Eq2PROD
-		c.add(new ContratFeveV2(this, getVendeurs().get(0), 0,
+		//* -> //*    :   Test pour notre Eq2PROD
+		c.add(new ContratFeveV3(this, getVendeurs().get(0), 0,
 				0, 1, 0, 
 				0, 70800000, 0, false));
-		c.add(new ContratFeveV2(this, getVendeurs().get(1), 0,
+		c.add(new ContratFeveV3(this, getVendeurs().get(1), 0,
 				0, 1, 0, 
 				0, 70800000, 0, false)); 
 		// */
