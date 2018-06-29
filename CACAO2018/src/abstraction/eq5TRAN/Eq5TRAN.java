@@ -234,6 +234,16 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     	}
     	return false;
     }
+    
+    /*
+     * @author Juliette
+     */
+    public void bienEtreSalarie() {
+    	int numeroNext = Monde.LE_MONDE.getStep();
+    	if(numeroNext % 24==0 && this.banque.getValeur()>30000) { // tous les ans on donne 10000€ pour des aménagements pour les salariés
+    		this.banque.setValeur(this, this.banque.getValeur()-10000);
+    	}
+    }
  	  				 	 	   			 	
     /** 	  				 	 	   			 	
      * @author Juliette et Thomas 	  				 	 	   			 	
