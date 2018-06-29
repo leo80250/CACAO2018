@@ -362,8 +362,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.stockQH.setValeur(this,this.quantiteStockFin());
 			this.stockQM.setValeur(this, this.quantiteStockMoyen());
 			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy().getValeur());
-			this.getJournal().ajouter("Quantité haute qualité ="+ getStockQHaut().getValeur());
+			this.getJournal().ajouter("Quantité haute qualité = "+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
+			this.getJournal().ajouter("Solde = "+ getSolde2().getValeur());
 		}
 		
 		//Journal 
@@ -404,9 +405,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		}
 
 		
-		
-
-
-
+	
 	
 }
