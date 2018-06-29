@@ -180,8 +180,17 @@ public class ContratFeveV3 {
 			vendeur += ((Acteur)(this.producteur)).getNom();
 		}
 		
-		return "Contrat : "+this.getProposition_Quantite()+" tonnes de feve de "+strqualite[this.getQualite()]+" qualité, à "+this.getProposition_Prix()
+
+		if (this.getOffrePublique_Quantite()!=0) {
+			return "Contrat : QOP="+this.getOffrePublique_Quantite()+" tonnes de feve de "+strqualite[this.getQualite()]+" qualité, à "+this.getOffrePublique_Prix()
+			+"€ la tonne, soit un total de "+this.getOffrePublique_Quantite()*this.getOffrePublique_Prix()+"€.\nAcheteur : "+acheteur+" | Vendeur : "+vendeur+rep;
+			
+		}
+		else {
+		
+		return "Contrat : QOP="+this.getProposition_Quantite()+" tonnes de feve de "+strqualite[this.getQualite()]+" qualité, à "+this.getProposition_Prix()
 				+"€ la tonne, soit un total de "+this.getProposition_Quantite()*this.getProposition_Prix()+"€.\nAcheteur : "+acheteur+" | Vendeur : "+vendeur+rep;
-	}
+		}
+		}
 
 }
