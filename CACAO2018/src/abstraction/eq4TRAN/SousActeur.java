@@ -46,7 +46,7 @@ IVendeurPoudre {
 	private int taillePME ;
 	
 
-	public SousActeur(Indicateur stockTabBQ, Indicateur stockTabMQ, Indicateur stockTabHQ, Indicateur stockChocMQ, Indicateur stockChocHQ, Indicateur prodTabBQ, Indicateur prodTabMQ, Indicateur prodTabHQ,  Indicateur prodChocMQ , Indicateur prodChocHQ, List<ContratFeveV3> contratFeveEnCours, ContratPoudre[] contratPoudreEnCoursEq7TRAN, ContratPoudre[] contratPoudreEnCoursEq5TRAN) {
+	public SousActeur(Journal JournalEq4, Indicateur solde, Indicateur stockTabBQ, Indicateur stockTabMQ, Indicateur stockTabHQ, Indicateur stockChocMQ, Indicateur stockChocHQ, Indicateur prodTabBQ, Indicateur prodTabMQ, Indicateur prodTabHQ,  Indicateur prodChocMQ , Indicateur prodChocHQ) {
 		this.JournalEq4 = JournalEq4;
 		this.prodChocHQ = prodChocHQ;
 		this.prodChocMQ = prodChocMQ;
@@ -59,11 +59,7 @@ IVendeurPoudre {
 		this.stockTabBQ = stockTabBQ;
 		this.stockTabHQ = stockTabHQ;
 		this.stockTabMQ = stockTabMQ;
-		this.vendeur = vendeur;
-		this.contratFeveEnCours = contratFeveEnCours;
-		this.contratPoudreEnCoursEq5TRAN = contratPoudreEnCoursEq5TRAN;
-		this.contratPoudreEnCoursEq7TRAN = contratPoudreEnCoursEq7TRAN;
-	}
+		}
 
 	public String getNom() {
 		return "Eq4TRAN";
@@ -177,6 +173,9 @@ IVendeurPoudre {
 		return Stocks;
 	}
 
+	public void setStocks(ArrayList<Indicateur> l ) {
+		this.Stocks=l;
+	}
 	/*
 	 * @author Noémie 
 	 * Implémentation des méthodes de l'interface IAcheteurFeveV4

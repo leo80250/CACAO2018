@@ -19,7 +19,7 @@ public class Vendeur implements IVendeurChocoBis{
 	 */
 	
 	private ArrayList<Integer> stocks;
-	public Journal ventes = new Journal("ventes");
+	public Journal ventes = new Journal("Eq4 - Ventes");
 	
 	// Constructeur créant un Vendeur avec une liste de 6 paramètres : les stocks des 6 produits
 	public Vendeur(ArrayList<Integer> quantites) {
