@@ -4,5 +4,8 @@ plugins:
     checks:
       squid:S1135:
         enabled: false
+    checks:
+      squid:S1874:
+        enabled: true
     config:
       minimum_severity: info
