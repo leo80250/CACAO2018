@@ -36,9 +36,12 @@ IvendeurOccasionnelChoco{
 	public Acteur Eq4TRAN ; 
 
 	/** Déclaration des indicateurs pour le Journal
-	 *  
+	 *  @author Mickaël
 	 */
-
+	private SousActeur Acteur1;
+	private SousActeur Acteur2;
+	private SousActeur Acteur3;
+	
 	//Indicateurs de stock et de production
 	private Indicateur stockTabBQ_Eq4;
 	private Indicateur stockTabMQ_Eq4;
@@ -68,7 +71,112 @@ IvendeurOccasionnelChoco{
 	 * 0,
 	 */
 	public Eq4TRAN() {
+		/**
+		 * @Mickaël
+		 */
+		
 
+		this.Acteur1 = new SousActeur(new Journal("JournalActeur1"),
+				new Indicateur("solde", this.Acteur1,1000),
+				new Indicateur("stockTabBQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("stockTabMQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("stockChocMQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("prodTabBQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("prodTabMQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("prodTabHQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("prodChocMQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("prodChocHQ_Eq4_Acteur1",this.Acteur1,1000));
+
+		this.Acteur2 = new SousActeur(new Journal("JournalActeur2"),
+				new Indicateur("solde_Acteur2", this.Acteur1,1000),
+				new Indicateur("stockTabBQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("stockTabMQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("stockChocMQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("prodTabBQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("prodTabMQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("prodTabHQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("prodChocMQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("prodChocHQ_Eq4_Acteur2",this.Acteur2,1000));
+
+		this.Acteur3 = new SousActeur(new Journal("JournalActeur3"),
+				new Indicateur("solde_Acteur3", this.Acteur3,1000),
+				new Indicateur("stockTabBQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("stockTabMQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("stockChocMQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("prodTabBQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("prodTabMQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("prodTabHQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("prodChocMQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("prodChocHQ_Eq4_Acteur3",this.Acteur3,1000));
+		
+		/**
+		 * @author Mickaël, Etienne
+		 */
+		//On crée la liste qui range nos stocks pour chaque acteur.
+				ArrayList<Indicateur> Stocks_Acteur1 = new ArrayList<>();
+				//On remplit cette liste avec nos stocks
+				Stocks_Acteur1.add(new Indicateur("",this.Acteur1,0));
+				Stocks_Acteur1.add(this.Acteur1.getStockChocMQ());
+				Stocks_Acteur1.add(this.Acteur1.getStockChocHQ());
+				Stocks_Acteur1.add(this.Acteur1.getStockTabBQ());
+				Stocks_Acteur1.add(this.Acteur1.getStockTabMQ());
+				Stocks_Acteur1.add(this.Acteur1.getStockTabHQ());
+				this.Acteur1.setStocks(Stocks_Acteur1);;
+				// On s'initialise en tant que vendeur
+				ArrayList<Integer> stocks = new ArrayList<>();
+				stocks.add(0);
+				stocks.add((int)this.Acteur1.getStockChocMQ().getValeur());
+				stocks.add((int)this.Acteur1.getStockChocHQ().getValeur());
+				stocks.add((int)this.Acteur1.getStockTabBQ().getValeur());
+				stocks.add((int)this.Acteur1.getStockTabMQ().getValeur());
+				stocks.add((int)this.Acteur1.getStockTabHQ().getValeur());
+				this.Acteur1.setVendeur(new Vendeur(stocks));
+				
+				ArrayList<Indicateur> Stocks_Acteur2 = new ArrayList<>();
+				//On remplit cette liste avec nos stocks
+				Stocks_Acteur1.add(new Indicateur("",this.Acteur2,0));
+				Stocks_Acteur1.add(this.Acteur2.getStockChocMQ());
+				Stocks_Acteur1.add(this.Acteur2.getStockChocHQ());
+				Stocks_Acteur1.add(this.Acteur2.getStockTabBQ());
+				Stocks_Acteur1.add(this.Acteur2.getStockTabMQ());
+				Stocks_Acteur1.add(this.Acteur2.getStockTabHQ());
+				this.Acteur2.setStocks(Stocks_Acteur2);;
+				// On s'initialise en tant que vendeur
+				ArrayList<Integer> stocks2 = new ArrayList<>();
+				stocks.add(0);
+				stocks.add((int)this.Acteur2.getStockChocMQ().getValeur());
+				stocks.add((int)this.Acteur2.getStockChocHQ().getValeur());
+				stocks.add((int)this.Acteur2.getStockTabBQ().getValeur());
+				stocks.add((int)this.Acteur2.getStockTabMQ().getValeur());
+				stocks.add((int)this.Acteur2.getStockTabHQ().getValeur());
+				this.Acteur2.setVendeur(new Vendeur(stocks2));
+				
+				ArrayList<Indicateur> Stocks_Acteur3 = new ArrayList<>();
+				//On remplit cette liste avec nos stocks
+				Stocks_Acteur1.add(new Indicateur("",this.Acteur3,0));
+				Stocks_Acteur1.add(this.Acteur3.getStockChocMQ());
+				Stocks_Acteur1.add(this.Acteur3.getStockChocHQ());
+				Stocks_Acteur1.add(this.Acteur3.getStockTabBQ());
+				Stocks_Acteur1.add(this.Acteur3.getStockTabMQ());
+				Stocks_Acteur1.add(this.Acteur3.getStockTabHQ());
+				this.Acteur3.setStocks(Stocks_Acteur3);;
+				// On s'initialise en tant que vendeur
+				ArrayList<Integer> stocks3 = new ArrayList<>();
+				stocks.add(0);
+				stocks.add((int)this.Acteur3.getStockChocMQ().getValeur());
+				stocks.add((int)this.Acteur3.getStockChocHQ().getValeur());
+				stocks.add((int)this.Acteur3.getStockTabBQ().getValeur());
+				stocks.add((int)this.Acteur3.getStockTabMQ().getValeur());
+				stocks.add((int)this.Acteur3.getStockTabHQ().getValeur());
+				this.Acteur3.setVendeur(new Vendeur(stocks3));
+
+		
 		/**@Mickaël
 		 */
 		contratPoudreEnCoursEq7TRAN = new ContratPoudre[3];
@@ -114,14 +222,14 @@ IvendeurOccasionnelChoco{
 		Stocks.add(stockTabHQ_Eq4);
 		this.Stocks=Stocks;
 		// On s'initialise en tant que vendeur
-		ArrayList<Integer> stocks = new ArrayList<>();
-		stocks.add(0);
-		stocks.add((int)stockChocMQ_Eq4.getValeur());
-		stocks.add((int)stockChocHQ_Eq4.getValeur());
-		stocks.add((int)stockTabBQ_Eq4.getValeur());
-		stocks.add((int)stockTabMQ_Eq4.getValeur());
-		stocks.add((int)stockTabHQ_Eq4.getValeur());
-		vendeur = new Vendeur(stocks);
+		ArrayList<Integer> stocks1 = new ArrayList<>();
+		stocks1.add(0);
+		stocks1.add((int)stockChocMQ_Eq4.getValeur());
+		stocks1.add((int)stockChocHQ_Eq4.getValeur());
+		stocks1.add((int)stockTabBQ_Eq4.getValeur());
+		stocks1.add((int)stockTabMQ_Eq4.getValeur());
+		stocks1.add((int)stockTabHQ_Eq4.getValeur());
+		vendeur = new Vendeur(stocks1);
 		
 
 		// On ajoute nos indicateurs et notre journal de production et de vente dans la fenêtre principale du Monde
