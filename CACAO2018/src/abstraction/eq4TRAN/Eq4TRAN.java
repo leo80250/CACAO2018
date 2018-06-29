@@ -77,45 +77,11 @@ IvendeurOccasionnelChocoBis, Labellise{
 		 */
 		
 
-		this.Acteur1 = new SousActeur(new Journal("JournalActeur1"),
-				new Indicateur("solde", this.Acteur1,1000),
-				new Indicateur("stockTabBQ_Eq4_Acteur1",this.Acteur1,1000),
-				new Indicateur("stockTabMQ_Eq4_Acteur1",this.Acteur1,1000),
-				new Indicateur("stockTabHQ_Eq4_Acteur1",this.Acteur1,1000),
-				new Indicateur("stockChocMQ_Eq4_Acteur1",this.Acteur1,1000),
-				new Indicateur("stockTabHQ_Eq4_Acteur1",this.Acteur1,1000),
-				new Indicateur("prodTabBQ_Eq4_Acteur1",this.Acteur1,1000),
-				new Indicateur("prodTabMQ_Eq4_Acteur1",this.Acteur1,1000),
-				new Indicateur("prodTabHQ_Eq4_Acteur1",this.Acteur1,1000),
-				new Indicateur("prodChocMQ_Eq4_Acteur1",this.Acteur1,1000),
-				new Indicateur("prodChocHQ_Eq4_Acteur1",this.Acteur1,1000));
+		this.Acteur1 = new SousActeur(new Journal("JournalActeur1"),1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000);
 
-		this.Acteur2 = new SousActeur(new Journal("JournalActeur2"),
-				new Indicateur("solde_Acteur2", this.Acteur1,1000),
-				new Indicateur("stockTabBQ_Eq4_Acteur2",this.Acteur2,1000),
-				new Indicateur("stockTabMQ_Eq4_Acteur2",this.Acteur2,1000),
-				new Indicateur("stockTabHQ_Eq4_Acteur2",this.Acteur2,1000),
-				new Indicateur("stockChocMQ_Eq4_Acteur2",this.Acteur2,1000),
-				new Indicateur("stockTabHQ_Eq4_Acteur2",this.Acteur2,1000),
-				new Indicateur("prodTabBQ_Eq4_Acteur2",this.Acteur2,1000),
-				new Indicateur("prodTabMQ_Eq4_Acteur2",this.Acteur2,1000),
-				new Indicateur("prodTabHQ_Eq4_Acteur2",this.Acteur2,1000),
-				new Indicateur("prodChocMQ_Eq4_Acteur2",this.Acteur2,1000),
-				new Indicateur("prodChocHQ_Eq4_Acteur2",this.Acteur2,1000));
+		this.Acteur2 = new SousActeur(new Journal("JournalActeur2"),1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000);
 
-		this.Acteur3 = new SousActeur(new Journal("JournalActeur3"),
-				new Indicateur("solde_Acteur3", this.Acteur3,1000),
-				new Indicateur("stockTabBQ_Eq4_Acteur3",this.Acteur3,1000),
-				new Indicateur("stockTabMQ_Eq4_Acteur3",this.Acteur3,1000),
-				new Indicateur("stockTabHQ_Eq4_Acteur3",this.Acteur3,1000),
-				new Indicateur("stockChocMQ_Eq4_Acteur3",this.Acteur3,1000),
-				new Indicateur("stockTabHQ_Eq4_Acteur3",this.Acteur3,1000),
-				new Indicateur("prodTabBQ_Eq4_Acteur3",this.Acteur3,1000),
-				new Indicateur("prodTabMQ_Eq4_Acteur3",this.Acteur3,1000),
-				new Indicateur("prodTabHQ_Eq4_Acteur3",this.Acteur3,1000),
-				new Indicateur("prodChocMQ_Eq4_Acteur3",this.Acteur3,1000),
-				new Indicateur("prodChocHQ_Eq4_Acteur3",this.Acteur3,1000));
-		
+		this.Acteur3 = new SousActeur(new Journal("JournalActeur3"),1000,1000,1000,1000,1000,1000,1000,1000,1000,1000,1000);
 		/**
 		 * @author Mickaël, Etienne
 		 * on initialise le stock total
@@ -179,8 +145,7 @@ IvendeurOccasionnelChocoBis, Labellise{
 				this.Acteur3.setVendeur(new Vendeur(stocks3));
 
 		
-				
-				
+
 				
 		/**
 		 * @Mickaël
@@ -223,6 +188,9 @@ IvendeurOccasionnelChocoBis, Labellise{
 
 		this.Acteur3.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_Acteur3);
 		this.Acteur3.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_Acteur3);
+		
+		
+		
 		
 		
 		contratFeveEnCours = new ContratFeve[6];
@@ -271,9 +239,11 @@ IvendeurOccasionnelChocoBis, Labellise{
 
 		/**
 		 * On ajoute nos indicateurs et notre journal de production et de vente dans la fenêtre principale du Monde
+		 * 
+		 * IL FAUT CODER UN SOMMATEUR POUR AVOIR LES STOCKS TOTAUX DE EQ4TRAN
 		 * @author Mickaël, Etienne
 		 */
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockChocMQ());
+		/*Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockChocMQ());
 		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockChocHQ());
 		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockTabBQ());
 		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockTabMQ());
@@ -295,7 +265,7 @@ IvendeurOccasionnelChocoBis, Labellise{
 		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockTabMQ());
 		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockTabHQ());
 		Monde.LE_MONDE.ajouterJournal(this.Acteur3.getJournalEq4());
-		Monde.LE_MONDE.ajouterJournal(this.Acteur3.getVendeur().ventes);
+		Monde.LE_MONDE.ajouterJournal(this.Acteur3.getVendeur().ventes);*/
 	}
 
 	/** Nom de l'acteur
