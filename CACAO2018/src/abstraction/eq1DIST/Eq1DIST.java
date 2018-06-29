@@ -219,6 +219,11 @@ public Eq1DIST()  {
 		}
 		
 	}
+	@Override
+	public double[] getPrix() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 
