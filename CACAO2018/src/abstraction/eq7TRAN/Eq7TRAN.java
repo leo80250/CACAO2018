@@ -256,7 +256,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 		// bug dans Eq3, il caste leur objet équipe en IAcheteurFeve alors qu'il ne l'implemente pas
 		
-		for(Acteur Acteur : Monde.LE_MONDE.getActeurs()) {
+		/*for(Acteur Acteur : Monde.LE_MONDE.getActeurs()) {
 			// on récupère les commandes des distributeurs en tablettes
 			
 			if(Acteur instanceof IVendeurFeveV4) {
@@ -279,7 +279,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 					}
 				}
 			}
-		}
+		}*/
 		
 		// Fin de la période, on supprime toutes les commandes
 		this.getJournal().ajouter("COMMANDES FEVES = " +this.getQuantiteFevesCommandees()+"t");
