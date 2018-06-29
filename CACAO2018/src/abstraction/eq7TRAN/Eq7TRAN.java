@@ -37,9 +37,12 @@ import abstraction.fourni.Monde;
 public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeve, IAcheteurFeveV4, IVendeurChocoBis, IvendeurOccasionnelChoco {
 	
 	//rajouter IAcheteurFeve à implémenter
+<<<<<<< HEAD
 	
 	
 	
+=======
+>>>>>>> branch 'master2' of https://github.com/leo80250/CACAO2018.git
 	// 0 = BQ, 1 = MQ, 2 = HQ
 	private Indicateur[] stockFeves;
 	private Indicateur[] stockPoudre;
@@ -306,6 +309,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		 Il n'y a pas d'argent en jeu pour le moment, juste une négociation sur les quantités demandées
 		 */
 		
+		
+		// ECHANGE POUDRE
+		
 		GQte[] commandes = new GQte[3];
 		GQte commande;
 		GQte commandeLivree;
@@ -375,7 +381,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		 */
 		
 		// bug dans Eq3, il caste leur objet équipe en IAcheteurFeve alors qu'il ne l'implemente pas
-		for(Acteur Acteur : Monde.LE_MONDE.getActeurs()) {
+		
+		/*for(Acteur Acteur : Monde.LE_MONDE.getActeurs()) {
 			// on récupère les commandes des distributeurs en tablettes
 			
 			if(Acteur instanceof IVendeurFeveV4) {
@@ -383,24 +390,22 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				if(offresPubliques != null) {
 					offresPubliquesRetenues = this.analyseOffresPubliquesFeves(offresPubliques);
 					
-					this.getJournal().ajouter(offresPubliques.size()+" "+offresPubliquesRetenues.size());
-					
 					if(offresPubliquesRetenues.size() > 0) {
 						((IVendeurFeveV4) Acteur).sendDemandePriveeV3(offresPubliquesRetenues);
 						
 						offresPrivees = ((IVendeurFeveV4) Acteur).getOffreFinaleV3();
 						if(offresPrivees != null && offresPrivees.size() > 0) {
 							offresPriveesRetenues = this.analyseOffresPriveesFeves(offresPrivees);
-							/*for(ContratFeveV3 contrat : offresPrivees) {
-								
-							}*/
+							for(ContratFeveV3 contrat : offresPrivees) {
+								System.out.println(contrat);
+							}
 							((IVendeurFeveV4) Acteur).sendResultVentesV3(offresPriveesRetenues);
 						}
 						
 					}
 				}
 			}
-		}
+		}*/
 		
 		// Fin de la période, on supprime toutes les commandes
 		this.getJournal().ajouter("COMMANDES FEVES = " +this.getQuantiteFevesCommandees()+"t");
@@ -426,8 +431,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getJournal().ajouter("-------------------------------------------------------------");
 	}
 	
+<<<<<<< HEAD
 	
 	
+=======
+>>>>>>> branch 'master2' of https://github.com/leo80250/CACAO2018.git
 	public Indicateur[] getStockFeves() {
 		return this.stockFeves;
 	}
@@ -867,22 +875,21 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		ContratPoudre[] catalogue=new ContratPoudre[3];
 		for(int qualite=0;qualite<3;qualite++) {
-			catalogue[qualite]=new ContratPoudre(qualite,(int)this.getStockPoudre(qualite).getValeur(),
-					this.prixVentePoudre[qualite].getValeur(),acheteur,(IVendeurPoudre)this,false);
+			catalogue[qualite] = new ContratPoudre(qualite,(int)this.getStockPoudre(qualite).getValeur(), this.prixVentePoudre[qualite].getValeur(),acheteur,(IVendeurPoudre)this,false);
 		}
 		return catalogue;
 	}
 	
-	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
-		int n = devis.length;
+	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
+		int n = demande.length;
 		for(int i = 0; i<n; i++) {
-			int qualite = devis[i].getQualite();
+			int qualite = demande[i].getQualite();
 			// Si on a pas la bonne quantité on refuse
-			if(devis[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
-				devis[i].setReponse(false);
+			if(demande[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
+				//demande[i].setReponse(false);
 			}
 		}
-		return devis;
+		return demande;
 	}
 	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
@@ -890,9 +897,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	
-	public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
-		
+	public void sendReponsePoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
+		for(int qualite = 0; qualite<3; qualite++) {
+			if(contrat[qualite].getReponse())
+				this.getCommandesPoudreEnCours().add(contrat[qualite]);
+		}
 	}
 	
 	////////////////////////////
