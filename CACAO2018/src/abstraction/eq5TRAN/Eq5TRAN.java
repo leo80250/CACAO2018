@@ -244,6 +244,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     		this.banque.setValeur(this, this.banque.getValeur()-10000);
     	}
     }
+    
+    /*
+     * @author Juliette
+     */
     public void salaires() {
     	depenser((782*2400)/24);
     }
