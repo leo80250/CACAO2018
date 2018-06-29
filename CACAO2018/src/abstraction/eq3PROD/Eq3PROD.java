@@ -115,6 +115,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		Monde.LE_MONDE.ajouterJournal(getJournal());
 		Monde.LE_MONDE.ajouterIndicateur(getStockQHaut());
 		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
+		Monde.LE_MONDE.ajouterIndicateur(getSolde2());
 		
 		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
 		ArrayList<IVendeurFeveV4> producteurs = new ArrayList<IVendeurFeveV4>();
@@ -282,6 +283,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		public void vieillirStock() {
 			for(int i=0; i<this.stockmoyen.size(); i++) {
 				this.stockmoyen.get(i).set(1,this.stockmoyen.get(i).get(1)+1);
+			}
+			for(int i=0; i<this.stockmoyen.size(); i++) {
 				if(this.stockmoyen.get(i).get(1)>=12) {
 					this.stockmoyen.remove(i);
 				}
@@ -289,6 +292,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			
 			for(int i=0; i<this.stockfin.size(); i++) {
 				this.stockfin.get(i).set(1,this.stockfin.get(i).get(1)+1);
+			}
+			for(int i=0; i<this.stockfin.size(); i++) {
 				if(this.stockfin.get(i).get(1)>=12) {
 					this.stockfin.remove(i);
 				}
@@ -367,6 +372,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.getJournal().ajouter("Quantité haute qualité = "+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
 			this.getJournal().ajouter("Solde = "+ getSolde2().getValeur());
+			System.out.println(stockmoyen.toString());
 		}
 		
 		//Journal 
