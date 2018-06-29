@@ -8,6 +8,7 @@ import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
+import abstraction.eq4TRAN.VendeurChoco.Labellise;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
@@ -32,7 +33,7 @@ IAcheteurFeve,
 IVendeurChocoBis,
 IAcheteurPoudre,
 IVendeurPoudre,
-IvendeurOccasionnelChocoBis{ 
+IvendeurOccasionnelChocoBis, Labellise{ 
 
 	public Acteur Eq4TRAN ; 
 
@@ -599,7 +600,12 @@ IvendeurOccasionnelChocoBis{
 	@Override
 	public void envoyerReponseBis(int quantite, int qualite, int prix) {
 		// TODO Auto-generated method stub
-		
+	}
+
+	@Override
+	public double getLabel() {
+		// return Acteur.getLabel() mais il faut indiquer le label dans le constructeur de chaque sous-acteur
+		return 0;
 	}
 
 }

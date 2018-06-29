@@ -5,9 +5,7 @@ import java.util.List;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
-import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
-import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
@@ -34,7 +32,7 @@ IVendeurPoudre {
 	//Indicateur de notre solde bancaire
 	private Indicateur solde ; 
 	//Journal rendant compte de nos activités et de l'évolution de nos indicateurs
-	private Journal JournalEq4 = new Journal("JournalEq4") ;
+	private Journal JournalEq4;
 	//Rôle de vendeur que nous incarnerons à chaque next() et qui se mettra à jour à cette même fréquence
 	private Vendeur vendeur;
 	//On crée une liste pour ranger nos stocks
