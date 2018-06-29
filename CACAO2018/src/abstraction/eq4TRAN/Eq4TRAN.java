@@ -90,16 +90,16 @@ IvendeurOccasionnelChoco{
 
 
 		//On initialise les indicateurs à 1000(arbitraire)
-		stockTabBQ_Eq4 = new Indicateur("stockTabBQ",this,1000) ;
-		stockTabMQ_Eq4 = new Indicateur("stockTabMQ",this,1000) ;
-		stockTabHQ_Eq4 = new Indicateur("stockTabHQ",this,1000) ;
-		stockChocMQ_Eq4 = new Indicateur("stockChocMQ",this,1000) ;
-		stockChocHQ_Eq4 = new Indicateur("stockTabHQ",this,1000) ;
-		prodTabBQ_Eq4 = new Indicateur("prodTabBQ",this,1000) ;
-		prodTabMQ_Eq4 = new Indicateur("prodTabMQ",this,1000) ;
-		prodTabHQ_Eq4 = new Indicateur("prodTabHQ",this,1000) ;
-		prodChocMQ_Eq4 = new Indicateur("prodChocMQ",this,1000) ;
-		prodChocHQ_Eq4 = new Indicateur("prodChocHQ",this,1000) ;
+		stockTabBQ_Eq4 = new Indicateur("stockTabBQ_Eq4",this,1000) ;
+		stockTabMQ_Eq4 = new Indicateur("stockTabMQ_Eq4",this,1000) ;
+		stockTabHQ_Eq4 = new Indicateur("stockTabHQ_Eq4",this,1000) ;
+		stockChocMQ_Eq4 = new Indicateur("stockChocMQ_Eq4",this,1000) ;
+		stockChocHQ_Eq4 = new Indicateur("stockTabHQ_Eq4",this,1000) ;
+		prodTabBQ_Eq4 = new Indicateur("prodTabBQ_Eq4",this,1000) ;
+		prodTabMQ_Eq4 = new Indicateur("prodTabMQ_Eq4",this,1000) ;
+		prodTabHQ_Eq4 = new Indicateur("prodTabHQ_Eq4",this,1000) ;
+		prodChocMQ_Eq4 = new Indicateur("prodChocMQ_Eq4",this,1000) ;
+		prodChocHQ_Eq4 = new Indicateur("prodChocHQ_Eq4",this,1000) ;
 		solde = new Indicateur("solde",this,1000) ;
 		//On crée la liste qui range nos stocks
 		ArrayList<Indicateur> Stocks = new ArrayList<>();
