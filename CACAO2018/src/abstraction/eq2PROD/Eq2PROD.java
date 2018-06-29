@@ -80,8 +80,9 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		this.quantiteEq3 = false;
 		this.totalVenteQB=0.0;
 		this.totalVenteQM=0.0;
-		this.estInstable = estInstable;
-		this.coeffDeficitProd = coeffDeficitProd ;
+		/*this.estInstable = estInstable;
+		this.coeffDeficitProd = coeffDeficitProd ; */
+		
 	}
 	
 // GETTEURS
@@ -149,9 +150,9 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		this.quantiteEq3 = b;
 	}
 	
-	public double[] getListeInstabilite() {
+	/*public double[] getListeInstabilite() {
 		return coeffDeficitProd ;
-	}
+	} */
 	/* implementé en V0 */
 	public String getNom() {
 		return "Eq2PROD";
@@ -220,11 +221,11 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		}
 	}
 	
-	//* code par Alexandre BIGOT
+	/* code par Alexandre BIGOT
 	public void chgmtInstable(int p) { //* p est un entier entre 0 et 9
 		double proba = coeffInstable[p]*ponderation ;
 		if (estInstable[p]) {
-			proba=proba*2 ;     /*Si le pays est déjà instable, il a plus de chance de rester instable (2x plus) */
+			proba=proba*2 ;     /*Si le pays est déjà instable, il a plus de chance de rester instable (2x plus) 
 		}
 		if (Math.random()<proba) {
 			estInstable[p]=true ;
@@ -233,7 +234,7 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		}
 	}
 	
-	//* code par Alexandre BIGOT
+	/* code par Alexandre BIGOT
 	public void propageInstable(int p) {
 		for (int i=0; i<paysFront[p].length;i++) {
 			double proba = coeffInstable[i]*ponderation*2 ;
@@ -245,9 +246,9 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		}
 	}
 	
-	//* code par Alexandre BIGOT
+	/* code par Alexandre BIGOT
 	public void  majStabilite() { /* maj de la stabilité des 10 pays par chgt spontanée et propagation
-		et maj du coefficient qui réduit la production quand la stabilité est mauvaise */
+		et maj du coefficient qui réduit la production quand la stabilité est mauvaise 
 			for (int i=0; i<10;i++) {
 				chgmtInstable(i);
 			}
@@ -267,17 +268,17 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 			c = c + coeffDeficitProd[i];
 		}
 		return c ;
-	}
+	} */
 	
 	/* Alexandre Bigot + Guillaume Sallé */
 	private void calculCoeffStock() {
 		double coeffMeteo = meteo();
 		double coeffMaladie = maladie();
-		double coeffInstabilite = 0 ;
+		/*double coeffInstabilite = 0 ;
 		if (Monde.LE_MONDE.getStep()%4==0) {
 			majStabilite();
 			coeffInstabilite = coeffFinal();
-		}
+		} */
 		setCoeffStock(-0.2*(coeffMeteo-coeffMaladie)+1.2);
 	}
 	
@@ -381,8 +382,8 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ getStockQM());
 		this.getJournal().ajouter("Solde ="+getSolde()+" €");
 		this.getJournal().ajouter("Coefficient de la météo ="+ getCoeffMeteo());
-		this.getJournal().ajouter("Liste des coefficients d'instabilité de nos Pays :" + getListeInstabilite());
-		this.getJournal().ajouter("Le coefficient total de l'instabilité est :" + coeffFinal());
+		/*this.getJournal().ajouter("Liste des coefficients d'instabilité de nos Pays :" + getListeInstabilite());
+		this.getJournal().ajouter("Le coefficient total de l'instabilité est :" + coeffFinal()); */
 		if(!(getCoeffMaladie())) {
 			this.getJournal().ajouter("Aucune maladie n'a frappé les plantations");
 		} else {
