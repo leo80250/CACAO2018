@@ -126,11 +126,11 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		 
 		 this.getJournal().ajouter("Offres Publiques en cours : "+contratActuel.toString());
 		 
-		 System.out.println(" contrats actuels 1:");
-		 for (ContratFeveV3 c : contratActuel) {
-			 System.out.println(c);
-		 }
-		 System.out.println("------");
+		// System.out.println(" contrats actuels 1:");
+		 //for (ContratFeveV3 c : contratActuel) {
+			 //System.out.println(c);
+		 //}
+		 //System.out.println("------");
 		 
 		 List<ContratFeveV3> ca2 = new ArrayList<ContratFeveV3>();
 		 for (ContratFeveV3 c : contratActuel) {
@@ -154,14 +154,14 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 				contratActuel.add(contrat); 
 			 }
 		 }
-		 System.out.println(" contrats actuels 2:");
+		 /*System.out.println(" contrats actuels 2:");
 		 for (ContratFeveV3 c : contratActuel) {
 			 System.out.println(c);
 		 }
 		 System.out.println("------");
 		 
 		 this.getJournal().ajouter("Demandes privee en cours : "+contratActuel.toString());
-			
+		*/	
 		 
 		 // Envoi des demandes privees (Marche -> Producteurs)
 		 for (IVendeurFeveV4 vendeur : listVendeurs) { 
