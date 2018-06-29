@@ -90,16 +90,18 @@ IvendeurOccasionnelChoco{
 
 
 		//On initialise les indicateurs à 1000(arbitraire)
-		stockTabBQ_Eq4 = new Indicateur("stockTabBQ_Eq4",this,1000) ;
-		stockTabMQ_Eq4 = new Indicateur("stockTabMQ_Eq4",this,1000) ;
-		stockTabHQ_Eq4 = new Indicateur("stockTabHQ_Eq4",this,1000) ;
-		stockChocMQ_Eq4 = new Indicateur("stockChocMQ_Eq4",this,1000) ;
-		stockChocHQ_Eq4 = new Indicateur("stockTabHQ_Eq4",this,1000) ;
-		prodTabBQ_Eq4 = new Indicateur("prodTabBQ_Eq4",this,1000) ;
-		prodTabMQ_Eq4 = new Indicateur("prodTabMQ_Eq4",this,1000) ;
-		prodTabHQ_Eq4 = new Indicateur("prodTabHQ_Eq4",this,1000) ;
-		prodChocMQ_Eq4 = new Indicateur("prodChocMQ_Eq4",this,1000) ;
-		prodChocHQ_Eq4 = new Indicateur("prodChocHQ_Eq4",this,1000) ;
+
+		stockTabBQ_Eq4 = new Indicateur("Eq4 - stockTabBQ",this,1000) ;
+		stockTabMQ_Eq4 = new Indicateur("Eq4 - stockTabMQ",this,1000) ;
+		stockTabHQ_Eq4 = new Indicateur("Eq4 - stockTabHQ",this,1000) ;
+		stockChocMQ_Eq4 = new Indicateur("Eq4 - stockChocMQ",this,1000) ;
+		stockChocHQ_Eq4 = new Indicateur("Eq4 - stockTabHQ",this,1000) ;
+		prodTabBQ_Eq4 = new Indicateur("Eq4 - prodTabBQ",this,1000) ;
+		prodTabMQ_Eq4 = new Indicateur("Eq4 - prodTabMQ",this,1000) ;
+		prodTabHQ_Eq4 = new Indicateur("Eq4 - prodTabHQ",this,1000) ;
+		prodChocMQ_Eq4 = new Indicateur("Eq4 - prodChocMQ",this,1000) ;
+		prodChocHQ_Eq4 = new Indicateur("Eq4 - prodChocHQ",this,1000) ;
+
 		solde = new Indicateur("solde",this,1000) ;
 		//On crée la liste qui range nos stocks
 		ArrayList<Indicateur> Stocks = new ArrayList<>();
@@ -122,13 +124,14 @@ IvendeurOccasionnelChoco{
 		vendeur = new Vendeur(stocks);
 		
 
-		// On ajoute nos indicateurs et notre journal dans la fenêtre principale du Monde
+		// On ajoute nos indicateurs et notre journal de production et de vente dans la fenêtre principale du Monde
 		Monde.LE_MONDE.ajouterIndicateur(stockChocMQ_Eq4);
 		Monde.LE_MONDE.ajouterIndicateur(stockChocHQ_Eq4);
 		Monde.LE_MONDE.ajouterIndicateur(stockTabBQ_Eq4);
 		Monde.LE_MONDE.ajouterIndicateur(stockTabMQ_Eq4);
 		Monde.LE_MONDE.ajouterIndicateur(stockTabHQ_Eq4);
 		Monde.LE_MONDE.ajouterJournal(JournalEq4);
+		Monde.LE_MONDE.ajouterJournal(getJournalVentes());
 	}
 
 	/** Nom de l'acteur
@@ -271,6 +274,9 @@ IvendeurOccasionnelChoco{
 
 	}
 
+	public Journal getJournalVentes() {
+		return vendeur.ventes;
+	}
 
 	@Override
 	public void sell(int q) {
