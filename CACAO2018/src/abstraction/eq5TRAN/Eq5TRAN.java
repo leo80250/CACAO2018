@@ -139,9 +139,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
          * @author Francois le Guernic 	  				 	 	   			 	
          */
 
-        contratFeveBQEq2 = new ContratFeveV3(this, (IVendeurFeveV4) Monde.LE_MONDE.getActeur("Eq2PROD"), 0);
-        contratFeveMQEq2 = new ContratFeveV3(this, (IVendeurFeveV4) Monde.LE_MONDE.getActeur("Eq2PROD"), 1);
-        contratFeveMQEq3 = new ContratFeveV3(this, (IVendeurFeveV4) Monde.LE_MONDE.getActeur("Eq3PROD"), 1);
+        contratFeveBQEq2 = new ContratFeveV3(this, "Eq2PROD", 0);
+        contratFeveMQEq2 = new ContratFeveV3(this, "Eq2PROD", 1);
+        contratFeveMQEq3 = new ContratFeveV3(this, "Eq3PROD", 1);
 
         /**
          * GESTION DE LA PEREMPTION 	  				 	 	   			 	
@@ -178,7 +178,6 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
     /**
      * @author Thomas Schillaci
-     * TODO la prod coute de l'argent
      */
     public void production() {
         roulementStocks();
@@ -210,7 +209,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * Transforme la merch1 en merch2
      */
     public void production(int merch1, int merch2) {
-        double quantite = Math.min(stocks[merch1].getValeur(), productionSouhaitee[merch2].getValeur());
+        double quantite = Math.min(stocks[merch1].getValeur(), productionSouhaitee[merch2].getValeur() * (isPeriodeFetes()?3:1));
         if (isGreves()) quantite *= 0.3;
         if (quantite < productionSouhaitee[merch2].getValeur()) {
             respectObjectifs[merch1] = false;

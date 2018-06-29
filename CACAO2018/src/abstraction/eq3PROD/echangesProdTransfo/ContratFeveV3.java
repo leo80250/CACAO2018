@@ -2,6 +2,7 @@ package abstraction.eq3PROD.echangesProdTransfo;
 
 import abstraction.eq2PROD.acheteurFictifTRAN.acheteurFictifTRAN;
 import abstraction.fourni.Acteur;
+import abstraction.fourni.Monde;
 
 /**
  * @author Claire
@@ -9,7 +10,7 @@ import abstraction.fourni.Acteur;
 
 public class ContratFeveV3 {
 	
-
+	private String nomTamponProducteur;
 	private IAcheteurFeveV4 transformateur;
 	private IVendeurFeveV4 producteur;
 	private int qualite;
@@ -37,6 +38,28 @@ public class ContratFeveV3 {
 	 */
 	
 		// Constructeurs //
+
+	/**
+	 * Version pour contrer le fait que dans le constructeur d'une equipe
+	 * Tous les acteurs ne sont pas forcement initialises
+	 * @param producteur le nom du producteur que retournerait sa methode getNom() si il existait
+	 */
+
+	public ContratFeveV3(IAcheteurFeveV4 transformateur, String producteur, int qualite) {
+		this.transformateur = transformateur;
+		this.qualite = qualite;
+
+		this.quantiteOffrePublique = 0;
+		this.quantiteDemande = 0;
+		this.quantiteProposition = 0;
+
+		this.prixOffrePublique = 0;
+		this.prixDemande = 0;
+		this.prixProposition = 0;
+
+		this.reponse = false;
+
+	}
 	
 	public ContratFeveV3(IAcheteurFeveV4 transformateur, IVendeurFeveV4 producteur, int qualite,
 			int quantiteOffrePublique, int quantiteDemande, int quantiteProposition,
@@ -101,6 +124,10 @@ public class ContratFeveV3 {
 		return this.transformateur;
 	}
 	public IVendeurFeveV4 getProducteur() {
+		if(!nomTamponProducteur.equals("")) {
+			nomTamponProducteur="";
+			producteur = (IVendeurFeveV4) Monde.LE_MONDE.getActeur(nomTamponProducteur);
+		}
 		return this.producteur;
 	}
 	public int getQualite() {
@@ -136,6 +163,7 @@ public class ContratFeveV3 {
 		this.transformateur = transformateur;
 	}
 	public void setProducteur(IVendeurFeveV4 producteur) {
+		nomTamponProducteur="";
 		this.producteur = producteur;
 	}
 	public void setQualite(int qualite) {
