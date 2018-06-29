@@ -110,20 +110,23 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 				commande.get(i).add(0);
 		}
 		}
+		
+		// Commande de TMG
+		
 		double stock_TMG_min=10000000.0; // calcul le stock min en TMG des 3 transfos et l'indice de l'équipe avec le plus petit stock;
 		int equipe_stock_TMG_min=0;
 		for (int i=0; i<3; i++) {
-			if (stock_TMG_min>=Stock.get(i).get(3)) {
-				stock_TMG_min=Stock.get(i).get(3);
+			if (stock_TMG_min>=Stock.get(i).get(4)) {
+				stock_TMG_min=Stock.get(i).get(4);
 				equipe_stock_TMG_min=i;
 			}
 		}
 		int indice_equipe_moins_chere_TMG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
 		double prix_moins_chere_TMG=10000000.0;
 		for (int i=0; i<3; i++) {
-			if (Prix.get(i).getPrixProduit((int)stock_TMG_min-1,4)<=prix_moins_chere_TMG) {
+			if (Prix.get(i).getPrixProduit((int)stock_TMG_min-1,5)<=prix_moins_chere_TMG) {
 				indice_equipe_moins_chere_TMG=i;
-				prix_moins_chere_TMG=Prix.get(i).getPrixProduit((int)stock_TMG_min-1,4);
+				prix_moins_chere_TMG=Prix.get(i).getPrixProduit((int)stock_TMG_min-1,5);
 			}
 		}
 		int stock_TMG1=0;
@@ -132,13 +135,13 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		} else {
 			stock_TMG1= (int) (0.2*stock_TMG_min);
 		}
-		commande.get(equipe_stock_TMG_min).set(3, stock_TMG1);
+		commande.get(equipe_stock_TMG_min).set(4, stock_TMG1);
 		// calcule le 2e plus petit stock de TMG et l'indice du transfo associé 
 		double stock_TMG_min2=10000000.0;
 		int equipe_stock_TMG_min2=0;
 		for (int k=0; k<3; k++) {
-			if (stock_TMG_min2>=Stock.get(k).get(3) && stock_TMG_min<Stock.get(k).get(3)) {
-				stock_TMG_min2=Stock.get(k).get(3);
+			if (stock_TMG_min2>=Stock.get(k).get(4) && stock_TMG_min<Stock.get(k).get(4)) {
+				stock_TMG_min2=Stock.get(k).get(4);
 				equipe_stock_TMG_min2=k;
 			}
 		}
@@ -146,10 +149,10 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		int indice_equipe_moins_chere_TMG2=0;
 		double prix_moins_chere_TMG2=100000000.0;
 		for (int i=0; i<3; i++) {
-			if (Prix.get(i).getPrixProduit((int) stock_TMG_min2-1, 4) <= prix_moins_chere_TMG2
+			if (Prix.get(i).getPrixProduit((int) stock_TMG_min2-1, 5) <= prix_moins_chere_TMG2
 					&& i!=indice_equipe_moins_chere_TMG) {
 				indice_equipe_moins_chere_TMG2=i;
-				prix_moins_chere_TMG2=Prix.get(i).getPrixProduit((int)stock_TMG_min2-1,4);
+				prix_moins_chere_TMG2=Prix.get(i).getPrixProduit((int)stock_TMG_min2-1,5);
 			}
 		}
 		int stock_TMG2;
@@ -158,10 +161,66 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		} else {
 			stock_TMG2=(int) (0.2*stock_TMG_min2);
 		}
-		commande.get(equipe_stock_TMG_min2).set(3, stock_TMG2);
+		commande.get(equipe_stock_TMG_min2).set(4, stock_TMG2);
 		// calcule l'indice du transfo avec le plus grand stock
 		int equipe_stock_TMG_max=3-equipe_stock_TMG_min-equipe_stock_TMG_min2;
-		commande.get(equipe_stock_TMG_max).set(3, 22220-stock_TMG1-stock_TMG2);
+		commande.get(equipe_stock_TMG_max).set(4, 22220-stock_TMG1-stock_TMG2);
+		
+		
+		//Commande de TBG
+		
+		double stock_TBG_min=10000000.0; // calcul le stock min en TBG des 3 transfos et l'indice de l'équipe avec le plus petit stock;
+		int equipe_stock_TBG_min=0;
+		for (int i=0; i<3; i++) {
+			if (stock_TBG_min>=Stock.get(i).get(3)) {
+				stock_TBG_min=Stock.get(i).get(3);
+				equipe_stock_TBG_min=i;
+			}
+		}
+		int indice_equipe_moins_chere_TBG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
+		double prix_moins_chere_TBG=10000000.0;
+		for (int i=0; i<3; i++) {
+			if (Prix.get(i).getPrixProduit((int)stock_TBG_min-1,4)<=prix_moins_chere_TBG) {
+				indice_equipe_moins_chere_TBG=i;
+				prix_moins_chere_TBG=Prix.get(i).getPrixProduit((int)stock_TBG_min-1,4);
+			}
+		}
+		int stock_TBG1=0;
+		if (equipe_stock_TBG_min==indice_equipe_moins_chere_TBG) {
+			stock_TBG1= (int) (0.8*stock_TBG_min);
+		} else {
+			stock_TBG1= (int) (0.2*stock_TBG_min);
+		}
+		commande.get(equipe_stock_TBG_min).set(3, stock_TBG1);
+		// calcule le 2e plus petit stock de TBG et l'indice du transfo associé 
+		double stock_TBG_min2=10000000.0;
+		int equipe_stock_TBG_min2=0;
+		for (int k=0; k<3; k++) {
+			if (stock_TBG_min2>=Stock.get(k).get(3) && stock_TBG_min<Stock.get(k).get(3)) {
+				stock_TBG_min2=Stock.get(k).get(3);
+				equipe_stock_TBG_min2=k;
+			}
+		}
+		// renvoie l'indice du transfo le moins chere pour le 2e plus petit stock
+		int indice_equipe_moins_chere_TBG2=0;
+		double prix_moins_chere_TBG2=100000000.0;
+		for (int i=0; i<3; i++) {
+			if (Prix.get(i).getPrixProduit((int) stock_TBG_min2-1, 4) <= prix_moins_chere_TBG2
+					&& i!=indice_equipe_moins_chere_TBG) {
+				indice_equipe_moins_chere_TBG2=i;
+				prix_moins_chere_TBG2=Prix.get(i).getPrixProduit((int)stock_TBG_min2-1,4);
+			}
+		}
+		int stock_TBG2;
+		if (equipe_stock_TBG_min2==indice_equipe_moins_chere_TBG2) {
+			stock_TBG2=(int) (0.8*stock_TBG_min2);
+		} else {
+			stock_TBG2=(int) (0.2*stock_TBG_min2);
+		}
+		commande.get(equipe_stock_TBG_min2).set(3, stock_TBG2);
+		// calcule l'indice du transfo avec le plus grand stock
+		int equipe_stock_TBG_max=3-equipe_stock_TBG_min-equipe_stock_TBG_min2;
+		commande.get(equipe_stock_TBG_max).set(3, 1615-stock_TBG1-stock_TBG2);
 		
 		return commande;
 	}
