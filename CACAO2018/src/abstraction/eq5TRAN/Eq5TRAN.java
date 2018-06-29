@@ -168,7 +168,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void next() { 
         production();
         bienEtreSalarie();
-    } 	  				 	 	   			 	
+        salaires();
+        } 	  				 	 	   			 	
  	  				 	 	   			 	
     /** 	  				 	 	   			 	
      * @author Thomas Schillaci 	  				 	 	   			 	
