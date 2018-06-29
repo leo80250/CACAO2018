@@ -361,6 +361,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.prodFeves[2]=prodfin;
 			this.stockQH.setValeur(this,this.quantiteStockFin());
 			this.stockQM.setValeur(this, this.quantiteStockMoyen());
+			this.solde2.setValeur(this, this.solde);
 			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy().getValeur());
 			this.getJournal().ajouter("Quantité haute qualité = "+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
