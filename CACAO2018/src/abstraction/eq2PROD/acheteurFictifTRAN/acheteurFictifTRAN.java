@@ -17,7 +17,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 		this.offreFinale = new ArrayList<>();
 		this.contratPrecedent = new ArrayList<>();
 		
-	}
+	} 
 	
 	
 /* GETTEURS */
