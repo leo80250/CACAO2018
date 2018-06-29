@@ -191,32 +191,29 @@ IVendeurPoudre {
 	 */
 	@Override
 	public List<ContratFeveV3> getDemandePriveeV3() {
-		return null ; 
-		/* Ancien code getDemandePrivee
-		 * 
-		 * int[] demande= {13000,70000,25000};
+		int[] demande= {13000,70000,25000};
 		 
 		double[] prixMin= { 100000.0 , 100000.0 , 100000.0 } ;
 		int[] min= {-1,-1,-1};
 		int[] max= {-1,-1,-1};
-		for (int i=0;i<this.contratFeveEnCours.length;i++) {
-			int qualite=this.contratFeveEnCours[i].getOffrePublique_Quantite();
-			if (this.contratFeveEnCours[i].getOffrePublique_Prix()<prixMin[qualite]) {
-				prixMin[qualite]=this.contratFeveEnCours[i].getOffrePublique_Prix();
+		for (int i=0;i<this.contratFeveEnCours.size();i++) {
+			int qualite=this.contratFeveEnCours.get(i).getOffrePublique_Quantite();
+			if (this.contratFeveEnCours.get(i).getOffrePublique_Prix()<prixMin[qualite]) {
+				prixMin[qualite]=this.contratFeveEnCours.get(i).getOffrePublique_Prix();
 				if (min[i]!=-1) {
 					max[qualite]=i;
 				}
-				min[i]=this.contratFeveEnCours[i].getQualite();
+				min[i]=this.contratFeveEnCours.get(i).getQualite();
 			}
 		}
 		for (int j=0;j<3;j++) {
-			this.contratFeveEnCours[min[j]].setDemande_Quantite(Math.min(demande[min[j]],this.contratFeveEnCours[min[j]].getOffrePublique_Quantite()/3));
+			this.contratFeveEnCours.get(min[j])
+			.setDemande_Quantite(Math.min(demande[min[j]],this.contratFeveEnCours.get(min[j]).getOffrePublique_Quantite()/3));
 			if (max[j]!=-1) {
-				this.contratFeveEnCours[max[j]].setDemande_Quantite(demande[min[j]]-Math.min(demande[min[j]],this.contratFeveEnCours[min[j]].getOffrePublique_Quantite()/3));
+				this.contratFeveEnCours.get(max[j]).setDemande_Quantite(demande[min[j]]-Math.min(demande[min[j]],this.contratFeveEnCours.get(min[j]).getOffrePublique_Quantite()/3));
 			}
 		}
-		return this.contratFeveEnCours ;
-		*/
+		return this.contratFeveEnCours;
 	}
 	
 	/*
