@@ -32,7 +32,7 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 // CONSTRUCTEURS
 	public Eq2PROD() {
 		
-		setNomEq("Eq2PROD");
+		setNomEq("Eq2PROD"); 
 		setStockAffichage();
 		this.indicateurQB = new Indicateur("Stock de "+getNomEq()+" de basse qualité",this,getStockQB());
 		this.indicateurQM = new Indicateur("Stock de "+getNomEq()+" de moyenne qualité",this,getStockQM());
