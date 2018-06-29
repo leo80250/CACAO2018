@@ -61,11 +61,11 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		this.nom = nom;
 		this.listVendeurs =new ArrayList<>();
 		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
-		System.out.println(this.toStringListeActeur(listActeurs));;
+		//System.out.println(this.toStringListeActeur(listActeurs));;
 		for (Acteur a : listActeurs) {
 			if (a instanceof IVendeurFeveV4) {
 				listVendeurs.add((IVendeurFeveV4) a);
-				System.out.println(listVendeurs);
+				//System.out.println(listVendeurs);
 			}
 		}
 		this.listAcheteurs = new ArrayList<IAcheteurFeveV4>(); 
@@ -146,7 +146,7 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		}
 		contratActuel = new ArrayList<ContratFeveV3>();
 		 for (IVendeurFeveV4 vendeur : listVendeurs) {
-			 System.out.println(listVendeurs);
+			 //System.out.println(listVendeurs);
 			 List<ContratFeveV3> cop = vendeur.getOffrePubliqueV3();
 			 for (ContratFeveV3 contrat : cop) {
 				contratActuel.add(contrat); 
