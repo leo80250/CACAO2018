@@ -33,7 +33,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private Journal journal;
 	private String nomEq;
 	private Indicateur stockQM=new Indicateur ("Stock de Eq3PROD de moyenne qualité", this, 75000);
-	private Indicateur stockQH=new Indicateur ("Stock de Eq3PROD de haute qualité", this, 24000);;
+	private Indicateur stockQH=new Indicateur ("Stock de Eq3PROD de haute qualité", this, 24000);
+	private Indicateur solde2 = new Indicateur ("Solde de Eq3PROD", this, 0) ; 
 	
 	
 	
@@ -305,7 +306,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			return (Math.random()<=0.042);
 		}
 		/**
-		@author Claire
+		@author Claire, Pierre et Morgane
 		**/
 		public void next() {
 			int x=Monde.LE_MONDE.getStep();
@@ -394,6 +395,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		}
 		public void setStockQMoy(Indicateur i) {
 			this.stockQM = i;
+		}
+		public Indicateur getSolde2() {
+			return this.solde2 ; 
+		}
+		public void setSolde2(Indicateur i) {
+			this.solde2 = i ; 
 		}
 
 		
