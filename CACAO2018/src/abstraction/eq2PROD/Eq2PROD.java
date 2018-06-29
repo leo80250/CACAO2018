@@ -4,6 +4,7 @@ import abstraction.fourni.*;
 import abstraction.eq3PROD.echangesProdTransfo.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import abstraction.eq2PROD.acheteurFictifTRAN.acheteurFictifTRAN;
@@ -390,7 +391,7 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ getStockQM());
 		this.getJournal().ajouter("Solde ="+getSolde()+" €");
 		this.getJournal().ajouter("Coefficient de la météo ="+ getCoeffMeteo());
-		this.getJournal().ajouter("Liste des coefficients d'instabilité de nos Pays :" + getListeInstabilite());
+		this.getJournal().ajouter("Liste des coefficients d'instabilité de nos Pays :" + Arrays.toString(getListeInstabilite()));
 		this.getJournal().ajouter("Le coefficient total de l'instabilité est :" + coeffFinal()); 
 		if(!(getCoeffMaladie())) {
 			this.getJournal().ajouter("Aucune maladie n'a frappé les plantations");
