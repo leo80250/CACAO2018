@@ -61,10 +61,16 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		return this.totalVenteQM;
 	}
 	public void setTotalVenteQB(double q) {
-		this.totalVenteQB=q;
+		this.totalVenteQB+=q;
+	}
+	public void razTotalVenteQB() {
+		this.totalVenteQB = 0;
 	}
 	public void setTotalVenteQM(double q) {
-		this.totalVenteQM=q;
+		this.totalVenteQM+=q;
+	}
+	public void razTotalVenteQM() {
+		this.totalVenteQM = 0;
 	}
 	public void addSolde(double s) {
 		this.solde = this.solde + s;
@@ -299,6 +305,8 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 			this.getJournal().ajouter("Une maladie a frappé les plantations");
 		}
 		this.getJournal().ajouter("------------------------------------------------------------------------------");
+		this.getJournal().ajouter("Quantité vendue Basse Qualite ="+getTotalVenteQB());
+		this.getJournal().ajouter("Quantité vendue Moyenne Qualité ="+getTotalVenteQM());
 		if((getQuantiteEq3())) {
 			this.getJournalOccasionel().ajouter("Une transaction a été réalisée avec l'équipe 3");
 		} else {
@@ -309,6 +317,8 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		indicateurQB.setValeur(this, getStockQB());
 		indicateurQM.setValeur(this, getStockQM());
 		soldejournal.setValeur(this, getSolde());
+		razTotalVenteQB();
+		razTotalVenteQM();
 	}
 
 	
