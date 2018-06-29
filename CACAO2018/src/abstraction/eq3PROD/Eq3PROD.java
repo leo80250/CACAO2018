@@ -155,7 +155,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			List<ContratFeveV3> c= new ArrayList<>() ; 
 			c.add(c1); 
 			c.add(c2); 
-			System.out.println(c1+" "+c2);
+			//System.out.println(c1+" "+c2);
 			return c; 
 		} 
 
