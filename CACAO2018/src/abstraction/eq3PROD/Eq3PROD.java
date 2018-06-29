@@ -154,7 +154,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			List<ContratFeveV3> c= new ArrayList<>() ; 
 			c.add(c1); 
 			c.add(c2); 
-			System.out.println(c1+" "+c2);
+			//System.out.println(c1+" "+c2);
 			return c; 
 		} 
 
@@ -171,7 +171,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 						listeContrats.add(demandePrivee.get(i)) ; 
 					}
 				} else {
-					if (demandePrivee.get(i).getDemande_Prix() >= 1000){  	 	  	  		   		 	 	
+					if (demandePrivee.get(i).getDemande_Prix() >= 1212){  	 	  	  		   		 	 	
 						listeContrats.add(demandePrivee.get(i)) ;  
 					}
 				} 
@@ -232,7 +232,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				} else {
 					if (contrat.getDemande_Prix() >= contrat.getOffrePublique_Prix()) {
 						contrat.setProposition_Prix(contrat.getDemande_Prix());
-					} else if (contrat.getDemande_Prix() > 1000 && contrat.getDemande_Prix() < contrat.getOffrePublique_Prix()) {
+					} else if (contrat.getDemande_Prix() >= 1212 && contrat.getDemande_Prix() < contrat.getOffrePublique_Prix()) {
 						contrat.setProposition_Prix(contrat.getDemande_Prix()*0.67 + contrat.getOffrePublique_Prix()*0.33);
 					}
 				}
@@ -249,12 +249,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		 */
 		public void sendResultVentesV3(List<ContratFeveV3> resultVentes) { 	
 			
-			for (ContratFeveV3 contrat : resultVentes) {  	 
-				double salaires_Indo = contrat.getProposition_Quantite()*contrat.getProposition_Prix()*0.285 ;  	 	  	  		   		 	 	
-				double salaires_Bresil = contrat.getProposition_Quantite()*contrat.getProposition_Prix()*0.969;  	 	  	  		   		 	 	
-				double salaires_Equateur = contrat.getProposition_Quantite()*contrat.getProposition_Prix()*0.433;   	 	  	  		   		 	 	
-				
-
+			for (ContratFeveV3 contrat : resultVentes) {  	  	 	  	  		   		 	 	
+	
 				if(contrat.getReponse() == true) {
 					if(contrat.getQualite() == 1) { 	 	  	  		   		 	 	
 						int sommemoyen=0;
@@ -296,6 +292,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				}
 			}
 		}
+		
 		
 		/**
 		 * @author Claire
@@ -358,6 +355,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.vieillirStock();
 			this.ajouterStockMoyen(prodBresil+prodIndo);
 			this.ajouterStockFin(prodfin);
+			this.solde -= (prodBresil + prodIndo + prodfin)*1212 ; 
 			this.prodFeves[1]=prodBresil+prodIndo;
 			this.prodFeves[2]=prodfin;
 			this.stockQH.setValeur(this,this.quantiteStockFin());
