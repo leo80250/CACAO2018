@@ -164,8 +164,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     } 	  				 	 	   			 	
  	  				 	 	   			 	
     @Override 	  				 	 	   			 	
-    public void next() { 	  				 	 	   			 	
-        production(); 	  				 	 	   			 	
+    public void next() { 
+    		production(); 
+    	
+        	  				 	 	   			 	
     } 	  				 	 	   			 	
  	  				 	 	   			 	
     /** 	  				 	 	   			 	
@@ -218,7 +220,19 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         banque.setValeur(this, resultat); 	  				 	 	   			 	
         if (resultat < 0) 	  				 	 	   			 	
             journal.ajouter("L'equipe 5 est a decouvert !\nCompte en banque: " + banque.getValeur() + "€"); 	  				 	 	   			 	
-    } 	  				 	 	   			 	
+    } 	  		
+    
+    /*
+     * @author Juliette
+     */
+    public boolean greves() {
+    	double probaGreve = 12.0/365; //12 jours de grèves par an
+    	if(Math.random()<probaGreve) {
+    		journal.ajouter("Les salariés de Nestlé sont en grève");
+    		return true;
+    	}
+    	return false;
+    }
  	  				 	 	   			 	
     /** 	  				 	 	   			 	
      * @author Juliette et Thomas 	  				 	 	   			 	
