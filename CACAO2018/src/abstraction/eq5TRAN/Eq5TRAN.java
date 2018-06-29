@@ -251,7 +251,11 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * @author Juliette
      */
     public void salaires() {
-    	depenser((782*2400)/24);
+    	if(greves()==false) {
+    		depenser((782*2400)/24);
+    	}
+    	
+    	
     }
     
     /*
