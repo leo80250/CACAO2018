@@ -375,7 +375,7 @@ IVendeurPoudre {
 
 	@Override
 	public void next() {
-		// NE RIEN CODER //
+		// NE RIEN CODER, VOIR EQ4TRAN 
 		
 	}
  }
