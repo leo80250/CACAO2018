@@ -222,22 +222,52 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		}
 
 		/**
-		 * @author Morgane
+		 * @author Morgane & Pierre
 		 */
 		public void sendResultVentes(List<ContratFeveV3> resultVentes) { 	 	  	  		   		 	 	
 			for (ContratFeveV3 contrat : resultVentes) {  	 	  	  		   		 	 	
 				if(contrat.getQualite() == 1) { 	 	  	  		   		 	 	
-					if(contrat.getReponse() == true) { 	 	  	  		   		 	 	
-						this.stockmoyen -= contrat.getProposition_Quantite() ; 	 	  	  		   		 	 	
+					if(contrat.getReponse() == true) {
+						int sommemoyen=0;
+						while(sommemoyen+this.stockmoyen.get(0).get(0)<contrat.getProposition_Quantite()) {
+							sommemoyen+=this.stockmoyen.get(0).get(0);
+							this.stockmoyen.remove(0);
+						}
+						this.stockmoyen.get(0).set(0,this.stockmoyen.get(0).get(0)-(contrat.getProposition_Quantite()-sommemoyen));  	  		   		 	 	
 						solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;  	 	  	  		   		 	 	
 					}  	 	  	  		   		 	 	
 				} else { 	 	  	  		   		 	 	
-					this.stockfin -= contrat.getProposition_Quantite() ;  	 	  	  		   		 	 	
+					int sommefin=0;
+					while(sommefin+this.stockfin.get(0).get(0)<contrat.getProposition_Quantite()) {
+						sommefin+=this.stockfin.get(0).get(0);
+						this.stockfin.remove(0);
+					}
+					this.stockfin.get(0).set(0,this.stockfin.get(0).get(0)-(contrat.getProposition_Quantite()-sommefin));  	 	  	  		   		 	 	
 					solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() ; 	 	  	  		   		 	 	
 				} 	 	  	  		   		 	 	
 			} 	 	  	  		   		 	 	
 		}
-
+		
+		/**
+		 * @author Pierre
+		 */
+		
+		public void vieillirStock() {
+			for(int i=0; i<this.stockmoyen.size(); i++) {
+				this.stockmoyen.get(i).set(1,this.stockmoyen.get(i).get(1)+1);
+				if(this.stockmoyen.get(i).get(1)>=12) {
+					this.stockmoyen.remove(i);
+				}
+			}
+			
+			for(int i=0; i<this.stockfin.size(); i++) {
+				this.stockfin.get(i).set(1,this.stockfin.get(i).get(1)+1);
+				if(this.stockfin.get(i).get(1)>=12) {
+					this.stockfin.remove(i);
+				}
+			}
+		}
+		
 		/**
 		 * @author Claire
 		 */
@@ -281,7 +311,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				prodBresil=30000;
 				prodIndo=45000;
 			}
-			if (x%24>17 && x%24<=23) {             /*Octobre;Novembre;Decembre*/
+			if (x%24>17 && x%24<=23) {     /*Octobre;Novembre;Decembre*/
 				prodBresil=30000;
 				prodIndo=45000;
 				prodfin=24000;
@@ -294,12 +324,15 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				prodBresil=(int)(prodIndo*0.4);
 				prodfin=(int)(prodfin*0.4);
 			}
-			this.stockmoyen = this.stockmoyen+prodBresil+prodIndo;
-			this.stockfin = this.stockfin+prodfin;
+			
+			
+			this.vieillirStock();
+			this.ajouterStockMoyen(prodBresil+prodIndo);
+			this.ajouterStockFin(prodfin);
 			this.prodFeves[1]=prodBresil+prodIndo;
 			this.prodFeves[2]=prodfin;
-			this.stockQH.setValeur(this,this.stockfin);
-			this.stockQM.setValeur(this, this.stockmoyen);
+			this.stockQH.setValeur(this,this.quantiteStockFin());
+			this.stockQM.setValeur(this, this.quantiteStockMoyen());
 			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy().getValeur());
 			this.getJournal().ajouter("Quantité haute qualité ="+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
