@@ -29,7 +29,7 @@ import static abstraction.eq5TRAN.util.Marchandises.*;
  * <p>
  * TODO LIST
  * - Gestion periodes de l'annee (Noel, Pacques ...)
- * - Gestion de facteurs sociaux (greves ...)
+ * - Gestion de facteurs sociaux (isGreves ...)
  * - Systeme de fidelite client/fournisseur
  * - Determiner prix d'achat aux producteurs
  */
@@ -163,8 +163,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     @Override
     public void next() {
         production();
-        bienEtreSalarie();
-        salaires();
+        depensesRH();
+        payerSalaires();
         indicateurGreve = Monde.LE_MONDE.getStep();
     }
 
@@ -173,7 +173,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * TODO la prod coute de l'argent
      */
     public void production() {
-        roulement();
+        roulementStocks();
 
         production(POUDRE_BQ, TABLETTES_BQ);
         production(POUDRE_MQ, TABLETTES_MQ);
@@ -186,7 +186,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     /**
      * @author Maxim Poulsen, Thomas Schillaci
      */
-    public void roulement() {
+    public void roulementStocks() {
         for (int i = 0; i < Marchandises.getNombreMarchandises(); i++) {
             if (Monde.LE_MONDE.getStep() % dureesPeremption[i] == 0 && !respectObjectifs[i]) {
                 float perte = 1.0f / dureesPeremption[i];
@@ -203,13 +203,14 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      */
     public void production(int merch1, int merch2) {
         double quantite = Math.min(stocks[merch1].getValeur(), productionSouhaitee[merch2].getValeur());
-        if (greves()) quantite *= 0.3;
+        if (isGreves()) quantite *= 0.3;
         if (quantite < productionSouhaitee[merch2].getValeur()) {
             respectObjectifs[merch1] = false;
             journal.ajouter("L'eq. 5 n'a pas pu produire assez de " + Marchandises.getMarchandise(merch2) + " par manque de stock de " + Marchandises.getMarchandise(merch1));
         }
         stocks[merch1].setValeur(this, stocks[merch1].getValeur() - quantite);
         stocks[merch2].setValeur(this, stocks[merch2].getValeur() + quantite);
+        depenser(quantite*0.01f*prix[merch2].getValeur());
     }
 
     /**
@@ -226,7 +227,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     /*
      * @author Juliette, Thomas Schillaci
      */
-    public boolean greves() {
+    public boolean isGreves() {
         if(Math.abs(indicateurGreve)==Monde.LE_MONDE.getStep()+1) return indicateurGreve>0;
 
         double probaGreve = 12.0 / 365; //12 jours de grèves par an
@@ -242,7 +243,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     /*
      * @author Juliette
      */
-    public void bienEtreSalarie() {
+    public void depensesRH() {
         int numeroNext = Monde.LE_MONDE.getStep();
         if (numeroNext % 24 == 0 && this.banque.getValeur() > 30000) { // tous les ans on donne 10000€ pour des aménagements pour les salariés
             this.banque.setValeur(this, this.banque.getValeur() - 10000);
@@ -252,18 +253,16 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     /*
      * @author Juliette
      */
-    public void salaires() {
-        if (greves() == false) {
+    public void payerSalaires() {
+        if (isGreves() == false) {
             depenser((782 * 2400) / 24);
         }
-
-
     }
 
     /*
      * @author Juliette
      */
-    public boolean periodeFetes() {
+    public boolean isPeriodeFetes() {
         int numeroNext = Monde.LE_MONDE.getStep();
         if (numeroNext % 24 >= 18 && numeroNext <= 21) { // achats des distributeurs en octobre et novembre
             return true;
