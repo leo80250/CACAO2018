@@ -217,7 +217,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         }
         stocks[merch1].setValeur(this, stocks[merch1].getValeur() - quantite);
         stocks[merch2].setValeur(this, stocks[merch2].getValeur() + quantite);
-        depenser(quantite*0.01f*prix[merch2].getValeur());
+        depenser(quantite*0.01f*prix[merch2].getValeur()); // LES VARIATIONS DE STOCKS NE SONT PAS BONNES: T -> kT
     }
 
     /**
