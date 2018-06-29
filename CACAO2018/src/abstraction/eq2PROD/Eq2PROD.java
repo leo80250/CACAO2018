@@ -166,7 +166,7 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	}
 	/* Alexandre Bigot + Guillaume Sallé*/
 	public double getPrix() {
-		return prixMarche()*getCoeffSolde() ;
+		return prixMarche()*getCoeffSolde()*1.06 ;
 	}
 	/* Alexandre Bigot + Guillaume Sallé */
 	public double getCoeffMeteo() {
