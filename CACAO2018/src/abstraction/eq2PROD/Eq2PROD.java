@@ -232,7 +232,6 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	/* code par Alexandre BIGOT */
 	public void chgmtInstable(int p) { //* p est un entier entre 0 et 9
 		double proba = coeffInstable[p]*ponderation ;
-		System.out.println(" est insta ="+this.estInstable);
 		if (this.estInstable[p]) {
 			proba=proba*2 ;     /*Si le pays est déjà instable, il a plus de chance de rester instable (2x plus) */
 		}
@@ -391,8 +390,8 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ getStockQM());
 		this.getJournal().ajouter("Solde ="+getSolde()+" €");
 		this.getJournal().ajouter("Coefficient de la météo ="+ getCoeffMeteo());
-		this.getJournal().ajouter("Liste des coefficients d'instabilité de nos Pays :" + Arrays.toString(getListeInstabilite()));
-		this.getJournal().ajouter("Le coefficient total de l'instabilité est :" + coeffFinal()); 
+		this.getJournal().ajouter("Liste des coefficients d'instabilité de nos Pays : " + Arrays.toString(getListeInstabilite()));
+		this.getJournal().ajouter("Le coefficient total de l'instabilité est : " + coeffFinal()); 
 		if(!(getCoeffMaladie())) {
 			this.getJournal().ajouter("Aucune maladie n'a frappé les plantations");
 		} else {
