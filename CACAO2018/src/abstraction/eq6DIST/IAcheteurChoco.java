@@ -7,7 +7,7 @@ import abstraction.eq4TRAN.VendeurChoco.GQte;
 
 /**
  * 
- * @author Léopold Petitjean
+ * @author Léopold Petitjean    
  *
  */
 public interface IAcheteurChoco {

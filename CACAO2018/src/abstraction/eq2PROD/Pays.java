@@ -1,0 +1,7 @@
+package abstraction.eq2PROD;
+
+public enum Pays {
+	COTE_IVOIRE, GHANA, NIGERIA, CAMEROUN, OUGANDA,
+	TOGO, SIERRA_LEONE, MADAGASCAR, LIBERIA, TANZANIE;
+
+}

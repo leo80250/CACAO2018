@@ -4,17 +4,18 @@ import abstraction.fourni.*;
 import abstraction.eq3PROD.echangesProdTransfo.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import abstraction.eq2PROD.echangeProd.*;
 
-public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
-// VARIABLES D'INSTANCE
+public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, IVendeurFeve, IVendeurFeveV4 {
+// VARIABLES D'INSTANCE 
 	private int stockQM;
 	private int stockQB;
 	private double solde;
 	private boolean maladie;
 	private double coeffStock;
-	private ContratFeve[] demandeTran;
+	private List<ContratFeveV3> demandeTran;
 	private final static int MOY_QB = 46000; // pour un step = deux semaines
 	private final static int MOY_QM = 70000; // pour un step = deux semaines
 	private final static int coutFixe = 70800000; // entretien des plantations
@@ -34,7 +35,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		this.solde = 0.0;
 		this.maladie = false;
 		this.coeffStock = 1;
-		this.demandeTran = new ContratFeve[0];
+		this.demandeTran = new ArrayList<>();
 		this.quantiteEq3 = false;
 	}
 	
@@ -89,10 +90,10 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		return "Eq2PROD";
 	}
 	/* Romain Bernard */
-	public ContratFeve[] getDemandeTran() {
+	public List<ContratFeveV3> getDemandeTran() {
 		return this.demandeTran;
 	}
-	public void setDemandeTran(ContratFeve[] demande) {
+	public void setDemandeTran(List<ContratFeveV3> demande) {
 		this.demandeTran = demande;
 	}
 	/* Alexandre Bigot + Guillaume Sallé*/
@@ -145,7 +146,7 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 			return 0.5;
 		} else {
 			double x=Math.random();
-			if (x<0.005) {
+			if (x<0.05) {
 				setCoeffMaladie(true);
 			}
 			return 0.0 ;
@@ -161,76 +162,6 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 	
 /* IMPLEMENTATION DES DIFFERENTES INTERFACES UTILES A NOTRE ACTEUR
  * Ici nous avons implemente IVendeurFeve et IVendeurFevesProd */
-	
-	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
-	public ContratFeve[] getOffrePublique() {
-		ContratFeve c1 = new ContratFeve(null, this, 0, getStockQB(), 0, 0, 
-				prixMarche()*getCoeffSolde()*0.85, 0.0, 0.0, false);
-		ContratFeve c2 =  new ContratFeve(null, this, 1, getStockQM(), 0, 0, 
-				prixMarche()*getCoeffSolde(), 0.0, 0.0, false);
-		ContratFeve[] c = new ContratFeve[2];
-		c[0]=c1; c[1] = c2;
-		return c;
-	}
-	
-	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
-	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
-		setDemandeTran(demandePrivee); 
-	}
-	
-	/* Modélisation par Romain Bernard + Guillaume Sallé
-	 * Code par Romain Bernard */
-	public ContratFeve[] getOffreFinale() {
-		ContratFeve[] c=new ContratFeve[demandeTran.length];
-		for (int i=0;i<demandeTran.length;i++ ) {
-			c[i]=demandeTran[i];
-			// Les transfo ne représentent pas tout le marché : on peut toujours leur vendre la quantité demandée
-			c[i].setProposition_Quantite(demandeTran[i].getDemande_Quantite());
-			if (demandeTran[i].getQualite()==0) {
-				// Si leur prix est supérieur au notre, on prend le leur et on est content
-				if (demandeTran[i].getDemande_Prix()>=demandeTran[i].getOffrePublique_Prix()) {
-					c[i].setProposition_Prix(demandeTran[i].getDemande_Prix());
-					// Si le prix est en-dessous de notre seuil de rentabilité, on propose notre seuil
-				} 	else if (demandeTran[i].getDemande_Prix()<prix_minQB) {
-					c[i].setProposition_Prix(prix_minQB);
-					// Sinon on propose un prix intermédiaire à notre seuil et leur demande
-				}	else {
-					c[i].setProposition_Prix(0.25*prix_minQB+0.75*demandeTran[i].getDemande_Prix());
-				}
-			} // On fait pareil avec l'autre qualité (prix_minQB -> prix_minQM)
-			else {
-				if (demandeTran[i].getDemande_Prix()>=demandeTran[i].getOffrePublique_Prix()) {
-					c[i].setProposition_Prix(demandeTran[i].getDemande_Prix());
-				} else if (demandeTran[i].getDemande_Prix()<prix_minQM) {
-					c[i].setProposition_Prix(prix_minQM);
-				} else {
-					c[i].setProposition_Prix(0.25*prix_minQM+0.75*demandeTran[i].getDemande_Prix());
-				}
-			}
-		} return c;
-	}
-
-	/* Agathe Chevalier + Alexandre Bigot + Romain Bernard */
-    public void sendResultVentes(ContratFeve[] resultVentes) {
-    double chiffreDAffaire=0;
-   	 for (int i=0; i<resultVentes.length;i++) {
-   		 // Si le contrat i est accepté par le transfo
-   		 if (resultVentes[i].getReponse()) {
-   			 // On augmente notre solde et on diminue notre stock (QB ou QM)
-   			 if (resultVentes[i].getQualite()==0) {
-   				 addSolde(resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite()) ;
-   				 retireStockQB(resultVentes[i].getProposition_Quantite()) ;
-   				 chiffreDAffaire+=resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite();
-   			 }
-   			 if (resultVentes[i].getQualite()==1) {
-   				 addSolde(resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite()) ;
-   				 retireStockQM(resultVentes[i].getProposition_Quantite()) ;
-   				 chiffreDAffaire+=resultVentes[i].getProposition_Prix()*resultVentes[i].getProposition_Quantite();
-   			 } 
-   		 } 
-   		 // On paye les salaires : 35% du CA
-   	 } retireSolde(0.35*chiffreDAffaire);
-    }
 	
 	/* Alexandre Bigot
 	 * Le cas où la quantité demandée est inférieure au stock n'est au final pas codée
@@ -362,5 +293,95 @@ public class Eq2PROD implements Acteur, IVendeurFeve, IVendeurFevesProd {
 		indicateurQB.setValeur(this, getStockQB());
 		indicateurQM.setValeur(this, getStockQM());
 		soldejournal.setValeur(this, getSolde());
+	}
+
+	
+// VERSION 1
+	public ContratFeve[] getOffrePublique() {
+		ContratFeve[] c= {};
+		return c;
+	}
+	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
+	}
+	public ContratFeve[] getOffreFinale() {
+		ContratFeve[] c= {};
+		return c;
+	}
+	public void sendResultVentes(ContratFeve[] resultVentes) {
+	}
+
+// VERSION 4
+	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
+	public List<ContratFeveV3> getOffrePubliqueV3() {
+		ContratFeveV3 c1 = new ContratFeveV3(null, this, 0, getStockQB(), 0, 0, 
+				prixMarche()*getCoeffSolde()*0.85, 0.0, 0.0, false);
+			ContratFeveV3 c2 =  new ContratFeveV3(null, this, 1, getStockQM(), 0, 0, 
+				prixMarche()*getCoeffSolde(), 0.0, 0.0, false);
+			List<ContratFeveV3> listContrat = new ArrayList<>();
+			listContrat.add(c1);
+			listContrat.add(c2);
+			return listContrat;
+	}
+	
+	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
+	public void sendDemandePriveeV3(List<ContratFeveV3> demandePrivee) {
+		setDemandeTran(demandePrivee); 		
+	}
+
+	/* Modélisation par Romain Bernard + Guillaume Sallé
+	 * Code par Romain Bernard
+	 * Revu par Guillaume Sallé pour la nouvelle implémentation */
+	public List<ContratFeveV3> getOffreFinaleV3() {
+		List<ContratFeveV3> c= new ArrayList<>();	
+		for (ContratFeveV3 d : demandeTran) {
+			c.add(d);
+			// Les transfo ne représentent pas tout le marché : on peut toujours leur vendre la quantité demandée
+			c.get(c.size()-1).setProposition_Quantite(c.get(c.size()-1).getDemande_Quantite());
+			if (c.get(c.size()-1).getQualite()==0) {
+				// Si leur prix est supérieur au notre, on prend le leur et on est content
+				if (c.get(c.size()-1).getDemande_Prix()>=c.get(c.size()-1).getOffrePublique_Prix()) {
+					c.get(c.size()-1).setProposition_Prix(c.get(c.size()-1).getDemande_Prix());
+					// Si le prix est en-dessous de notre seuil de rentabilité, on propose notre seuil
+				} 	else if (c.get(c.size()-1).getDemande_Prix()<prix_minQB) {
+					c.get(c.size()-1).setProposition_Prix(prix_minQB);
+					// Sinon on propose un prix intermédiaire à notre seuil et leur demande
+				}	else {
+					c.get(c.size()-1).setProposition_Prix(0.25*prix_minQB+0.75*c.get(c.size()-1).getDemande_Prix());
+				}
+			} // On fait pareil avec l'autre qualité (prix_minQB -> prix_minQM)
+			else {
+				if (c.get(c.size()-1).getDemande_Prix()>=c.get(c.size()-1).getOffrePublique_Prix()) {
+					c.get(c.size()-1).setProposition_Prix(c.get(c.size()-1).getDemande_Prix());
+				} else if (c.get(c.size()-1).getDemande_Prix()<prix_minQM) {
+					c.get(c.size()-1).setProposition_Prix(prix_minQM);
+				} else {
+					c.get(c.size()-1).setProposition_Prix(0.25*prix_minQM+0.75*c.get(c.size()-1).getDemande_Prix());
+				}
+			}
+		}
+		return c;
+	}
+	
+	/* Agathe Chevalier + Alexandre Bigot + Romain Bernard 
+	 * Revu par Guillaume Sallé pour la nouvelle implémentation */
+	public void sendResultVentesV3(List<ContratFeveV3> resultVentes) {
+		double chiffreDAffaire=0;
+    	for (ContratFeveV3 c : resultVentes) {
+   		 // Si le contrat i est accepté par le transfo
+   		   	if (c.getReponse()) {
+   			 // On augmente notre solde et on diminue notre stock (QB ou QM)
+   		   		if (c.getQualite()==0) {
+   		   			addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
+   		   			retireStockQB(c.getProposition_Quantite()) ;
+   		   			chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
+   		   		}
+   		   		if (c.getQualite()==1) {
+   		   			addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
+   		   			retireStockQM(c.getProposition_Quantite()) ;
+   		   			chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
+   		   		} 
+   		   	} 
+   		 // On paye les salaires : 35% du CA
+    	} retireSolde(0.35*chiffreDAffaire);		
 	}
 }
