@@ -376,7 +376,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      */
     
     
-    public double prixActualiseFeveMQ () { 
+    public   double prixActualiseFeveMQ () { 
     	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche central");
     	double ventes = 0 ;
     	double quantites = 0 ;
