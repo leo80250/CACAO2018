@@ -305,8 +305,6 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 			this.getJournal().ajouter("Une maladie a frappé les plantations");
 		}
 		this.getJournal().ajouter("------------------------------------------------------------------------------");
-		this.getJournal().ajouter("Quantité vendue Basse Qualite ="+getTotalVenteQB());
-		this.getJournal().ajouter("Quantité vendue Moyenne Qualité ="+getTotalVenteQM());
 		if((getQuantiteEq3())) {
 			this.getJournalOccasionel().ajouter("Une transaction a été réalisée avec l'équipe 3");
 		} else {
@@ -317,6 +315,8 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		indicateurQB.setValeur(this, getStockQB());
 		indicateurQM.setValeur(this, getStockQM());
 		soldejournal.setValeur(this, getSolde());
+		this.getJournal().ajouter("Quantité vendue Basse Qualite ="+getTotalVenteQB());
+		this.getJournal().ajouter("Quantité vendue Moyenne Qualité ="+getTotalVenteQM());
 		razTotalVenteQB();
 		razTotalVenteQM();
 	}
