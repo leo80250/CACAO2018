@@ -83,8 +83,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         stocks = new Indicateur[nbMarchandises];
         prix = new Indicateur[nbMarchandises];
 
-        prix[FEVES_BQ] = new Indicateur("Eq5 - Prix de feves BQ", this, 0);
-        prix[FEVES_MQ] = new Indicateur("Eq5 - Prix de feves MQ", this, 0);
+        prix[FEVES_BQ] = new Indicateur("Eq5 - Prix de feves BQ", this, 1000);
+        prix[FEVES_MQ] = new Indicateur("Eq5 - Prix de feves MQ", this, 2000);
         prix[TABLETTES_BQ] = new Indicateur("Eq5 - Prix de tablettes BQ", this, 8_000_000);
         prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ", this, 10_000_000);
         prix[TABLETTES_HQ] = new Indicateur("Eq5 - Prix de tablettes HQ", this, 18_000_000);
@@ -378,12 +378,14 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     
     public double prixActualiseFeveMQ () { 
     	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche central");
-    	int ventes = 0 ;
-    	int quantites = 0 ;
+    	double ventes = 0 ;
+    	double quantites = 0 ;
   
     	for (ContratFeveV3  c : marche.getContratPrecedent()) { 
     		if ( c.getQualite()==1) { ventes += c.getProposition_Quantite()*c.getProposition_Prix() ; quantites += c.getProposition_Quantite() ; }
     	}
+    	
+    	if ( ventes ==0 || quantites == 0 ) ventes = 2000.0 ; quantites = 1.0 ;
     	
     	return ventes/quantites ;
     	
@@ -392,13 +394,15 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     
     public double prixActualiseFeveBQ () { 
     	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche central");
-    	int ventes = 0 ;
-    	int quantites = 0 ;
+    	double ventes = 0 ;
+    	double  quantites = 0 ;
   
     	for (ContratFeveV3  c : marche.getContratPrecedent()) { 
     		if ( c.getQualite()==0) { ventes += c.getProposition_Quantite()*c.getProposition_Prix() ; quantites += c.getProposition_Quantite() ; }
     	}
     	
+    	if ( ventes == 0 || quantites ==0 ) ventes = 1000.0 ; quantites = 1.0 ;
+     	
     	return ventes/quantites ;
     	
     }
