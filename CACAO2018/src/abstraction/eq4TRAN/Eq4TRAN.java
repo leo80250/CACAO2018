@@ -37,9 +37,12 @@ IvendeurOccasionnelChocoBis{
 	public Acteur Eq4TRAN ; 
 
 	/** Déclaration des indicateurs pour le Journal
-	 *  
+	 *  @author Mickaël
 	 */
-
+	private SousActeur Acteur1;
+	private SousActeur Acteur2;
+	private SousActeur Acteur3;
+	
 	//Indicateurs de stock et de production
 	private Indicateur stockTabBQ_Eq4;
 	private Indicateur stockTabMQ_Eq4;
@@ -63,24 +66,164 @@ IvendeurOccasionnelChocoBis{
 	 * 
 	 */
 	private ContratFeve[] contratFeveEnCours ; 
-	private ContratPoudre[] contratPoudreEnCoursEq7TRAN ;
-	private ContratPoudre[] contratPoudreEnCoursEq5TRAN;
 	/** Initialisation des indicateurs 
 	 * 0,
 	 */
 	public Eq4TRAN() {
-
-		/**@Mickaël
+		/**
+		 * @Mickaël
+		 * on construit les acteurs
 		 */
-		contratPoudreEnCoursEq7TRAN = new ContratPoudre[3];
-		contratPoudreEnCoursEq5TRAN = new ContratPoudre[3];
-		contratPoudreEnCoursEq5TRAN[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN[1] = new ContratPoudre(1,27000,100.0, (IAcheteurPoudre)this, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN[2] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq7TRAN[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		
 
+		this.Acteur1 = new SousActeur(new Journal("JournalActeur1"),
+				new Indicateur("solde", this.Acteur1,1000),
+				new Indicateur("stockTabBQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("stockTabMQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("stockChocMQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("prodTabBQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("prodTabMQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("prodTabHQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("prodChocMQ_Eq4_Acteur1",this.Acteur1,1000),
+				new Indicateur("prodChocHQ_Eq4_Acteur1",this.Acteur1,1000));
+
+		this.Acteur2 = new SousActeur(new Journal("JournalActeur2"),
+				new Indicateur("solde_Acteur2", this.Acteur1,1000),
+				new Indicateur("stockTabBQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("stockTabMQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("stockChocMQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("prodTabBQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("prodTabMQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("prodTabHQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("prodChocMQ_Eq4_Acteur2",this.Acteur2,1000),
+				new Indicateur("prodChocHQ_Eq4_Acteur2",this.Acteur2,1000));
+
+		this.Acteur3 = new SousActeur(new Journal("JournalActeur3"),
+				new Indicateur("solde_Acteur3", this.Acteur3,1000),
+				new Indicateur("stockTabBQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("stockTabMQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("stockChocMQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("stockTabHQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("prodTabBQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("prodTabMQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("prodTabHQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("prodChocMQ_Eq4_Acteur3",this.Acteur3,1000),
+				new Indicateur("prodChocHQ_Eq4_Acteur3",this.Acteur3,1000));
+		
+		/**
+		 * @author Mickaël, Etienne
+		 * on initialise le stock total
+		 */
+		//On crée la liste qui range nos stocks pour chaque acteur.
+				ArrayList<Indicateur> Stocks_Acteur1 = new ArrayList<>();
+				//On remplit cette liste avec nos stocks
+				Stocks_Acteur1.add(new Indicateur("",this.Acteur1,0));
+				Stocks_Acteur1.add(this.Acteur1.getStockChocMQ());
+				Stocks_Acteur1.add(this.Acteur1.getStockChocHQ());
+				Stocks_Acteur1.add(this.Acteur1.getStockTabBQ());
+				Stocks_Acteur1.add(this.Acteur1.getStockTabMQ());
+				Stocks_Acteur1.add(this.Acteur1.getStockTabHQ());
+				this.Acteur1.setStocks(Stocks_Acteur1);;
+				// On s'initialise en tant que vendeur
+				ArrayList<Integer> stocks = new ArrayList<>();
+				stocks.add(0);
+				stocks.add((int)this.Acteur1.getStockChocMQ().getValeur());
+				stocks.add((int)this.Acteur1.getStockChocHQ().getValeur());
+				stocks.add((int)this.Acteur1.getStockTabBQ().getValeur());
+				stocks.add((int)this.Acteur1.getStockTabMQ().getValeur());
+				stocks.add((int)this.Acteur1.getStockTabHQ().getValeur());
+				this.Acteur1.setVendeur(new Vendeur(stocks));
+				
+				ArrayList<Indicateur> Stocks_Acteur2 = new ArrayList<>();
+				//On remplit cette liste avec nos stocks
+				Stocks_Acteur2.add(new Indicateur("",this.Acteur2,0));
+				Stocks_Acteur2.add(this.Acteur2.getStockChocMQ());
+				Stocks_Acteur2.add(this.Acteur2.getStockChocHQ());
+				Stocks_Acteur2.add(this.Acteur2.getStockTabBQ());
+				Stocks_Acteur2.add(this.Acteur2.getStockTabMQ());
+				Stocks_Acteur2.add(this.Acteur2.getStockTabHQ());
+				this.Acteur2.setStocks(Stocks_Acteur2);;
+				// On s'initialise en tant que vendeur
+				ArrayList<Integer> stocks2 = new ArrayList<>();
+				stocks2.add(0);
+				stocks2.add((int)this.Acteur2.getStockChocMQ().getValeur());
+				stocks2.add((int)this.Acteur2.getStockChocHQ().getValeur());
+				stocks2.add((int)this.Acteur2.getStockTabBQ().getValeur());
+				stocks2.add((int)this.Acteur2.getStockTabMQ().getValeur());
+				stocks2.add((int)this.Acteur2.getStockTabHQ().getValeur());
+				this.Acteur2.setVendeur(new Vendeur(stocks2));
+				
+				ArrayList<Indicateur> Stocks_Acteur3 = new ArrayList<>();
+				//On remplit cette liste avec nos stocks
+				Stocks_Acteur3.add(new Indicateur("",this.Acteur3,0));
+				Stocks_Acteur3.add(this.Acteur3.getStockChocMQ());
+				Stocks_Acteur3.add(this.Acteur3.getStockChocHQ());
+				Stocks_Acteur3.add(this.Acteur3.getStockTabBQ());
+				Stocks_Acteur3.add(this.Acteur3.getStockTabMQ());
+				Stocks_Acteur3.add(this.Acteur3.getStockTabHQ());
+				this.Acteur3.setStocks(Stocks_Acteur3);;
+				// On s'initialise en tant que vendeur
+				ArrayList<Integer> stocks3 = new ArrayList<>();
+				stocks3.add(0);
+				stocks3.add((int)this.Acteur3.getStockChocMQ().getValeur());
+				stocks3.add((int)this.Acteur3.getStockChocHQ().getValeur());
+				stocks3.add((int)this.Acteur3.getStockTabBQ().getValeur());
+				stocks3.add((int)this.Acteur3.getStockTabMQ().getValeur());
+				stocks3.add((int)this.Acteur3.getStockTabHQ().getValeur());
+				this.Acteur3.setVendeur(new Vendeur(stocks3));
+
+		
+				
+				
+				
+		/**
+		 * @Mickaël
+		 * on initialise les contrats
+		 */
+				
+		ContratPoudre[] contratPoudreEnCoursEq7TRAN_Acteur1 = new ContratPoudre[3];
+		ContratPoudre[] contratPoudreEnCoursEq5TRAN_Acteur1 = new ContratPoudre[3];
+		contratPoudreEnCoursEq5TRAN_Acteur1[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_Acteur1[1] = new ContratPoudre(1,27000,100.0, (IAcheteurPoudre)this.Acteur1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_Acteur1[2] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur1[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur1[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this.Acteur1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur1[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this.Acteur1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+
+		this.Acteur1.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_Acteur1);
+		this.Acteur1.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_Acteur1);
+		
+		ContratPoudre[] contratPoudreEnCoursEq7TRAN_Acteur2 = new ContratPoudre[3];
+		ContratPoudre[] contratPoudreEnCoursEq5TRAN_Acteur2 = new ContratPoudre[3];
+		contratPoudreEnCoursEq5TRAN_Acteur2[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_Acteur2[1] = new ContratPoudre(1,27000,100.0, (IAcheteurPoudre)this.Acteur2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_Acteur2[2] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur2[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur2[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this.Acteur2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur2[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this.Acteur2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+
+		
+		this.Acteur2.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_Acteur2);
+		this.Acteur2.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_Acteur2);
+		
+		ContratPoudre[] contratPoudreEnCoursEq7TRAN_Acteur3 = new ContratPoudre[3];
+		ContratPoudre[] contratPoudreEnCoursEq5TRAN_Acteur3 = new ContratPoudre[3];
+		contratPoudreEnCoursEq5TRAN_Acteur3[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur3, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_Acteur3[1] = new ContratPoudre(1,27000,100.0, (IAcheteurPoudre)this.Acteur3, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_Acteur3[2] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur3, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur3[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur3[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this.Acteur3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur3[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this.Acteur3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+
+		this.Acteur3.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_Acteur3);
+		this.Acteur3.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_Acteur3);
+		
+		
 		contratFeveEnCours = new ContratFeve[6];
 		contratFeveEnCours[0]=new ContratFeve( (IAcheteurFeve)this , (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD") , 0 , 0 , 0 , 0 , 0.0 , 0.0 , 0.0 ,false);
 		contratFeveEnCours[1]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD"),1 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
@@ -115,24 +258,43 @@ IvendeurOccasionnelChocoBis{
 		Stocks.add(stockTabHQ_Eq4);
 		this.Stocks=Stocks;
 		// On s'initialise en tant que vendeur
-		ArrayList<Integer> stocks = new ArrayList<>();
-		stocks.add(0);
-		stocks.add((int)stockChocMQ_Eq4.getValeur());
-		stocks.add((int)stockChocHQ_Eq4.getValeur());
-		stocks.add((int)stockTabBQ_Eq4.getValeur());
-		stocks.add((int)stockTabMQ_Eq4.getValeur());
-		stocks.add((int)stockTabHQ_Eq4.getValeur());
-		vendeur = new Vendeur(stocks);
+		ArrayList<Integer> stocks1 = new ArrayList<>();
+		stocks1.add(0);
+		stocks1.add((int)stockChocMQ_Eq4.getValeur());
+		stocks1.add((int)stockChocHQ_Eq4.getValeur());
+		stocks1.add((int)stockTabBQ_Eq4.getValeur());
+		stocks1.add((int)stockTabMQ_Eq4.getValeur());
+		stocks1.add((int)stockTabHQ_Eq4.getValeur());
+		vendeur = new Vendeur(stocks1);
 		
 
-		// On ajoute nos indicateurs et notre journal de production et de vente dans la fenêtre principale du Monde
-		Monde.LE_MONDE.ajouterIndicateur(stockChocMQ_Eq4);
-		Monde.LE_MONDE.ajouterIndicateur(stockChocHQ_Eq4);
-		Monde.LE_MONDE.ajouterIndicateur(stockTabBQ_Eq4);
-		Monde.LE_MONDE.ajouterIndicateur(stockTabMQ_Eq4);
-		Monde.LE_MONDE.ajouterIndicateur(stockTabHQ_Eq4);
-		Monde.LE_MONDE.ajouterJournal(JournalEq4);
-		Monde.LE_MONDE.ajouterJournal(getJournalVentes());
+		/**
+		 * On ajoute nos indicateurs et notre journal de production et de vente dans la fenêtre principale du Monde
+		 * @author Mickaël, Etienne
+		 */
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockChocMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockChocHQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockTabBQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockTabMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockTabHQ());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur1.getJournalEq4());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur1.getVendeur().ventes);
+		
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockChocMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockChocHQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockTabBQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockTabMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockTabHQ());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur2.getJournalEq4());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur2.getVendeur().ventes);
+		
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockChocMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockChocHQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockTabBQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockTabMQ());
+		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockTabHQ());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur3.getJournalEq4());
+		Monde.LE_MONDE.ajouterJournal(this.Acteur3.getVendeur().ventes);
 	}
 
 	/** Nom de l'acteur
@@ -195,24 +357,25 @@ IvendeurOccasionnelChocoBis{
 
 		/**
 		 * @Mickaël
+		 * on doit faire la stratégie marketing
 		 */
 		IVendeurPoudre Eq5TRAN = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq5TRAN");
 		IVendeurPoudre Eq7TRAN = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN");
-		Eq5TRAN.getDevisPoudre(contratPoudreEnCoursEq5TRAN, (IAcheteurPoudre) this);
-		Eq7TRAN.getDevisPoudre(contratPoudreEnCoursEq7TRAN, (IAcheteurPoudre)this);
-		for (int i=0;i<contratPoudreEnCoursEq5TRAN.length;i++) {
-			contratPoudreEnCoursEq5TRAN[i].setReponse(true);
-			contratPoudreEnCoursEq7TRAN[i].setReponse(true);
+		Eq5TRAN.getDevisPoudre(this.Acteur1.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre) this);
+		Eq7TRAN.getDevisPoudre(this.Acteur1.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)this);
+		for (int i=0;i<this.Acteur1.getContratPoudreEnCoursEq5TRAN().length;i++) {
+			this.Acteur1.getContratPoudreEnCoursEq5TRAN()[i].setReponse(true);
+			this.Acteur1.getContratPoudreEnCoursEq7TRAN()[i].setReponse(true);
 		}
-		if (1==1) { /* Pour l'instant on accepte l'achat sans condition */
-			Eq5TRAN.sendReponsePoudre(contratPoudreEnCoursEq5TRAN, (IAcheteurPoudre) this);
-			Eq7TRAN.sendReponsePoudre(contratPoudreEnCoursEq7TRAN, (IAcheteurPoudre)this);
+		if (1==1) { // Pour l'instant on accepte l'achat sans condition 
+			Eq5TRAN.sendReponsePoudre(this.Acteur1.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre) this);
+			Eq7TRAN.sendReponsePoudre(this.Acteur1.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)this);
 		}
 
 		ContratPoudre[] contratfinalEq5TRAN = new ContratPoudre[3];
 		ContratPoudre[] contratfinalEq7TRAN = new ContratPoudre[3];
-		contratfinalEq5TRAN = Eq5TRAN.getEchangeFinalPoudre(contratPoudreEnCoursEq5TRAN, (IAcheteurPoudre)this);
-		contratfinalEq7TRAN = Eq7TRAN.getEchangeFinalPoudre(contratPoudreEnCoursEq7TRAN, (IAcheteurPoudre)this);
+		contratfinalEq5TRAN = Eq5TRAN.getEchangeFinalPoudre(this.Acteur1.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)this);
+		contratfinalEq7TRAN = Eq7TRAN.getEchangeFinalPoudre(this.Acteur1.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)this);
 
 		ArrayList<ContratPoudre> contratPoudreEnCours = new ArrayList<ContratPoudre>();
 		contratPoudreEnCours.add(contratfinalEq5TRAN[0]);
@@ -257,21 +420,23 @@ IvendeurOccasionnelChocoBis{
 		stocks.add((int)stockTabHQ_Eq4.getValeur());
 		vendeur = new Vendeur(stocks);
 		
-		// On met à jour le journal
-		journalEq4();
+		// On met à jour le journal des trois acteurs
+		journalEq4(this.Acteur1);
+		journalEq4(this.Acteur2);
+		journalEq4(this.Acteur3);
 	}
 
-	public void journalEq4() {
-		JournalEq4.ajouter("Stock des tablettes Basse Qualité = "+stockTabBQ_Eq4.getValeur());
-		JournalEq4.ajouter("Stock des tablettes Moyenne Qualité = "+stockTabMQ_Eq4.getValeur());
-		JournalEq4.ajouter("Stock des tablettes Basse Qualité = "+stockTabHQ_Eq4.getValeur());
-		JournalEq4.ajouter("Stock des chocolats Moyenne Qualité = "+stockChocMQ_Eq4.getValeur());
-		JournalEq4.ajouter("Stock des chocolats Haute Qualité = "+stockChocHQ_Eq4.getValeur());
-		JournalEq4.ajouter("Production des tablettes Basse Qualité = "+prodTabBQ_Eq4.getValeur());
-		JournalEq4.ajouter("Production des tablettes Moyenne Qualité = "+prodTabBQ_Eq4.getValeur());
-		JournalEq4.ajouter("Production des tablettes Haute Qualité = "+prodTabBQ_Eq4.getValeur());
-		JournalEq4.ajouter("Production de chocolats Moyenne Qualité = "+prodChocMQ_Eq4.getValeur());
-		JournalEq4.ajouter("Production de chocolats Haute Qualité = "+prodChocHQ_Eq4.getValeur());
+	public void journalEq4(SousActeur j) {
+		j.getJournalEq4().ajouter("Stock des tablettes Basse Qualité = "+j.getStockTabBQ());
+		j.getJournalEq4().ajouter("Stock des tablettes Moyenne Qualité = "+j.getStockTabMQ());
+		j.getJournalEq4().ajouter("Stock des tablettes Basse Qualité = "+j.getStockTabHQ());
+		j.getJournalEq4().ajouter("Stock des chocolats Moyenne Qualité = "+j.getStockChocMQ());
+		j.getJournalEq4().ajouter("Stock des chocolats Haute Qualité = "+j.getStockChocHQ());
+		j.getJournalEq4().ajouter("Production des tablettes Basse Qualité = "+j.getProdTabBQ());
+		j.getJournalEq4().ajouter("Production des tablettes Moyenne Qualité = "+j.getProdTabBQ());
+		j.getJournalEq4().ajouter("Production des tablettes Haute Qualité = "+j.getProdTabBQ());
+		j.getJournalEq4().ajouter("Production de chocolats Moyenne Qualité = "+j.getProdChocMQ());
+		j.getJournalEq4().ajouter("Production de chocolats Haute Qualité = "+j.getProdChocHQ());
 
 	}
 
