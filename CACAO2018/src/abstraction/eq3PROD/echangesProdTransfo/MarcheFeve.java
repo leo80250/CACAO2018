@@ -118,17 +118,31 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		
 		// Reception des offres publiques (Producteurs -> Marche)
 		 for (IVendeurFeveV4 vendeur : listVendeurs) {
-			 for (ContratFeveV3 contrat : vendeur.getOffrePubliqueV3()) {
+			 List<ContratFeveV3> cop = vendeur.getOffrePubliqueV3();
+			 for (ContratFeveV3 contrat : cop) {
 				contratActuel.add(contrat); 
 			 }
 		 }
 		 
 		 this.getJournal().ajouter("Offres Publiques en cours : "+contratActuel.toString());
 		 
+		 System.out.println(" contrats actuels 1:");
+		 for (ContratFeveV3 c : contratActuel) {
+			 System.out.println(c);
+		 }
+		 System.out.println("------");
 		 
+		 List<ContratFeveV3> ca2 = new ArrayList<ContratFeveV3>();
+		 for (ContratFeveV3 c : contratActuel) {
+			 if (c.getProducteur()!=null) {
+				 ca2.add(c);
+			 } else {
+				 this.getJournal().ajouter("contrat "+c+" n'a pas de producteur --> enleve");
+			 }
+		 }
 		// Envoi des offres publiques (Marche -> Transformateurs)
 		 for (IAcheteurFeveV4 acheteur : listAcheteurs) {
-				acheteur.sendOffrePubliqueV3(contratActuel);
+				acheteur.sendOffrePubliqueV3(ca2);//contratActuel);
 				acheteur.sendContratFictifV3(contratPrecedent);
 			 }
 			
@@ -140,6 +154,11 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 				contratActuel.add(contrat); 
 			 }
 		 }
+		 System.out.println(" contrats actuels 2:");
+		 for (ContratFeveV3 c : contratActuel) {
+			 System.out.println(c);
+		 }
+		 System.out.println("------");
 		 
 		 this.getJournal().ajouter("Demandes privee en cours : "+contratActuel.toString());
 			

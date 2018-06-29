@@ -151,9 +151,10 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		public List<ContratFeveV3> getOffrePubliqueV3() { 
 			ContratFeveV3 c1=new ContratFeveV3(null, this, 1, this.quantiteStockMoyen(), 0, 0, marche.getPrixMarche(), 0.0, 0.0, false);
 			ContratFeveV3 c2=new ContratFeveV3(null, this, 2, this.quantiteStockFin(), 0, 0, marche.getPrixMarche(), 0.0, 0.0, false); 
-			List<ContratFeveV3> c= new ArrayList<ContratFeveV3>() ; 
+			List<ContratFeveV3> c= new ArrayList<>() ; 
 			c.add(c1); 
 			c.add(c2); 
+			System.out.println(c1+" "+c2);
 			return c; 
 		} 
 
@@ -310,7 +311,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		@author Claire
 		**/
 		public void next() {
-			System.out.println(this.getStockmoyen());
 			int x=Monde.LE_MONDE.getStep();
 			int prodBresil=0;
 			int prodIndo=0;
@@ -365,8 +365,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy().getValeur());
 			this.getJournal().ajouter("Quantité haute qualité ="+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
-			System.out.println(this.getStockmoyen());
-			System.out.println();
 		}
 		
 		//Journal 
