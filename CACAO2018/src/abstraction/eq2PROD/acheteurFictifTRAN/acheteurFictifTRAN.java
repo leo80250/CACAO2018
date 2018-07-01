@@ -13,6 +13,12 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 	private List<ContratFeveV3> offreFinale;
 	private List<ContratFeveV3> contratPrecedent;
 	
+	public acheteurFictifTRAN() {
+		this.offreFinale = new ArrayList<>();
+		this.contratPrecedent = new ArrayList<>();
+		
+	} 
+	
 	
 /* GETTEURS */
 	/* Romain Bernard */
@@ -126,10 +132,10 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 		//* -> //*    :   Test pour notre Eq2PROD
 		c.add(new ContratFeveV3(this, getVendeurs().get(0), 0,
 				0, 1, 0, 
-				0, 70800000, 0, false));
+				0, 70800000.0/0.65, 0, false));
 		c.add(new ContratFeveV3(this, getVendeurs().get(1), 0,
 				0, 1, 0, 
-				0, 70800000, 0, false)); 
+				0, 70800000.0/0.65, 0, false)); 
 		// */
 		return c;
 	}

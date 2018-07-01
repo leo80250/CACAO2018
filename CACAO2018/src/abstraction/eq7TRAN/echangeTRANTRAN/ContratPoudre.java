@@ -4,7 +4,9 @@ package abstraction.eq7TRAN.echangeTRANTRAN;
 public class ContratPoudre {
 	// BQ = 0; MQ = 1; HQ = 2
 	private int qualite;
+	// en tonnes
 	private int quantite;
+	// en euros
 	private double prix;
 	private IAcheteurPoudre acheteur;
 	private IVendeurPoudre vendeur;
@@ -51,6 +53,9 @@ public class ContratPoudre {
 	}
 	public void setVendeur(IVendeurPoudre vendeur) {
 		this.vendeur = vendeur;
+	}
+	public boolean getReponse() {
+		return this.reponse;
 	}
 	public boolean isReponse() {
 		return this.reponse;

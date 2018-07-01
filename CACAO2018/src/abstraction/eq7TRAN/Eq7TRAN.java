@@ -37,10 +37,7 @@ import abstraction.fourni.Monde;
 public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeve, IAcheteurFeveV4, IVendeurChocoBis, IvendeurOccasionnelChoco {
 	
 	//rajouter IAcheteurFeve à implémenter
-	
-	
-	private Indicateur achats;
-	private Indicateur ventes;
+
 	// 0 = BQ, 1 = MQ, 2 = HQ
 	private Indicateur[] stockFeves;
 	private Indicateur[] stockPoudre;
@@ -49,8 +46,20 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private Journal journal;
 	private String nom;
 	
+	//V2 on est 10 chocolatiers regroupés : on fait des listes d'indicateurs
+	
+	private List<Indicateur[]> stockFeves2;
+	private List<Indicateur[]> stockPoudre2;
+	private List<Indicateur[]> stockTablettes2;
+	private List<Indicateur> solde2;
+	
+	
 	private Indicateur absenteisme;
 	private Indicateur efficacite;
+	
+	private List<Indicateur> absenteisme2;
+	private List<Indicateur> efficacite2;
+	
 	// Historique
 	private Indicateur[] prixAchatFeves;
 	private Indicateur[] prixVentePoudre;
@@ -59,6 +68,15 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private Indicateur[] productionTablettesReelle;
 	private Indicateur[] productionPoudreAttendue;
 	private Indicateur[] productionTablettesAttendue;
+	
+	private List<Indicateur[]> prixAchatFeves2;
+	private List<Indicateur[]> prixVentePoudre2;
+	private List<Indicateur[]> prixVenteTablettes2;
+	private List<Indicateur[]> productionPoudreReelle2;
+	private List<Indicateur[]> productionTablettesReelle2;
+	private List<Indicateur[]> productionPoudreAttendue2;
+	private List<Indicateur[]> productionTablettesAttendue2;
+	
 	
 	private List<ContratFeveV3> commandesFeveEnCours;
 	private ArrayList<ContratPoudre> commandesPoudreEnCours;
@@ -70,6 +88,14 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	private double[] coutTransformationTablette;
 	private double[] coutTransformationPoudre;
+	
+	private List<List<ContratFeveV3>> commandesFeveEnCours2;
+	private List<ArrayList<ContratPoudre>> commandesPoudreEnCours2;
+	private List<ArrayList<ArrayList<Integer>>> commandesTablettesEnCours2;
+	private List<List<ContratFeveV3>> livraisonsFeveEnCours2;
+	private List<ArrayList<ContratPoudre>> livraisonsPoudreEnCours2;
+	private List<ArrayList<ArrayList<Integer>>> livraisonsTablettesEnCours2;
+	private List<List<ContratFeveV3>> offresFevesPubliquesEnCours2;
 
 	
 	// En disant arbitrairement 
@@ -80,6 +106,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	//facteur proportionnel pour les couts de transformation
 	private final double FACTEUR_COUT_TRANSFO;
+	private List<Indicateur> nombreEmployes2;
 
 	private final int MOY_TAUX_EFFICACITE_EMPLOYES = 1;
 	
@@ -119,8 +146,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 
 	public Eq7TRAN(Monde monde, String nom) {
 		this.nom = nom;
-		this.achats = new Indicateur("Achat de "+this.getNom(), this, 0.0);
-		this.ventes = new Indicateur("Vente de "+this.getNom(), this, 0.0);
 		this.nombreEmployes = new Indicateur("Nombre d'employés : ", this, 1000.0);
 		this.stockFeves = new Indicateur[3];
 		this.stockPoudre = new Indicateur[3];
@@ -133,6 +158,23 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.productionPoudreAttendue = new Indicateur[3];
 		this.productionTablettesAttendue = new Indicateur[3];
 		
+		
+		this.stockFeves2 = new ArrayList<Indicateur[]>();
+		this.stockPoudre2 = new ArrayList<Indicateur[]>();
+		this.stockTablettes2 = new ArrayList<Indicateur[]>();
+		this.prixAchatFeves2 = new ArrayList<Indicateur[]>();
+		this.prixVentePoudre2 = new ArrayList<Indicateur[]>();
+		this.prixVenteTablettes2 = new ArrayList<Indicateur[]>();
+		this.productionPoudreReelle2 = new ArrayList<Indicateur[]>();
+		this.productionTablettesReelle2 = new ArrayList<Indicateur[]>();
+		this.productionPoudreAttendue2 = new ArrayList<Indicateur[]>();
+		this.productionTablettesAttendue2 = new ArrayList<Indicateur[]>();
+		
+		this.nombreEmployes2 = new ArrayList<Indicateur>();
+		for (int i=0; i<10; i++) {
+			nombreEmployes2.add(new Indicateur("Nombre d'employés : ", this, 100.0+Math.pow(-1, Math.round(Math.random()))*((int)Math.random()*40)));
+		}
+		
 		this.commandesFeveEnCours = new ArrayList<ContratFeveV3>();
 		this.commandesPoudreEnCours = new ArrayList<ContratPoudre>();
 		this.commandesTablettesEnCours = new ArrayList<ArrayList<Integer>>();
@@ -140,10 +182,66 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.livraisonsPoudreEnCours = new ArrayList<ContratPoudre>();
 		this.livraisonsTablettesEnCours = new ArrayList<ArrayList<Integer>>();
 		this.offresFevesPubliquesEnCours = new ArrayList<ContratFeveV3>();
+	
+		this.commandesFeveEnCours2 = new ArrayList<List<ContratFeveV3>>();
+		this.commandesPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>();
+		this.commandesTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
+		this.livraisonsFeveEnCours2 = new ArrayList<List<ContratFeveV3>>();
+		this.livraisonsPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>();
+		this.livraisonsTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
+		this.offresFevesPubliquesEnCours2 = new ArrayList<List<ContratFeveV3>>();
 		
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
 		this.efficacite = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 1.0);
+		
+		this.solde2 = new ArrayList<Indicateur>();
+		this.absenteisme2 = new ArrayList<Indicateur>();
+		this.efficacite2 = new ArrayList<Indicateur>();
+		
+		Indicateur[] stockFeves2i, stockPoudre2i, stockTablettes2i, prixAchatFeves2i, prixVentePoudre2i, prixVenteTablettes2i, productionPoudreReelle2i, productionTablettesReelle2i, productionPoudreAttendue2i, productionTablettesAttendue2i;
+		for (int i=0; i<10; i++) {
+			solde2.add(new Indicateur(this.getNom()+" a un solde de ", this, 200000.0));
+			absenteisme2.add(new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0));
+			efficacite2.add(new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 1.0));
+			
+			stockFeves2i = new Indicateur[3];
+			stockPoudre2i = new Indicateur[3];
+			stockTablettes2i = new Indicateur[3];
+			prixAchatFeves2i = new Indicateur[3];
+			prixVentePoudre2i = new Indicateur[3];
+			prixVenteTablettes2i = new Indicateur[3];
+			productionPoudreReelle2i = new Indicateur[3];
+			productionTablettesReelle2i = new Indicateur[3];
+			productionPoudreAttendue2i = new Indicateur[3];
+			productionTablettesAttendue2i = new Indicateur[3];
+			for(int j = 0; j < 3; j++) {
+				stockFeves2i[j] = new Indicateur(this.getNom()+"."+i+" - STOCK FEVES "+j+" = ", this, 500.0);
+				stockPoudre2i[j] = new Indicateur(this.getNom()+"."+i+" - STOCK FEVES "+j+" = ", this, 500.0);
+				stockTablettes2i[j] = new Indicateur(this.getNom()+"."+i+" - STOCK FEVES "+j+" = ", this, 500.0);
+				prixAchatFeves2i[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement acheté des fèves au prix de ", this, this.MOY_PRIX_ACHAT_FEVES[j]);
+				prixVentePoudre2i[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement vendu de la poudre au prix de ", this, 0);
+				prixVenteTablettes2i[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement vendu des tablettes au prix de ", this, 0);
+				productionPoudreReelle2i[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement produit une quantité de poudre de", this, SUM_MOY_VENTE_POUDRE);
+				productionTablettesReelle2i[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement produit une quantité de tablettes de", this, SUM_MOY_VENTE_TABLETTES);
+				productionPoudreAttendue2i[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement souhaité produire une quantité de poudre de", this, SUM_MOY_VENTE_POUDRE);
+				productionTablettesAttendue2i[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement souhaité produire une quantité de tablettes de", this, SUM_MOY_VENTE_TABLETTES);
+				/*this.stockPoudre2.get(i)[j] = new Indicateur(this.getNom()+"."+i+" - STOCK POUDRE "+j+" = ", this, 500.0);
+				this.stockTablettes2.get(i)[j] = new Indicateur(this.getNom()+"."+i+" - STOCK TABLETTES "+j+" = ", this, 500.0);
+				this.prixAchatFeves2.get(i)[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement acheté des fèves au prix de ", this, this.MOY_PRIX_ACHAT_FEVES[i]);
+				this.prixVentePoudre2.get(i)[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement vendu de la poudre au prix de ", this, 0);
+				this.prixVenteTablettes2.get(i)[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement vendu des tablettes au prix de ", this, 0);
+				this.productionPoudreReelle2.get(i)[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement produit une quantité de poudre de", this, SUM_MOY_VENTE_POUDRE);
+				this.productionTablettesReelle2.get(i)[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement produit une quantité de tablettes de", this, SUM_MOY_VENTE_TABLETTES);
+				this.productionPoudreAttendue2.get(i)[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement souhaité produire une quantité de poudre de", this, SUM_MOY_VENTE_POUDRE);
+				this.productionTablettesAttendue2.get(i)[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement souhaité produire une quantité de tablettes de", this, SUM_MOY_VENTE_TABLETTES);
+				*/
+			}
+			stockFeves2.add(stockFeves2i);
+			stockPoudre2.add(stockPoudre2i);
+			stockTablettes2.add(stockTablettes2i);
+			
+		}
 		
 		for(int i = 0; i < 3; i++) {
 			this.stockFeves[i] = new Indicateur(this.getNom()+" - STOCK FEVES "+i+" = ", this, 500.0);
@@ -166,6 +264,23 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			//Monde.LE_MONDE.ajouterIndicateur(this.stockPoudre[i]);
 			Monde.LE_MONDE.ajouterIndicateur(this.stockTablettes[i]);
 		}
+		
+		this.journal = new Journal("Journal de "+this.getNom());
+		Monde.LE_MONDE.ajouterJournal(this.journal);
+		Indicateur stockFeveTotal= new Indicateur(this.getNom()+" - STOCK FEVES  = ", this, 0);
+		Indicateur stockTablettesTotal = new Indicateur(this.getNom()+" - STOCK TABLETTES  = ", this, 0);
+		Indicateur stockPoudreTotal = new Indicateur(this.getNom()+" - STOCK POUDRE  = ", this, 0);
+		for (int i=0; i<10; i++) {
+			for(int j = 0; j < 3; j++) {
+			
+				stockFeveTotal.setValeur(this,stockFeveTotal.getValeur()+this.stockFeves2.get(i)[j].getValeur());
+				stockTablettesTotal.setValeur(this,stockTablettesTotal.getValeur()+this.stockTablettes2.get(i)[j].getValeur());
+				//stockPoudreTotal.setValeur(this,stockPoudreTotal.getValeur()+this.stockPoudre2.get(i)[j].getValeur());
+			}
+		}
+		Monde.LE_MONDE.ajouterIndicateur(stockFeveTotal);
+		Monde.LE_MONDE.ajouterIndicateur(stockPoudreTotal);
+		Monde.LE_MONDE.ajouterIndicateur(stockTablettesTotal);
 		
 	}
 	public Eq7TRAN(Monde monde) {
@@ -196,6 +311,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		 que ce seront les mêmes à la prochaine période
 		 Il n'y a pas d'argent en jeu pour le moment, juste une négociation sur les quantités demandées
 		 */
+		
+		
+		// ECHANGE POUDRE
 		
 		GQte[] commandes = new GQte[3];
 		GQte commande;
@@ -266,7 +384,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		 */
 		
 		// bug dans Eq3, il caste leur objet équipe en IAcheteurFeve alors qu'il ne l'implemente pas
-		for(Acteur Acteur : Monde.LE_MONDE.getActeurs()) {
+		
+		/*for(Acteur Acteur : Monde.LE_MONDE.getActeurs()) {
 			// on récupère les commandes des distributeurs en tablettes
 			
 			if(Acteur instanceof IVendeurFeveV4) {
@@ -274,24 +393,22 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				if(offresPubliques != null) {
 					offresPubliquesRetenues = this.analyseOffresPubliquesFeves(offresPubliques);
 					
-					this.getJournal().ajouter(offresPubliques.size()+" "+offresPubliquesRetenues.size());
-					
 					if(offresPubliquesRetenues.size() > 0) {
 						((IVendeurFeveV4) Acteur).sendDemandePriveeV3(offresPubliquesRetenues);
 						
 						offresPrivees = ((IVendeurFeveV4) Acteur).getOffreFinaleV3();
 						if(offresPrivees != null && offresPrivees.size() > 0) {
 							offresPriveesRetenues = this.analyseOffresPriveesFeves(offresPrivees);
-							/*for(ContratFeveV3 contrat : offresPrivees) {
-								
-							}*/
+							for(ContratFeveV3 contrat : offresPrivees) {
+								System.out.println(contrat);
+							}
 							((IVendeurFeveV4) Acteur).sendResultVentesV3(offresPriveesRetenues);
 						}
 						
 					}
 				}
 			}
-		}
+		}*/
 		
 		//Mise à jour du solde pour les salaires
 		this.getSolde().setValeur(this,this.getSolde().getValeur()-this.getNombreEmployes()*this.SALAIRE_MOYEN);
@@ -330,18 +447,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	
-	public Indicateur getAchats() {
-		return this.achats;
-	}
-	public void setAchats(Indicateur achats) {
-		this.achats = achats;
-	}
-	public Indicateur getVentes() {
-		return ventes;
-	}
-	public void setVentes(Indicateur ventes) {
-		this.ventes = ventes;
-	}
+	
 	public Indicateur[] getStockFeves() {
 		return this.stockFeves;
 	}
@@ -804,22 +910,21 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		ContratPoudre[] catalogue=new ContratPoudre[3];
 		for(int qualite=0;qualite<3;qualite++) {
-			catalogue[qualite]=new ContratPoudre(qualite,(int)this.getStockPoudre(qualite).getValeur(),
-					this.prixVentePoudre[qualite].getValeur(),acheteur,(IVendeurPoudre)this,false);
+			catalogue[qualite] = new ContratPoudre(qualite,(int)this.getStockPoudre(qualite).getValeur(), this.prixVentePoudre[qualite].getValeur(),acheteur,(IVendeurPoudre)this,false);
 		}
 		return catalogue;
 	}
 	
-	public ContratPoudre[] getDevisPoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
-		int n = devis.length;
+	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
+		int n = demande.length;
 		for(int i = 0; i<n; i++) {
-			int qualite = devis[i].getQualite();
+			int qualite = demande[i].getQualite();
 			// Si on a pas la bonne quantité on refuse
-			if(devis[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
-				devis[i].setReponse(false);
+			if(demande[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
+				//demande[i].setReponse(false);
 			}
 		}
-		return devis;
+		return demande;
 	}
 	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
@@ -834,9 +939,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	
-	public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
-		
+	public void sendReponsePoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
+		for(int qualite = 0; qualite<3; qualite++) {
+			if(contrat[qualite].getReponse())
+				this.getCommandesPoudreEnCours().add(contrat[qualite]);
+		}
 	}
 	
 	////////////////////////////
