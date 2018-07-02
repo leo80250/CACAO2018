@@ -230,51 +230,9 @@ public class Client implements Acteur {
 				this.journal.ajouter("- Les magasins Mousquetaire ont vendu (effectivement) : "+ReponseMousquetaire.toString()+"\n");
 				this.journal.ajouter("");
 				
-				
-				//modification des parts de marché en fonction des commandes
-				double ValeurInitiale0 = this.getValeur(0, 0);
-				this.ModifierPartsDeMarche(0, 0, CommandeMousquetaire.getValeur(0), ReponseMousquetaire.getValeur(0));
-				this.EquilibrerPartsDeMarche(0, ValeurInitiale0, this.getValeur(0, 0), Distributeurs);
-				//modification des parts de marché en fonction des prix
-				//ValeurInitiale0 = this.getValeur(0, 0);
-				//this.ModifierPartsDeMarchePrix(0, 0, Mousquetaire.getPrix()[0], Distributeurs);
-				//this.EquilibrerPartsDeMarche(0, ValeurInitiale0, this.getValeur(0, 0), Distributeurs);
-				
-				
-				double ValeurInitiale1 = this.getValeur(0, 1);
-				this.ModifierPartsDeMarche(0, 1, CommandeMousquetaire.getValeur(1), ReponseMousquetaire.getValeur(1));
-				this.EquilibrerPartsDeMarche(1, ValeurInitiale1, this.getValeur(0, 1), Distributeurs);
-				ValeurInitiale1 = this.getValeur(0, 1);
-				//this.ModifierPartsDeMarchePrix(0, 1, Mousquetaire.getPrix()[1], Distributeurs);
-				//this.EquilibrerPartsDeMarche(1, ValeurInitiale1, this.getValeur(0, 1), Distributeurs);
-				
-				double ValeurInitiale2 = this.getValeur(0, 2);
-				this.ModifierPartsDeMarche(0, 2, CommandeMousquetaire.getValeur(2), ReponseMousquetaire.getValeur(2));
-				this.EquilibrerPartsDeMarche(2, ValeurInitiale2, this.getValeur(0, 2), Distributeurs);
-				ValeurInitiale2= this.getValeur(0, 2);
-				//this.ModifierPartsDeMarchePrix(0, 2, Mousquetaire.getPrix()[2], Distributeurs);
-				//this.EquilibrerPartsDeMarche(2, ValeurInitiale2, this.getValeur(0, 2), Distributeurs);
-				
-				double ValeurInitiale3 = this.getValeur(0, 3);
-				this.ModifierPartsDeMarche(0, 3, CommandeMousquetaire.getValeur(3), ReponseMousquetaire.getValeur(3));
-				this.EquilibrerPartsDeMarche(3, ValeurInitiale3, this.getValeur(0, 3), Distributeurs);
-				ValeurInitiale3 = this.getValeur(0, 3);
-				//this.ModifierPartsDeMarchePrix(0, 3, Mousquetaire.getPrix()[3], Distributeurs);
-				//this.EquilibrerPartsDeMarche(3, ValeurInitiale3, this.getValeur(0, 3), Distributeurs);
-				
-				double ValeurInitiale4 = this.getValeur(0, 4);
-				this.ModifierPartsDeMarche(0, 4, CommandeMousquetaire.getValeur(4), ReponseMousquetaire.getValeur(4));
-				this.EquilibrerPartsDeMarche(4, ValeurInitiale4, this.getValeur(0, 4), Distributeurs);
-				ValeurInitiale4 = this.getValeur(0, 4);
-				//this.ModifierPartsDeMarchePrix(0, 4, Mousquetaire.getPrix()[4], Distributeurs);
-				//this.EquilibrerPartsDeMarche(4, ValeurInitiale4, this.getValeur(0, 4), Distributeurs);
-				
-				double ValeurInitiale5 = this.getValeur(0, 5);
-				this.ModifierPartsDeMarche(0, 5, CommandeMousquetaire.getValeur(5), ReponseMousquetaire.getValeur(5));
-				this.EquilibrerPartsDeMarche(5, ValeurInitiale5, this.getValeur(0, 5), Distributeurs);
-				ValeurInitiale5 = this.getValeur(0, 5);
-				//this.ModifierPartsDeMarchePrix(0, 5, Mousquetaire.getPrix()[5], Distributeurs);
-				//this.EquilibrerPartsDeMarche(5, ValeurInitiale5, this.getValeur(0, 5), Distributeurs);
+				for(int j=0;j<=5;j++) {
+					this.ChangementPartdeMarche(0, j, CommandeMousquetaire, ReponseMousquetaire, Distributeurs.get(i), Distributeurs);
+				}
 				
 				this.journal.ajouter("- Les parts de marché des magasins Mousquetaire sont désormais : "+this.getValeur(0,0)+"% sur les Tablettes BG ; "+ this.getValeur(0,1)+"% sur les Tablettes MG ; "+this.getValeur(0,2)+"% sur les Tablettes HG ; "
 						+this.getValeur(0,3)+"% sur les Confiseries BG ; "+this.getValeur(0,4)+"% sur les Confiseries MG ; "+this.getValeur(0,5)+"% sur les Confiseries HG.");
@@ -291,30 +249,9 @@ public class Client implements Acteur {
 				this.journal.ajouter("- Les magasins Casino ont vendu (effectivement) : "+ReponseCasino.toString()+"\n");
 				this.journal.ajouter("");
 				
-				double ValeurInitiale0 = this.getValeur(1, 0);
-				this.ModifierPartsDeMarche(1, 0, CommandeCasino.getValeur(0), ReponseCasino.getValeur(0));
-				this.EquilibrerPartsDeMarche(0, ValeurInitiale0, this.getValeur(1, 0), Distributeurs);
-				
-				double ValeurInitiale1 = this.getValeur(1, 1);
-				this.ModifierPartsDeMarche(1, 1, CommandeCasino.getValeur(1), ReponseCasino.getValeur(1));
-				this.EquilibrerPartsDeMarche(1, ValeurInitiale1, this.getValeur(1, 1), Distributeurs);
-				
-				double ValeurInitiale2 = this.getValeur(1, 2);
-				this.ModifierPartsDeMarche(1, 2, CommandeCasino.getValeur(2), ReponseCasino.getValeur(2));
-				this.EquilibrerPartsDeMarche(1, ValeurInitiale2, this.getValeur(1, 2), Distributeurs);
-				
-				double ValeurInitiale3 = this.getValeur(1, 3);
-				this.ModifierPartsDeMarche(1, 3, CommandeCasino.getValeur(3), ReponseCasino.getValeur(3));
-				this.EquilibrerPartsDeMarche(1, ValeurInitiale3, this.getValeur(1, 3), Distributeurs);
-				
-				double ValeurInitiale4 = this.getValeur(1, 4);
-				this.ModifierPartsDeMarche(1, 4, CommandeCasino.getValeur(4), ReponseCasino.getValeur(4));
-				this.EquilibrerPartsDeMarche(4, ValeurInitiale4, this.getValeur(1, 4), Distributeurs);
-				
-				double ValeurInitiale5 = this.getValeur(1, 5);
-				this.ModifierPartsDeMarche(1, 5, CommandeCasino.getValeur(5), ReponseCasino.getValeur(5));
-				this.EquilibrerPartsDeMarche(5, ValeurInitiale5, this.getValeur(1, 5), Distributeurs);
-				
+				for(int j=0;j<=5;j++) {
+					this.ChangementPartdeMarche(1, j, CommandeCasino, ReponseCasino, Distributeurs.get(i), Distributeurs);
+				}
 				
 				this.journal.ajouter("- Les parts de marché des magasins Casino sont désormais : "+this.getValeur(1,0)+"% sur les Tablettes BG ; "+ this.getValeur(1,1)+"% sur les Tablettes MG ; "+this.getValeur(1,2)+"% sur les Tablettes HG ; "
 						+this.getValeur(1,3)+"% sur les Confiseries BG ; "+this.getValeur(1,4)+"% sur les Confiseries MG ; "+this.getValeur(1,5)+"% sur les Confiseries HG.");
@@ -331,31 +268,9 @@ public class Client implements Acteur {
 				this.journal.ajouter("- Les autres magasins ont vendu (effectivement) : "+ReponseAutre.toString()+"\n");
 				this.journal.ajouter("");
 				
-				
-				double ValeurInitiale0 = this.getValeur(2, 0);
-				this.ModifierPartsDeMarche(2, 0, CommandeAutre.getValeur(0), ReponseAutre.getValeur(0));
-				this.EquilibrerPartsDeMarche(0, ValeurInitiale0, this.getValeur(2, 0), Distributeurs);
-				
-				double ValeurInitiale1 = this.getValeur(2, 1);
-				this.ModifierPartsDeMarche(2, 1, CommandeAutre.getValeur(1), ReponseAutre.getValeur(1));
-				this.EquilibrerPartsDeMarche(1, ValeurInitiale1, this.getValeur(2, 1), Distributeurs);
-				
-				double ValeurInitiale2 = this.getValeur(2, 2);
-				this.ModifierPartsDeMarche(2, 2, CommandeAutre.getValeur(2), ReponseAutre.getValeur(2));
-				this.EquilibrerPartsDeMarche(2, ValeurInitiale2, this.getValeur(2, 2), Distributeurs);
-				
-				double ValeurInitiale3 = this.getValeur(2, 3);
-				this.ModifierPartsDeMarche(2, 3, CommandeAutre.getValeur(3), ReponseAutre.getValeur(3));
-				this.EquilibrerPartsDeMarche(3, ValeurInitiale3, this.getValeur(2, 3), Distributeurs);
-				
-				double ValeurInitiale4 = this.getValeur(2, 4);
-				this.ModifierPartsDeMarche(2, 4, CommandeAutre.getValeur(4), ReponseAutre.getValeur(4));
-				this.EquilibrerPartsDeMarche(4, ValeurInitiale4, this.getValeur(2, 4), Distributeurs);
-				
-				double ValeurInitiale5 = this.getValeur(2, 5);
-				this.ModifierPartsDeMarche(2, 5, CommandeAutre.getValeur(5), ReponseAutre.getValeur(5));
-				this.EquilibrerPartsDeMarche(5, ValeurInitiale5, this.getValeur(2, 5), Distributeurs);
-				
+				for(int j=0;j<=5;j++) {
+					this.ChangementPartdeMarche(2, j, CommandeAutre, ReponseAutre, Distributeurs.get(i), Distributeurs);
+				}
 				
 				this.journal.ajouter("Les parts de marché des autres magasins sont désormais : "+ this.getValeur(2,0)+"% sur les Tablettes BG ; "+ this.getValeur(2,1)+"% sur les Tablettes MG ; "+this.getValeur(2,2)+"% sur les Tablettes HG ; "
 						+this.getValeur(2,3)+"% sur les Confiseries BG ; "+this.getValeur(2,4)+"% sur les Confiseries MG ; "+this.getValeur(2,5)+"% sur les Confiseries HG.");
