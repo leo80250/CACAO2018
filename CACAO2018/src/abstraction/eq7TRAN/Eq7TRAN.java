@@ -37,12 +37,7 @@ import abstraction.fourni.Monde;
 public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeve, IAcheteurFeveV4, IVendeurChocoBis, IvendeurOccasionnelChoco {
 	
 	//rajouter IAcheteurFeve à implémenter
-<<<<<<< HEAD
-	
-	
-	
-=======
->>>>>>> branch 'master2' of https://github.com/leo80250/CACAO2018.git
+//github.com/leo80250/CACAO2018.git
 	// 0 = BQ, 1 = MQ, 2 = HQ
 	private Indicateur[] stockFeves;
 	private Indicateur[] stockPoudre;
@@ -431,11 +426,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getJournal().ajouter("-------------------------------------------------------------");
 	}
 	
-<<<<<<< HEAD
-	
-	
-=======
->>>>>>> branch 'master2' of https://github.com/leo80250/CACAO2018.git
+//github.com/leo80250/CACAO2018.git
 	public Indicateur[] getStockFeves() {
 		return this.stockFeves;
 	}
