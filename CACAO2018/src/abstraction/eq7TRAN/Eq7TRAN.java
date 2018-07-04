@@ -302,7 +302,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		 Il n'y a pas d'argent en jeu pour le moment, juste une négociation sur les quantités demandées
 		 */
 		
-		
 		// ECHANGE POUDRE
 		
 		GQte[] commandes = new GQte[3];
