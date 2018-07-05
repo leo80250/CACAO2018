@@ -2,10 +2,7 @@ package abstraction.eq4TRAN;
 
 import java.util.ArrayList;
 
-import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
-import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
+import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.Labellise;
@@ -27,13 +24,7 @@ import abstraction.fourni.Monde;
  *
  */
 
-public class Eq4TRAN implements Acteur, 
-ITransformateur, 
-IAcheteurFeve,
-IVendeurChocoBis,
-IAcheteurPoudre,
-IVendeurPoudre,
-IvendeurOccasionnelChocoBis, Labellise{ 
+public class Eq4TRAN implements Acteur { 
 
 	public Acteur Eq4TRAN ; 
 
@@ -66,17 +57,16 @@ IvendeurOccasionnelChocoBis, Labellise{
 	private Vendeur vendeur;
 	//On crée une liste pour ranger nos stocks
 	private ArrayList<Indicateur> Stocks;
-	/** Contrats en cours pour la méthode next interne
-	 * 
-	 */
-	private ContratFeve[] contratFeveEnCours ; 
+	
+	private ArrayList<ContratFeveV3> contratFevesEnCours ; 
+	
 	/** Initialisation des indicateurs 
 	 * 0,
 	 */
 	public Eq4TRAN() {
 		/**
 		 * @Mickaël
-		 * on construit les acteurs
+		 * Constructeurs des 3 Sous-Acteurs 
 		 */
 		
 		// StocksSA pour Stocks Sous-Acteurs etc..
@@ -87,17 +77,19 @@ IvendeurOccasionnelChocoBis, Labellise{
 			StocksSA.add(new Indicateur("stockProduit"+(i+1),this,1000));
 			ProductionSA.add(new Indicateur("productionProduit"+(i+1),this,1000));
 		}
-		// On initialise tout à l'identique pour les 3 Sous-Acteurs
-		this.Acteur1 = new SousActeur(new Journal("JournalActeur1"),StocksSA,ProductionSA,soldeSA,Vendeur.COMMERCE_EQUITABLE);
-
-		this.Acteur2 = new SousActeur(new Journal("JournalActeur2"),StocksSA,ProductionSA,soldeSA,Vendeur.PRODUCTEUR_LOCAL);
-
-		this.Acteur3 = new SousActeur(new Journal("JournalActeur3"),StocksSA,ProductionSA,soldeSA,Vendeur.LUXE);
+		
+		/**
+		 *  On construit les 3 Sous-Acteurs 
+		 */
+		
+		this.Acteur1 = new SousActeur(new Journal("JournalActeur1"),StocksSA,ProductionSA,soldeSA,50,Vendeur.COMMERCE_EQUITABLE);
+		this.Acteur2 = new SousActeur(new Journal("JournalActeur2"),StocksSA,ProductionSA,soldeSA,135,Vendeur.PRODUCTEUR_LOCAL);
+		this.Acteur3 = new SousActeur(new Journal("JournalActeur3"),StocksSA,ProductionSA,soldeSA,220,Vendeur.LUXE);
+		
 		/**
 		 * @author Mickaël, Etienne
-		 * 
+		 * On créé les stocks pour chaque Sous-Acteur.
 		 */
-		//On crée nos stocks pour chaque acteur.
 				
 				ArrayList<Indicateur> Stocks_Acteur1 = new ArrayList<>();
 				Stocks_Acteur1.add(new Indicateur("",this.Acteur1,0));
@@ -134,40 +126,38 @@ IvendeurOccasionnelChocoBis, Labellise{
 				
 		/**
 		 * @Mickaël
-		 * on initialise les contrats
+		 * on initialise les contrats d'échange de POUDRE avec les autres transformateurs 
 		 */
-				
+		
+		/**
+		 * Acteur 1 labellisé commerce équitable 
+		 */
 		ContratPoudre[] contratPoudreEnCoursEq7TRAN_Acteur1 = new ContratPoudre[3];
 		ContratPoudre[] contratPoudreEnCoursEq5TRAN_Acteur1 = new ContratPoudre[3];
-		contratPoudreEnCoursEq5TRAN_Acteur1[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_Acteur1[1] = new ContratPoudre(1,27000,100.0, (IAcheteurPoudre)this.Acteur1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_Acteur1[2] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_Acteur1[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_Acteur1[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this.Acteur1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_Acteur1[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this.Acteur1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_Acteur1[1] = new ContratPoudre(1,9000,100.0, (IAcheteurPoudre)this.Acteur1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur1[1] = new ContratPoudre(1,1000,100.0, (IAcheteurPoudre)this.Acteur1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
 		this.Acteur1.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_Acteur1);
 		this.Acteur1.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_Acteur1);
 		
+		/**
+		 * Acteur 2 labellisé Local
+		 */
 		ContratPoudre[] contratPoudreEnCoursEq7TRAN_Acteur2 = new ContratPoudre[3];
 		ContratPoudre[] contratPoudreEnCoursEq5TRAN_Acteur2 = new ContratPoudre[3];
-		contratPoudreEnCoursEq5TRAN_Acteur2[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_Acteur2[1] = new ContratPoudre(1,27000,100.0, (IAcheteurPoudre)this.Acteur2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_Acteur2[2] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_Acteur2[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_Acteur2[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this.Acteur2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_Acteur2[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this.Acteur2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_Acteur2[0] = new ContratPoudre(0,2000,100.0, (IAcheteurPoudre)this.Acteur2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_Acteur2[1] = new ContratPoudre(1,10000,100.0, (IAcheteurPoudre)this.Acteur2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur2[1] = new ContratPoudre(1,8000,100.0, (IAcheteurPoudre)this.Acteur2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
 		
 		this.Acteur2.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_Acteur2);
 		this.Acteur2.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_Acteur2);
 		
+		/**
+		 * Acteur 3 labellisé luxe, n'achète que de la qualité de luxe à l'éq 7 
+		 */
 		ContratPoudre[] contratPoudreEnCoursEq7TRAN_Acteur3 = new ContratPoudre[3];
 		ContratPoudre[] contratPoudreEnCoursEq5TRAN_Acteur3 = new ContratPoudre[3];
-		contratPoudreEnCoursEq5TRAN_Acteur3[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur3, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_Acteur3[1] = new ContratPoudre(1,27000,100.0, (IAcheteurPoudre)this.Acteur3, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_Acteur3[2] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur3, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_Acteur3[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_Acteur3[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this.Acteur3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_Acteur3[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this.Acteur3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
@@ -175,17 +165,19 @@ IvendeurOccasionnelChocoBis, Labellise{
 		this.Acteur3.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_Acteur3);
 		
 		
+		/**
+		 * CHARLES ICI IL FAUT CONSTRUIRE LES CONTRATS FEVES V3
+		 */
 		
-		
-		
-		contratFeveEnCours = new ContratFeve[6];
-		contratFeveEnCours[0]=new ContratFeve( (IAcheteurFeve)this , (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD") , 0 , 0 , 0 , 0 , 0.0 , 0.0 , 0.0 ,false);
-		contratFeveEnCours[1]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD"),1 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
+		/**
+		 
+		this.contratFevesEnCours.add(new ContratFeveV3( (IAcheteurFeve)this.Acteur1 , (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD") , 0 , 0 , 0 , 0 , 0.0 , 0.0 , 0.0 ,false)) ; 	     	 	 		  			 	);
+		this.contratFevesEnCours.add(new ContratFeveV3((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD"),1 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false)) ;
 		contratFeveEnCours[2]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD"),2 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
 		contratFeveEnCours[3]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),0 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
 		contratFeveEnCours[4]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),1 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
 		contratFeveEnCours[5]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),2 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
-
+		*/
 
 		//On initialise les indicateurs à 1000(arbitraire)
 
@@ -262,21 +254,14 @@ IvendeurOccasionnelChocoBis, Labellise{
 
 
 	public void next() {
-		/**
-		 *  On récupère les contrats màj par la méthode next du marché
-		 *  ?????????????????????????
-		 */
-
-
-
-
+	
 		/**
 		 * pour chaque contrat on récupère prix et qté
 		 */
 		/**
 		 * pour contrat fève 
 		 */
-		for(int i = 0 ; i < contratFeveEnCours.length ; i++) {
+		for(int i = 0 ; i < contratFevesEnCours.size() ; i++) {
 			/**
 			 * Selon la qualité
 			 * On récupère les qtés de fèves achetées
@@ -284,25 +269,25 @@ IvendeurOccasionnelChocoBis, Labellise{
 			 * Les produits sont ajoutés aux stocks
 			 * Le coût total de l'achat est retiré au solde
 			 */
-			if (contratFeveEnCours[i].getReponse()) {
-				if(contratFeveEnCours[i].getQualite() == 0) {
-					prodTabBQ_Eq4.setValeur(this, contratFeveEnCours[i].getQuantite()); 
+			if (contratFevesEnCours.get(i).getReponse()) {
+				if(contratFevesEnCours.get(i).getQualite() == 0) {
+					prodTabBQ_Eq4.setValeur(this, contratFevesEnCours.get(i).getProposition_Quantite()); 
 					double ancienStockTabBQ = stockTabBQ_Eq4.getValeur() ;
 					stockTabBQ_Eq4.setValeur(Eq4TRAN, ancienStockTabBQ + prodTabBQ_Eq4.getValeur());
-					solde.setValeur(Eq4TRAN, contratFeveEnCours[i].getPrix()*contratFeveEnCours[i].getQuantite());
+					solde.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Prix()*contratFevesEnCours.get(i).getProposition_Quantite());
 				}
-				else if(contratFeveEnCours[i].getQualite() == 1) {
-					prodTabMQ_Eq4.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite());
+				else if(contratFevesEnCours.get(i).getQualite() == 1) {
+					prodTabMQ_Eq4.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Quantite());
 					double ancienStockTabMQ = stockTabMQ_Eq4.getValeur() ;
 					stockTabMQ_Eq4.setValeur(Eq4TRAN, ancienStockTabMQ + prodTabMQ_Eq4.getValeur());
-					solde.setValeur(Eq4TRAN, contratFeveEnCours[i].getPrix()*contratFeveEnCours[i].getQuantite());
+					solde.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Prix()*contratFevesEnCours.get(i).getProposition_Quantite());
 
 				}
-				else if(contratFeveEnCours[i].getQualite() == 2) {
-					prodTabHQ_Eq4.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite());
+				else if(contratFevesEnCours.get(i).getQualite() == 2) {
+					prodTabHQ_Eq4.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Quantite());
 					double ancienStockTabHQ = stockTabHQ_Eq4.getValeur() ;
 					stockTabHQ_Eq4.setValeur(Eq4TRAN, ancienStockTabHQ + prodTabMQ_Eq4.getValeur());
-					solde.setValeur(Eq4TRAN, contratFeveEnCours[i].getPrix()*contratFeveEnCours[i].getQuantite());
+					solde.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Prix()*contratFevesEnCours.get(i).getProposition_Quantite());
 
 				}
 			}
@@ -357,7 +342,7 @@ IvendeurOccasionnelChocoBis, Labellise{
 					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
 
 				} else if (contratPoudreEnCours.get(i).getQualite() == 2 ) {
-					prodChocHQ_Eq4.setValeur(Eq4TRAN, contratFeveEnCours[i].getQuantite());
+					prodChocHQ_Eq4.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Quantite());
 					double ancienStockChocHQ = stockChocHQ_Eq4.getValeur() ;
 					stockChocHQ_Eq4.setValeur(Eq4TRAN, ancienStockChocHQ + prodChocHQ_Eq4.getValeur()); 
 					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
@@ -401,169 +386,6 @@ IvendeurOccasionnelChocoBis, Labellise{
 
 	public Journal getJournalVentes() {
 		return vendeur.getVentes();
-	}
-
-	@Override
-	public void sell(int q) {
-		// TODO Auto-generated method stub
-
-	}
-
-	// Etienne Raveau
-	// Getter pour accéder à la liste de nos stocks
-	public ArrayList<Indicateur> getStocks(){
-		return Stocks;
-	}
-
-	//Charles
-	@Override
-	public void sendOffrePublique(ContratFeve[] offrePublique) {
-		this.contratFeveEnCours=offrePublique;
-	}
-
-	//Charles
-	@Override
-	public ContratFeve[] getDemandePrivee() {
-		int[] demande= {13000,70000,25000};
-		double[] prixMin= { 100000.0 , 100000.0 , 100000.0 } ;
-		int[] min= {-1,-1,-1};
-		int[] max= {-1,-1,-1};
-		for (int i=0;i<this.contratFeveEnCours.length;i++) {
-			int qualite=this.contratFeveEnCours[i].getOffrePublique_Quantite();
-			if (this.contratFeveEnCours[i].getOffrePublique_Prix()<prixMin[qualite]) {
-				prixMin[qualite]=this.contratFeveEnCours[i].getOffrePublique_Prix();
-				if (min[i]!=-1) {
-					max[qualite]=i;
-				}
-				min[i]=this.contratFeveEnCours[i].getQualite();
-			}
-		}
-		for (int j=0;j<3;j++) {
-			this.contratFeveEnCours[min[j]].setDemande_Quantite(Math.min(demande[min[j]],this.contratFeveEnCours[min[j]].getOffrePublique_Quantite()/3));
-			if (max[j]!=-1) {
-				this.contratFeveEnCours[max[j]].setDemande_Quantite(demande[min[j]]-Math.min(demande[min[j]],this.contratFeveEnCours[min[j]].getOffrePublique_Quantite()/3));
-			}
-		}
-		return this.contratFeveEnCours ;
-	}
-
-
-	@Override
-	public void sendContratFictif(ContratFeve[] listContrats) {
-	}
-
-
-	//Charles
-	@Override
-	public void sendOffreFinale(ContratFeve[] offreFinale) {
-		this.contratFeveEnCours=offreFinale;
-		// TODO Auto-generated method stub
-
-	}
-
-	//Charles
-	@Override
-	public ContratFeve[] getResultVentes() {
-		for (int i=0;i<this.contratFeveEnCours.length;i++) {
-			if (this.contratFeveEnCours[i].getProposition_Prix()*this.contratFeveEnCours[i].getProposition_Quantite()<this.solde.getValeur()) {
-				this.contratFeveEnCours[i].setReponse(true);
-			}
-		}
-		return this.contratFeveEnCours;
-	}
-
-	// Etienne Raveau
-	// Getter permettant d'accéder à la quantité disponible d'un produit 
-	public int getQuantite(int IDProduit) {
-		return vendeur.getQte(IDProduit);
-	}
-
-	//Etienne Raveau
-	// Setter qui met à jour  l'indicateur de stock pour un certain produit
-	public void setQuantite(int IDProduit, int quantite) {
-		getStocks().get(IDProduit-1).setValeur(this, quantite);
-	}
-
-	/*
-	 * @Etienne
-	 */
-	@Override
-	public ArrayList<Integer> getStock() {
-		return vendeur.getStock();
-	}
-
-	// Etienne Raveau
-	@Override
-	public GPrix2 getPrix() {
-		return vendeur.getPrix();
-	}
-
-
-	//Etienne Raveau
-	@Override
-	public ArrayList<ArrayList<Integer>> getLivraison(ArrayList<ArrayList<Integer>> commandes) {
-		ArrayList<ArrayList<Integer>> livraison = new ArrayList<ArrayList<Integer>>();
-		livraison.addAll(vendeur.getLivraison(commandes));  //On remplit notre livraison selon la méthode implémentée dans Vendeur
-		//On met à jour nos stocks en fonction de la livraison effectuée
-		for(int i=1;i<6;i++) {
-			int quantite = getQuantite(i+1)-livraison.get(0).get(i)-livraison.get(1).get(i);
-			setQuantite(i+1,quantite);
-		}
-		double s = 0.0;
-		//On calcule la valeur du chiffre d'affaire généré par cette livraison
-		for(int i=0;i<2;i++) {
-			for(int j=0;j<6;j++) {
-				s+=livraison.get(i).get(j)*vendeur.getPrix().getPrixProduit(livraison.get(i).get(j), j+1);
-			}
-		}
-		solde.setValeur(this, s); //On met à jour notre solde bancaire
-		return livraison;
-	}
-
-	@Override
-	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getReponseBis(DemandeAO d) {
-		if(vendeur.getQte(d.getQualite()-1)>d.getQuantite()) {
-			return 0;
-		}
-		else {
-			// Modifier l'interface ! aucun intéret de devoir renvoyer un prix entier.
-			return (int)vendeur.getPrix().getPrixProduit(d.getQuantite(), d.getQualite());
-		}
-	}
-
-	@Override
-	public void envoyerReponseBis(int quantite, int qualite, int prix) {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public double getLabel() {
-		// return Acteur.getLabel() mais il faut indiquer le label dans le constructeur de chaque sous-acteur
-		return 0;
 	}
 
 }

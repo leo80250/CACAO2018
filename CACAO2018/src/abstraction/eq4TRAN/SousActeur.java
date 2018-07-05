@@ -19,13 +19,19 @@ ITransformateur, IAcheteurFeveV4,
 IVendeurChocoBis,
 IAcheteurPoudre,
 IVendeurPoudre {
-	private Indicateur chiffreDAffaire ; 
+	
+	//Indicateur du chiffre d'affaire
+	private Indicateur chiffreDAffaire ;
+	
 	//Indicateur de notre solde bancaire
 	private Indicateur solde ; 
+	
 	//Journal rendant compte de nos activités et de l'évolution de nos indicateurs
 	private Journal JournalEq4;
+	
 	//Rôle de vendeur que nous incarnerons à chaque next() et qui se mettra à jour à cette même fréquence
 	private Vendeur vendeur;
+	
 	//On crée une liste pour ranger nos stocks
 	private ArrayList<Indicateur> Stocks;
 	private ArrayList<Indicateur> Production;
@@ -36,8 +42,15 @@ IVendeurPoudre {
 	private double label;
 	// Indiquer un identifiant de Sous-Acteur ???
 
-	// Création du sous acteur par initialisation de ses différentes variables d'instance
-	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, double label) {
+	/**
+	 *  Constructeur sous acteur par initialisation de ses différentes variables d'instance
+	 * @param JournalEq4
+	 * @param Stocks
+	 * @param Production
+	 * @param solde
+	 * @param label
+	 */
+	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label) {
 		this.JournalEq4 = JournalEq4;
 		this.solde = new Indicateur("solde", this,solde);
 		ArrayList<Indicateur> stck = new ArrayList<>();
@@ -57,7 +70,6 @@ IVendeurPoudre {
 	}
 
 	public void sell(int q) {
-		// TODO Auto-generated method stub
 
 	}
 	
@@ -174,7 +186,7 @@ IVendeurPoudre {
 	
 
 	/*
-	 * @author Charles, Noémie
+	 * @author Noémie, Charles
 	 */
 	@Override
 	/*
@@ -190,7 +202,7 @@ IVendeurPoudre {
 				}
 			}
 		}
-		return null ; 
+		return this.contratFeveEnCours ; 
 		
 	}
 	
@@ -267,18 +279,7 @@ IVendeurPoudre {
 		return null;
 	}
 	
-	/*
-	 * @Noémie 
-	 * 
-	 * Méthodes pour prendre en compte les coûts fixes et variables 
-	 */
 	
-	/*
-	 * Méthode qui affiche le CA du dernier next en récupérant ce qu'on a payé
-	 * dans les contrats fèves et contrats poudres et ce qu'on a vendu en contrats
-	 * chocolats 
-	 */
-
 
 	@Override
 	public void next() {
