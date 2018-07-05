@@ -155,6 +155,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.productionPoudreAttendue = new Indicateur[3];
 		this.productionTablettesAttendue = new Indicateur[3];
 		
+		this.coutTransformationPoudre = new double[3];
+		this.coutTransformationTablette = new double[3];
+		
 		
 		this.stockFeves2 = new ArrayList<Indicateur[]>();
 		this.stockPoudre2 = new ArrayList<Indicateur[]>();
@@ -254,16 +257,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 		}
 		
-		this.journal = new Journal("Journal de "+this.getNom());
-		Monde.LE_MONDE.ajouterJournal(this.journal);
 		for(int i = 0; i < 3; i++) {
 			Monde.LE_MONDE.ajouterIndicateur(this.stockFeves[i]);
 			//Monde.LE_MONDE.ajouterIndicateur(this.stockPoudre[i]);
 			Monde.LE_MONDE.ajouterIndicateur(this.stockTablettes[i]);
 		}
 		
-		this.journal = new Journal("Journal de "+this.getNom());
-		Monde.LE_MONDE.ajouterJournal(this.journal);
 		Indicateur stockFeveTotal= new Indicateur(this.getNom()+" - STOCK FEVES  = ", this, 0);
 		Indicateur stockTablettesTotal = new Indicateur(this.getNom()+" - STOCK TABLETTES  = ", this, 0);
 		Indicateur stockPoudreTotal = new Indicateur(this.getNom()+" - STOCK POUDRE  = ", this, 0);
@@ -278,6 +277,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		Monde.LE_MONDE.ajouterIndicateur(stockFeveTotal);
 		Monde.LE_MONDE.ajouterIndicateur(stockPoudreTotal);
 		Monde.LE_MONDE.ajouterIndicateur(stockTablettesTotal);
+		
+		
+		
+		this.journal = new Journal("Journal de "+this.getNom());
+		Monde.LE_MONDE.ajouterJournal(this.journal);
 		
 	}
 	public Eq7TRAN(Monde monde) {
@@ -414,7 +418,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		//Mise à jour du solde pour les coûts de transformation
 		double cout_transfo=0;
 		for(int qualite=0;qualite<3;qualite++){
-			cout_transfo+=this.coutTransformationPoudre[qualite]+this.coutTransformationTablette[qualite];				
+			cout_transfo+=this.getCoutTransformationPoudre(qualite)+this.getCoutTransformationTablette(qualite);				
 		}
 		this.getSolde().setValeur(this,this.getSolde().getValeur()-cout_transfo);
 		this.getJournal().ajouter("COUTS TRANSFORMATION = "+cout_transfo);
@@ -602,6 +606,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public double[] getCoutTransformationTablette() {
 		return this.coutTransformationTablette;
 	}
+	public double getCoutTransformationTablette(int qualite) {
+		return this.coutTransformationTablette[qualite];
+	}
 	public void setCoutTransformationTablette(double[] cout) {
 		this.coutTransformationTablette=cout;
 	}
@@ -612,6 +619,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	public double[] getCoutTransformationPoudre() {
 		return this.coutTransformationPoudre;
+	}
+	public double getCoutTransformationPoudre(int qualite) {
+		return this.coutTransformationPoudre[qualite];
 	}
 	public void setCoutTransformationPoudre(double[] cout) {
 		this.coutTransformationPoudre=cout;
