@@ -3,6 +3,7 @@ package abstraction.eq3PROD;
 import java.util.ArrayList;
 import java.util.List;
 
+import abstraction.eq2PROD.echangeProd.IVendeurFevesProd;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.fourni.Acteur;
@@ -372,7 +373,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			
 			this.ajouterStockMoyen((int) (coeffAmerique*prodBresil+coeffIndonesie*prodIndo));
 			this.ajouterStockFin((int) coeffAmerique*prodfin);
-			this.solde -= (prodBresil + prodIndo + prodfin)*1212 ; 
+			this.solde -= (prodBresil + prodIndo + prodfin)*1212;
+			if(this.quantiteStockMoyen()<29000) {
+				this.solde-=((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).getPrix()*(29000-this.quantiteStockMoyen());
+				this.ajouterStockMoyen(((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).acheter(29000-this.quantiteStockMoyen()));
+			}
+
 			this.prodFeves[1]=(int) (coeffAmerique*prodBresil+coeffIndonesie*prodIndo);
 			this.prodFeves[2]=(int) coeffAmerique*prodfin;
 			
