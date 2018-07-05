@@ -406,29 +406,29 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
 
     public double prixActualiseFeveMQ () {
-    	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche central");
-    	int ventes = 0 ;
-    	int quantites = 0 ;
+    	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche");
+    	float ventes = 0 ;
+    	float quantites = 0 ;
 
     	for (ContratFeveV3  c : marche.getContratPrecedent()) {
     		if ( c.getQualite()==1) { ventes += c.getProposition_Quantite()*c.getProposition_Prix() ; quantites += c.getProposition_Quantite() ; }
     	}
 
-    	return ventes/quantites ;
+        return quantites==0?0:ventes/quantites ;
 
     }
 
-
+    // TODO fonction a finir
     public double prixActualiseFeveBQ () {
-    	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche central");
-    	int ventes = 0 ;
-    	int quantites = 0 ;
+    	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche");
+        float ventes = 0 ;
+    	float quantites = 0 ;
 
     	for (ContratFeveV3  c : marche.getContratPrecedent()) {
     		if ( c.getQualite()==0) { ventes += c.getProposition_Quantite()*c.getProposition_Prix() ; quantites += c.getProposition_Quantite() ; }
     	}
 
-    	return ventes/quantites ;
+    	return quantites==0?0:ventes/quantites ;
 
     }
 
@@ -579,7 +579,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      */
 
     @Override
-    public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, int prix) {
+    public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
         this.depenser(-prix);
         this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * (200.0 / 10000000));
         journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de "+qualite+" qualite pour "+prix+" euros à "+acteur.getNom());
