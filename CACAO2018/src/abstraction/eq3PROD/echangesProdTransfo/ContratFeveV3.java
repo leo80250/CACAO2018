@@ -210,17 +210,24 @@ public class ContratFeveV3 {
 			vendeur += ((Acteur)(this.producteur)).getNom();
 		}
 		
-
-		if (this.getOffrePublique_Quantite()!=0) {
-			return "Contrat : QOP="+this.getOffrePublique_Quantite()+" tonnes de feve de "+strqualite[this.getQualite()]+" qualité, à "+this.getOffrePublique_Prix()
-			+"€ la tonne, soit un total de "+this.getOffrePublique_Quantite()*this.getOffrePublique_Prix()+"€.\nAcheteur : "+acheteur+" | Vendeur : "+vendeur+rep;
-			
+		if (this.reponse) {
+			return "Acheteur  : "+acheteur+"// Vendeur : "+vendeur+" // Quantite = "+this.getProposition_Quantite()+" // Qualite = "+strqualite[this.getQualite()]+" // Prix total"
+			+this.getProposition_Quantite()*this.getProposition_Prix()+"€";
+		}
+		else if (this.getReponse()==false && this.getProposition_Quantite()!=0) {
+			return "L'échange entre acheteur : "+acheteur+" et vendeur : "+vendeur+ " de feves "+strqualite[this.getQualite()]+" à été refusé";
 		}
 		else {
-		
-		return "Contrat : QOP="+this.getProposition_Quantite()+" tonnes de feve de "+strqualite[this.getQualite()]+" qualité, à "+this.getProposition_Prix()
-				+"€ la tonne, soit un total de "+this.getProposition_Quantite()*this.getProposition_Prix()+"€.\nAcheteur : "+acheteur+" | Vendeur : "+vendeur+rep;
-		}
+			return "Pas d'échanges entre "+acheteur+" et "+vendeur;
 		}
 
+
 }
+	
+	public String toString2() {
+		return "[Transformateur : "+transformateur+" // producteur : "+producteur+ "// Qualite : "+qualite+
+				"// QuantiteOffrePublique : "+quantiteOffrePublique+" // Quantite demande : "+quantiteDemande+
+				" // QuantiteProposition : "+quantiteProposition+
+				" PrixOffrePublique : "+prixOffrePublique+ " PrixDemande : "+prixDemande+ " // PrixProposition : "+prixProposition+"]";
+		}
+	}
