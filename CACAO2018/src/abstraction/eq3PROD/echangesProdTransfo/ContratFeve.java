@@ -165,7 +165,6 @@ public class ContratFeve {
 		this.reponse = reponse;
 	}
 	
-	@Override
 	public String toString() {
 		String [] strqualite = {"basse", "moyenne", "haute"};
 		String rep = "";
