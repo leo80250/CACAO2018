@@ -388,9 +388,4 @@ public class Eq4TRAN implements Acteur {
 		return vendeur.getVentes();
 	}
 
-	
-	
-
-	
-
 }
