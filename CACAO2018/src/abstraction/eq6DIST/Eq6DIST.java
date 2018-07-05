@@ -116,7 +116,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		double stock_TMG_min=10000000.0; // calcul le stock min en TMG des 3 transfos et l'indice de l'équipe avec le plus petit stock;
 		int equipe_stock_TMG_min=0;
 		for (int i=0; i<3; i++) {
-			if (stock_TMG_min>=Stock.get(i).get(4)) {
+			if (stock_TMG_min>=Stock.get(i).get(4)&&Stock.get(i).get(4)!=0) {
 				stock_TMG_min=Stock.get(i).get(4);
 				equipe_stock_TMG_min=i;
 			}
@@ -172,7 +172,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		double stock_TBG_min=10000000.0; // calcul le stock min en TBG des 3 transfos et l'indice de l'équipe avec le plus petit stock;
 		int equipe_stock_TBG_min=0;
 		for (int i=0; i<3; i++) {
-			if (stock_TBG_min>=Stock.get(i).get(3)) {
+			if (stock_TBG_min>=Stock.get(i).get(3)&&Stock.get(i).get(3)!=0) {
 				stock_TBG_min=Stock.get(i).get(3);
 				equipe_stock_TBG_min=i;
 			}
@@ -180,7 +180,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		int indice_equipe_moins_chere_TBG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
 		double prix_moins_chere_TBG=10000000.0;
 		for (int i=0; i<3; i++) {
-			if (Prix.get(i).getPrixProduit((int)stock_TBG_min-1,4)<=prix_moins_chere_TBG) {
+			if (Prix.get(i).getPrixProduit((int)stock_TBG_min-1,4)<=prix_moins_chere_TBG&&Prix.get(i).getPrixProduit((int)stock_TBG_min-1,4)!=0) {
 				indice_equipe_moins_chere_TBG=i;
 				prix_moins_chere_TBG=Prix.get(i).getPrixProduit((int)stock_TBG_min-1,4);
 			}
@@ -217,10 +217,60 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		} else {
 			stock_TBG2=(int) (0.2*stock_TBG_min2);
 		}
-		commande.get(equipe_stock_TBG_min2).set(3, stock_TBG2);
-		// calcule l'indice du transfo avec le plus grand stock
-		int equipe_stock_TBG_max=3-equipe_stock_TBG_min-equipe_stock_TBG_min2;
-		commande.get(equipe_stock_TBG_max).set(3, 1615-stock_TBG1-stock_TBG2);
+		commande.get(equipe_stock_TBG_min2).set(3, stock_TBG2+1615-stock_TBG1);
+		
+		//Commande de CMG
+		
+		double stock_CMG_min=10000000.0; // calcul le stock min en CMG des 3 transfos et l'indice de l'équipe avec le plus petit stock;
+		int equipe_stock_CMG_min=0;
+		for (int i=0; i<3; i++) {
+			if (stock_CMG_min>=Stock.get(i).get(1)) {
+				stock_CMG_min=Stock.get(i).get(1);
+				equipe_stock_CMG_min=i;
+			}
+		}
+		int indice_equipe_moins_chere_CMG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
+		double prix_moins_chere_CMG=10000000.0;
+		for (int i=0; i<3; i++) {
+			if (Prix.get(i).getPrixProduit((int)stock_CMG_min-1,2)<=prix_moins_chere_CMG) {
+				indice_equipe_moins_chere_CMG=i;
+				prix_moins_chere_CMG=Prix.get(i).getPrixProduit((int)stock_CMG_min-1,2);
+			}
+		}
+		int stock_CMG1=0;
+		if (equipe_stock_CMG_min==indice_equipe_moins_chere_CMG) {
+			stock_CMG1= (int) (0.8*stock_CMG_min);
+		} else {
+			stock_CMG1= (int) (0.2*stock_CMG_min);
+		}
+		commande.get(equipe_stock_CMG_min).set(1, stock_CMG1);
+		// calcule le 2e plus petit stock de CMG et l'indice du transfo associé 
+		double stock_CMG_min2=10000000.0;
+		int equipe_stock_CMG_min2=0;
+		for (int k=0; k<3; k++) {
+			if (stock_CMG_min2>=Stock.get(k).get(1) && stock_CMG_min<Stock.get(k).get(1)) {
+				stock_CMG_min2=Stock.get(k).get(1);
+				equipe_stock_CMG_min2=k;
+			}
+		}
+		// renvoie l'indice du transfo le moins chere pour le 2e plus petit stock
+		int indice_equipe_moins_chere_CMG2=0;
+		double prix_moins_chere_CMG2=100000000.0;
+		for (int i=0; i<3; i++) {
+			if (Prix.get(i).getPrixProduit((int) stock_CMG_min2-1, 2) <= prix_moins_chere_CMG2
+					&& i!=indice_equipe_moins_chere_CMG) {
+				indice_equipe_moins_chere_CMG2=i;
+				prix_moins_chere_CMG2=Prix.get(i).getPrixProduit((int)stock_CMG_min2-1,2);
+			}
+		}
+		int stock_CMG2;
+		if (equipe_stock_CMG_min2==indice_equipe_moins_chere_CMG2) {
+			stock_CMG2=(int) (0.8*stock_CMG_min2);
+		} else {
+			stock_CMG2=(int) (0.2*stock_CMG_min2);
+		}
+		commande.get(equipe_stock_CMG_min2).set(1, stock_CMG2+11712-stock_CMG1);
+
 		
 		return commande;
 	}
