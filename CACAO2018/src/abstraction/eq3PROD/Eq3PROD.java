@@ -375,9 +375,24 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.stockQM.setValeur(this, this.quantiteStockMoyen());
 			this.solde2.setValeur(this, this.solde);
 			
-			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy().getValeur());
-			this.getJournal().ajouter("Quantité haute qualité = "+ getStockQHaut().getValeur());
-			this.getJournal().ajouter("Solde = "+ getSolde2().getValeur());
+			this.getJournal().ajouter("> Step "+Monde.LE_MONDE.getStep()+" <");
+			this.getJournal().ajouter("Stocks & solde");
+			this.getJournal().ajouter("- Stock moyenne qualité : "+ getStockQMoy().getValeur());
+			this.getJournal().ajouter("- Stock haute qualité : "+ getStockQHaut().getValeur());
+			this.getJournal().ajouter("- Solde : "+ getSolde2().getValeur());
+			this.getJournal().ajouter(" ");
+			this.getJournal().ajouter("Maladies :");
+			if (foreur.getMaladieActive() == 0 && balai.getMaladieActive() == 0) {
+				this.getJournal().ajouter("- Les plantations sont saines");
+			} else {
+				if (foreur.getMaladieActive() > 0) {
+					this.getJournal().ajouter("- Invasion de foreurs des cabosses en Indonésie");
+				}
+				if (balai.getMaladieActive() > 0) {
+					this.getJournal().ajouter("- Epidémie du Balai de Sorcière en Amérique du Sud");
+				}
+			}
+			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
 			
 			//System.out.println(stockmoyen.toString());

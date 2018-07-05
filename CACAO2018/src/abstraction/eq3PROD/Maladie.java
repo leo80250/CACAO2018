@@ -22,6 +22,10 @@ public class Maladie {
 		this.maladieActive = 0;
 		this.nom = nom;
 	}
+	
+	public int getMaladieActive() {
+		return this.maladieActive;
+	}
 
 	public boolean declencherMaladie() {
 		return (this.maladieActive == 0 && Math.random() < this.probaD);
