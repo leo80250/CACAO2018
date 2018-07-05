@@ -3,8 +3,10 @@ package abstraction.eq4TRAN.DISTFictif;
 import java.util.ArrayList;
 
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
+import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq6DIST.IAcheteurChoco;
+import abstraction.eq6DIST.IAcheteurChocoBis;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Monde;
@@ -14,7 +16,7 @@ import abstraction.fourni.Monde;
  * @author Etienne
  *
  */
-public class DISTFictif implements Acteur, IAcheteurChoco{
+public class DISTFictif implements Acteur, IAcheteurChocoBis{
 	
 	public DISTFictif() {
 		Monde.LE_MONDE.ajouterActeur(this);
@@ -33,12 +35,17 @@ public class DISTFictif implements Acteur, IAcheteurChoco{
 	}
 
 	@Override
-	public ArrayList<GQte> getCommande(ArrayList<GPrix> gPrix, ArrayList<GQte> stock) {
-		// On commande 15% des stocks de chaque transformateur
-		GQte commande1 = new GQte((int)(stock.get(0).getqBonbonBQ()*0.15),(int)(stock.get(0).getqBonbonMQ()*0.15), (int)(stock.get(0).getqBonbonHQ()*0.15), (int)(stock.get(0).getqTabletteBQ()*0.15),(int)(stock.get(0).getqTabletteMQ()*0.15),(int)(stock.get(0).getqTabletteHQ()*0.15));
-		GQte commande2 = new GQte((int)(stock.get(1).getqBonbonBQ()*0.15),(int)(stock.get(1).getqBonbonMQ()*0.15), (int)(stock.get(1).getqBonbonHQ()*0.15), (int)(stock.get(1).getqTabletteBQ()*0.15),(int)(stock.get(1).getqTabletteMQ()*0.15),(int)(stock.get(1).getqTabletteHQ()*0.15));
-		GQte commande3 = new GQte((int)(stock.get(2).getqBonbonBQ()*0.15),(int)(stock.get(2).getqBonbonMQ()*0.15), (int)(stock.get(2).getqBonbonHQ()*0.15), (int)(stock.get(2).getqTabletteBQ()*0.15),(int)(stock.get(2).getqTabletteMQ()*0.15),(int)(stock.get(2).getqTabletteHQ()*0.15));
-		ArrayList<GQte> commande = new ArrayList<GQte>();
+	public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
+		ArrayList<ArrayList<Integer>> commande = new ArrayList<>(3);
+		ArrayList<Integer> commande1 = new ArrayList<>(Stock.get(0).size()); // en fait Stock.get(0).size()=6
+		ArrayList<Integer> commande2 = new ArrayList<>(Stock.get(0).size());
+		ArrayList<Integer> commande3 = new ArrayList<>(Stock.get(0).size());
+		for(int i=0;i<6;i++) {
+			// On achete 15% de la production de chaque transformateur
+			commande1.add(i, (int)0.15*Stock.get(0).get(i));
+			commande2.add(i, (int)0.15*Stock.get(1).get(i));
+			commande3.add(i, (int)0.15*Stock.get(2).get(i));
+		}
 		commande.add(commande1);
 		commande.add(commande2);
 		commande.add(commande3);
@@ -46,10 +53,9 @@ public class DISTFictif implements Acteur, IAcheteurChoco{
 	}
 
 	@Override
-	public void livraison(GQte livraison, double d) {
+	public void livraison(ArrayList<Integer> livraison, double paiement) {
 		// TODO Auto-generated method stub
-		// Inutile pour un acteur qui ne tient pas à jours ses stocks et a de l'argent illimité
+		
 	}
-	
 	
 }
