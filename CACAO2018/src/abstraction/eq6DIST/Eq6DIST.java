@@ -12,6 +12,7 @@ import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoBis;
 import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
@@ -123,10 +124,16 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		for(int i=0;i<6;i++) {
 			if(this.stock.get(i)<200) { //hypothèse stock minimal
 				DemandeAO d = new DemandeAO(500,i+1); //hypothèse achat à réaliser
-				//int p1 = Eq4TRAN.getReponseBis(d);
-				//int p2 = (Monde.LE_MONDE.getActeur("Eq5TRAN"))
-				//int p3 = Eq7TRAN.getReponseBis(d);
-				
+				ArrayList<Integer> prop = new ArrayList<Integer>();
+				for(Acteur acteur : Monde.LE_MONDE.getActeurs()) {
+					if(acteur instanceof IvendeurOccasionnelChocoBis) {
+						prop.add(((IvendeurOccasionnelChocoBis)acteur).getReponseBis(d));
+					}
+				}
+				int p=prop.get(0);
+				for(Integer j : prop) {
+					
+				}
 			}
 		}
 		
