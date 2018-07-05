@@ -49,6 +49,8 @@ public class ContratFeveV3 {
 		this.transformateur = transformateur;
 		this.qualite = qualite;
 
+		this.nomTamponProducteur=producteur;
+
 		this.quantiteOffrePublique = 0;
 		this.quantiteDemande = 0;
 		this.quantiteProposition = 0;
@@ -125,9 +127,9 @@ public class ContratFeveV3 {
 	}
 	public IVendeurFeveV4 getProducteur() {
 		if(!nomTamponProducteur.equals("")) {
-			nomTamponProducteur="";
 			producteur = (IVendeurFeveV4) Monde.LE_MONDE.getActeur(nomTamponProducteur);
-		}
+            nomTamponProducteur="";
+        }
 		return this.producteur;
 	}
 	public int getQualite() {
@@ -220,4 +222,12 @@ public class ContratFeveV3 {
 		}
 
 
-}}
+}
+	
+	public String toString2() {
+		return "[Transformateur : "+transformateur+" // producteur : "+producteur+ "// Qualite : "+qualite+
+				"// QuantiteOffrePublique : "+quantiteOffrePublique+" // Quantite demande : "+quantiteDemande+
+				" // QuantiteProposition : "+quantiteProposition+
+				" PrixOffrePublique : "+prixOffrePublique+ " PrixDemande : "+prixDemande+ " // PrixProposition : "+prixProposition+"]";
+		}
+	}

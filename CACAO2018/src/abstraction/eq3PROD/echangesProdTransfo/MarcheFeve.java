@@ -204,10 +204,10 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		 }
 		 /*System.out.println(" contrats actuels 2:");
 		 for (ContratFeveV3 c : contratActuel) {
-			 System.out.println(c);
+			 c.toString2();
 		 }
 		 System.out.println("------");
-		 
+		 /*
 		 this.getJournal().ajouter("Demandes privee en cours : "+contratActuel.toString());
 		*/	
 		 
