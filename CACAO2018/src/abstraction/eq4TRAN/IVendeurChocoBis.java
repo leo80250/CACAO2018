@@ -38,7 +38,7 @@ public interface IVendeurChocoBis {
 	 * l'équipe Eq1DIST, en deuxième Eq6DIST puis en troisième DISTFictif).
 	 * A partir de ces commandes, le transformateur décide de ce qu'il livre effectivement à chaque distributeur.
 	 * Chacune des 3 livraisons devra respecter le format décrit dans l'en-tête de la méthode getStock(), puis le 
-	 * transformateur renvoie les 3 livraisons concaténées dans une liste, en suivant le format décrit ci-dessus.
+	 * transformateur renvoie autant de livraisons que de distriuteurs présents concaténées dans une liste, en suivant le format décrit ci-dessus.
 	 */
 	
 	public ArrayList<ArrayList<Integer>> getLivraison(ArrayList<ArrayList<Integer>> commandes);
