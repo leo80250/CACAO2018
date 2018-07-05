@@ -68,7 +68,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		this.marge_TBQ=new Indicateur("Marge sur tablettes BQ Eq6 :",this);
 		this.marge_TMQ=new Indicateur("Marge sur tablettes MQ Eq6 :",this);
 		this.marge_THQ=new Indicateur("Marge sur tablettes HQ Eq6 :",this);
-		this.prix= new ArrayList<Double>();this.prix.add(0.0);this.prix.add(0.0);this.prix.add(0.0);this.prix.add(0.0);this.prix.add(0.0);this.prix.add(0.0);
+		this.prix= new ArrayList<Double>();this.prix.add(0.0);this.prix.add(1.931666667);this.prix.add(0.0);this.prix.add(0.9942857143);this.prix.add(2.145);this.prix.add(0.0);
 
 		Monde.LE_MONDE.ajouterIndicateur(this.banque);
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_BBQ);
@@ -397,9 +397,9 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 	public void modifPrix(GrilleQuantite Q) {
 		double p=0.2; //pourcentage de marge
 		ArrayList<Double> prixMax= new ArrayList<Double>();
-		prixMax.add(2.2); prixMax.add(2.2); prixMax.add(2.2); prixMax.add(2.2); prixMax.add(2.2); prixMax.add(2.2);
+		prixMax.add(0.0); prixMax.add(2.66); prixMax.add(0.0); prixMax.add(1.3); prixMax.add(3.08); prixMax.add(0.0);
 		ArrayList<Double> prixMin= new ArrayList<Double>();
-		prixMin.add(1.5); prixMin.add(1.5); prixMin.add(1.5); prixMin.add(1.5); prixMin.add(1.5); prixMin.add(1.5);
+		prixMin.add(0.0); prixMin.add(1.33); prixMin.add(0.0); prixMin.add(0.51); prixMin.add(1.7); prixMin.add(0.0);
 		double Nmarge= 0; //nouvelle marge
 		double margeUnitaire=0; //marge sur une tablette
 		
