@@ -60,27 +60,42 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		this.contratActuel = new ArrayList<ContratFeveV3>();
 		this.nom = nom;
 		this.listVendeurs =new ArrayList<>();
-		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
-		//System.out.println(this.toStringListeActeur(listActeurs));;
-		for (Acteur a : listActeurs) {
-			if (a instanceof IVendeurFeveV4) {
-				listVendeurs.add((IVendeurFeveV4) a);
-				//System.out.println(listVendeurs);
-			}
-		}
 		this.listAcheteurs = new ArrayList<IAcheteurFeveV4>(); 
-		for (Acteur a : listActeurs) {
-			if (a instanceof IAcheteurFeveV4) {
-				listAcheteurs.add((IAcheteurFeveV4) a);
-				}
-		}
-			
-		
 		setNom("Marche");
 		
 		setJournal(new Journal("Journal du Marche"));
 		Monde.LE_MONDE.ajouterJournal(getJournal());
 	}
+	
+	public void setListVendeurs(List<IVendeurFeveV4> listVendeur){
+		this.listVendeurs=listVendeur;	
+	}
+	
+	public void setListAcheteurs(List<IAcheteurFeveV4> listAcheteurs) {
+		this.listAcheteurs=listAcheteurs;
+	}
+	
+	public void listVendeur() {
+		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
+		this.setListVendeurs(new ArrayList<IVendeurFeveV4>());
+		for (Acteur a : listActeurs) {
+			if (a instanceof IVendeurFeveV4) {
+				listVendeurs.add((IVendeurFeveV4) a);
+				}
+		}
+		
+	}
+	
+	public void listAcheteur(){
+		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
+		this.setListAcheteurs(new ArrayList<IAcheteurFeveV4>()); 
+		for (Acteur a : listActeurs) {
+			if (a instanceof IAcheteurFeveV4) {
+				listAcheteurs.add((IAcheteurFeveV4) a);
+				}
+		}
+	}
+
 	
 
 	
@@ -134,6 +149,10 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 
 	@Override
 	public void next() {
+		
+		//ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
+		this.listAcheteur();
+		this.listVendeur();
 		
 		this.getJournal().ajouter("Producteurs presents : "+ this.Producteurs());
 		this.getJournal().ajouter("Acheteurs presents : "+this.Acheteurs());

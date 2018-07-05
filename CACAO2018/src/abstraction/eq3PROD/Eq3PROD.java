@@ -135,6 +135,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		this.stockfin = new ArrayList<List<Integer>>();
 		this.ajouterStockMoyen(75000);
 		this.ajouterStockFin(24000);
+		this.listeContrats=new ArrayList<ContratFeveV3>();
 		
 		this.nom = "Eq3PROD";
 		
