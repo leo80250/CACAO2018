@@ -54,8 +54,8 @@ IVendeurPoudre {
 		this.JournalEq4 = JournalEq4;
 		this.solde = new Indicateur("solde", this,solde);
 		for(int l=2;l<=6;l++) {
-			this.Stocks.set(l-1,new Indicateur("stockProduit"+l,this,Stocks.get(l-1).getValeur()));
-			this.Production.set(l-1,new Indicateur("prodProduit"+l,this,Production.get(l-1).getValeur()));
+			this.Stocks.add(new Indicateur("stockProduit"+l,this,Stocks.get(l-1).getValeur()));
+			this.Production.add(new Indicateur("prodProduit"+l,this,Production.get(l-1).getValeur()));
 		}
 		this.taillePME = taillePME ;	
 		this.label=label;

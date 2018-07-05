@@ -70,12 +70,12 @@ public class Eq4TRAN implements Acteur {
 		 */
 		
 		// StocksSA pour Stocks Sous-Acteurs etc..
-		ArrayList<Indicateur> StocksSA = new ArrayList<>();
-		ArrayList<Indicateur> ProductionSA = new ArrayList<>();
+		ArrayList<Indicateur> StocksSA = new ArrayList<>(6);
+		ArrayList<Indicateur> ProductionSA = new ArrayList<>(6);
 		int soldeSA=1000;
-		for(int i=0;i<10;i++) {
-			StocksSA.set(i, new Indicateur("stockProduit"+(i+1),this,1000));
-			ProductionSA.set(i, new Indicateur("stockProduit"+(i+1),this,1000));
+		for(int i=0;i<6;i++) {
+			StocksSA.add(new Indicateur("stockProduit"+(i+1),this,1000));
+			ProductionSA.add(new Indicateur("productionProduit"+(i+1),this,1000));
 		}
 		
 		/**
