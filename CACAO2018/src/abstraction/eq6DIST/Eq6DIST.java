@@ -16,7 +16,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
  
-public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeurClient {
+public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeurClient, IvendeurOccasionnelChoco {
 	private Indicateur stock_BBQ;
 	private Indicateur stock_BMQ;
 	private Indicateur stock_BHQ;
@@ -119,7 +119,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 
 
 		/** 
-		 * Karel Kédémos
+		 * Karel Kédémos et Victor Signes
 		 */
 		journalEq6.ajouter("quantité bonbon basse qualité = " + Integer.toString(this.stock.get(0)));
 		journalEq6.ajouter("quantité bonbon moyenne qualité = " + Integer.toString(this.stock.get(1)));
@@ -127,7 +127,19 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		journalEq6.ajouter("quantité tablette basse qualité = " + Integer.toString(this.stock.get(3)));
 		journalEq6.ajouter("quantité tablette moyenne qualité = " + Integer.toString(this.stock.get(4)));
 		journalEq6.ajouter("quantité tablette haute qualité = " + Integer.toString(this.stock.get(5)));
- 
+		journalEq6.ajouter("prix bonbon basse qualité = " + Double.toString(this.prix.get(0)));
+		journalEq6.ajouter("prix bonbon moyenne qualité = " + Double.toString(this.prix.get(1)));
+		journalEq6.ajouter("prix bonbon haute qualité = " + Double.toString(this.prix.get(2)));
+		journalEq6.ajouter("prix tablette basse qualité = " + Double.toString(this.prix.get(3)));
+		journalEq6.ajouter("prix tablette moyenne qualité = " + Double.toString(this.prix.get(4)));
+		journalEq6.ajouter("prix tablette haute qualité = " + Double.toString(this.prix.get(5)));
+		journalEq6.ajouter("marge sur bonbons basse qualité = " + Double.toString(this.marge.get(0)));
+		journalEq6.ajouter("marge sur bonbons moyenne qualité = " + Double.toString(this.marge.get(1)));
+		journalEq6.ajouter("marge sur bonbons haute qualité = " + Double.toString(this.marge.get(2)));
+		journalEq6.ajouter("marge sur tablettes basse qualité = " + Double.toString(this.marge.get(3)));
+		journalEq6.ajouter("marge sur tablettes moyenne qualité = " + Double.toString(this.marge.get(4)));
+		journalEq6.ajouter("marge sur tablettes haute qualité = " + Double.toString(this.marge.get(5)));
+
 	}
 	
 	
@@ -270,6 +282,19 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			this.marge.set(i, Nmarge);
 		}
 	}
+	@Override
+	public double getReponse(DemandeAO d) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void envoyerReponse(double quantite, int qualite, int prix) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
 	
 	
 	
