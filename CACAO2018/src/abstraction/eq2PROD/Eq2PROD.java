@@ -10,7 +10,7 @@ import java.util.List;
 import abstraction.eq2PROD.acheteurFictifTRAN.acheteurFictifTRAN;
 import abstraction.eq2PROD.echangeProd.*;
 
-public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, IVendeurFeve, IVendeurFeveV4 {
+public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 // VARIABLES D'INSTANCE 
 	private int stockQM;
 	private int stockQB;
@@ -412,20 +412,6 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		razTotalVenteQM();
 	}
 
-	
-// VERSION 1
-	public ContratFeve[] getOffrePublique() {
-		ContratFeve[] c= {};
-		return c;
-	}
-	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
-	}
-	public ContratFeve[] getOffreFinale() {
-		ContratFeve[] c= {};
-		return c;
-	}
-	public void sendResultVentes(ContratFeve[] resultVentes) {
-	}
 
 // VERSION 4
 	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
