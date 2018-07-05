@@ -18,11 +18,11 @@ public class Vendeur implements IVendeurChocoBis{
 	 * classe implémentant les méthodes nécessaires à l'interface IVendeurChoco
 	 */
 	
-	public static double COMMERCE_EQUITABLE;
-	public static double PRODUCTEUR_LOCAL;
-	public static double BIO;
-	public static double LUXE;
-	public static double ARTISANAL;
+	public static double COMMERCE_EQUITABLE=1.27;
+	public static double PRODUCTEUR_LOCAL=1.96;
+	public static double BIO=1.78;
+	public static double LUXE=1.53;
+	public static double ARTISANAL=3.78;
 	
 	private ArrayList<Integer> stocks;
 	public Journal ventes = new Journal("Eq4 - Ventes");
