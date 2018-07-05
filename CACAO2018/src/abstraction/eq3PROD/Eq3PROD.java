@@ -30,7 +30,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private String nomEq;
 	private Indicateur stockQM=new Indicateur ("Stock de Eq3PROD de moyenne qualité", this, 75000);
 	private Indicateur stockQH=new Indicateur ("Stock de Eq3PROD de haute qualité", this, 24000);
-	private Indicateur solde2 = new Indicateur ("Solde de Eq3PROD", this, 0) ; 
+	private Indicateur solde2 = new Indicateur ("Solde de Eq3PROD", this, 4000000) ; 
 	
 	private Maladie foreur;
 	private Maladie balai;
@@ -387,7 +387,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			
 			this.stockQH.setValeur(this,this.quantiteStockFin());
 			this.stockQM.setValeur(this, this.quantiteStockMoyen());
-			this.solde2.setValeur(this, this.solde);
+			this.solde2.setValeur(this, 400000000+this.solde);
 			
 			this.getJournal().ajouter("> Step "+Monde.LE_MONDE.getStep()+" <");
 			this.getJournal().ajouter("Stocks & solde :");
