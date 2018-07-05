@@ -16,7 +16,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
  
-public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeurClient, IvendeurOccasionnelChoco {
+public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeurClient{
 	private Indicateur stock_BBQ;
 	private Indicateur stock_BMQ;
 	private Indicateur stock_BHQ;
@@ -282,16 +282,8 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			this.marge.set(i, Nmarge);
 		}
 	}
-	@Override
-	public double getReponse(DemandeAO d) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public void envoyerReponse(double quantite, int qualite, int prix) {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
 	
 	
 	
