@@ -581,6 +581,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         this.depenser(-prix);
         this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * (200 / 10000000));
     }
+    
+    
 
 
 } 	  				 	 	   			 	
