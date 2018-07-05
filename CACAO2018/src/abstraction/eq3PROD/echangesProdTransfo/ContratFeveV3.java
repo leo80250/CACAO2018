@@ -127,9 +127,9 @@ public class ContratFeveV3 {
 	}
 	public IVendeurFeveV4 getProducteur() {
 		if(!nomTamponProducteur.equals("")) {
-			nomTamponProducteur="";
 			producteur = (IVendeurFeveV4) Monde.LE_MONDE.getActeur(nomTamponProducteur);
-		}
+            nomTamponProducteur="";
+        }
 		return this.producteur;
 	}
 	public int getQualite() {
