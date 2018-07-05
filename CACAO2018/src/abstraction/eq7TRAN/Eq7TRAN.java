@@ -867,7 +867,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		//productionAttendue -= (int)this.getStockTablettes(qualite).getValeur();
 		this.setProductionTablettesAttendue((int)(productionAttendue*(1+MOY_STOCK_TABLETTES_SUR_ENSEMBLE_COMMANDES)), qualite);
 	}
-	
+	 
 	public void calculateProductionTablettesReelle(int qualite) {
 		double productionPossible = this.getStockFeves(qualite).getValeur()*(2-this.TAUX_TRANSFORMATION_FEVES_TABLETTES[qualite])*getTauxProductionTablettesPoudre()[1]*getEfficacite().getValeur(); 
 			this.getProductionTablettesReelle()[qualite].setValeur(this,productionPossible);
