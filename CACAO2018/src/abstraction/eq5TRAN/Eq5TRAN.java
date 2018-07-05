@@ -502,13 +502,13 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             int qualite = c.getQualite();
             if (vendeur.equals("Eq2PROD") && qualite == 0) {
                 contratFeveBQEq2.setProposition_Quantite(c.getProposition_Quantite());
-                contratFeveBQEq2.setProposition_Prix(c.getProposition_Prix());
+                contratFeveBQEq2.setProposition_Prix(this.prixActualiseFeveBQ());
             } else if (vendeur.equals("Eq2PROD") && qualite == 1) {
                 contratFeveMQEq2.setProposition_Quantite(c.getProposition_Quantite());
-                contratFeveMQEq2.setProposition_Prix(c.getProposition_Prix());
+                contratFeveMQEq2.setProposition_Prix(this.prixActualiseFeveMQ());
             } else if (vendeur.equals("Eq3PROD") && qualite == 1) {
                 contratFeveMQEq3.setProposition_Quantite(c.getProposition_Quantite());
-                contratFeveMQEq3.setDemande_Prix(c.getProposition_Prix());
+                contratFeveMQEq3.setDemande_Prix(this.prixActualiseFeveMQ());
             }
 
         }
