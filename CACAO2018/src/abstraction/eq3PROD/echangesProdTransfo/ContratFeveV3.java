@@ -220,4 +220,12 @@ public class ContratFeveV3 {
 		}
 
 
-}}
+}
+	
+	public String toString2() {
+		return "[Transformateur : "+transformateur+" // producteur : "+producteur+ "// Qualite : "+qualite+
+				"// QuantiteOffrePublique : "+quantiteOffrePublique+" // Quantite demande : "+quantiteDemande+
+				" // QuantiteProposition : "+quantiteProposition+
+				" PrixOffrePublique : "+prixOffrePublique+ " PrixDemande : "+prixDemande+ " // PrixProposition : "+prixProposition+"]";
+		}
+	}
