@@ -2,7 +2,9 @@ package abstraction.eq6DIST;
 
 import java.util.ArrayList;
 
+import abstraction.eq1DIST.GrilleQuantite;
 import abstraction.eq1DIST.IVenteConso;
+import abstraction.eq1DIST.InterfaceDistributeurClient;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
@@ -14,7 +16,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
  
-public class Eq6DIST implements Acteur, IAcheteurChocoBis {
+public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeurClient, IvendeurOccasionnelChoco {
 	private Indicateur stock_BBQ;
 	private Indicateur stock_BMQ;
 	private Indicateur stock_BHQ;
@@ -22,19 +24,48 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 	private Indicateur stock_TMQ;
 	private Indicateur stock_THQ;
 	private Indicateur banque;
+	private Indicateur prix_BBQ;
+	private Indicateur prix_BMQ;
+	private Indicateur prix_BHQ;
+	private Indicateur prix_TBQ;
+	private Indicateur prix_TMQ;
+	private Indicateur prix_THQ;
+	private Indicateur marge_BBQ;
+	private Indicateur marge_BMQ;
+	private Indicateur marge_BHQ;
+	private Indicateur marge_TBQ;
+	private Indicateur marge_TMQ;
+	private Indicateur marge_THQ;
+	private ArrayList<Double> marge;
 	private ArrayList<Integer> stock;
+	private ArrayList<Double> prix;
 	private Journal journalEq6;
 	public Eq6DIST() {
 		//MarcheChoco MC = new MarcheChoco();
 		//Monde.LE_MONDE.ajouterActeur(MC);
 		this.banque= new Indicateur("Solde bancaire Eq6 : ",this, 120000);
 		this.stock= new ArrayList<Integer>();this.stock.add(0);	this.stock.add(0);this.stock.add(0);this.stock.add(0);this.stock.add(0);this.stock.add(0);
+		this.marge= new ArrayList<Double>();this.marge.add(0.0);	this.marge.add(0.0);this.marge.add(0.0);this.marge.add(0.0);this.marge.add(0.0);this.marge.add(0.0);
 		this.stock_BBQ= new Indicateur("Stock de bonbons BQ Eq6 :",this);
 		this.stock_BMQ=new Indicateur("Stock de bonbons MQ Eq6 :",this);
 		this.stock_BHQ=new Indicateur("Stock de bonbons HQ Eq6 :",this);
 		this.stock_TBQ=new Indicateur("Stock de tablettes BQ Eq6 :",this);
 		this.stock_TMQ=new Indicateur("Stock de tablettes MQ Eq6 :",this);
 		this.stock_THQ=new Indicateur("Stock de tablettes HQ Eq6 :",this);
+		this.prix_BBQ=new Indicateur("Prix de bonbons BQ Eq6 :",this);
+		this.prix_BMQ=new Indicateur("Prix de bonbons MQ Eq6 :",this);
+		this.prix_BHQ=new Indicateur("Prix de bonbons HQ Eq6 :",this);
+		this.prix_TBQ=new Indicateur("Prix de tablettes BQ Eq6 :",this);
+		this.prix_TMQ=new Indicateur("Prix de tablettes MQ Eq6 :",this);
+		this.prix_THQ=new Indicateur("Prix de tablettes BQ Eq6 :",this);
+		this.marge_BBQ= new Indicateur("Marge sur bonbons BQ Eq6 :",this);
+		this.marge_BMQ=new Indicateur("Marge sur bonbons MQ Eq6 :",this);
+		this.marge_BHQ=new Indicateur("Marge sur bonbons HQ Eq6 :",this);
+		this.marge_TBQ=new Indicateur("Marge sur tablettes BQ Eq6 :",this);
+		this.marge_TMQ=new Indicateur("Marge sur tablettes MQ Eq6 :",this);
+		this.marge_THQ=new Indicateur("Marge sur tablettes HQ Eq6 :",this);
+		this.prix= new ArrayList<Double>();this.prix.add(0.0);this.prix.add(0.0);this.prix.add(0.0);this.prix.add(0.0);this.prix.add(0.0);this.prix.add(0.0);
+
 		Monde.LE_MONDE.ajouterIndicateur(this.banque);
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_BBQ);
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_BMQ);
@@ -42,6 +73,19 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_TBQ);
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_TMQ);
 		Monde.LE_MONDE.ajouterIndicateur(this.stock_THQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.prix_BBQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.prix_BMQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.prix_BHQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.prix_TBQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.prix_TMQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.prix_THQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.marge_BBQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.marge_BMQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.marge_BHQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.marge_TBQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.marge_TMQ);
+		Monde.LE_MONDE.ajouterIndicateur(this.marge_THQ);
+
 		this.journalEq6= new Journal("Journal Equipe 6");
 		Monde.LE_MONDE.ajouterJournal(journalEq6);
 	}
@@ -60,8 +104,22 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		this.stock_TBQ.setValeur(this, this.stock.get(3));
 		this.stock_TMQ.setValeur(this, this.stock.get(4));
 		this.stock_THQ.setValeur(this, this.stock.get(5));
+		this.prix_BBQ.setValeur(this, this.prix.get(0));
+		this.prix_BMQ.setValeur(this, this.prix.get(1));
+		this.prix_BHQ.setValeur(this, this.prix.get(2));
+		this.prix_TBQ.setValeur(this, this.prix.get(3));
+		this.prix_TMQ.setValeur(this, this.prix.get(4));
+		this.prix_THQ.setValeur(this, this.prix.get(5));
+		this.marge_BBQ.setValeur(this, this.marge.get(0));
+		this.marge_BMQ.setValeur(this, this.marge.get(1));
+		this.marge_BHQ.setValeur(this, this.marge.get(2));
+		this.marge_TBQ.setValeur(this, this.marge.get(3));
+		this.marge_TMQ.setValeur(this, this.marge.get(4));
+		this.marge_THQ.setValeur(this, this.marge.get(5));
+
+
 		/** 
-		 * Karel Kédémos
+		 * Karel Kédémos et Victor Signes
 		 */
 		journalEq6.ajouter("quantité bonbon basse qualité = " + Integer.toString(this.stock.get(0)));
 		journalEq6.ajouter("quantité bonbon moyenne qualité = " + Integer.toString(this.stock.get(1)));
@@ -69,7 +127,19 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		journalEq6.ajouter("quantité tablette basse qualité = " + Integer.toString(this.stock.get(3)));
 		journalEq6.ajouter("quantité tablette moyenne qualité = " + Integer.toString(this.stock.get(4)));
 		journalEq6.ajouter("quantité tablette haute qualité = " + Integer.toString(this.stock.get(5)));
- 
+		journalEq6.ajouter("prix bonbon basse qualité = " + Double.toString(this.prix.get(0)));
+		journalEq6.ajouter("prix bonbon moyenne qualité = " + Double.toString(this.prix.get(1)));
+		journalEq6.ajouter("prix bonbon haute qualité = " + Double.toString(this.prix.get(2)));
+		journalEq6.ajouter("prix tablette basse qualité = " + Double.toString(this.prix.get(3)));
+		journalEq6.ajouter("prix tablette moyenne qualité = " + Double.toString(this.prix.get(4)));
+		journalEq6.ajouter("prix tablette haute qualité = " + Double.toString(this.prix.get(5)));
+		journalEq6.ajouter("marge sur bonbons basse qualité = " + Double.toString(this.marge.get(0)));
+		journalEq6.ajouter("marge sur bonbons moyenne qualité = " + Double.toString(this.marge.get(1)));
+		journalEq6.ajouter("marge sur bonbons haute qualité = " + Double.toString(this.marge.get(2)));
+		journalEq6.ajouter("marge sur tablettes basse qualité = " + Double.toString(this.marge.get(3)));
+		journalEq6.ajouter("marge sur tablettes moyenne qualité = " + Double.toString(this.marge.get(4)));
+		journalEq6.ajouter("marge sur tablettes haute qualité = " + Double.toString(this.marge.get(5)));
+
 	}
 	
 	
@@ -93,15 +163,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		 * Karel Kédémos
 		 */
 		
-		int quantité_demandée_transfo5_CMG=0;
-		int quantité_demandée_transfo5_TBG=0;
-		int quantité_demandée_transfo5_TMG=3000;
-		int quantité_demandée_transfo7_CMG=24650;
-	 	int quantité_demandée_transfo7_TBG=4000;
-		int quantité_demandée_transfo7_TMG=48000;
-		int quantité_demandée_transfo4_CMG=5800;
-		int quantité_demandée_transfo4_TBG=200;
-		int quantité_demandée_transfo4_TMG=6750;	
+	
 		int nombre_transfo=Prix.size();
 		ArrayList<ArrayList<Integer>> commande = new ArrayList<ArrayList<Integer>>();
 		for (int i=0;i<nombre_transfo;i++) {
@@ -280,6 +342,57 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis {
 		
 	}
 	
-  
+
+	// Victor Signes
+	@Override
+	public GrilleQuantite commander(GrilleQuantite Q) {
+		int[][] res = new int[1][6];
+		for (int i=0;i<6;i++) {
+			int c = this.stock.get(i) - Q.getValeur(1, i);
+			if (c>=0) {
+				res[1][i]=(Q.getValeur(1, i));
+			}else {
+				res[1][i]=(this.stock.get(i));
+			}
+			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i)*res[1][i]);		
+		}
+		
+		return new GrilleQuantite(res);
+	}
+	
+	//Victor Signes
+	
+	public void modifPrix(GrilleQuantite Q) {
+		double p=0.2; //pourcentage de marge
+		ArrayList<Double> prixMax= new ArrayList<Double>();
+		prixMax.add(2.2); prixMax.add(2.2); prixMax.add(2.2); prixMax.add(2.2); prixMax.add(2.2); prixMax.add(2.2);
+		ArrayList<Double> prixMin= new ArrayList<Double>();
+		prixMin.add(1.5); prixMin.add(1.5); prixMin.add(1.5); prixMin.add(1.5); prixMin.add(1.5); prixMin.add(1.5);
+		double Nmarge= 0; //nouvelle marge
+		double margeUnitaire=0; //marge sur une tablette
+		
+		for (int i=0;i<6;i++) {  //on calcule la marge pour chaque type de chocolat
+			
+			Nmarge=this.prix.get(i)*Q.getValeur(1, i)*p;
+			margeUnitaire=this.prix.get(i)*p;
+			if(Nmarge<this.marge.get(i) && (this.prix.get(i)+margeUnitaire)<=prixMax.get(i)) {
+				this.prix.set(i, this.prix.get(i)+margeUnitaire); //on définit le nouveau prix
+			}
+			if(Nmarge>this.marge.get(i) && (this.prix.get(i)-margeUnitaire)>=prixMin.get(i)) {
+				this.prix.set(i, this.prix.get(i)-margeUnitaire); //on définit le nouveau prix
+			}
+			this.marge.set(i, Nmarge);
+		}
+	}
+	@Override
+	public double getReponse(DemandeAO d) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void envoyerReponse(double quantite, int qualite, int prix) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
