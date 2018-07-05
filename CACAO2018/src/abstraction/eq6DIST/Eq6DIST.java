@@ -5,18 +5,21 @@ import java.util.ArrayList;
 import abstraction.eq1DIST.GrilleQuantite;
 import abstraction.eq1DIST.IVenteConso;
 import abstraction.eq1DIST.InterfaceDistributeurClient;
+import abstraction.eq4TRAN.Eq4TRAN;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
+import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
+import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
  
-public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeurClient, IvendeurOccasionnelChoco {
+public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeurClient{
 	private Indicateur stock_BBQ;
 	private Indicateur stock_BMQ;
 	private Indicateur stock_BHQ;
@@ -116,6 +119,17 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		this.marge_TBQ.setValeur(this, this.marge.get(3));
 		this.marge_TMQ.setValeur(this, this.marge.get(4));
 		this.marge_THQ.setValeur(this, this.marge.get(5));
+		
+		for(int i=0;i<6;i++) {
+			if(this.stock.get(i)<200) { //hypothèse stock minimal
+				DemandeAO d = new DemandeAO(500,i+1); //hypothèse achat à réaliser
+				//int p1 = Eq4TRAN.getReponseBis(d);
+				//int p2 = (Monde.LE_MONDE.getActeur("Eq5TRAN"))
+				//int p3 = Eq7TRAN.getReponseBis(d);
+				
+			}
+		}
+		
 
 
 		/** 
@@ -384,15 +398,5 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			this.marge.set(i, Nmarge);
 		}
 	}
-	@Override
-	public double getReponse(DemandeAO d) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	@Override
-	public void envoyerReponse(double quantite, int qualite, int prix) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+
 }
