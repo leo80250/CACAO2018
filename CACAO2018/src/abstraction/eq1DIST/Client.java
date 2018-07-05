@@ -221,13 +221,8 @@ public class Client implements Acteur {
 		DemandeConfMdG.setValeur(this, cm[4] + cas[4] + autre[4] + 0.0);
 		DemandeConfHdG.setValeur(this, cm[5] + cas[5] + autre[5] + 0.0);
 		
-		System.out.println("taille"+Distributeurs.size());
-		
-		ArrayList<InterfaceDistributeurClient> DistributeursOrdonnee = new ArrayList<InterfaceDistributeurClient>(Distributeurs.size());
-
-		for (int i = 0; i < DistributeursOrdonnee.size(); i++) {
+		for (int i = 0; i < Distributeurs.size(); i++) {
 			if (Distributeurs.get(i).getNom() == "Eq6DIST") {
-				DistributeursOrdonnee.set(0, Distributeurs.get(i));
 				this.journal.ajouter("");
 				this.journal.ajouter("• Les Mousquetaires •");
 				this.journal.ajouter("");
@@ -242,7 +237,7 @@ public class Client implements Acteur {
 
 				for (int j = 0; j <= 5; j++) {
 					this.ChangementPartdeMarche(0, j, CommandeMousquetaire, ReponseMousquetaire, Mousquetaire,
-							DistributeursOrdonnee);
+							Distributeurs);
 				}
 
 				this.journal.ajouter("- Les parts de marché des magasins Mousquetaire sont désormais : "
@@ -252,7 +247,6 @@ public class Client implements Acteur {
 						+ "% sur les Confiseries MG ; " + this.getValeur(0, 5) + "% sur les Confiseries HG.");
 				this.journal.ajouter("");
 			} else if (Distributeurs.get(i).getNom() == "Eq1DIST") {
-				DistributeursOrdonnee.set(1, Distributeurs.get(i));
 				this.journal.ajouter("");
 				this.journal.ajouter("• Casino •");
 				this.journal.ajouter("");
@@ -266,7 +260,7 @@ public class Client implements Acteur {
 				this.journal.ajouter("");
 
 				for (int j = 0; j <= 5; j++) {
-					this.ChangementPartdeMarche(1, j, CommandeCasino, ReponseCasino, Casino, DistributeursOrdonnee);
+					this.ChangementPartdeMarche(1, j, CommandeCasino, ReponseCasino, Casino, Distributeurs);
 				}
 
 				this.journal.ajouter("- Les parts de marché des magasins Casino sont désormais : "
@@ -276,7 +270,6 @@ public class Client implements Acteur {
 						+ "% sur les Confiseries MG ; " + this.getValeur(1, 5) + "% sur les Confiseries HG.");
 				this.journal.ajouter("");
 			} else {
-				DistributeursOrdonnee.set(2, Distributeurs.get(i));
 				GrilleQuantite CommandeAutre = new GrilleQuantite(autre);
 				this.journal.ajouter("• Autres distributeurs •");
 				this.journal.ajouter("");
@@ -290,7 +283,7 @@ public class Client implements Acteur {
 				this.journal.ajouter("");
 
 				for (int j = 0; j <= 5; j++) {
-					this.ChangementPartdeMarche(2, j, CommandeAutre, ReponseAutre, Autre, DistributeursOrdonnee);
+					this.ChangementPartdeMarche(2, j, CommandeAutre, ReponseAutre, Autre, Distributeurs);
 				}
 
 				this.journal.ajouter("Les parts de marché des autres magasins sont désormais : " + this.getValeur(2, 0)
