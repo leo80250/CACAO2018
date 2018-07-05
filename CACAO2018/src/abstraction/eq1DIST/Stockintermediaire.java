@@ -13,8 +13,22 @@ public class Stockintermediaire {
 		}
 	}
 	
+	public Stockintermediaire (int a) {
+		List<Lot> liste = new ArrayList<Lot>();
+		liste.add(new Lot(a,Type.TB));
+		this.stocki=liste;
+	}
+	
 	public void ajouter(Lot l) {
 		this.stocki.add(l);
+	}
+	
+	public int total() {
+		int res=0;
+		for(int i=0; i<this.stocki.size();i++) {
+			res = res+this.stocki.get(i).getQuantite();
+		}
+		return res;
 	}
 	
 	public void retirer(Lot l) {
