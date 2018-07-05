@@ -12,7 +12,7 @@ import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoBis;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
@@ -127,23 +127,23 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		for(int i=0;i<6;i++) {
 			if(this.stock.get(i)<200) { //hypothèse stock minimal
 				DemandeAO d = new DemandeAO(500,i+1); //hypothèse achat à réaliser
-				ArrayList<Integer> prop = new ArrayList<Integer>();
+				ArrayList<Double> prop = new ArrayList<Double>();
 				ArrayList<Acteur> acteurs = new ArrayList<Acteur>();
 				for(Acteur acteur : Monde.LE_MONDE.getActeurs()) {
-					if(acteur instanceof IvendeurOccasionnelChocoBis) {
-						prop.add(((IvendeurOccasionnelChocoBis)acteur).getReponseBis(d));
+					if(acteur instanceof IvendeurOccasionnelChocoTer) {
+						prop.add(((IvendeurOccasionnelChocoTer)acteur).getReponseTer(d));
 						acteurs.add(acteur);
 					}
 				}
-				int p=prop.get(0);
+				double p=prop.get(0);
 				Acteur a=acteurs.get(0);
-				for(Integer j : prop) {
+				for(Double j : prop) {
 					 if(prop.get(i)<p) {
 						 p=prop.get(i); //on choisit la proposition avec le prix minimum
 						 a=acteurs.get(i);
 					 }
 				}
-				((IvendeurOccasionnelChocoBis)a).envoyerReponseBis(d.getQuantite(), d.getQualite(), p);
+				//((IvendeurOccasionnelChocoTer)a).envoyerReponseTer(this, d.getQuantite(), d.getQualite(), p);
 				
 			}
 		}
