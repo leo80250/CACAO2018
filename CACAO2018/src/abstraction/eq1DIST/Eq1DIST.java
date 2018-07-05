@@ -202,7 +202,7 @@ public Eq1DIST()  {
 	@Override
 	public double[] getPrix() {
 		// TODO Auto-generated method stub
-		return new double[] {Double.MAX_VALUE,this.PrixChocoMdG.getValeur(),this.PrixChocoHdG.getValeur(),
-				Double.MAX_VALUE,this.PrixConfMdG.getValeur(),this.PrixConfHdG.getValeur()};
+		return new double[] {0,this.PrixChocoMdG.getValeur(),this.PrixChocoHdG.getValeur(),
+				0,this.PrixConfMdG.getValeur(),this.PrixConfHdG.getValeur()};
 	}
 }
