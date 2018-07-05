@@ -17,7 +17,7 @@ import java.util.Observable;
  */
 public class Journal  extends Observable{
 	private String nom;            // le nom du journal
-	private ArrayList<String>liste;// la liste des messages deposes sur le journal
+	private ArrayList<String> liste;// la liste des messages deposes sur le journal
 
 	/**
 	 * Initialise le journal avec le nom nom et une liste de messages vide   

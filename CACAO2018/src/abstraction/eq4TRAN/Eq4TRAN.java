@@ -80,12 +80,12 @@ IvendeurOccasionnelChocoBis, Labellise{
 		 */
 		
 		// StocksSA pour Stocks Sous-Acteurs etc..
-		ArrayList<Indicateur> StocksSA = new ArrayList<>();
-		ArrayList<Indicateur> ProductionSA = new ArrayList<>();
+		ArrayList<Indicateur> StocksSA = new ArrayList<>(6);
+		ArrayList<Indicateur> ProductionSA = new ArrayList<>(6);
 		int soldeSA=1000;
-		for(int i=0;i<10;i++) {
-			StocksSA.set(i, new Indicateur("stockProduit"+(i+1),this,1000));
-			ProductionSA.set(i, new Indicateur("stockProduit"+(i+1),this,1000));
+		for(int i=0;i<6;i++) {
+			StocksSA.add(new Indicateur("stockProduit"+(i+1),this,1000));
+			ProductionSA.add(new Indicateur("productionProduit"+(i+1),this,1000));
 		}
 		// On initialise tout à l'identique pour les 3 Sous-Acteurs
 		this.Acteur1 = new SousActeur(new Journal("JournalActeur1"),StocksSA,ProductionSA,soldeSA,Vendeur.COMMERCE_EQUITABLE);
