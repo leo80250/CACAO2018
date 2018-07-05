@@ -387,7 +387,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.solde2.setValeur(this, this.solde);
 			
 			this.getJournal().ajouter("> Step "+Monde.LE_MONDE.getStep()+" <");
-			this.getJournal().ajouter("Stocks & solde");
+			this.getJournal().ajouter("Stocks & solde :");
 			this.getJournal().ajouter("- Stock moyenne qualité : "+ getStockQMoy().getValeur());
 			this.getJournal().ajouter("- Stock haute qualité : "+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("- Solde : "+ getSolde2().getValeur());
@@ -404,6 +404,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				}
 			}
 			this.getJournal().ajouter(" ");
+			this.getJournal().ajouter("Echanges :");
+			for (ContratFeveV3 contrat : this.getListeContrats()) this.getJournal().ajouter("- "+contrat.toString());
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
 			
 			//System.out.println(stockmoyen.toString());
