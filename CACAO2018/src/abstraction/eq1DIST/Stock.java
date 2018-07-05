@@ -5,6 +5,10 @@ import java.util.List;
 
 public class Stock {
 	private List<Stockintermediaire> stock;
+	/*
+	 * on créé un nouveau stock de facon a séparer les différents types de chocolats en 6 sous-listes et 
+	 * à vendre en premier le stock le plus ancien de chacun des types
+	 */
 	
 	public Stock(Stockintermediaire a,Stockintermediaire b, Stockintermediaire c, Stockintermediaire d, Stockintermediaire e,Stockintermediaire f) {
 		this.stock= new ArrayList<Stockintermediaire>();
@@ -16,12 +20,12 @@ public class Stock {
 		this.stock.add(f);
 	}
 	
-	public void ajouter(Lot e) {
+	private void ajouter(Lot e) {
 		int i = e.getQualite().ordinal(); //on recupere la qualite de notre lot
 		this.stock.get(i).ajouter(e); // on ajoute le lot dans l'une des 6 listes attendues
 	}
 	
-	public void ajouter(int quantite, int qualite) {
+	public void ajouter(int quantite, int qualite) { //dans les faits ce sera cette fonction qui sera utilisée
 		
 		Lot e = new Lot(quantite,Type.values()[qualite-1]);
 		this.ajouter(e);

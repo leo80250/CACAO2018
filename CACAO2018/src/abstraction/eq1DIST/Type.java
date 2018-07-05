@@ -1,3 +1,4 @@
+
 package abstraction.eq1DIST;
 
 public enum Type {
