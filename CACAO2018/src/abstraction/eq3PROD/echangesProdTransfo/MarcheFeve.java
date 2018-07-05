@@ -156,7 +156,7 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		
 		this.getJournal().ajouter("Producteurs presents : "+ this.Producteurs());
 		this.getJournal().ajouter("Acheteurs presents : "+this.Acheteurs());
-		this.getJournal().ajouter("Contrats Precedents : "+this.contratPrecedent.toString());
+		
 		
 		// Reception des offres publiques (Producteurs -> Marche)
 		contratPrecedent=new ArrayList<ContratFeveV3>();
@@ -172,7 +172,7 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 			 }
 		 }
 		 
-		 this.getJournal().ajouter("Offres Publiques en cours : "+contratActuel.toString());
+		 
 		 
 		// System.out.println(" contrats actuels 1:");
 		 //for (ContratFeveV3 c : contratActuel) {
@@ -230,7 +230,7 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 			 }
 		 }
 		 
-		 this.getJournal().ajouter("Propositions en cours : "+contratActuel.toString());
+		 
 			
 		 
 		// Envoi des propositions (Marche -> Transformateur)
@@ -250,7 +250,13 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 			 }
 		 }
 		 
-		 this.getJournal().ajouter("Reponses en cours : "+contratActuel.toString());
+		 
+		 for (int i=0;i<contratActuel.size();i++) {
+				if (contratActuel.get(i).getProducteur()!=null) {
+					this.getJournal().ajouter(Monde.LE_MONDE.getStep()+" Echanges réalisés ce tour : "+contratActuel.get(i).toString());
+				}
+			}
+
 			
 		 
 		 // Envoi des reponses (Marche -> Producteurs)

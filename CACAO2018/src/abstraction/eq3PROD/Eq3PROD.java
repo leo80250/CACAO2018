@@ -54,6 +54,10 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		this.solde=solde;
 	}
 	
+	public void setListeContrats(List<ContratFeveV3> l) {
+		this.listeContrats=(ArrayList<ContratFeveV3>) l;
+	}
+	
 	
 	/**
 	 * @author Pierre
@@ -167,6 +171,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		public void sendDemandePriveeV3(List<ContratFeveV3> demandePrivee) { 
 			//HashMap<Integer, HashMap<Acteur, ContratFeve>> asso = new HashMap<Integer, HashMap<Acteur, ContratFeve>>(); 
 			//asso.put(demandePrivee[i].getTransformateur(), demandePrivee[i); 
+			this.setListeContrats(new ArrayList<ContratFeveV3>());
 			for (int i = 0; i < demandePrivee.size(); i++) { 
 				if(demandePrivee.get(i).getQualite() == 2) {
 					if (demandePrivee.get(i).getDemande_Prix() >= demandePrivee.get(i).getOffrePublique_Prix()*0.9){  	 	  	  		   		 	 	
