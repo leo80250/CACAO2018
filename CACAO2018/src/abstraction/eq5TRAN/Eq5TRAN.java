@@ -174,6 +174,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         production();
         depensesRH();
         payerSalaires();
+        achatPoudre();
         indicateurGreve = Monde.LE_MONDE.getStep();
     }
 
@@ -307,8 +308,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     		journal.ajouter("L'équipe 5 a acheté pour"+devis[2].getPrix()+" € de poudre");
     		this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
     		journal.ajouter("L'équipe 5 a acheté"+devis[2].getQuantite()+" tonnes de poudre MQ");
-    	}    	
-    	
+    	}
     	equipe7.getEchangeFinalPoudre(demande, this);
     	}
     
