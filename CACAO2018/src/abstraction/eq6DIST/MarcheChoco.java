@@ -30,7 +30,7 @@ public void actu() {
 		if (a instanceof IVendeurChocoBis) {
 			this.transformateurs.add(a);
 		}
-		if (a instanceof IAcheteurChoco) {
+		if (a instanceof IAcheteurChocoBis) {
 			this.distributeurs.add(a);
 		}
 	}/*
