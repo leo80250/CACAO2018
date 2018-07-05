@@ -39,6 +39,7 @@ import abstraction.fourni.Monde;
  * - Gestion de facteurs sociaux (isGreves ...)
  * - Systeme de fidelite client/fournisseur
  * - Determiner prix d'achat aux producteurs
+ * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
  */
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoBis, IAcheteurFeveV4 {
 
@@ -321,7 +322,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         if (stocks[POUDRE_MQ].getValeur() == 0) return new ContratPoudre[0];
 
         ContratPoudre[] catalogue = new ContratPoudre[1];
-        catalogue[0] = new ContratPoudre(1, (int) stocks[POUDRE_MQ].getValeur(), prix[POUDRE_MQ].getValeur(), acheteur, this, false);
+        catalogue[0] = new ContratPoudre(1, (int) stocks[POUDRE_MQ].getValeur()*1000, prix[POUDRE_MQ].getValeur()*stocks[POUDRE_MQ].getValeur(), acheteur, this, false);
         return catalogue;
 
     }
@@ -352,7 +353,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
         ContratPoudre[] reponse = new ContratPoudre[devis.length];
         for (int i = 0; i < devis.length; i++) {
-            if (devis[i].getQualite() != 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur() && devis[i].getPrix() == prix[POUDRE_MQ].getValeur()*devis[i].getQuantite()) {
+            if (devis[i].getQualite() != 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur()*1000 && devis[i].getPrix() >= prix[POUDRE_MQ].getValeur()*devis[i].getQuantite()*1000) {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), true);
             } else {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), false);
@@ -538,7 +539,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * @author Maxim
      */
     @Override
-    public int getReponseBis(DemandeAO d) {
+    public int getReponseBis(DemandeAO d) { // T -> kT ?
         switch (d.getQualite()) {
             case 1: {
                 journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)");
