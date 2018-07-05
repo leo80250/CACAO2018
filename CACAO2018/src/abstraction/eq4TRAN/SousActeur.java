@@ -53,11 +53,15 @@ IVendeurPoudre {
 	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label) {
 		this.JournalEq4 = JournalEq4;
 		this.solde = new Indicateur("solde", this,solde);
+		ArrayList<Indicateur> stck = new ArrayList<>();
+		ArrayList<Indicateur> prod = new ArrayList<>();
 		for(int l=2;l<=6;l++) {
-			this.Stocks.add(new Indicateur("stockProduit"+l,this,Stocks.get(l-1).getValeur()));
-			this.Production.add(new Indicateur("prodProduit"+l,this,Production.get(l-1).getValeur()));
+			stck.add(new Indicateur("stockProduit"+l,this,Stocks.get(l-1).getValeur()));
+			prod.add(new Indicateur("prodProduit"+l,this,Production.get(l-1).getValeur()));
 		}
-		this.taillePME = taillePME ;	
+		this.Stocks=stck;
+		this.Production=prod;
+		this.taillePME = (int)(11 + (Math.random() * (250 - 11))) ;	
 		this.label=label;
 		}
 

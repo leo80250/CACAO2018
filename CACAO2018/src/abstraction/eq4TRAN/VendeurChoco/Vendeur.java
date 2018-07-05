@@ -44,7 +44,7 @@ public class Vendeur implements IVendeurChocoBis{
 	// Getters et setters des stocks du Vendeur
 	
 	public int getQte(int IDProduit) {
-		return getStock().get(IDProduit);
+		return getStock().get(IDProduit-1);
 	}
 
 	public void setQte(int IDProduit, int quantite) {
@@ -61,7 +61,7 @@ public class Vendeur implements IVendeurChocoBis{
 	public GPrix2 getPrix() {
 		ArrayList<Double[]> intervalles = new ArrayList<>();
 		Double[] interval = {0.0,10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
-		for(int i=0;i<intervalles.size();i++) {
+		for(int i=0;i<interval.length;i++) {
 			// On considère les mêmes intervalles pour chaque produit dans un premier temps
 			intervalles.add(interval);
 		}
