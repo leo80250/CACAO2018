@@ -3,7 +3,6 @@ package abstraction.eq4TRAN;
 import java.util.ArrayList;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
-import abstraction.eq4TRAN.ITransformateur;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.Labellise;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
