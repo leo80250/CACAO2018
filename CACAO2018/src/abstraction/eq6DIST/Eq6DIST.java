@@ -269,10 +269,9 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			}
 			this.marge.set(i, Nmarge);
 		}
-		
-		
-		
 	}
+	
+	
 	
 	
 }
