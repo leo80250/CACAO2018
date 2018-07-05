@@ -49,6 +49,8 @@ public class ContratFeveV3 {
 		this.transformateur = transformateur;
 		this.qualite = qualite;
 
+		this.nomTamponProducteur=producteur;
+
 		this.quantiteOffrePublique = 0;
 		this.quantiteDemande = 0;
 		this.quantiteProposition = 0;
