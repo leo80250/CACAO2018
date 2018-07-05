@@ -289,8 +289,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     	ContratPoudre[] catalogue = equipe7.getCataloguePoudre(this);
     	double besoinPoudre = 210-this.stocks[POUDRE_HQ].getValeur();
     	ContratPoudre[] demande = new ContratPoudre[3];
-    	demande[0]=null;
-    	demande[1]=null;
+    	demande[0]= new ContratPoudre();
+    	demande[1]= new ContratPoudre();
     	    	//Si l'équipe 7 n'a pas assez de stocks, on demande le maximum disponible
     	if(catalogue[2].getQuantite()<210) {
     		demande[2] = new ContratPoudre(2,catalogue[2].getQuantite(),catalogue[2].getPrix(),this,equipe7,false);
