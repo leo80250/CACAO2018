@@ -1,10 +1,22 @@
 package abstraction.eq5TRAN;
 
+import static abstraction.eq5TRAN.util.Marchandises.FEVES_BQ;
+import static abstraction.eq5TRAN.util.Marchandises.FEVES_MQ;
+import static abstraction.eq5TRAN.util.Marchandises.FRIANDISES_MQ;
+import static abstraction.eq5TRAN.util.Marchandises.POUDRE_BQ;
+import static abstraction.eq5TRAN.util.Marchandises.POUDRE_HQ;
+import static abstraction.eq5TRAN.util.Marchandises.POUDRE_MQ;
+import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_BQ;
+import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_HQ;
+import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_MQ;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
-
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
+import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4;
-
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoBis;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
@@ -17,22 +29,18 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static abstraction.eq5TRAN.util.Marchandises.*;
-
 /**
  * @author Juliette Gorline (chef)
  * @author Francois Le Guernic
  * @author Maxim Poulsen
  * @author Thomas Schillaci (lieutenant)
- * <p>
+ * 
  * TODO LIST
  * - Gestion periodes de l'annee (Noel, Pacques ...)
  * - Gestion de facteurs sociaux (isGreves ...)
  * - Systeme de fidelite client/fournisseur
  * - Determiner prix d'achat aux producteurs
+ * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
  */
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoTer, IAcheteurFeveV4 {
 
@@ -52,6 +60,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     private Journal journal;
 
     private int[] dureesPeremption; // durees en nombre de next 	  				 	 	   			 	
+
     /*
      * On regarde pour chaque marchandise sur toute une duree de sa duree de peremption
      * Si on a respecte les objectifs fixes sur chaque next de la periode
@@ -132,9 +141,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
          * @author Francois le Guernic 	  				 	 	   			 	
          */
 
-        contratFeveBQEq2 = new ContratFeveV3(this, (IVendeurFeveV4) Monde.LE_MONDE.getActeur("Eq2PROD"), 0);
-        contratFeveMQEq2 = new ContratFeveV3(this, (IVendeurFeveV4) Monde.LE_MONDE.getActeur("Eq2PROD"), 1);
-        contratFeveMQEq3 = new ContratFeveV3(this, (IVendeurFeveV4) Monde.LE_MONDE.getActeur("Eq3PROD"), 1);
+        contratFeveBQEq2 = new ContratFeveV3(this, "Eq2PROD", 0);
+        contratFeveMQEq2 = new ContratFeveV3(this, "Eq2PROD", 1);
+        contratFeveMQEq3 = new ContratFeveV3(this, "Eq3PROD", 1);
 
         /**
          * GESTION DE LA PEREMPTION 	  				 	 	   			 	
@@ -171,7 +180,6 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
     /**
      * @author Thomas Schillaci
-     * TODO la prod coute de l'argent
      */
     public void production() {
         roulementStocks();
@@ -203,7 +211,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * Transforme la merch1 en merch2
      */
     public void production(int merch1, int merch2) {
-        double quantite = Math.min(stocks[merch1].getValeur(), productionSouhaitee[merch2].getValeur());
+        double quantite = Math.min(stocks[merch1].getValeur(), productionSouhaitee[merch2].getValeur() * (isPeriodeFetes()?3:1));
         if (isGreves()) quantite *= 0.3;
         if (quantite < productionSouhaitee[merch2].getValeur()) {
             respectObjectifs[merch1] = false;
@@ -211,7 +219,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         }
         stocks[merch1].setValeur(this, stocks[merch1].getValeur() - quantite);
         stocks[merch2].setValeur(this, stocks[merch2].getValeur() + quantite);
-        depenser(quantite*0.01f*prix[merch2].getValeur());
+        depenser(quantite*0.01f*prix[merch2].getValeur()); // LES VARIATIONS DE STOCKS NE SONT PAS BONNES: T -> kT
     }
 
     /**
@@ -274,6 +282,37 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         return false;
 
     }
+    /*
+     * @author Juliette
+     */
+    public void achatPoudre() {
+    	IVendeurPoudre equipe7 = (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq7TRAN");
+    	ContratPoudre[] catalogue = equipe7.getCataloguePoudre(this);
+    	double besoinPoudre = 210-this.stocks[POUDRE_HQ].getValeur();
+    	ContratPoudre[] demande = new ContratPoudre[3];
+    	demande[0]=null;
+    	demande[1]=null;
+    	    	//Si l'équipe 7 n'a pas assez de stocks, on demande le maximum disponible
+    	if(catalogue[2].getQuantite()<210) {
+    		demande[2] = new ContratPoudre(2,catalogue[2].getQuantite(),catalogue[2].getPrix(),this,equipe7,false);
+    	}
+    	
+    	else {
+    		demande[2]=new ContratPoudre(2,(int)besoinPoudre,catalogue[2].getPrix(),this,equipe7,false);
+    	}  	
+    	ContratPoudre[] devis = equipe7.getDevisPoudre(demande, this);
+    	if(devis[2].getPrix()==demande[2].getPrix() && devis[2].getQuantite()==demande[2].getQuantite()) {
+    		devis[2].setReponse(true);
+    		equipe7.sendReponsePoudre(devis, this);
+    		depenser(devis[2].getPrix());
+    		journal.ajouter("L'équipe 5 a acheté pour"+devis[2].getPrix()+" € de poudre");
+    		this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
+    		journal.ajouter("L'équipe 5 a acheté"+devis[2].getQuantite()+" tonnes de poudre MQ");
+    	}    	
+    	
+    	equipe7.getEchangeFinalPoudre(demande, this);
+    	}
+    
 
 
     /**
@@ -284,7 +323,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         if (stocks[POUDRE_MQ].getValeur() == 0) return new ContratPoudre[0];
 
         ContratPoudre[] catalogue = new ContratPoudre[1];
-        catalogue[0] = new ContratPoudre(1, (int) stocks[POUDRE_MQ].getValeur(), prix[POUDRE_MQ].getValeur(), acheteur, this, false);
+        catalogue[0] = new ContratPoudre(1, (int) stocks[POUDRE_MQ].getValeur()*1000, prix[POUDRE_MQ].getValeur()*stocks[POUDRE_MQ].getValeur(), acheteur, this, false);
         return catalogue;
 
     }
@@ -300,7 +339,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             if (demande[i].getQualite() != 1 && demande[i].getQuantite() < stocks[POUDRE_MQ].getValeur()) {
                 devis[i] = new ContratPoudre(0, 0, 0, acheteur, this, false);
             } else {
-                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur(), acheteur, this, false);
+                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur()*demande[i].getQuantite(), acheteur, this, false);
             }
         }
 
@@ -315,7 +354,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
         ContratPoudre[] reponse = new ContratPoudre[devis.length];
         for (int i = 0; i < devis.length; i++) {
-            if (devis[i].getQualite() != 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur() && devis[i].getPrix() == prix[POUDRE_MQ].getValeur()) {
+            if (devis[i].getQualite() != 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur()*1000 && devis[i].getPrix() >= prix[POUDRE_MQ].getValeur()*devis[i].getQuantite()*1000) {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), true);
             } else {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), false);
@@ -365,49 +404,84 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
     /**
      * @author François Le Guernic
+     * 
      */
-    @Override
-    public void sendOffrePubliqueV3(List<ContratFeveV3> offrePublique) {
-        /* On achète des fèves de BQ ( seulement à équipe 2 ) et de MQ ( à équipes 2 et 3 ) aux équipes de producteur
-         * Pour récupérer les offres qui nous intéressent, on stockent les informations en mémoire dans les variables
-         * d'instance
-         */
-        for (ContratFeveV3 c : offrePublique) {
-            String vendeur = ((Acteur) c.getProducteur()).getNom();
-            int qualite = c.getQualite();
-            if (vendeur.equals("Eq2PROD") && qualite == 0) {
-                contratFeveBQEq2.setOffrePublique_Quantite(c.getOffrePublique_Quantite());
-                contratFeveBQEq2.setOffrePublique_Prix(c.getOffrePublique_Prix());
-            } else if (vendeur == "Eq2PROD" && qualite == 1) {
-                contratFeveMQEq2.setOffrePublique_Quantite(c.getOffrePublique_Quantite());
-                contratFeveMQEq2.setOffrePublique_Prix(c.getOffrePublique_Prix());
-            } else if (vendeur == "Eq3PROD" && qualite == 1) {
-                contratFeveMQEq3.setOffrePublique_Quantite(c.getOffrePublique_Quantite());
-                contratFeveMQEq3.setOffrePublique_Prix(c.getOffrePublique_Prix());
-            }
-
-
-        }
+    
+    
+    public double prixActualiseFeveMQ () { 
+    	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche central");
+    	int ventes = 0 ;
+    	int quantites = 0 ;
+  
+    	for (ContratFeveV3  c : marche.getContratPrecedent()) { 
+    		if ( c.getQualite()==1) { ventes += c.getProposition_Quantite()*c.getProposition_Prix() ; quantites += c.getProposition_Quantite() ; }
+    	}
+    	
+    	return ventes/quantites ;
+    	
     }
-
-    /**
-     * @author Francois Le Guernic
-     */
-    @Override
-    public List<ContratFeveV3> getDemandePriveeV3() {
-        /* Par convention, dans la liste de  contrats, on aura dans l'ordre :
-         * - le contrat pour les fèves BQ à l'équipe 2
-         * - le contrat pour les fèves MQ à l'équipe 2
-         * - le contrat pour les fèves MQ à l'équipe 3
-         */
-        List<ContratFeveV3> demandesPrivee = new ArrayList<ContratFeveV3>();
-        demandesPrivee.add(this.contratFeveBQEq2);
-        demandesPrivee.add(this.contratFeveMQEq2);
-        demandesPrivee.add(this.contratFeveMQEq3);
-        this.contratFeveBQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix());
-        this.contratFeveBQEq2.setDemande_Quantite((int) achatsSouhaites[FEVES_BQ].getValeur());
-        this.contratFeveMQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix());
-        this.contratFeveMQEq2.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.3));
+    
+    
+    public double prixActualiseFeveBQ () { 
+    	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche central");
+    	int ventes = 0 ;
+    	int quantites = 0 ;
+  
+    	for (ContratFeveV3  c : marche.getContratPrecedent()) { 
+    		if ( c.getQualite()==0) { ventes += c.getProposition_Quantite()*c.getProposition_Prix() ; quantites += c.getProposition_Quantite() ; }
+    	}
+    	
+    	return ventes/quantites ;
+    	
+    }
+    
+    
+    
+    
+ 	  				 	 	   			 	
+    /** 	  				 	 	   			 	
+     * @author François Le Guernic 	  				 	 	   			 	
+     */ 	  				 	 	   			 	
+    @Override 	  				 	 	   			 	
+    public void sendOffrePubliqueV3(List<ContratFeveV3> offrePublique) { 	  				 	 	   			 	
+        /* On achète des fèves de BQ ( seulement à équipe 2 ) et de MQ ( à équipes 2 et 3 ) aux équipes de producteur 	  				 	 	   			 	
+         * Pour récupérer les offres qui nous intéressent, on stockent les informations en mémoire dans les variables 	  				 	 	   			 	
+         * d'instance 	  				 	 	   			 	
+         */ 	  				 	 	   			 	
+        for (ContratFeveV3 c : offrePublique) { 	  				 	 	   			 	
+            String vendeur = ((Acteur) c.getProducteur()).getNom(); 	  				 	 	   			 	
+            int qualite = c.getQualite(); 	  				 	 	   			 	
+            if (vendeur.equals("Eq2PROD") && qualite == 0) { 	  				 	 	   			 	
+                contratFeveBQEq2.setOffrePublique_Quantite(c.getOffrePublique_Quantite()); 	  				 	 	   			 	
+                contratFeveBQEq2.setOffrePublique_Prix(c.getOffrePublique_Prix()); 	  				 	 	   			 	
+            } else if (vendeur == "Eq2PROD" && qualite == 1) { 	  				 	 	   			 	
+                contratFeveMQEq2.setOffrePublique_Quantite(c.getOffrePublique_Quantite()); 	  				 	 	   			 	
+                contratFeveMQEq2.setOffrePublique_Prix(c.getOffrePublique_Prix()); 	  				 	 	   			 	
+            } else if (vendeur == "Eq3PROD" && qualite == 1) { 	  				 	 	   			 	
+                contratFeveMQEq3.setOffrePublique_Quantite(c.getOffrePublique_Quantite()); 	  				 	 	   			 	
+                contratFeveMQEq3.setOffrePublique_Prix(c.getOffrePublique_Prix()); 	  				 	 	   			 	
+            } 	  				 	 	   			 	
+ 	  				 	 	   			 	
+ 	  				 	 	   			 	
+        } 	  				 	 	   			 	
+    } 	  				 	 	   			 	
+ 	  				 	 	   			 	
+    /** 	  				 	 	   			 	
+     * @author Francois Le Guernic 	  				 	 	   			 	
+     */ 	  				 	 	   			 	
+    @Override 	  				 	 	   			 	
+    public List<ContratFeveV3> getDemandePriveeV3() { 	  				 	 	   			 	
+        /* Par convention, dans la liste de  contrats, on aura dans l'ordre : 	  				 	 	   			 	
+         * - le contrat pour les fèves BQ à l'équipe 2 	  				 	 	   			 	
+         * - le contrat pour les fèves MQ à l'équipe 2 	  				 	 	   			 	
+         * - le contrat pour les fèves MQ à l'équipe 3 	  				 	 	   			 	
+         */ 	  				 	 	   			 	
+        List<ContratFeveV3> demandesPrivee = new ArrayList<ContratFeveV3>() ; 	  				 	 	   			 	
+        demandesPrivee.add(this.contratFeveBQEq2) ; demandesPrivee.add(this.contratFeveMQEq2) ;demandesPrivee.add(this.contratFeveMQEq3); 	  				 	 	   			 	
+        this.contratFeveBQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix()); 	  				 	 	   			 	
+        this.contratFeveBQEq2.setDemande_Quantite((int) achatsSouhaites[FEVES_BQ].getValeur()); 	  				 	 	   			 	
+        this.contratFeveMQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix()); 	  				 	 	   			 	
+        this.contratFeveMQEq2.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.3)); 
         // On répartit nos achats de MQ en 30 % à l'équipe 2 et 70 % à l'équipe 3 	  				 	 	   			 	
         this.contratFeveMQEq3.setDemande_Prix(contratFeveMQEq3.getOffrePublique_Prix());
         this.contratFeveMQEq3.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.7));
