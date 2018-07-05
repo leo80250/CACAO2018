@@ -34,8 +34,6 @@ import abstraction.fourni.Monde;
  * @author Thomas Schillaci (lieutenant)
  * 
  * TODO LIST
- * - Gestion periodes de l'annee (Noel, Pacques ...)
- * - Gestion de facteurs sociaux (isGreves ...)
  * - Systeme de fidelite client/fournisseur
  * - Determiner prix d'achat aux producteurs
  * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
@@ -170,6 +168,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
     @Override
     public void next() {
+        journal.ajouter("------------------------------- Eq5 step " + Monde.LE_MONDE.getStep() + " -------------------------------");
+
         production();
         depensesRH();
         payerSalaires();
