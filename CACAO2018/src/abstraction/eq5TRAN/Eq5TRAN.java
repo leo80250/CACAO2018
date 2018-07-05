@@ -522,12 +522,14 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         listeContrat.add(this.contratFeveBQEq2);
         listeContrat.add(this.contratFeveMQEq2);
         listeContrat.add(contratFeveMQEq3);
+        
         for (ContratFeveV3 c : listeContrat) {
             if ((c.getProposition_Prix() <= c.getDemande_Prix()) && c.getProposition_Quantite() <= c.getDemande_Quantite()) {
                 c.setReponse(true); 
-                journal.ajouter("L'équipe 5 a conclu une affaire avec "+c.getProducteur()+" Quantité échangée :" + c.getProposition_Quantite());
+                journal.ajouter("L'équipe 5 a conclu une affaire avec "+((Acteur)c.getProducteur()).getNom()+" Quantité échangée :" + c.getProposition_Quantite());
+                this.depenser(-1*c.getProposition_Prix());
             } else {
-                c.setReponse(false); journal.ajouter("L'équipe 5 n'a pas conclu une affaire avec "+c.getProducteur());
+                c.setReponse(false); journal.ajouter("L'équipe 5 n'a pas conclu une affaire avec "+((Acteur)c.getProducteur()).getNom());
             }
         }
 
