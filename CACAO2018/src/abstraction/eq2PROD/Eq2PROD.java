@@ -4,8 +4,10 @@ import abstraction.fourni.*;
 import abstraction.eq3PROD.echangesProdTransfo.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import abstraction.eq2PROD.acheteurFictifTRAN.acheteurFictifTRAN;
 import abstraction.eq2PROD.echangeProd.*;
 
 public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, IVendeurFeve, IVendeurFeveV4 {
@@ -25,18 +27,70 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	private Indicateur indicateurQB;
 	private Indicateur indicateurQM;
 	private Indicateur soldejournal;
+	private double totalVenteQB;
+	private double totalVenteQM;
+	public final static double ponderation = 0.1;
+	public final static Pays[] listPays = new Pays[] { Pays.COTE_IVOIRE, Pays.GHANA, Pays.NIGERIA, Pays.CAMEROUN, 
+			Pays.OUGANDA, Pays.TOGO, Pays.SIERRA_LEONE, Pays.MADAGASCAR, Pays.LIBERIA, Pays.TANZANIE }  ;
+	public final static double[]  partProd = new double[] { 0.48, 0.28, 0.12, 0.09, 0.006, 0.005, 0.005, 0.003, 0.003,
+			0.002} ;
+	public final static double[] coeffInstable = new double[] {0.36, 0.68, 0.05, 0.52, 0.42, 0.55, 0.63, 0.46, 0.54, 0.63};
+	public final static int[][] paysFront = new int[][] { {/*Pays.LIBERIA*/ 8 , /*Pays.GHANA*/ 1},
+											{/*Pays.COTE_IVOIRE*/0, /*Pays.TOGO*/5}, 
+											{/*Pays.CAMEROUN*/3, /*Pays.TOGO*/6},
+											{/*Pays.NIGERIA*/2},
+											{/*Pays.TANZANIE*/9},
+											{/*Pays.GHANA*/1, /*Pays.NIGERIA*/2},
+											{/*Pays.LIBERIA*/8},
+											{/*Pays.TANZANIE*/9},
+											{/*Pays.SIERRA_LEONE*/6, /*Pays.COTE_IVOIRE*/0},
+											{/*Pays.OUGANDA*/4, /*Pays.MADAGASCAR*/7}};
+	
+	
+	public boolean[] estInstable;
+	public double[] coeffDeficitProd;
+	
 	
 // CONSTRUCTEURS
 	public Eq2PROD() {
-		this(Monde.LE_MONDE,"Eq2Prod");
+		
+		setNomEq("Eq2PROD");
+		this.estInstable = new boolean[10] ;
+		for (int i=0; i<10; i++) {
+			this.estInstable[i]=false;
+		}
+		this.coeffDeficitProd = new double[10] ;
+		for (int i=0; i<10; i++) {
+			this.coeffDeficitProd[i]=0.0 ;
+		}
+	
+		setStockAffichage();
+		this.indicateurQB = new Indicateur("Stock de "+getNomEq()+" de basse qualité",this,getStockQB());
+		this.indicateurQM = new Indicateur("Stock de "+getNomEq()+" de moyenne qualité",this,getStockQM());
+		this.soldejournal = new Indicateur("Solde de"+getNomEq(), this, getSolde());
+		setStockQBas(indicateurQB);
+		setStockQMoy(indicateurQM);
+		
+		setJournal(new Journal("Journal de"+getNomEq()));
+		setJournalOccasionel(new Journal("Journal de ventes occasionnelles de"+getNomEq()));
+		Monde.LE_MONDE.ajouterJournal(getJournal());
+		Monde.LE_MONDE.ajouterJournal(getJournalOccasionel());
+		Monde.LE_MONDE.ajouterIndicateur(getStockQBas());
+		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
+		Monde.LE_MONDE.ajouterIndicateur(getSoldeJournal());
+		
+		Monde.LE_MONDE.ajouterActeur(new acheteurFictifTRAN());
 		this.nomEq = "Eq2PROD";
 		this.stockQM=0;
 		this.stockQB=0;
-		this.solde = 0.0;
+		this.solde = 4070800000.0;
 		this.maladie = false;
 		this.coeffStock = 1;
 		this.demandeTran = new ArrayList<>();
 		this.quantiteEq3 = false;
+		this.totalVenteQB=0.0;
+		this.totalVenteQM=0.0;
+		
 	}
 	
 // GETTEURS
@@ -49,6 +103,24 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	}
 	public double getSolde() {
 		return this.solde;
+	}
+	public double getTotalVenteQB() {
+		return this.totalVenteQB;
+	}
+	public double getTotalVenteQM() {
+		return this.totalVenteQM;
+	}
+	public void setTotalVenteQB(double q) {
+		this.totalVenteQB+=q;
+	}
+	public void razTotalVenteQB() {
+		this.totalVenteQB = 0;
+	}
+	public void setTotalVenteQM(double q) {
+		this.totalVenteQM+=q;
+	}
+	public void razTotalVenteQM() {
+		this.totalVenteQM = 0;
 	}
 	public void addSolde(double s) {
 		this.solde = this.solde + s;
@@ -85,6 +157,10 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	public void setQuantiteEq3(boolean b) {
 		this.quantiteEq3 = b;
 	}
+	
+	public double[] getListeInstabilite() {
+		return coeffDeficitProd ;
+	} 
 	/* implementé en V0 */
 	public String getNom() {
 		return "Eq2PROD";
@@ -153,11 +229,65 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		}
 	}
 	
+	/* code par Alexandre BIGOT */
+	public void chgmtInstable(int p) { //* p est un entier entre 0 et 9
+		double proba = coeffInstable[p]*ponderation ;
+		if (this.estInstable[p]) {
+			proba=proba*2 ;     /*Si le pays est déjà instable, il a plus de chance de rester instable (2x plus) */
+		}
+		if (Math.random()<proba) {
+			this.estInstable[p]=true ;
+		} else {
+			this.estInstable[p]=false ;
+		}
+	}
+	
+	/* code par Alexandre BIGOT */
+	public void propageInstable(int p) {
+		for (int i=0; i<paysFront[p].length;i++) {
+			double proba = coeffInstable[paysFront[p][i]]*ponderation*2 ;
+			if (Math.random()<proba) {
+				estInstable[paysFront[p][i]] = true ;
+			} else {
+				estInstable[paysFront[p][i]] = false ;
+			}
+		}
+	}
+	
+	/* code par Alexandre BIGOT */
+	public void  majStabilite() { /* maj de la stabilité des 10 pays par chgt spontanée et propagation
+		et maj du coefficient qui réduit la production quand la stabilité est mauvaise */
+			for (int i=0; i<=9;i++) {
+				chgmtInstable(i);
+			}
+			for (int i=0; i<=9; i++) {
+				if (estInstable[i]) propageInstable(i);
+			}
+			for (int i=0;i<10;i++) {
+				 if (estInstable[i]) {
+					 coeffDeficitProd[i]=0.35 ;
+				 }
+			}
+			}
+	
+	public double coeffFinal() {
+		double c = 0;
+		for (int i=0; i<10 ; i++) {
+			c = c + coeffDeficitProd[i];
+		}
+		return c ;
+	} 
+	
 	/* Alexandre Bigot + Guillaume Sallé */
 	private void calculCoeffStock() {
 		double coeffMeteo = meteo();
 		double coeffMaladie = maladie();
-		setCoeffStock(-0.2*(coeffMeteo-coeffMaladie)+1.2);
+		double coeffInstabilite = 0 ;
+		if (Monde.LE_MONDE.getStep()%4==0) {
+			majStabilite();
+			coeffInstabilite = coeffFinal();
+		} 
+		setCoeffStock((-0.2*(coeffMeteo-coeffMaladie)+1.2)*coeffInstabilite);
 	}
 	
 /* IMPLEMENTATION DES DIFFERENTES INTERFACES UTILES A NOTRE ACTEUR
@@ -249,34 +379,19 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		addStockQB( (int) (getCoeffSolde()*MOY_QB));
 	}
 	
-	/* Agathe Chevalier + Alexandre Bigot */
-	public Eq2PROD(Monde monde, String nom) {
-		setNomEq(nom);
-		setStockAffichage();
-		this.indicateurQB = new Indicateur("Stock de "+getNomEq()+" de basse qualité",this,getStockQB());
-		this.indicateurQM = new Indicateur("Stock de "+getNomEq()+" de moyenne qualité",this,getStockQM());
-		this.soldejournal = new Indicateur("Solde de"+getNomEq(), this, getSolde());
-		setStockQBas(indicateurQB);
-		setStockQMoy(indicateurQM);
-		
-		setJournal(new Journal("Journal de"+getNomEq()));
-		setJournalOccasionel(new Journal("Journal de ventes occasionnelles de"+getNomEq()));
-		Monde.LE_MONDE.ajouterJournal(getJournal());
-		Monde.LE_MONDE.ajouterJournal(getJournalOccasionel());
-		Monde.LE_MONDE.ajouterIndicateur(getStockQBas());
-		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
-		Monde.LE_MONDE.ajouterIndicateur(getSoldeJournal());
-	}
 	
 // NEXT DE NOTRE ACTEUR
 	/* Code par Guillaume SALLE + Agathe CHEVALIER */
 	public void next() {
 		retireSolde(coutFixe);
-		
+		this.getJournal().ajouter("Quantité vendue Basse Qualite ="+getTotalVenteQB());
+		this.getJournal().ajouter("Quantité vendue Moyenne Qualité ="+getTotalVenteQM());
 		this.getJournal().ajouter("Quantité basse qualité = "+ getStockQB());
 		this.getJournal().ajouter("Quantité moyenne qualité ="+ getStockQM());
 		this.getJournal().ajouter("Solde ="+getSolde()+" €");
 		this.getJournal().ajouter("Coefficient de la météo ="+ getCoeffMeteo());
+		this.getJournal().ajouter("Liste des coefficients d'instabilité de nos Pays : " + Arrays.toString(getListeInstabilite()));
+		this.getJournal().ajouter("Le coefficient total de l'instabilité est : " + coeffFinal()); 
 		if(!(getCoeffMaladie())) {
 			this.getJournal().ajouter("Aucune maladie n'a frappé les plantations");
 		} else {
@@ -293,6 +408,8 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		indicateurQB.setValeur(this, getStockQB());
 		indicateurQM.setValeur(this, getStockQM());
 		soldejournal.setValeur(this, getSolde());
+		razTotalVenteQB();
+		razTotalVenteQM();
 	}
 
 	
@@ -374,11 +491,13 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
    		   			addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
    		   			retireStockQB(c.getProposition_Quantite()) ;
    		   			chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
+   		   			setTotalVenteQB(c.getProposition_Quantite());
    		   		}
    		   		if (c.getQualite()==1) {
    		   			addSolde(c.getProposition_Prix()*c.getProposition_Quantite()) ;
    		   			retireStockQM(c.getProposition_Quantite()) ;
    		   			chiffreDAffaire+=c.getProposition_Prix()*c.getProposition_Quantite();
+   		   			setTotalVenteQM(c.getProposition_Quantite());
    		   		} 
    		   	} 
    		 // On paye les salaires : 35% du CA
