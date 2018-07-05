@@ -18,6 +18,12 @@ public class Vendeur implements IVendeurChocoBis{
 	 * classe implémentant les méthodes nécessaires à l'interface IVendeurChoco
 	 */
 	
+	public static double COMMERCE_EQUITABLE;
+	public static double PRODUCTEUR_LOCAL;
+	public static double BIO;
+	public static double LUXE;
+	public static double ARTISANAL;
+	
 	private ArrayList<Integer> stocks;
 	public Journal ventes = new Journal("Eq4 - Ventes");
 	
@@ -124,8 +130,11 @@ public class Vendeur implements IVendeurChocoBis{
 		Livraison.add(commande2);
 		Livraison.add(commande3);
 		// On ajoute la vente à notre journal de ventes
-		ventes.ajouter("Livraison : " + Livraison);
+		getVentes().ajouter("Livraison : " + Livraison);
 		return Livraison;
 	}
 
+	public Journal getVentes() {
+		return ventes;
+	}
 }

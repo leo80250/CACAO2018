@@ -5,9 +5,7 @@ import java.util.List;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
-import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
-import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
@@ -21,46 +19,33 @@ ITransformateur, IAcheteurFeveV4,
 IVendeurChocoBis,
 IAcheteurPoudre,
 IVendeurPoudre {
-	private Indicateur stockTabBQ ;
-	private Indicateur stockTabMQ ;
-	private Indicateur stockTabHQ ;
-	private Indicateur stockChocMQ ;
-	private Indicateur stockChocHQ ;
-	private Indicateur prodTabBQ ;
-	private Indicateur prodTabMQ ;
-	private Indicateur prodTabHQ ;
-	private Indicateur prodChocMQ ;
-	private Indicateur prodChocHQ ;
 	private Indicateur chiffreDAffaire ; 
 	//Indicateur de notre solde bancaire
 	private Indicateur solde ; 
 	//Journal rendant compte de nos activités et de l'évolution de nos indicateurs
-	private Journal JournalEq4 = new Journal("JournalEq4") ;
+	private Journal JournalEq4;
 	//Rôle de vendeur que nous incarnerons à chaque next() et qui se mettra à jour à cette même fréquence
 	private Vendeur vendeur;
 	//On crée une liste pour ranger nos stocks
 	private ArrayList<Indicateur> Stocks;
+	private ArrayList<Indicateur> Production;
 	private List<ContratFeveV3> contratFeveEnCours ; 
 	private ContratPoudre[] contratPoudreEnCoursEq7TRAN ;
 	private ContratPoudre[] contratPoudreEnCoursEq5TRAN;
 	private int taillePME ;
-	
+	private double label;
+	// Indiquer un identifiant de Sous-Acteur ???
 
-	public SousActeur(Journal JournalEq4, int a, int b, int c, int d, int e, int f, int g, int h, int i, int j, int k) {
+	// Création du sous acteur par initialisation de ses différentes variables d'instance
+	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, double label) {
 		this.JournalEq4 = JournalEq4;
-		this.prodChocHQ = new Indicateur("prodChocHQ_Eq4",this,a);
-		this.prodChocMQ = new Indicateur("prodChocMQ_Eq4",this,b);
-		this.prodTabBQ = new Indicateur("prodTabBQ_Eq4",this,c);
-		this.prodTabHQ = new Indicateur("prodTabHQ_Eq4",this,d);
-		this.prodTabMQ = new Indicateur("prodTabMQ_Eq4",this,e);
-		this.solde = new Indicateur("solde", this,f);
-		this.stockChocHQ = new Indicateur("stockTabHQ_Eq4",this,g);
-		this.stockChocMQ = new Indicateur("stockTabMQ_Eq4",this,h);
-		this.stockTabBQ = new Indicateur("stockTabBQ_Eq4",this,i);
-		this.stockTabHQ = new Indicateur("stockTabHQ_Eq4",this,j);
-		this.stockTabMQ = new Indicateur("stockTabMQ_Eq4",this,k);
-		this.taillePME = this.taillePME = (int)(11 + (Math.random() * (250 - 11))) ;	
-	
+		this.solde = new Indicateur("solde", this,solde);
+		for(int l=2;l<=6;l++) {
+			this.Stocks.set(l-1,new Indicateur("stockProduit"+l,this,Stocks.get(l-1).getValeur()));
+			this.Production.set(l-1,new Indicateur("prodProduit"+l,this,Production.get(l-1).getValeur()));
+		}
+		this.taillePME = (int)(11 + (Math.random() * (250 - 11))) ;	
+		this.label=label;
 		}
 
 	public String getNom() {
@@ -71,67 +56,8 @@ IVendeurPoudre {
 		// TODO Auto-generated method stub
 
 	}
-
-	public Indicateur getStockTabBQ() {
-		return stockTabBQ;
-	}
-	public void setStockTabBQ(Indicateur stockTabBQ) {
-		this.stockTabBQ = stockTabBQ;
-	}
-	public Indicateur getStockTabMQ() {
-		return stockTabMQ;
-	}
-	public void setStockTabMQ(Indicateur stockTabMQ) {
-		this.stockTabMQ = stockTabMQ;
-	}
-	public Indicateur getStockTabHQ() {
-		return stockTabHQ;
-	}
-	public void setStockTabHQ(Indicateur stockTabHQ) {
-		this.stockTabHQ = stockTabHQ;
-	}
-	public Indicateur getStockChocMQ() {
-		return stockChocMQ;
-	}
-	public void setStockChocMQ(Indicateur stockChocMQ) {
-		this.stockChocMQ = stockChocMQ;
-	}
-	public Indicateur getStockChocHQ() {
-		return stockChocHQ;
-	}
-	public void setStockChocHQ(Indicateur stockChocHQ) {
-		this.stockChocHQ = stockChocHQ;
-	}
-	public Indicateur getProdTabBQ() {
-		return prodTabBQ;
-	}
-	public void setProdTabBQ(Indicateur prodTabBQ) {
-		this.prodTabBQ = prodTabBQ;
-	}
-	public Indicateur getProdTabMQ() {
-		return prodTabMQ;
-	}
-	public void setProdTabMQ(Indicateur prodTabMQ) {
-		this.prodTabMQ = prodTabMQ;
-	}
-	public Indicateur getProdTabHQ() {
-		return prodTabHQ;
-	}
-	public void setProdTabHQ(Indicateur prodTabHQ) {
-		this.prodTabHQ = prodTabHQ;
-	}
-	public Indicateur getProdChocMQ() {
-		return prodChocMQ;
-	}
-	public void setProdChocMQ(Indicateur prodChocMQ) {
-		this.prodChocMQ = prodChocMQ;
-	}
-	public Indicateur getProdChocHQ() {
-		return prodChocHQ;
-	}
-	public void setProdChocHQ(Indicateur prodChocHQ) {
-		this.prodChocHQ = prodChocHQ;
-	}
+	
+	// Tous ces getters et setters vraiment utiles ?
 	public Indicateur getSolde() {
 		return solde;
 	}
@@ -384,4 +310,14 @@ IVendeurPoudre {
 		}
 		this.solde.setValeur(this, soldeActuelle - chargesFixes - chargesVariables);
 	}
+
+	public double getLabel() {
+		return label;
+	}
+
+	public void setLabel(double label) {
+		this.label = label;
+	}
+	
+	
  }
