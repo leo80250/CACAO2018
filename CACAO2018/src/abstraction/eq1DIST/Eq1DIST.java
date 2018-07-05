@@ -32,6 +32,11 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	private Indicateur[] nombreAchatsOccasionnels;
 	private Indicateur[] nombreAchatsContrat;
 	private Indicateur efficacite;
+	
+	private Indicateur PrixChocoMdG;
+	private Indicateur PrixChocoHdG;
+	private Indicateur PrixConfMdG;
+	private Indicateur PrixConfHdG;
 
 
 public Eq1DIST()  {
@@ -55,6 +60,10 @@ public Eq1DIST()  {
 	this.solde = new Indicateur("Solde de "+ this.getNom(), this,0);
 	this.efficacite = new Indicateur("Efficacité de "+ this.getNom(), this,0);
 	this.stock=stock;
+	this.PrixChocoMdG=new Indicateur("Prix Choco MdG de "+this.getNom(),this,1.5);
+	this.PrixChocoHdG=new Indicateur("Prix Choco HdG de "+this.getNom(),this,3.0);
+	this.PrixConfMdG=new Indicateur("Prix Confiseries MdG de "+this.getNom(),this,2.6);
+	this.PrixConfHdG=new Indicateur("Prix Confiseries HdG de "+this.getNom(),this,4.1);
 		
 		this.journal= new Journal("Journal de Eq1DIST");
 		journal.ajouter("Absentéisme");
@@ -155,8 +164,8 @@ public Eq1DIST()  {
 	public GrilleQuantite commander(GrilleQuantite Q) {
 		int[] res = new int[6];
 		double[][] prix = new double[][] {
-			{0.9,1.5,3.0},
-			{1.0,2.6,4.1}
+			{Double.MAX_VALUE,this.PrixChocoMdG.getValeur(),this.PrixChocoHdG.getValeur()},
+			{Double.MAX_VALUE,this.PrixConfMdG.getValeur(),this.PrixConfHdG.getValeur()}
 		};
 		for (int i =0; i <2;i++) {
 			for (int j = 0; j <3;j++) {
@@ -222,16 +231,7 @@ public Eq1DIST()  {
 	@Override
 	public double[] getPrix() {
 		// TODO Auto-generated method stub
-		return null;
+		return new double[] {Double.MAX_VALUE,this.PrixChocoMdG.getValeur(),this.PrixChocoHdG.getValeur(),
+				Double.MAX_VALUE,this.PrixConfMdG.getValeur(),this.PrixConfHdG.getValeur()};
 	}
-	
-	
-
-
-
-
-	
-
-	
-
 }
