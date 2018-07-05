@@ -121,19 +121,30 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		this.marge_TMQ.setValeur(this, this.marge.get(4));
 		this.marge_THQ.setValeur(this, this.marge.get(5));
 		
+		//Victor Signes
+		//Achat occasionnel
+		
 		for(int i=0;i<6;i++) {
 			if(this.stock.get(i)<200) { //hypothèse stock minimal
 				DemandeAO d = new DemandeAO(500,i+1); //hypothèse achat à réaliser
 				ArrayList<Integer> prop = new ArrayList<Integer>();
+				ArrayList<Acteur> acteurs = new ArrayList<Acteur>();
 				for(Acteur acteur : Monde.LE_MONDE.getActeurs()) {
 					if(acteur instanceof IvendeurOccasionnelChocoBis) {
 						prop.add(((IvendeurOccasionnelChocoBis)acteur).getReponseBis(d));
+						acteurs.add(acteur);
 					}
 				}
 				int p=prop.get(0);
+				Acteur a=acteurs.get(0);
 				for(Integer j : prop) {
-					 
+					 if(prop.get(i)<p) {
+						 p=prop.get(i); //on choisit la proposition avec le prix minimum
+						 a=acteurs.get(i);
+					 }
 				}
+				((IvendeurOccasionnelChocoBis)a).envoyerReponseBis(d.getQuantite(), d.getQualite(), p);
+				
 			}
 		}
 		
