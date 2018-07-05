@@ -2,6 +2,11 @@ package abstraction.eq3PROD;
 
 import java.util.Random;
 
+/**
+ * Implémentation d'une Maladie
+ * @author Grégoire
+ */
+
 public class Maladie {
 	
 	public double probaD;
@@ -25,7 +30,7 @@ public class Maladie {
 	public void setMaladieActive() {
 		if (this.declencherMaladie()) {
 			Random r = new Random();
-			this.maladieActive = r.nextInt(dureeMax);
+			this.maladieActive = r.nextInt(dureeMax+1);
 		}
 	}
 	

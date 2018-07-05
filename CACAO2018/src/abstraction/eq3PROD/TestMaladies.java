@@ -1,5 +1,10 @@
 package abstraction.eq3PROD;
 
+/**
+ * Code de test d'une maladie
+ * @author Grégoire
+ */
+
 public class TestMaladies {
 	
 	public static void main(String[] args) {

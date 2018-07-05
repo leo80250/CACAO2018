@@ -1,19 +1,14 @@
 package abstraction.eq3PROD;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV2;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
-import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV2;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;  
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
-import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4;
 import abstraction.eq3PROD.echangesProdTransfo.MarcheFeve;
 
@@ -36,7 +31,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private Indicateur stockQH=new Indicateur ("Stock de Eq3PROD de haute qualité", this, 24000);
 	private Indicateur solde2 = new Indicateur ("Solde de Eq3PROD", this, 0) ; 
 	
-	
+	private Maladie foreur;
+	private Maladie balai;
 	
 	/**
 	 * @author Morgane
@@ -122,10 +118,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		ArrayList<IAcheteurFeveV4> transformateurs = new ArrayList<IAcheteurFeveV4>();
 		
 		for (Acteur acteur : listActeurs) {
-			Class[] listInterfaces = acteur.getClass().getInterfaces();
-			if (Arrays.toString(listInterfaces).contains("IVendeurFeveV4")) {
+			if (acteur instanceof IVendeurFeveV4) {
 				producteurs.add((IVendeurFeveV4) acteur);
-			} else if (Arrays.toString(listInterfaces).contains("IAcheteurFeveV4")) {
+			} else if (acteur instanceof IAcheteurFeveV4) {
 				transformateurs.add((IAcheteurFeveV4) acteur);
 			}
 		}
@@ -136,6 +131,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		this.ajouterStockMoyen(75000);
 		this.ajouterStockFin(24000);
 		this.listeContrats=new ArrayList<ContratFeveV3>();
+		this.foreur = new Maladie(0.042, 0.10, 6, "Foreur des cabosses");
+		this.balai = new Maladie(0.008, 0.60, 4, "Balai de sorcière");
+		
 		
 		this.nom = "Eq3PROD";
 		
@@ -302,16 +300,16 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		}
 		
 		
-		/**
-		 * @author Claire
-		 */
-		public boolean maladieAmerique() {
-			return (Math.random()<0.008);
-		}
-		
-		public boolean maladieIndo() {
-			return (Math.random()<=0.042);
-		}
+//		/**
+//		 * @author Claire
+//		 */
+//		public boolean maladieAmerique() {
+//			return (Math.random()<0.008);
+//		}
+//		
+//		public boolean maladieIndo() {
+//			return (Math.random()<=0.042);
+//		}
 		/**
 		@author Claire, Pierre et Morgane
 		**/
@@ -350,25 +348,33 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				prodIndo=45000;
 				prodfin=24000;
 			}
-			if (this.maladieIndo()) {
-				prodIndo=(int)(prodIndo*0.9);
-			}
-			
-			if (this.maladieAmerique()) {
-				prodBresil=(int)(prodIndo*0.4);
-				prodfin=(int)(prodfin*0.4);
-			}
+//			if (this.maladieIndo()) {
+//				prodIndo=(int)(prodIndo*0.9);
+//			}
+//			
+//			if (this.maladieAmerique()) {
+//				prodBresil=(int)(prodIndo*0.4);
+//				prodfin=(int)(prodfin*0.4);
+//			}
 			
 			
 			this.vieillirStock();
-			this.ajouterStockMoyen(prodBresil+prodIndo);
-			this.ajouterStockFin(prodfin);
+			
+			this.foreur.setMaladieActive();
+			this.balai.setMaladieActive();
+			double coeffAmerique = balai.pertesMaladie();
+			double coeffIndonesie = foreur.pertesMaladie();
+			
+			this.ajouterStockMoyen((int) (coeffAmerique*prodBresil+coeffIndonesie*prodIndo));
+			this.ajouterStockFin((int) coeffAmerique*prodfin);
 			this.solde -= (prodBresil + prodIndo + prodfin)*1212 ; 
-			this.prodFeves[1]=prodBresil+prodIndo;
-			this.prodFeves[2]=prodfin;
+			this.prodFeves[1]=(int) (coeffAmerique*prodBresil+coeffIndonesie*prodIndo);
+			this.prodFeves[2]=(int) coeffAmerique*prodfin;
+			
 			this.stockQH.setValeur(this,this.quantiteStockFin());
 			this.stockQM.setValeur(this, this.quantiteStockMoyen());
 			this.solde2.setValeur(this, this.solde);
+			
 			this.getJournal().ajouter("Quantité moyenne qualité = "+ getStockQMoy().getValeur());
 			this.getJournal().ajouter("Quantité haute qualité = "+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("Solde = "+ getSolde2().getValeur());
