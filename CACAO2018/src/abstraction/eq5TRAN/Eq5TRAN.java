@@ -19,7 +19,6 @@ import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoBis;
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq5TRAN.util.Marchandises;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
@@ -40,9 +39,8 @@ import abstraction.fourni.Monde;
  * - Gestion de facteurs sociaux (isGreves ...)
  * - Systeme de fidelite client/fournisseur
  * - Determiner prix d'achat aux producteurs
- * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
  */
-public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoTer, IAcheteurFeveV4 {
+public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoBis, IAcheteurFeveV4 {
 
     // cf Marchandises.java pour obtenir l'indexation 	  				 	 	   			 	
     private Indicateur[] productionSouhaitee; // ce qui sort de nos machines en kT 	  				 	 	   			 	
@@ -305,9 +303,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     		devis[2].setReponse(true);
     		equipe7.sendReponsePoudre(devis, this);
     		depenser(devis[2].getPrix());
-    		journal.ajouter("L'équipe 5 a acheté pour"+devis[2].getPrix()+" € de poudre");
     		this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
-    		journal.ajouter("L'équipe 5 a acheté"+devis[2].getQuantite()+" tonnes de poudre MQ");
     	}    	
     	
     	equipe7.getEchangeFinalPoudre(demande, this);
@@ -323,7 +319,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         if (stocks[POUDRE_MQ].getValeur() == 0) return new ContratPoudre[0];
 
         ContratPoudre[] catalogue = new ContratPoudre[1];
-        catalogue[0] = new ContratPoudre(1, (int) stocks[POUDRE_MQ].getValeur()*1000, prix[POUDRE_MQ].getValeur()*stocks[POUDRE_MQ].getValeur(), acheteur, this, false);
+        catalogue[0] = new ContratPoudre(1, (int) stocks[POUDRE_MQ].getValeur(), prix[POUDRE_MQ].getValeur(), acheteur, this, false);
         return catalogue;
 
     }
@@ -339,7 +335,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             if (demande[i].getQualite() != 1 && demande[i].getQuantite() < stocks[POUDRE_MQ].getValeur()) {
                 devis[i] = new ContratPoudre(0, 0, 0, acheteur, this, false);
             } else {
-                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur()*demande[i].getQuantite(), acheteur, this, false);
+                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur(), acheteur, this, false);
             }
         }
 
@@ -354,7 +350,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
         ContratPoudre[] reponse = new ContratPoudre[devis.length];
         for (int i = 0; i < devis.length; i++) {
-            if (devis[i].getQualite() != 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur()*1000 && devis[i].getPrix() >= prix[POUDRE_MQ].getValeur()*devis[i].getQuantite()*1000) {
+            if (devis[i].getQualite() != 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur() && devis[i].getPrix() == prix[POUDRE_MQ].getValeur()) {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), true);
             } else {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), false);
@@ -453,7 +449,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             int qualite = c.getQualite(); 	  				 	 	   			 	
             if (vendeur.equals("Eq2PROD") && qualite == 0) { 	  				 	 	   			 	
                 contratFeveBQEq2.setOffrePublique_Quantite(c.getOffrePublique_Quantite()); 	  				 	 	   			 	
-                contratFeveBQEq2.setOffrePublique_Prix(c.getOffrePublique_Prix()); 	  				 	 	   			 	
+                contratFeveBQEq2.setOffrePublique_Prix(c.getOffrePublique_Prix());
+                System.out.println("Echange");
             } else if (vendeur == "Eq2PROD" && qualite == 1) { 	  				 	 	   			 	
                 contratFeveMQEq2.setOffrePublique_Quantite(c.getOffrePublique_Quantite()); 	  				 	 	   			 	
                 contratFeveMQEq2.setOffrePublique_Prix(c.getOffrePublique_Prix()); 	  				 	 	   			 	
@@ -479,12 +476,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         List<ContratFeveV3> demandesPrivee = new ArrayList<ContratFeveV3>() ; 	  				 	 	   			 	
         demandesPrivee.add(this.contratFeveBQEq2) ; demandesPrivee.add(this.contratFeveMQEq2) ;demandesPrivee.add(this.contratFeveMQEq3); 	  				 	 	   			 	
         this.contratFeveBQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix()); 	  				 	 	   			 	
-        this.contratFeveBQEq2.setDemande_Quantite((int) achatsSouhaites[FEVES_BQ].getValeur()); 	  				 	 	   			 	
+        this.contratFeveBQEq2.setDemande_Quantite((int) achatsSouhaites[FEVES_BQ].getValeur()*1000); 	  				 	 	   			 	
         this.contratFeveMQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix()); 	  				 	 	   			 	
-        this.contratFeveMQEq2.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.3)); 
+        this.contratFeveMQEq2.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur()*1000 * 0.3)); 
         // On répartit nos achats de MQ en 30 % à l'équipe 2 et 70 % à l'équipe 3 	  				 	 	   			 	
         this.contratFeveMQEq3.setDemande_Prix(contratFeveMQEq3.getOffrePublique_Prix());
-        this.contratFeveMQEq3.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.7));
+        this.contratFeveMQEq3.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur()*1000 * 0.7));
 
         return demandesPrivee;
     }
@@ -527,51 +524,52 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         listeContrat.add(contratFeveMQEq3);
         for (ContratFeveV3 c : listeContrat) {
             if ((c.getProposition_Prix() <= c.getDemande_Prix()) && c.getProposition_Quantite() <= c.getDemande_Quantite()) {
-                c.setReponse(true);
+                c.setReponse(true); 
+                journal.ajouter("L'équipe 5 a conclu une affaire avec "+c.getProducteur()+" Quantité échangée :" + c.getProposition_Quantite());
             } else {
-                c.setReponse(false);
+                c.setReponse(false); journal.ajouter("L'équipe 5 n'a pas conclu une affaire avec "+c.getProducteur());
             }
         }
 
-        return listeContrat;
+        return listeContrat; 
     }
 
     /**
      * @author Maxim
      */
     @Override
-    public double getReponseTer(DemandeAO d) {
+    public int getReponseBis(DemandeAO d) {
         switch (d.getQualite()) {
             case 1: {
                 journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)");
-                return Double.MAX_VALUE;
+                return (int) Double.MAX_VALUE;
             }
             case 2:
                 if (d.getQuantite() < 0.2 * stocks[FRIANDISES_MQ].getValeur()) {
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite());
+                    return (int) (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite());
                 }
             case 3: {
                 journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)");
-                return Double.MAX_VALUE;
+                return (int) Double.MAX_VALUE;
             }
             case 4:
                 if (d.getQuantite() < 0.2 * stocks[TABLETTES_BQ].getValeur()) {
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite());
+                    return (int) (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite());
                 }
             case 5:
                 if (d.getQuantite() < 0.2 * stocks[TABLETTES_MQ].getValeur()) {
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite());
+                    return (int) (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite());
                 }
             case 6:
                 if (d.getQuantite() < 0.2 * stocks[TABLETTES_HQ].getValeur()) {
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite());
+                    return (int) (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite());
                 }
         }
-        return Double.MAX_VALUE;
+        return (int) Double.MAX_VALUE;
     }
 
     /**
@@ -579,10 +577,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      */
 
     @Override
-    public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, int prix) {
+    public void envoyerReponseBis(int quantite, int qualite, int prix) {
         this.depenser(-prix);
-        this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * (200.0 / 10000000));
-        journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de "+qualite+" qualite pour "+prix+" euros à "+acteur.getNom());
+        this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * (200 / 10000000));
     }
 
 
