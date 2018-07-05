@@ -231,7 +231,7 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	
 	/* code par Alexandre BIGOT */
 	public void chgmtInstable(int p) { //* p est un entier entre 0 et 9
-		double proba = coeffInstable[p]*ponderation ;
+		double proba = (1-coeffInstable[p])*ponderation ;
 		if (this.estInstable[p]) {
 			proba=proba*2 ;     /*Si le pays est déjà instable, il a plus de chance de rester instable (2x plus) */
 		}
@@ -245,7 +245,7 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	/* code par Alexandre BIGOT */
 	public void propageInstable(int p) {
 		for (int i=0; i<paysFront[p].length;i++) {
-			double proba = coeffInstable[paysFront[p][i]]*ponderation*2 ;
+			double proba = (1-coeffInstable[paysFront[p][i]])*ponderation*2 ;
 			if (Math.random()<proba) {
 				estInstable[paysFront[p][i]] = true ;
 			} else {
