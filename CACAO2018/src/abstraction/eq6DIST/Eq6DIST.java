@@ -132,7 +132,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				}
 				int p=prop.get(0);
 				for(Integer j : prop) {
-					
+					 
 				}
 			}
 		}
