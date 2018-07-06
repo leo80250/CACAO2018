@@ -209,7 +209,8 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		
 		double stock_TMG_min=10000000.0; // calcul le stock min en TMG des 3 transfos et l'indice de l'équipe avec le plus petit stock;
 		int equipe_stock_TMG_min=0;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<Stock.size(); i++) {
+			System.out.println("stock size "+Stock.size());
 			if (stock_TMG_min>=Stock.get(i).get(4)&&Stock.get(i).get(4)!=0) {
 				stock_TMG_min=Stock.get(i).get(4);
 				equipe_stock_TMG_min=i;
@@ -217,7 +218,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		}
 		int indice_equipe_moins_chere_TMG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
 		double prix_moins_chere_TMG=10000000.0;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<Stock.size(); i++) {
 			if (Prix.get(i).getPrixProduit((int)stock_TMG_min-1,5)<=prix_moins_chere_TMG) {
 				indice_equipe_moins_chere_TMG=i;
 				prix_moins_chere_TMG=Prix.get(i).getPrixProduit((int)stock_TMG_min-1,5);
@@ -233,7 +234,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		// calcule le 2e plus petit stock de TMG et l'indice du transfo associé 
 		double stock_TMG_min2=10000000.0;
 		int equipe_stock_TMG_min2=0;
-		for (int k=0; k<3; k++) {
+		for (int k=0; k<Stock.size(); k++) {
 			if (stock_TMG_min2>=Stock.get(k).get(4) && stock_TMG_min<Stock.get(k).get(4)) {
 				stock_TMG_min2=Stock.get(k).get(4);
 				equipe_stock_TMG_min2=k;
@@ -242,7 +243,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		// renvoie l'indice du transfo le moins chere pour le 2e plus petit stock
 		int indice_equipe_moins_chere_TMG2=0;
 		double prix_moins_chere_TMG2=100000000.0;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<Stock.size(); i++) {
 			if (Prix.get(i).getPrixProduit((int) stock_TMG_min2-1, 5) <= prix_moins_chere_TMG2
 					&& i!=indice_equipe_moins_chere_TMG) {
 				indice_equipe_moins_chere_TMG2=i;
@@ -257,15 +258,16 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		}
 		commande.get(equipe_stock_TMG_min2).set(4, stock_TMG2);
 		// calcule l'indice du transfo avec le plus grand stock
+		if (Stock.size()==3) {
 		int equipe_stock_TMG_max=3-equipe_stock_TMG_min-equipe_stock_TMG_min2;
 		commande.get(equipe_stock_TMG_max).set(4, 22220-stock_TMG1-stock_TMG2);
-		
+		}
 		
 		//Commande de TBG
 		
 		double stock_TBG_min=10000000.0; // calcul le stock min en TBG des 3 transfos et l'indice de l'équipe avec le plus petit stock;
 		int equipe_stock_TBG_min=0;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<Stock.size(); i++) {
 			if (stock_TBG_min>=Stock.get(i).get(3)&&Stock.get(i).get(3)!=0) {
 				stock_TBG_min=Stock.get(i).get(3);
 				equipe_stock_TBG_min=i;
@@ -273,7 +275,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		}
 		int indice_equipe_moins_chere_TBG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
 		double prix_moins_chere_TBG=10000000.0;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<Stock.size(); i++) {
 			if (Prix.get(i).getPrixProduit((int)stock_TBG_min-1,4)<=prix_moins_chere_TBG&&Prix.get(i).getPrixProduit((int)stock_TBG_min-1,4)!=0) {
 				indice_equipe_moins_chere_TBG=i;
 				prix_moins_chere_TBG=Prix.get(i).getPrixProduit((int)stock_TBG_min-1,4);
@@ -289,7 +291,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		// calcule le 2e plus petit stock de TBG et l'indice du transfo associé 
 		double stock_TBG_min2=10000000.0;
 		int equipe_stock_TBG_min2=0;
-		for (int k=0; k<3; k++) {
+		for (int k=0; k<Stock.size(); k++) {
 			if (stock_TBG_min2>=Stock.get(k).get(3) && stock_TBG_min<Stock.get(k).get(3)) {
 				stock_TBG_min2=Stock.get(k).get(3);
 				equipe_stock_TBG_min2=k;
@@ -298,7 +300,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		// renvoie l'indice du transfo le moins chere pour le 2e plus petit stock
 		int indice_equipe_moins_chere_TBG2=0;
 		double prix_moins_chere_TBG2=100000000.0;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<Prix.size(); i++) {
 			if (Prix.get(i).getPrixProduit((int) stock_TBG_min2-1, 4) <= prix_moins_chere_TBG2
 					&& i!=indice_equipe_moins_chere_TBG) {
 				indice_equipe_moins_chere_TBG2=i;
@@ -317,7 +319,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		
 		double stock_CMG_min=10000000.0; // calcul le stock min en CMG des 3 transfos et l'indice de l'équipe avec le plus petit stock;
 		int equipe_stock_CMG_min=0;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<Stock.size(); i++) {
 			if (stock_CMG_min>=Stock.get(i).get(1)) {
 				stock_CMG_min=Stock.get(i).get(1);
 				equipe_stock_CMG_min=i;
@@ -325,7 +327,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		}
 		int indice_equipe_moins_chere_CMG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
 		double prix_moins_chere_CMG=10000000.0;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<Prix.size(); i++) {
 			if (Prix.get(i).getPrixProduit((int)stock_CMG_min-1,2)<=prix_moins_chere_CMG) {
 				indice_equipe_moins_chere_CMG=i;
 				prix_moins_chere_CMG=Prix.get(i).getPrixProduit((int)stock_CMG_min-1,2);
@@ -341,7 +343,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		// calcule le 2e plus petit stock de CMG et l'indice du transfo associé 
 		double stock_CMG_min2=10000000.0;
 		int equipe_stock_CMG_min2=0;
-		for (int k=0; k<3; k++) {
+		for (int k=0; k<Stock.size(); k++) {
 			if (stock_CMG_min2>=Stock.get(k).get(1) && stock_CMG_min<Stock.get(k).get(1)) {
 				stock_CMG_min2=Stock.get(k).get(1);
 				equipe_stock_CMG_min2=k;
@@ -350,7 +352,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		// renvoie l'indice du transfo le moins chere pour le 2e plus petit stock
 		int indice_equipe_moins_chere_CMG2=0;
 		double prix_moins_chere_CMG2=100000000.0;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<Prix.size(); i++) {
 			if (Prix.get(i).getPrixProduit((int) stock_CMG_min2-1, 2) <= prix_moins_chere_CMG2
 					&& i!=indice_equipe_moins_chere_CMG) {
 				indice_equipe_moins_chere_CMG2=i;

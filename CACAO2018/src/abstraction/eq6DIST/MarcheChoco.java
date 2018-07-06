@@ -9,6 +9,7 @@ import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
+import java.util.List;
 
 
 public class MarcheChoco  implements Acteur{
@@ -40,8 +41,8 @@ public void actu() {
 	this.transformateurs.add( Monde.LE_MONDE.getActeur("Eq4TRAN"));
 	this.transformateurs.add( Monde.LE_MONDE.getActeur("Eq5TRAN"));
 	this.transformateurs.add( Monde.LE_MONDE.getActeur("Eq7TRAN"));*/
-	//this.stock= new ArrayList <GQte>();
-	//this.prix= new ArrayList <GPrix>();	
+	this.stock= new ArrayList <ArrayList<Integer>>();
+	this.prix= new ArrayList <GPrix2>();	
 	
 	
 		
@@ -56,6 +57,7 @@ public void actu() {
 		for (Acteur i : this.transformateurs) {
 		IVendeurChocoBis ibis= (IVendeurChocoBis) i;
 		if (this.Prix_correct(ibis.getPrix())){
+			System.out.println(" prix ="+prix+" ibis="+ibis); //prix = null
 			this.prix.add(ibis.getPrix());
 			this.Journal_Marche_choco.ajouter("Prix de "+i.getNom()+"correct et ajouté");
 		}else {
