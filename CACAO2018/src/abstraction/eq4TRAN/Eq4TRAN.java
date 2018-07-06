@@ -7,6 +7,7 @@ import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.Labellise;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
+import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
