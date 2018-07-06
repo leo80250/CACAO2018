@@ -976,7 +976,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		}
 		
 		return contrat;
-	}
+	} 
 	
 	////////////////////////////
 	// METHODES ACHETEUR FEVE //
