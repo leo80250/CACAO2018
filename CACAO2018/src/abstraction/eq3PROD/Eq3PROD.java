@@ -426,14 +426,14 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.getJournal().ajouter("> Step "+Monde.LE_MONDE.getStep());
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Stocks & solde :");
-			this.getJournal().ajouter("Stock moyenne qualité : "+ getStockQMoy().getValeur());
-			this.getJournal().ajouter("Stock haute qualité : "+ getStockQHaut().getValeur());
-			this.getJournal().ajouter("Solde : "+ getSolde2().getValeur());
+			this.getJournal().ajouter("Stock moyenne qualité : "+ longToString((long) getStockQMoy().getValeur()));
+			this.getJournal().ajouter("Stock haute qualité : "+ longToString((long) getStockQHaut().getValeur()));
+			this.getJournal().ajouter("Solde : "+ doubleToString((double) getSolde2().getValeur()));
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Production :");
-			this.getJournal().ajouter("<tt>- Moyenne qualité (Indonésie) : "+((int) (coeffIndonesie*prodIndo))+"</tt>");
-			this.getJournal().ajouter("<tt>- Moyenene qualité (Brésil) : "+((int) (coeffAmerique*prodBresil))+"</tt>");
-			this.getJournal().ajouter("<tt>- Haute qualité (Equateur) : "+((int) (coeffAmerique*prodfin))+"</tt>");
+			this.getJournal().ajouter("<tt>- Moyenne qualité (Indonésie) : "+longToString(((long) (coeffIndonesie*prodIndo)))+"</tt>");
+			this.getJournal().ajouter("<tt>- Moyenene qualité (Brésil) : "+longToString(((long) (coeffAmerique*prodBresil)))+"</tt>");
+			this.getJournal().ajouter("<tt>- Haute qualité (Equateur) : "+longToString(((long) (coeffAmerique*prodfin)))+"</tt>");
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Maladies :");
 			if (foreur.getMaladieActive() == 0 && balai.getMaladieActive() == 0) {
@@ -448,10 +448,10 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			}
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Comptes :");
-			this.getJournal().ajouter("<tt>- Dépenses (Coûts de production) : <font color='red'>"+(prodBresil + prodIndo + prodfin)*1212+" €</font></tt>");
-			String s="";
+			this.getJournal().ajouter("<tt>- Dépenses (Coûts de production) : <font color='red'>"+doubleToString(0.0+(prodBresil + prodIndo + prodfin)*1212)+" €</font></tt>");
+			double s=0.0;
 			for (ContratFeveV3 contrat : this.getListeContrats()) if (contrat.getReponse())s+=contrat.getProposition_Quantite()*contrat.getProposition_Prix();
-			this.getJournal().ajouter("<tt>- Recettes (Ventes) : <font color='green'>"+s+" €</tt></font>");
+			this.getJournal().ajouter("<tt>- Recettes (Ventes) : <font color='green'>"+doubleToString(0.0+s)+" €</tt></font>");
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Echanges :");
 			this.getJournal().ajouter(" ");
@@ -505,7 +505,59 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.solde2 = i ; 
 		}
 
+		/**
+		 * Affichage des prix et des stocks
+		 * @author Grégoire
+		 */
 		
+		public static String doubleToString(double d) {
+			long l = ((long)(d*100.0));
+			String s="";
+			while (l>0) {
+				s=l%10+s;
+				l=l/10;
+			}
+			String res="";
+			int j=-1;
+			for (int i=s.length()-1; i>=0; i--) {
+				res=s.charAt(i)+res;
+				if (i==s.length()-2) {
+					res=","+res;
+					j=0;
+				}
+				if (j >= 0) {
+					if (j == 3) {
+						res = " " + res;
+						j = 0;
+					}
+					j += 1;
+				}
+				
+			}
+			return res;
+			
+		}
+		public static String longToString(long l) {
+			String s="";
+			while (l>0) {
+				s=l%10+s;
+				l=l/10;
+			}
+			String res="";
+			int j=1;
+			for (int i=s.length()-1; i>=0; i--) {
+				res=s.charAt(i)+res;
+				
+				if (j == 3) {
+					res = " " + res;
+					j = 0;
+				}
+				j += 1;
+				
+			}
+			return res;
+			
+		}
 	
 	
 }

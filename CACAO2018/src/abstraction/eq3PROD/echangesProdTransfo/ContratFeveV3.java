@@ -228,13 +228,39 @@ public class ContratFeveV3 {
 				" // QuantiteProposition : "+quantiteProposition+
 				" PrixOffrePublique : "+prixOffrePublique+ " PrixDemande : "+prixDemande+ " // PrixProposition : "+prixProposition+"]";
 		}
-	
+	public static String doubleToString(double d) {
+		long l = ((long)(d*100.0));
+		String s="";
+		while (l>0) {
+			s=l%10+s;
+			l=l/10;
+		}
+		String res="";
+		int j=-1;
+		for (int i=s.length()-1; i>=0; i--) {
+			res=s.charAt(i)+res;
+			if (i==s.length()-2) {
+				res=","+res;
+				j=0;
+			}
+			if (j >= 0) {
+				if (j == 3) {
+					res = " " + res;
+					j = 0;
+				}
+				j += 1;
+			}
+			
+		}
+		return res;
+		
+	}
 	public String toString3() {
 		String [] strqualite = {"basse", "moyenne", "haute"};
 		String acheteur = ((Acteur) transformateur).getNom();
 		String vendeur = ((Acteur) producteur).getNom();
 		return "<tt><u>Contrat entre "+acheteur+" (Acheteur) et "+vendeur+" (Vendeur)</u><br>"+this.getProposition_Quantite()+" tonnes de fève de qualite "+strqualite[this.getQualite()]+" à "
-		+this.getProposition_Prix()+" € la tonne<br>Soit un total de <font color='green'>"+this.getProposition_Quantite()*this.getProposition_Prix()+" €</font></tt>";
+		+doubleToString(this.getProposition_Prix())+" € la tonne<br>Soit un total de <font color='green'>"+doubleToString(this.getProposition_Quantite()*this.getProposition_Prix())+" €</font></tt>";
 	}
 	
 	}
