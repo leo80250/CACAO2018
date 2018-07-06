@@ -22,17 +22,18 @@ public class MarcheChoco  implements Acteur{
 	public MarcheChoco() {
 		this.Journal_Marche_choco=new Journal("Journal Marche Choco");
 	}
-	public void actu() {
+public void actu() {
 		this.transformateurs= new ArrayList<Acteur>();
 
-		this.distributeurs= new ArrayList<Acteur>();
-		for (Acteur a : Monde.LE_MONDE.getActeurs()) {
-			if (a instanceof IVendeurChocoBis) {
+	this.distributeurs= new ArrayList<Acteur>();
+	for (Acteur a : Monde.LE_MONDE.getActeurs()) {
+		if (a instanceof IVendeurChocoBis) {
+			//if (!a.getNom().contains("7"))
 				this.transformateurs.add(a);
-			}
-			if (a instanceof IAcheteurChocoBis) {
-				this.distributeurs.add(a);
-			}
+		}
+		if (a instanceof IAcheteurChocoBis) {
+			this.distributeurs.add(a);
+		}
 	}/*
 	this.distributeurs.add((Monde.LE_MONDE.getActeur("Eq6DIST")));
 	this.distributeurs.add((Monde.LE_MONDE.getActeur("Eq1DIST")));
@@ -50,9 +51,9 @@ public class MarcheChoco  implements Acteur{
 	}
 	
 	public void next() {
-		this.actu();
+		actu();
 	
-		for (Acteur i : this.transformateurs) {//pour chaque transformateurs on ajoute son Prix si celui-ci est correct
+		for (Acteur i : this.transformateurs) {
 		IVendeurChocoBis ibis= (IVendeurChocoBis) i;
 		if (this.Prix_correct(ibis.getPrix())){
 			this.prix.add(ibis.getPrix());
@@ -60,7 +61,7 @@ public class MarcheChoco  implements Acteur{
 		}else {
 			this.Journal_Marche_choco.ajouter("Prix de "+i.getNom()+"incorrect");
 		}
-		if (this.Stock_correct((ibis.getStock()))){// pour chaque transformateur on ajoute son Stock si celui-ci est correct
+		if (this.Stock_correct((ibis.getStock()))){
 			
 		this.stock.add(ibis.getStock());
 		this.Journal_Marche_choco.ajouter("Stock de "+i.getNom()+"correct et ajouté");
@@ -89,7 +90,7 @@ public class MarcheChoco  implements Acteur{
 				Commande_nulle.add(a);				
 			}*/
 			ArrayList<ArrayList<ArrayList<Integer>>> commande=  new ArrayList<ArrayList<ArrayList<Integer>>>();
-		for (Acteur i : this.distributeurs) {//On récupère les commandes des différents distributeurs si celles-ci sont correctes
+		for (Acteur i : this.distributeurs) {
 			IAcheteurChocoBis ibis = (IAcheteurChocoBis) i;
 			/*if(!ibis.getCommande(this.prix, this.stock).equals(Commande_nulle)) {
 				annexe_commande_nulle= false;
@@ -103,14 +104,9 @@ public class MarcheChoco  implements Acteur{
 			}
 			
 		}
-		/*Ici on réparti aux transformateurs les commandes qui leur ont été fait
-		  Pour cela nous créons une Liste de Liste de Liste d'entiers car 
-		  L'indice de la première liste correspond au transformateur voulu
-		  L'indice de la seconde liste correspond au distributeur voulu
-		  L'indice de la troisième liste correspond à la commande voulue par ce 
-		  distributeur à ce transformateur*/
+		
 		ArrayList<ArrayList<ArrayList<Integer>>> livraison = new ArrayList<ArrayList<ArrayList<Integer>>>();
-		for(int j =0; j<this.transformateurs.size();j++) {
+		for(int j =0; j<3;j++) {
 			ArrayList<ArrayList<Integer>> Livraisoni =new ArrayList<ArrayList<Integer>>(); 
 			/*int qBonbonBQj=0;
 			int qBonbonMQj=0;
@@ -130,9 +126,7 @@ public class MarcheChoco  implements Acteur{
 			}
 			livraison.add(Livraisoni);		
 		}
-		/*Ici On demande à chaque transformateurs combien il livre vraiment à chaque     
-		 * distributeurs et on l'ajoute à une liste si cette livraison est correcte
-		 */
+		
 		int l=0;
 		ArrayList<ArrayList<ArrayList<Integer>>> Delivery = new ArrayList<ArrayList<ArrayList<Integer>>>();
 		for (Acteur i : this.transformateurs)	{
@@ -146,12 +140,9 @@ public class MarcheChoco  implements Acteur{
 			l++;
 		}
 		l=0;
-		/* On calcule la quantité de chaque produits effectivement reçue par le distributeur
-		 * On calcule combien chaque distributeurs devra payer pour les livraisons effectuées
-		 */
 		ArrayList<Double> paiement=new ArrayList<Double>();
 		ArrayList<ArrayList<Integer>> PourDIST=new ArrayList<ArrayList<Integer>>();
-		for (int j=0;j<this.distributeurs.size();j++) {
+		for (int j=0;j<2;j++) {
 			/*int qBonbonBQj=0;
 			int qBonbonMQj=0;
 			int qBonbonHQj=0;
@@ -177,14 +168,12 @@ public class MarcheChoco  implements Acteur{
 			}
 			
 			}
-		/*
-		 * On livre chaque distributeur et on lui envoie le paiement
-		 */
 		for (Acteur i : this.distributeurs) {
 			IAcheteurChocoBis ibis = (IAcheteurChocoBis) i;
 			this.Journal_Marche_choco.ajouter("Envoie de "+PourDIST.get(l).toString()+" à "+i.getNom()+"et ce dernier doit payer "+paiement.get(l));
 			ibis.livraison(PourDIST.get(l),paiement.get(l));
 			l++;
+			System.out.println("Le distributeur est"+((Acteur) ibis).getNom());
 		}
 		l=0;
 	}
@@ -193,12 +182,7 @@ public class MarcheChoco  implements Acteur{
 		// TODO Auto-generated method stub
 		return "MarcheChoco";
 	}
-	/**
-	 * 
-	 * @param P Un GPrix2 quelconque 
-	 * @return si tout les prix sont bien postifs ou nuls, de même pour les intervalles
-	 */
-	private boolean Prix_correct(GPrix2 P) { 
+	private boolean Prix_correct(GPrix2 P) {
 		boolean res=true;
 		ArrayList<Double[]> Prix =P.getPrix();
 		for(Double[] i :Prix) {
@@ -220,11 +204,6 @@ public class MarcheChoco  implements Acteur{
 		}
 		return res;
 	}
-	/**
-	 * 
-	 * @param Stock Liste d'entiers modélisant le stock d'une équipe
-	 * @return Si le stock est bien positifs ou nuls pour chaque produits
-	 */
 	private boolean Stock_correct(ArrayList<Integer> Stock) {
 		for (Integer i:Stock) {
 			if (i<0) {
@@ -233,11 +212,6 @@ public class MarcheChoco  implements Acteur{
 		}
 		return true ;
 		}
-	/**
-	 * 
-	 * @param C Commande classique d'un acteur 
-	 * @return Si tout les quantités demandées sont positives ou nulles
-	 */
 	private boolean Commande_correct(ArrayList<ArrayList<Integer>> C) {
 		for(ArrayList<Integer> c:C) {
 			for (Integer i:c) {
@@ -248,11 +222,6 @@ public class MarcheChoco  implements Acteur{
 		}
 		return true;
 	}
-	/**
-	 * 
-	 * @param C Livraison classique d'un trnasformateur
-	 * @return Si tout les quantités livrées sont positives ou nulles
-	 */
 	private boolean Livraison_correct(ArrayList<ArrayList<Integer>> C) {
 		for(ArrayList<Integer> c:C) {
 			for (Integer i:c) {

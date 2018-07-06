@@ -171,7 +171,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		journalEq6.ajouter("marge sur tablettes basse qualité = " + Double.toString(this.marge.get(3)));
 		journalEq6.ajouter("marge sur tablettes moyenne qualité = " + Double.toString(this.marge.get(4)));
 		journalEq6.ajouter("marge sur tablettes haute qualité = " + Double.toString(this.marge.get(5)));
-
+ 
 	}
 	
 	
@@ -364,14 +364,13 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			stock_CMG2=(int) (0.2*stock_CMG_min2);
 		}
 		commande.get(equipe_stock_CMG_min2).set(1, stock_CMG2+11712-stock_CMG1);
-
+		
 		
 		return commande;
 	}
-	//Léopold Petitjean
 	@Override
 	public void livraison(ArrayList<Integer> livraison, double paiement) {
-		// TODO Auto-generated method stub
+ 		// TODO Auto-generated method stub
 		for (int i=0;i<livraison.size();i++) {
 			this.stock.set(i, this.stock.get(i)+livraison.get(i));
 		}
