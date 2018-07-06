@@ -224,11 +224,13 @@ public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayLi
 	demande[1]=0;
 	demande[2]=29167;
 	demande[3]=12500;
+	double[][] PrixVentes = new double[3][6];
 		ArrayList<ArrayList<Integer>> commandeFinale = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer> listeT = new ArrayList<Integer>() ;
 		String act = "" ;
 		ArrayList<Acteur> acteurs=Monde.LE_MONDE.getActeurs();
 		ArrayList<IVendeurChocoBis> transfo = new ArrayList<IVendeurChocoBis>();
+		Double[][] PrixVente = new Double[3][6];
 		for (Acteur a : acteurs) {
 			if(a instanceof IVendeurChocoBis) {
 				transfo.add((IVendeurChocoBis) a);
@@ -241,7 +243,9 @@ public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayLi
 					prix = new ArrayList<Double>();
 					for (int j =0; j<transfo.size();j++) {
 						prix.add(transfo.get(j).getPrix().getPrixProduit(demande[i],i));
+						PrixVente[j][i]=transfo.get(j).getPrix().getPrixProduit(demande[i],i);
 					}
+					
 					listeT = listeTriee(prix);
 					
 						if(Stock.get(listeT.indexOf(0)).get(i)>= 0.6*demande[i]){
@@ -279,7 +283,12 @@ public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayLi
 				this.journal.ajouter("Tablettes MQ : "+l.get(4)+"; Tablettes HQ : "+l.get(5)+"; Confiseries MQ : "+l.get(1)+"; Confiseries MQ : "+l.get(2));	
 				this.journal.ajouter("");
 			}
-		}	
+		}
+		double[] PrixMoyenVente = new double[6];
+		for(int i=0;i<6;i++) {
+			PrixMoyenVente[i]=(PrixVente[0][i]+PrixVente[1][i]+PrixVente[3][i])/3;
+		}
+		this.changerPrix(PrixMoyenVente);
 		return commandeFinale;
 	}
 
