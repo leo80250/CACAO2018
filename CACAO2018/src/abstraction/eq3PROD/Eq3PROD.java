@@ -139,9 +139,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		for(int i=0; i<this.stockmoyen.size(); i++) {
 			stockm+=stockmoyen.get(i).get(0);
 		}
+		//System.out.println(stockmoyen);
+		//System.out.println(stockm);
 		return stockm;
 		
 	}
+	
 	
 	public int quantiteStockFin() {
 		int stockf = 0;
@@ -160,7 +163,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		stockm.add(stock);
 		stockm.add(0);
 		this.stockmoyen.add(stockm);
+		//System.out.println(stockmoyen);
 	}
+	
 	
 	public void ajouterStockFin(int stock) {	
 		List<Integer> stockf = new ArrayList<Integer>();
@@ -357,6 +362,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		@author Claire, Pierre et Morgane
 		**/
 		public void next() {
+			/*List<Integer> a=new ArrayList<Integer>();
+			a.add(30000);
+			a.add(0);
+			this.stockmoyen.add(a);
+			System.out.println(stockmoyen);*/
 			int x=Monde.LE_MONDE.getStep();
 			int prodBresil=0;
 			int prodIndo=0;
@@ -408,11 +418,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			double coeffAmerique = balai.pertesMaladie();
 			double coeffIndonesie = foreur.pertesMaladie();
 
+			this.ajouterStockFin((int) coeffAmerique*prodfin);
+			this.ajouterStockMoyen((int) (coeffAmerique*prodBresil+coeffIndonesie*prodIndo));
+			
 			double prixAchatAfrique = 0.0;
 			int qteAchatAfrique = 0;
-			this.ajouterStockMoyen((int) (coeffAmerique*prodBresil+coeffIndonesie*prodIndo));
-			this.ajouterStockFin((int) (coeffAmerique*prodfin));
-			this.solde -= (prodBresil + prodIndo + prodfin)*1212;
+
 			if(this.quantiteStockMoyen()<this.getStockMoyenCritique()) {
 				prixAchatAfrique = ((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).getPrix()*(this.getStockMoyenCritique()-this.quantiteStockMoyen());
 				this.solde-= prixAchatAfrique;
@@ -425,14 +436,14 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			
 			this.stockQH.setValeur(this,this.quantiteStockFin());
 			this.stockQM.setValeur(this, this.quantiteStockMoyen());
-			this.solde2.setValeur(this, 400000000+this.solde);
 			
 			this.getJournal().ajouter("> Step "+x);
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Stocks & solde :");
-			this.getJournal().ajouter("Stock moyenne qualité : "+ longToString((long) getStockQMoy().getValeur())+" tonnes");
-			this.getJournal().ajouter("Stock haute qualité : "+ longToString((long) getStockQHaut().getValeur())+" tonnes");
+			this.getJournal().ajouter("Stock moyenne qualité : "+ longToString((long) this.quantiteStockMoyen())+" tonnes");
+			this.getJournal().ajouter("Stock haute qualité : "+ longToString((long) this.quantiteStockFin())+" tonnes");
 			this.getJournal().ajouter("Solde : "+ doubleToString((double) getSolde2().getValeur())+" €");
+			
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Production :");
 			this.getJournal().ajouter("<tt>- Moyenne qualité (Indonésie) : "+longToString(((long) (coeffIndonesie*prodIndo)))+" tonnes</tt>");
@@ -474,6 +485,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			}
 			this.getJournal().ajouter("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
 			this.getJournal().ajouter(" ");
+			this.solde=this.solde-(prodBresil + prodIndo + prodfin)*121+s;
+			this.solde2.setValeur(this, this.solde);
 			
 			//System.out.println(stockmoyen.toString());
 		}

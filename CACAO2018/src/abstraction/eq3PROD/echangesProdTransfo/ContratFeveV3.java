@@ -5,7 +5,7 @@ import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
 
 /**
- * @author Claire
+ * @author Claire et Grégoire
  */
 
 public class ContratFeveV3 {
