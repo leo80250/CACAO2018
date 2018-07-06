@@ -413,8 +413,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		}*/
 		
 		//Mise à jour du solde pour les salaires
-		this.getSolde().setValeur(this,this.getSolde().getValeur()-this.getNombreEmployes().getValeur()*this.SALAIRE_MOYEN);
-		this.getJournal().ajouter("Versement des salaires = "+this.getNombreEmployes().getValeur()*this.SALAIRE_MOYEN);
+		this.getSolde().setValeur(this,this.getSolde().getValeur()-(1-this.getAbsenteisme().getValeur())*this.getNombreEmployes().getValeur()*this.SALAIRE_MOYEN);
+		this.getJournal().ajouter("Versement des salaires = "+(1-this.getAbsenteisme().getValeur())*this.getNombreEmployes().getValeur()*this.SALAIRE_MOYEN);
 		
 		//Mise à jour du solde pour les coûts de transformation
 		cout_transfo=0;
