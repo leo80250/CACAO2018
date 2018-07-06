@@ -74,40 +74,52 @@ public Eq1DIST()  {
 
 	@Override
 	public void next() {
-		// on fait une demande occasionnelle si on dépasse un seuil limite de sotck
+		
+		this.venteOccalim();
+		this.venteOccaspe();
+		
+	}
+	
+	public int[] venteOccalim() {
+		// on fait une demande occasionnelle si on dépasse un seuil limite de stock
+		int[] vente = {0,0,0,0,0,0};
 		int[] stocklim = {0,120000,30000,0,40000,20000};
 		List<IvendeurOccasionnelChocoBis> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoBis>();
 		for (Acteur a : Monde.LE_MONDE.getActeurs()) {
 			if (a instanceof IvendeurOccasionnelChocoBis) {
-			vendeursOcca.add((IvendeurOccasionnelChocoBis) a);
+				vendeursOcca.add((IvendeurOccasionnelChocoBis) a);
+			}
+		}		
+		for (int i =0; i<this.stock.getstock().size();i++) {
+			if (this.stock.getstock().get(i).total()<stocklim[i]) {
+				DemandeAO d= new DemandeAO(stocklim[i]-this.stock.getstock().get(i).total(),i+1);
+				ArrayList<Integer> prop= new ArrayList<Integer>();
+				for (IvendeurOccasionnelChocoBis v : vendeursOcca) {
+					prop.add(v.getReponseBis(d));
+				}
+				int a=Integer.MAX_VALUE;
+				int n=0;
+				for(int ind=0; ind<prop.size(); ind++){
+			  		if(a>prop.get(ind)){
+			  			a=prop.get(ind);
+			  			n=ind;
+			  		}
+				}
+				if (a!=Double.MAX_VALUE){
+				  	this.stock.ajouter(d.getQuantite(),i);
+				  	solde.setValeur(this, solde.getValeur()-a);
+				  	vendeursOcca.get(n).envoyerReponseBis(d.getQuantite(),d.getQualite(),a);
+				  	vente[i] = stocklim[i]-this.stock.getstock().get(i).total(); // dans le next on utilise cette variable pour connaitre la somme de nos vente occasionelles
+				} 
+							 
 			}
 		}
-		
-		for (int i =0; i<this.stock.getstock().size();i++) {
-				if (this.stock.getstock().get(i).total()<stocklim[i]) {
-					DemandeAO d= new DemandeAO(stocklim[i]-this.stock.getstock().get(i).total(),i+1);
-					ArrayList<Integer> prop= new ArrayList<Integer>();
-					for (IvendeurOccasionnelChocoBis v : vendeursOcca) {
-						prop.add(v.getReponseBis(d));
-					}
-					int a=Integer.MAX_VALUE;
-					int n=0;
-					for(int ind=0; ind<prop.size(); ind++){
-					  		if(a>prop.get(ind)){
-					  			a=prop.get(ind);
-					  			n=ind;
-					  		}
-					  }
-					 if (a!=Double.MAX_VALUE){
-					  	this.stock.ajouter(d.getQuantite(),i);
-					  	solde.setValeur(this, solde.getValeur()-a);
-					  	vendeursOcca.get(n).envoyerReponseBis(d.getQuantite(),d.getQualite(),a);
-					  } 
-					 
-				}
-					
-			
-		}	
+		return vente;
+	}
+	
+	public int[] venteOccaspe() {
+		// on fait une demande occasionnelle en prevision des mois de forte consomation
+		int[] vente  = {0,0,0,0,0,0};
 		if(Monde.LE_MONDE.getStep()%12==2
 				||Monde.LE_MONDE.getStep()%12==3
 				||Monde.LE_MONDE.getStep()%12==4
@@ -117,6 +129,7 @@ public Eq1DIST()  {
 				||Monde.LE_MONDE.getStep()%12==20
 				||Monde.LE_MONDE.getStep()%12==21) {
 			int[] stockspe = {0,29877,13125,0,21875,9375};
+			List<IvendeurOccasionnelChocoBis> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoBis>();
 			for (int i =0; i<this.stock.getstock().size();i++) {
 					DemandeAO d= new DemandeAO(stockspe[i],i+1);
 					ArrayList<Integer> prop= new ArrayList<Integer>();
@@ -135,11 +148,13 @@ public Eq1DIST()  {
 					  	this.stock.ajouter(d.getQuantite(),i);
 					  	solde.setValeur(this, solde.getValeur()-a);
 					  	vendeursOcca.get(n).envoyerReponseBis(d.getQuantite(),d.getQualite(),a);
+					  	vente[i]=stockspe[i];
 					  } 
 					 
 			}
-				}
-			}
+		}
+		return vente;
+	}
 
 	@Override
 	public GrilleQuantite commander(GrilleQuantite Q) {
@@ -156,8 +171,19 @@ public Eq1DIST()  {
 				this.stock.retirer(this.stock.getstock().get(i).total(),i+1);
 				}
 				solde.setValeur(this, solde.getValeur()+res[i]*prix[i]);
-			}
+		}
+		// mise a jour de l'efficacite en fonction de ce qu'on a pu vendre
+		// selon ce qu'on nous avait demande
+		double somme = 0;
+		double a = 0;
+		for (int i=0; i<res.length; i++) {
+			a = a + (Q.getValeur(i)-res[i]);
+			somme = somme + Q.getValeur(i);
+		}
+		solde.setValeur(this, 1-(double) a/somme);
+		
 		return new GrilleQuantite(res);
+		
 	}
 	
 	
