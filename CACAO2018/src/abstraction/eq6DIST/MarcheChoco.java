@@ -183,6 +183,9 @@ public void actu() {
 		return "MarcheChoco";
 	}
 	private boolean Prix_correct(GPrix2 P) {
+		if (P==null) {
+			return false;
+		}
 		boolean res=true;
 		ArrayList<Double[]> Prix =P.getPrix();
 		for(Double[] i :Prix) {
@@ -205,6 +208,9 @@ public void actu() {
 		return res;
 	}
 	private boolean Stock_correct(ArrayList<Integer> Stock) {
+		if (Stock==null) {
+			return false;
+		}
 		for (Integer i:Stock) {
 			if (i<0) {
 				return false;
@@ -213,6 +219,9 @@ public void actu() {
 		return true ;
 		}
 	private boolean Commande_correct(ArrayList<ArrayList<Integer>> C) {
+		if (C==null) {
+			return false;
+		}
 		for(ArrayList<Integer> c:C) {
 			for (Integer i:c) {
 				if (i<0) {
@@ -223,6 +232,9 @@ public void actu() {
 		return true;
 	}
 	private boolean Livraison_correct(ArrayList<ArrayList<Integer>> C) {
+		if (C==null) {
+			return false;
+		}
 		for(ArrayList<Integer> c:C) {
 			for (Integer i:c) {
 				if (i<0) {
