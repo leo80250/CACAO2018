@@ -455,9 +455,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		stockFeves[qualite].setValeur(this, value);
 		this.setStockFeves(stockFeves);
 	}
+	
+	//Changement dans getStockPoudre pour les 10 acteurs
 	public Indicateur[] getStockPoudre() {
-		return this.stockPoudre;
+		return this.total_quantite(this.getStockPoudre2());
 	}
+	
+	
 	public void setStockPoudre(Indicateur[] stockPoudre) {
 		this.stockPoudre = stockPoudre;
 	}
@@ -1354,12 +1358,17 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * Interface IVendeurPoudre
 	 * @author boulardmaelle margauxgrand bernardjoseph
 	 */
+	
+	
+	@Override
 
 	
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		ContratPoudre[] catalogue=new ContratPoudre[3];
-		for(int qualite=0;qualite<3;qualite++) {
-			catalogue[qualite] = new ContratPoudre(qualite,(int)this.getStockPoudre(qualite).getValeur(), this.prixVentePoudre[qualite].getValeur(),acheteur,(IVendeurPoudre)this,false);
+		for(Indicateur[] prix_vente_entrep:this.prixVentePoudre2) {
+			for(int qualite=0;qualite<3;qualite++) {
+				catalogue[qualite] = new ContratPoudre(qualite,(int)this.getStockPoudre(qualite).getValeur(), prix_vente_entrep[qualite].getValeur(),acheteur,(IVendeurPoudre)this,false);
+			}
 		}
 		return catalogue;
 	}
@@ -1690,6 +1699,24 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	@Override
 	public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
 		this.stockTablettes[qualite-1].setValeur(this, this.stockTablettes[qualite-4].getValeur()-quantite);
+	}
+	
+	/**
+	 * @author bernardjoseph
+	 * @param var2 une variable de V2
+	 * @return Total des 10 acteurs, pour une quantite (non applicable à un prix par exemple)
+	 */
+	public Indicateur[] total_quantite(List<Indicateur[]> var2) {
+		Indicateur[] total=new Indicateur[3];
+		total[0]=new Indicateur("var20",this);
+		total[1]=new Indicateur("var21",this);
+		total[2]=new Indicateur("var23",this);
+		for(Indicateur[] i:var2) {
+			total[0].setValeur(this, total[0].getValeur()+i[0].getValeur());
+			total[1].setValeur(this, total[1].getValeur()+i[1].getValeur());
+			total[2].setValeur(this, total[2].getValeur()+i[2].getValeur());
+		}
+		return total;
 	}
 	
 	
