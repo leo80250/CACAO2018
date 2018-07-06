@@ -1449,6 +1449,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	        }
 	    });
 		
+		
 		int[] sommeQuantiteOffresRetenuesParQualite = new int[3];
 		int[] n = new int[3];
 		boolean stopLoop = false;
@@ -1466,16 +1467,28 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 					offresRetenuesParQualite.get(offre.getQualite()).add(offre);
 					n[offre.getQualite()]++;
 				}*/
+				System.out.println(offre.toString2());
 				sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] += offre.getOffrePublique_Quantite();
-				if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] > getMaximumOfProduction(3,offre.getQualite())) {
+				if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] > quantitesAttenduesParQualite[offre.getQualite()]) {
+					offre.setDemande_Quantite(quantitesAttenduesParQualite[offre.getQualite()] - (sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] - offre.getOffrePublique_Quantite()));
+					sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] += offre.getDemande_Quantite() - offre.getOffrePublique_Quantite();
+					if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] > getMaximumOfProduction(3,offre.getQualite())) {
+						offre.setDemande_Quantite(getMaximumOfProduction(3,offre.getQualite()) - (sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] - offre.getOffrePublique_Quantite()));
+						sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] += offre.getDemande_Quantite() - offre.getOffrePublique_Quantite();
+						stopLoop = true;
+					}
+				}
+				else if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] > getMaximumOfProduction(3,offre.getQualite())) {
 					offre.setDemande_Quantite(getMaximumOfProduction(3,offre.getQualite()) - (sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] - offre.getOffrePublique_Quantite()));
+					sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] += offre.getDemande_Quantite() - offre.getOffrePublique_Quantite();
 					stopLoop = true;
 				}
-				else if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] > quantitesAttenduesParQualite[offre.getQualite()]) {
-					offre.setDemande_Quantite(quantitesAttenduesParQualite[offre.getQualite()] - (sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] - offre.getOffrePublique_Quantite()));
-				}
-				else
+				else {
 					offre.setDemande_Quantite(offre.getOffrePublique_Quantite());
+					sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] += offre.getDemande_Quantite() - offre.getOffrePublique_Quantite();
+				}
+				
+				System.out.println(offre.toString2());
 				
 				offresRetenuesParQualite.get(offre.getQualite()).add(offre);
 				n[offre.getQualite()]++;
@@ -1485,8 +1498,14 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		List<ContratFeveV3> offresRetenues = new ArrayList<ContratFeveV3>(); 
 		for(int qualite = 0; qualite < 3; qualite++) {
 			for(int i = 0; i < n[qualite]; i++) {
-				offresRetenues.add(offresRetenuesParQualite.get(qualite).get(i));
+				if(offresRetenuesParQualite.get(qualite).get(i).getDemande_Quantite() > 0)
+					offresRetenues.add(offresRetenuesParQualite.get(qualite).get(i));
 			} 
+		}
+		
+		System.out.println("---");
+		for(ContratFeveV3 offre : offresRetenues) {
+			System.out.println(offre.toString2());
 		}
 		
 		return offresRetenues;
