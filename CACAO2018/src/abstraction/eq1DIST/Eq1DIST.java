@@ -13,6 +13,7 @@ import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoBis;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq6DIST.IAcheteurChoco;
 import abstraction.eq6DIST.IAcheteurChocoBis;
 import abstraction.eq7TRAN.Eq7TRAN;
@@ -66,7 +67,6 @@ public Eq1DIST()  {
 	Monde.LE_MONDE.ajouterIndicateur(this.PrixConfHdG);
 		
 		this.journal= new Journal("Journal de Eq1DIST");
-		journal.ajouter("Absentéisme");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
 }
 	@Override
@@ -76,30 +76,31 @@ public Eq1DIST()  {
 
 	@Override
 	public void next() {
-		
+		for(int i=0; i<6; i++) {
+			this.nombreAchatsOccasionnels[i].setValeur(this,0);
+		}
 		this.venteOccalim();
 		this.venteOccaspe();
 		
 	}
 	
-	public int[] venteOccalim() {
+	public void venteOccalim() {
 		// on fait une demande occasionnelle si on dépasse un seuil limite de stock
-		int[] vente = {0,0,0,0,0,0};
 		int[] stocklim = {0,120000,30000,0,40000,20000};
-		List<IvendeurOccasionnelChocoBis> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoBis>();
+		List<IvendeurOccasionnelChocoTer> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoTer>();
 		for (Acteur a : Monde.LE_MONDE.getActeurs()) {
-			if (a instanceof IvendeurOccasionnelChocoBis) {
-				vendeursOcca.add((IvendeurOccasionnelChocoBis) a);
+			if (a instanceof IvendeurOccasionnelChocoTer) {
+				vendeursOcca.add((IvendeurOccasionnelChocoTer) a);
 			}
 		}		
 		for (int i =0; i<this.stock.getstock().size();i++) {
 			if (this.stock.getstock().get(i).total()<stocklim[i]) {
 				DemandeAO d= new DemandeAO(stocklim[i]-this.stock.getstock().get(i).total(),i+1);
-				ArrayList<Integer> prop= new ArrayList<Integer>();
-				for (IvendeurOccasionnelChocoBis v : vendeursOcca) {
-					prop.add(v.getReponseBis(d));
+				ArrayList<Double> prop= new ArrayList<Double>();
+				for (IvendeurOccasionnelChocoTer v : vendeursOcca) {
+					prop.add(v.getReponseTer(d));
 				}
-				int a=Integer.MAX_VALUE;
+				double a=Double.MAX_VALUE;
 				int n=0;
 				for(int ind=0; ind<prop.size(); ind++){
 			  		if(a>prop.get(ind)){
@@ -108,20 +109,18 @@ public Eq1DIST()  {
 			  		}
 				}
 				if (a!=Double.MAX_VALUE){
-				  	this.stock.ajouter(d.getQuantite(),i);
-				  	solde.setValeur(this, solde.getValeur()-a);
-				  	vendeursOcca.get(n).envoyerReponseBis(d.getQuantite(),d.getQualite(),a);
-				  	vente[i] = stocklim[i]-this.stock.getstock().get(i).total(); // dans le next on utilise cette variable pour connaitre la somme de nos vente occasionelles
+				  this.stock.ajouter(d.getQuantite(),i);
+				  solde.setValeur(this, solde.getValeur()-a);
+				  vendeursOcca.get(n).envoyerReponseTer(this,d.getQuantite(),d.getQualite(),a);
+				  this.nombreAchatsOccasionnels[i].setValeur(this,this.nombreAchatsOccasionnels[i].getValeur()+d.getQuantite());
 				} 
 							 
 			}
 		}
-		return vente;
 	}
 	
-	public int[] venteOccaspe() {
+	public void venteOccaspe() {
 		// on fait une demande occasionnelle en prevision des mois de forte consomation
-		int[] vente  = {0,0,0,0,0,0};
 		if(Monde.LE_MONDE.getStep()%12==2
 				||Monde.LE_MONDE.getStep()%12==3
 				||Monde.LE_MONDE.getStep()%12==4
@@ -131,14 +130,14 @@ public Eq1DIST()  {
 				||Monde.LE_MONDE.getStep()%12==20
 				||Monde.LE_MONDE.getStep()%12==21) {
 			int[] stockspe = {0,29877,13125,0,21875,9375};
-			List<IvendeurOccasionnelChocoBis> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoBis>();
+			List<IvendeurOccasionnelChocoTer> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoTer>();
 			for (int i =0; i<this.stock.getstock().size();i++) {
 					DemandeAO d= new DemandeAO(stockspe[i],i+1);
-					ArrayList<Integer> prop= new ArrayList<Integer>();
-					for (IvendeurOccasionnelChocoBis v : vendeursOcca) {
-						prop.add(v.getReponseBis(d));
+					ArrayList<Double> prop= new ArrayList<Double>();
+					for (IvendeurOccasionnelChocoTer v : vendeursOcca) {
+						prop.add(v.getReponseTer(d));
 					}
-					int a=Integer.MAX_VALUE;
+					double a=Double.MAX_VALUE;
 					int n=0;
 					for(int ind=0; ind<prop.size(); ind++){
 					  		if(a>prop.get(ind)){
@@ -149,13 +148,12 @@ public Eq1DIST()  {
 					 if (a!=Double.MAX_VALUE){
 					  	this.stock.ajouter(d.getQuantite(),i);
 					  	solde.setValeur(this, solde.getValeur()-a);
-					  	vendeursOcca.get(n).envoyerReponseBis(d.getQuantite(),d.getQualite(),a);
-					  	vente[i]=stockspe[i];
+					  	vendeursOcca.get(n).envoyerReponseTer(this,d.getQuantite(),d.getQualite(),a);
+					  	this.nombreAchatsOccasionnels[i].setValeur(this,this.nombreAchatsOccasionnels[i].getValeur()+d.getQuantite());
 					  } 
 					 
 			}
 		}
-		return vente;
 	}
 
 	@Override
