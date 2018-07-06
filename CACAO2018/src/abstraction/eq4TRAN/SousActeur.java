@@ -302,7 +302,7 @@ IVendeurPoudre {
 	
 	public void coutsSupplementaires() {
 		double CA = this.chiffreDAffaire.getValeur() ; 
-		double soldeActuelle = this.solde.getValeur() ;
+		double soldeActuel = this.solde.getValeur() ;
 		double chargesFixes = 0 ;
 		double chargesVariables = 0 ; 
 		if (this.taillePME < 50 ) {
@@ -315,7 +315,7 @@ IVendeurPoudre {
 			chargesFixes = 0 ; 
 			chargesVariables = 0.3*CA ; 
 		}
-		this.solde.setValeur(this, soldeActuelle - chargesFixes - chargesVariables);
+		this.solde.setValeur(this, soldeActuel - chargesFixes - chargesVariables);
 	}
 
 	public double getLabel() {
