@@ -277,8 +277,14 @@ public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayLi
 							
 						}
 			}}
-						
-					
+		this.journal.ajouter("CONTRAT :");	
+		this.journal.ajouter("");	
+		for(ArrayList<Integer> l: commandeFinale) {
+			for(Integer i: l) {
+				this.journal.ajouter("Tablettes MQ : "+l.get(4)+"; Tablettes HQ : "+l.get(5)+"; Confiseries MQ : "+l.get(1)+"; Confiseries MQ : "+l.get(2));	
+				this.journal.ajouter("");
+			}
+		}	
 		return commandeFinale;
 	}
 
