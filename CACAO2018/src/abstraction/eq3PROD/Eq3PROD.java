@@ -35,6 +35,58 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private Maladie foreur;
 	private Maladie balai;
 	
+	private int stockMoyenCritique;
+	
+	
+
+
+	// Constructeur
+	/**
+	 * @author Claire
+	 */
+
+	public Eq3PROD() {
+		
+		setNom("Eq3PROD");
+		
+		setJournal(new Journal("Journal de Eq3PROD"));
+		Monde.LE_MONDE.ajouterJournal(getJournal());
+		Monde.LE_MONDE.ajouterIndicateur(getStockQHaut());
+		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
+		Monde.LE_MONDE.ajouterIndicateur(getSolde2());
+		
+		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
+		ArrayList<IVendeurFeveV4> producteurs = new ArrayList<IVendeurFeveV4>();
+		ArrayList<IAcheteurFeveV4> transformateurs = new ArrayList<IAcheteurFeveV4>();
+		
+		for (Acteur acteur : listActeurs) {
+			if (acteur instanceof IVendeurFeveV4) {
+				producteurs.add((IVendeurFeveV4) acteur);
+			} else if (acteur instanceof IAcheteurFeveV4) {
+				transformateurs.add((IAcheteurFeveV4) acteur);
+			}
+		}
+		
+		this.stockMoyenCritique = 500000;
+		this.stockmoyen = new ArrayList<List<Integer>>();
+		this.stockfin = new ArrayList<List<Integer>>();
+		this.ajouterStockMoyen(75000);
+		this.ajouterStockFin(24000);
+		this.listeContrats=new ArrayList<ContratFeveV3>();
+		this.foreur = new Maladie(0.042, 0.10, 4, "Foreur des cabosses");
+		this.balai = new Maladie(0.008, 0.60, 3, "Balai de sorcière");
+		
+		
+		this.nom = "Eq3PROD";
+		
+		this.marche = new MarcheFeve("Marche central");
+		
+		Monde.LE_MONDE.ajouterActeur(marche);
+	}
+	
+	
+	
+	// Getters et Setters
 	/**
 	 * @author Morgane
 	 */
@@ -46,7 +98,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		this.nom=s;
 	}
 	
-
 	public double getSolde() {
 		return this.solde;
 	}
@@ -71,6 +122,18 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		return stockfin;
 	}
 	
+	public ArrayList<ContratFeveV3> getListeContrats(){
+		return this.listeContrats;
+	}
+	
+	
+	//-----------------------------------------------------------------------------------//
+	// Gestion du stock
+	
+	/**
+	 * @author Pierre
+	 * 
+	 */
 	public int quantiteStockMoyen() {
 		int stockm = 0;
 		for(int i=0; i<this.stockmoyen.size(); i++) {
@@ -88,6 +151,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		return stockf;
 	}
 	
+	public int getStockMoyenCritique() {
+		return this.stockMoyenCritique;
+	}
 	
 	public void ajouterStockMoyen(int stock) {	
 		List<Integer> stockm = new ArrayList<Integer>();
@@ -103,55 +169,30 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		this.stockfin.add(stockf);
 	}
 	
-
-	
-	/**
-	 * @author Claire
-	 */
-	public Eq3PROD() {
-		
-		setNom("Eq3PROD");
-		
-		setJournal(new Journal("Journal de Eq3PROD"));
-		Monde.LE_MONDE.ajouterJournal(getJournal());
-		Monde.LE_MONDE.ajouterIndicateur(getStockQHaut());
-		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
-		Monde.LE_MONDE.ajouterIndicateur(getSolde2());
-		
-		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
-		ArrayList<IVendeurFeveV4> producteurs = new ArrayList<IVendeurFeveV4>();
-		ArrayList<IAcheteurFeveV4> transformateurs = new ArrayList<IAcheteurFeveV4>();
-		
-		for (Acteur acteur : listActeurs) {
-			if (acteur instanceof IVendeurFeveV4) {
-				producteurs.add((IVendeurFeveV4) acteur);
-			} else if (acteur instanceof IAcheteurFeveV4) {
-				transformateurs.add((IAcheteurFeveV4) acteur);
+	public void vieillirStock() {
+		for(int i=0; i<this.stockmoyen.size(); i++) {
+			this.stockmoyen.get(i).set(1,this.stockmoyen.get(i).get(1)+1);
+		}
+		for(int i=0; i<this.stockmoyen.size(); i++) {
+			if(this.stockmoyen.get(i).get(1)>=12) {
+				this.stockmoyen.remove(i);
 			}
 		}
 		
-		
-		this.stockmoyen = new ArrayList<List<Integer>>();
-		this.stockfin = new ArrayList<List<Integer>>();
-		this.ajouterStockMoyen(75000);
-		this.ajouterStockFin(24000);
-		this.listeContrats=new ArrayList<ContratFeveV3>();
-		this.foreur = new Maladie(0.042, 0.10, 6, "Foreur des cabosses");
-		this.balai = new Maladie(0.008, 0.60, 4, "Balai de sorcière");
-		
-		
-		this.nom = "Eq3PROD";
-		
-		this.marche = new MarcheFeve("Marche central");
-		
-		Monde.LE_MONDE.ajouterActeur(marche);
+		for(int i=0; i<this.stockfin.size(); i++) {
+			this.stockfin.get(i).set(1,this.stockfin.get(i).get(1)+1);
+		}
+		for(int i=0; i<this.stockfin.size(); i++) {
+			if(this.stockfin.get(i).get(1)>=12) {
+				this.stockfin.remove(i);
+			}
+		}
 	}
 	
-		
-		public ArrayList<ContratFeveV3> getListeContrats(){
-			return this.listeContrats;
-		}
-		
+	//-----------------------------------------------------------------------------------//
+	// Implementation du marché
+	
+
 		/**
 		 * @author Morgane et Pierre
 		 */
@@ -284,29 +325,17 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				}
 			}
 		
-		/**
-		 * @author Pierre
-		 */
-		
-		public void vieillirStock() {
-			for(int i=0; i<this.stockmoyen.size(); i++) {
-				this.stockmoyen.get(i).set(1,this.stockmoyen.get(i).get(1)+1);
-			}
-			for(int i=0; i<this.stockmoyen.size(); i++) {
-				if(this.stockmoyen.get(i).get(1)>=12) {
-					this.stockmoyen.remove(i);
+		public int getRecette(List<ContratFeveV3> resultVente) {
+			int recette=0;
+			for (ContratFeveV3 a : resultVente) {
+				if (a.getReponse()==true) {
+				recette+=a.getProposition_Quantite()*a.getProposition_Prix();
 				}
 			}
-			
-			for(int i=0; i<this.stockfin.size(); i++) {
-				this.stockfin.get(i).set(1,this.stockfin.get(i).get(1)+1);
-			}
-			for(int i=0; i<this.stockfin.size(); i++) {
-				if(this.stockfin.get(i).get(1)>=12) {
-					this.stockfin.remove(i);
-				}
-			}
+			return recette;
 		}
+		
+		
 		
 		
 //		/**
@@ -319,6 +348,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 //		public boolean maladieIndo() {
 //			return (Math.random()<=0.042);
 //		}
+		
+		//--------------------------------------------------------------------------------------
+		// Next
+		
+		
 		/**
 		@author Claire, Pierre et Morgane
 		**/
@@ -375,11 +409,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			double coeffIndonesie = foreur.pertesMaladie();
 			
 			this.ajouterStockMoyen((int) (coeffAmerique*prodBresil+coeffIndonesie*prodIndo));
-			this.ajouterStockFin((int) coeffAmerique*prodfin);
+			this.ajouterStockFin((int) (coeffAmerique*prodfin));
 			this.solde -= (prodBresil + prodIndo + prodfin)*1212;
-			if(this.quantiteStockMoyen()<29000) {
-				this.solde-=((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).getPrix()*(29000-this.quantiteStockMoyen());
-				this.ajouterStockMoyen(((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).acheter(29000-this.quantiteStockMoyen()));
+			if(this.quantiteStockMoyen()<this.getStockMoyenCritique()) {
+				this.solde-=((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).getPrix()*(this.getStockMoyenCritique()-this.quantiteStockMoyen());
+				this.ajouterStockMoyen(((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).acheter(this.getStockMoyenCritique()-this.quantiteStockMoyen()));
 			}
 
 			this.prodFeves[1]=(int) (coeffAmerique*prodBresil+coeffIndonesie*prodIndo);
@@ -387,33 +421,53 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			
 			this.stockQH.setValeur(this,this.quantiteStockFin());
 			this.stockQM.setValeur(this, this.quantiteStockMoyen());
-			this.solde2.setValeur(this, this.solde);
+			this.solde2.setValeur(this, 400000000+this.solde);
 			
-			this.getJournal().ajouter("> Step "+Monde.LE_MONDE.getStep()+" <");
-			this.getJournal().ajouter("Stocks & solde :");
-			this.getJournal().ajouter("- Stock moyenne qualité : "+ getStockQMoy().getValeur());
-			this.getJournal().ajouter("- Stock haute qualité : "+ getStockQHaut().getValeur());
-			this.getJournal().ajouter("- Solde : "+ getSolde2().getValeur());
+			this.getJournal().ajouter("> Step "+Monde.LE_MONDE.getStep());
 			this.getJournal().ajouter(" ");
-			this.getJournal().ajouter("Maladies :");
+			this.getJournal().ajouter("> Stocks & solde :");
+			this.getJournal().ajouter("Stock moyenne qualité : "+ getStockQMoy().getValeur());
+			this.getJournal().ajouter("Stock haute qualité : "+ getStockQHaut().getValeur());
+			this.getJournal().ajouter("Solde : "+ getSolde2().getValeur());
+			this.getJournal().ajouter(" ");
+			this.getJournal().ajouter("> Production :");
+			this.getJournal().ajouter("<tt>- Moyenne qualité (Indonésie) : "+((int) (coeffIndonesie*prodIndo))+"</tt>");
+			this.getJournal().ajouter("<tt>- Moyenene qualité (Brésil) : "+((int) (coeffAmerique*prodBresil))+"</tt>");
+			this.getJournal().ajouter("<tt>- Haute qualité (Equateur) : "+((int) (coeffAmerique*prodfin))+"</tt>");
+			this.getJournal().ajouter(" ");
+			this.getJournal().ajouter("> Maladies :");
 			if (foreur.getMaladieActive() == 0 && balai.getMaladieActive() == 0) {
-				this.getJournal().ajouter("- Les plantations sont saines");
+				this.getJournal().ajouter("<tt>- Les plantations sont saines</tt>");
 			} else {
 				if (foreur.getMaladieActive() > 0) {
-					this.getJournal().ajouter("- Invasion de foreurs des cabosses en Indonésie");
+					this.getJournal().ajouter("<tt>- Invasion de foreurs des cabosses en Indonésie</tt>");
 				}
 				if (balai.getMaladieActive() > 0) {
-					this.getJournal().ajouter("- Epidémie du Balai de Sorcière en Amérique du Sud");
+					this.getJournal().ajouter("<tt>- Epidémie du Balai de Sorcière en Amérique du Sud</tt>");
 				}
 			}
 			this.getJournal().ajouter(" ");
-			this.getJournal().ajouter("Echanges :");
-			for (ContratFeveV3 contrat : this.getListeContrats()) this.getJournal().ajouter("- "+contrat.toString());
-			this.getJournal().ajouter("------------------------------------------------------------------------------");
+			this.getJournal().ajouter("> Comptes :");
+			this.getJournal().ajouter("<tt>- Dépenses (Coûts de production) : <font color='red'>"+(prodBresil + prodIndo + prodfin)*1212+" €</font></tt>");
+			String s="";
+			for (ContratFeveV3 contrat : this.getListeContrats()) if (contrat.getReponse())s+=contrat.getProposition_Quantite()*contrat.getProposition_Prix();
+			this.getJournal().ajouter("<tt>- Recettes (Ventes) : <font color='green'>"+s+" €</tt></font>");
+			this.getJournal().ajouter(" ");
+			this.getJournal().ajouter("> Echanges :");
+			this.getJournal().ajouter(" ");
+			for (ContratFeveV3 contrat : this.getListeContrats()) {
+				if (contrat.getReponse() == true && contrat.getProposition_Quantite()*contrat.getProposition_Prix() != 0) {					
+					this.getJournal().ajouter(contrat.toString3());
+					this.getJournal().ajouter(" ");
+				}
+			}
+			this.getJournal().ajouter("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+			this.getJournal().ajouter(" ");
 			
 			//System.out.println(stockmoyen.toString());
 		}
 		
+		//------------------------------------------------------------------------------
 		//Journal 
 		/**
 		 * @author Claire
