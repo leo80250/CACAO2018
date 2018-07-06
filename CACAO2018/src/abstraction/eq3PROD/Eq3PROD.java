@@ -391,12 +391,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			
 			this.getJournal().ajouter("> Step "+Monde.LE_MONDE.getStep());
 			this.getJournal().ajouter(" ");
-			this.getJournal().ajouter("Stocks & solde :");
+			this.getJournal().ajouter("> Stocks & solde :");
 			this.getJournal().ajouter("- Stock moyenne qualité : "+ getStockQMoy().getValeur());
 			this.getJournal().ajouter("- Stock haute qualité : "+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("- Solde : "+ getSolde2().getValeur());
 			this.getJournal().ajouter(" ");
-			this.getJournal().ajouter("> Production ");
+			this.getJournal().ajouter("> Production :");
 			this.getJournal().ajouter("- Moyenne qualité (Indonésie) : "+((int) (coeffIndonesie*prodIndo)));
 			this.getJournal().ajouter("- Moyenene qualité (Brésil) : "+((int) (coeffAmerique*prodBresil)));
 			this.getJournal().ajouter("- Haute qualité (Equateur) : "+((int) (coeffAmerique*prodfin)));
