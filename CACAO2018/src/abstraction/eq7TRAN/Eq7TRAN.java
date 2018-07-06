@@ -10,7 +10,7 @@ import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq4TRAN.IVendeurChocoBis;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre; 
@@ -20,7 +20,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
  
-public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV4, IVendeurChocoBis, IvendeurOccasionnelChoco {
+public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV4, IVendeurChocoBis, IvendeurOccasionnelChocoTer {
 	
 	// 0 = BQ, 1 = MQ, 2 = HQ
 	private Indicateur[] stockFeves;
@@ -1441,7 +1441,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 					offresRetenuesParQualite.get(offre.getQualite()).add(offre);
 					n[offre.getQualite()]++;
 				}*/
-				System.out.println(offre.toString2());
 				sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] += offre.getOffrePublique_Quantite();
 				if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] > quantitesAttenduesParQualite[offre.getQualite()]) {
 					offre.setDemande_Quantite(quantitesAttenduesParQualite[offre.getQualite()] - (sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] - offre.getOffrePublique_Quantite()));
@@ -1462,8 +1461,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 					sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] += offre.getDemande_Quantite() - offre.getOffrePublique_Quantite();
 				}
 				
-				System.out.println(offre.toString2());
-				
 				offresRetenuesParQualite.get(offre.getQualite()).add(offre);
 				n[offre.getQualite()]++;
 			}
@@ -1475,11 +1472,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				if(offresRetenuesParQualite.get(qualite).get(i).getDemande_Quantite() > 0)
 					offresRetenues.add(offresRetenuesParQualite.get(qualite).get(i));
 			} 
-		}
-		
-		System.out.println("---");
-		for(ContratFeveV3 offre : offresRetenues) {
-			System.out.println(offre.toString2());
 		}
 		
 		return offresRetenues;
@@ -1653,7 +1645,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * en gros nous on est concerné que par les indices 1 (tablettes BQ) 2 (tablettes MQ) et 3 (tablettes HQ)
 	 */
 	
-	public double getReponse(DemandeAO d) {
+	@Override
+	public double getReponseTer(DemandeAO d) {
 		if (d.getQualite()==1 || d.getQualite()==2 || d.getQualite()==3) { //on a pas de confiseries donc on est pas interessés
 			return Double.MAX_VALUE;
 		} else {
@@ -1664,7 +1657,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			}
 		}
 	}
-	public void envoyerReponse(double quantite, int qualite, int prix) {
+	@Override
+	public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
 		this.stockTablettes[qualite-1].setValeur(this, this.stockTablettes[qualite-4].getValeur()-quantite);
 	}
 	
