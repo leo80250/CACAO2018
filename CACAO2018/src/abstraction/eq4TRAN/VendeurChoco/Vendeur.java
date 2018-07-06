@@ -2,9 +2,7 @@ package abstraction.eq4TRAN.VendeurChoco;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
 
-import abstraction.eq4TRAN.IVendeurChoco;
 import abstraction.eq4TRAN.IVendeurChocoBis;
 import abstraction.fourni.Journal;
 
@@ -17,6 +15,12 @@ public class Vendeur implements IVendeurChocoBis{
 	/*
 	 * classe implémentant les méthodes nécessaires à l'interface IVendeurChoco
 	 */
+	
+	public static double COMMERCE_EQUITABLE=1.27;
+	public static double PRODUCTEUR_LOCAL=1.96;
+	public static double BIO=1.78;
+	public static double LUXE=1.53;
+	public static double ARTISANAL=3.78;
 	
 	private ArrayList<Integer> stocks;
 	public Journal ventes = new Journal("Eq4 - Ventes");
@@ -38,7 +42,7 @@ public class Vendeur implements IVendeurChocoBis{
 	// Getters et setters des stocks du Vendeur
 	
 	public int getQte(int IDProduit) {
-		return getStock().get(IDProduit);
+		return getStock().get(IDProduit-1);
 	}
 
 	public void setQte(int IDProduit, int quantite) {
@@ -55,7 +59,7 @@ public class Vendeur implements IVendeurChocoBis{
 	public GPrix2 getPrix() {
 		ArrayList<Double[]> intervalles = new ArrayList<>();
 		Double[] interval = {0.0,10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
-		for(int i=0;i<intervalles.size();i++) {
+		for(int i=0;i<interval.length;i++) {
 			// On considère les mêmes intervalles pour chaque produit dans un premier temps
 			intervalles.add(interval);
 		}
@@ -124,8 +128,11 @@ public class Vendeur implements IVendeurChocoBis{
 		Livraison.add(commande2);
 		Livraison.add(commande3);
 		// On ajoute la vente à notre journal de ventes
-		ventes.ajouter("Livraison : " + Livraison);
+		getVentes().ajouter("Livraison : " + Livraison);
 		return Livraison;
 	}
 
+	public Journal getVentes() {
+		return ventes;
+	}
 }
