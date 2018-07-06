@@ -98,7 +98,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ", this, 10_000_000);
         prix[TABLETTES_HQ] = new Indicateur("Eq5 - Prix de tablettes HQ", this, 18_000_000);
         prix[POUDRE_BQ] = new Indicateur("Eq5 - Prix de poudre BQ", this, 0);
-        prix[POUDRE_MQ] = new Indicateur("Eq5 - Prix de poudre MQ", this, 8_500_000);
+        prix[POUDRE_MQ] = new Indicateur("Eq5 - Prix de poudre MQ", this, 5_000_000);
         prix[POUDRE_HQ] = new Indicateur("Eq5 - Prix de poudre HQ", this, 0);
         prix[FRIANDISES_MQ] = new Indicateur("Eq5 - Prix de friandises MQ", this, 8_000_000);
 
@@ -353,7 +353,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         ContratPoudre[] catalogue = new ContratPoudre[3];
         catalogue[0] = new ContratPoudre();
         catalogue[2] = new ContratPoudre(); // on ne vend que de la poudre MQ
-        catalogue[1] = new ContratPoudre(1, (int)stocks[POUDRE_MQ].getValeur()*1000, prix[POUDRE_MQ].getValeur()*stocks[POUDRE_MQ].getValeur()*1000, acheteur, this, false);
+        catalogue[1] = new ContratPoudre(1, (int)stocks[POUDRE_MQ].getValeur()*1000, prix[POUDRE_MQ].getValeur()*Math.pow(10, -3), acheteur, this, false);
        
         return catalogue;
 
@@ -370,7 +370,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             if (demande[i].getQualite() != 1 || demande[i].getQuantite() > stocks[POUDRE_MQ].getValeur()*1000) {
                 devis[i] = new ContratPoudre();
             } else {
-                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur()*demande[i].getQuantite()*1000, acheteur, this, false);
+                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur()*Math.pow(10, -3)*demande[i].getQuantite()*1000, acheteur, this, false);
             }
         }
 
@@ -385,7 +385,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
         ContratPoudre[] reponse = new ContratPoudre[devis.length];
         for (int i = 0; i < devis.length; i++) {
-            if (devis[i].getQualite() == 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur()*1000 && devis[i].getPrix() >= prix[POUDRE_MQ].getValeur()*devis[i].getQuantite()*1000) {
+            if (devis[i].getQualite() == 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur()*1000 && devis[i].getPrix() >= prix[POUDRE_MQ].getValeur()*Math.pow(10, -3)*devis[i].getQuantite()*1000) {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), true);
             } else {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), false);
