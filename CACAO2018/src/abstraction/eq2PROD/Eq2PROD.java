@@ -10,7 +10,7 @@ import java.util.List;
 import abstraction.eq2PROD.acheteurFictifTRAN.acheteurFictifTRAN;
 import abstraction.eq2PROD.echangeProd.*;
 
-public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, IVendeurFeve, IVendeurFeveV4 {
+public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 // VARIABLES D'INSTANCE 
 	private int stockQM;
 	private int stockQB;
@@ -231,7 +231,7 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	
 	/* code par Alexandre BIGOT */
 	public void chgmtInstable(int p) { //* p est un entier entre 0 et 9
-		double proba = coeffInstable[p]*ponderation ;
+		double proba = (1-coeffInstable[p])*ponderation ;
 		if (this.estInstable[p]) {
 			proba=proba*2 ;     /*Si le pays est déjà instable, il a plus de chance de rester instable (2x plus) */
 		}
@@ -245,7 +245,7 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	/* code par Alexandre BIGOT */
 	public void propageInstable(int p) {
 		for (int i=0; i<paysFront[p].length;i++) {
-			double proba = coeffInstable[paysFront[p][i]]*ponderation*2 ;
+			double proba = (1-coeffInstable[paysFront[p][i]])*ponderation*2 ;
 			if (Math.random()<proba) {
 				estInstable[paysFront[p][i]] = true ;
 			} else {
@@ -412,20 +412,6 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 		razTotalVenteQM();
 	}
 
-	
-// VERSION 1
-	public ContratFeve[] getOffrePublique() {
-		ContratFeve[] c= {};
-		return c;
-	}
-	public void sendDemandePrivee(ContratFeve[] demandePrivee) {
-	}
-	public ContratFeve[] getOffreFinale() {
-		ContratFeve[] c= {};
-		return c;
-	}
-	public void sendResultVentes(ContratFeve[] resultVentes) {
-	}
 
 // VERSION 4
 	/* Code par Guillaume Sallé + Romain Bernard + Agathe Chevalier */
@@ -446,14 +432,29 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	}
 
 	/* Modélisation par Romain Bernard + Guillaume Sallé
-	 * Code par Romain Bernard
+	 * Code par Romain Bernard + Agathe Chevalier
 	 * Revu par Guillaume Sallé pour la nouvelle implémentation */
 	public List<ContratFeveV3> getOffreFinaleV3() {
 		List<ContratFeveV3> c= new ArrayList<>();	
+		double stock_demande_QB = 0.0;
+		double stock_demande_QM = 0.0;
 		for (ContratFeveV3 d : demandeTran) {
 			c.add(d);
+			
 			// Les transfo ne représentent pas tout le marché : on peut toujours leur vendre la quantité demandée
 			c.get(c.size()-1).setProposition_Quantite(c.get(c.size()-1).getDemande_Quantite());
+			
+			// On comptabilise la totalite des demandes en tonnes pour les deux qualites
+			for(int i=0; i<demandeTran.size(); i++) {
+				if(demandeTran.get(i).getQualite() == 0) {
+					stock_demande_QB = stock_demande_QB + demandeTran.get(i).getDemande_Quantite();
+				}
+				if(demandeTran.get(i).getQualite() == 1) {
+					stock_demande_QM = stock_demande_QM + demandeTran.get(i).getDemande_Quantite();
+				}
+			}
+						
+			
 			if (c.get(c.size()-1).getQualite()==0) {
 				// Si leur prix est supérieur au notre, on prend le leur et on est content
 				if (c.get(c.size()-1).getDemande_Prix()>=c.get(c.size()-1).getOffrePublique_Prix()) {
@@ -476,6 +477,23 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 				}
 			}
 		}
+		
+		/* Gestion du cas où la demande est plus grande que notre stock
+		 * On honore tous les transformateurs proportionnellement à ce qu'ils nous ont demandé */
+		if(stock_demande_QB > this.getStockQB()) {
+			for(int i=0;i<c.size();i++) {
+				if(c.get(i).getQualite()==0) {
+					c.get(i).setProposition_Quantite((int)((c.get(i).getDemande_Quantite()/stock_demande_QB)*this.getStockQB()));
+				}
+			}
+		}
+		if(stock_demande_QM > this.getStockQM()) {
+			for(int i=0;i<c.size();i++) {
+				if(c.get(i).getQualite()==1) {
+					c.get(i).setProposition_Quantite((int)((c.get(i).getDemande_Quantite()/stock_demande_QM)*this.getStockQM()));
+				}
+			}
+		}
 		return c;
 	}
 	
@@ -484,7 +502,7 @@ public class Eq2PROD implements Acteur, /*IVendeurFeveV2,*/ IVendeurFevesProd, I
 	public void sendResultVentesV3(List<ContratFeveV3> resultVentes) {
 		double chiffreDAffaire=0;
     	for (ContratFeveV3 c : resultVentes) {
-   		 // Si le contrat i est accepté par le transfo
+   		 // Si le contrat i est accepté par le transformateur
    		   	if (c.getReponse()) {
    			 // On augmente notre solde et on diminue notre stock (QB ou QM)
    		   		if (c.getQualite()==0) {
