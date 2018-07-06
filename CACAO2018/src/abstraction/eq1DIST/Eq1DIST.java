@@ -203,7 +203,7 @@ public Eq1DIST()  {
 	public void livraison(ArrayList<Integer> livraison, double paiement) {
 		for (int i=0;i<livraison.size();i++) {
 			this.stock.retirer(livraison.get(i), i+1);
-			stocks[i].setValeur(this, livraison.get(i));
+			stocks[i].setValeur(this, this.stock.getstock().get(i).total());
 			solde.setValeur(this,solde.getValeur()+paiement);
 		}
 		
