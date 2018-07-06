@@ -34,7 +34,6 @@ import abstraction.fourni.Monde;
  * @author Thomas Schillaci (lieutenant)
  * 
  * TODO LIST
- * - Systeme de fidelite client/fournisseur
  * - Determiner prix d'achat aux producteurs
  * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
  */
@@ -64,7 +63,16 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      */
     private boolean[] respectObjectifs;
 
-    private int indicateurGreve = 0;
+    /**
+     * Permet de savoir si il y a grève ou non
+     */
+    private int indicateurGreve;
+
+    /**
+     * Nous multiplions nos ventes aux distributeurs par cette constante pour simuler le reste du monde
+     * Sont pris en compte nos stocks et notre compte en banque
+     */
+    private float[] constantesMultiplicatrices;
 
     public Eq5TRAN() {
 
@@ -159,6 +167,23 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
         respectObjectifs = new boolean[nbMarchandises];
         for (int i = 0; i < Marchandises.getNombreMarchandises(); i++) respectObjectifs[i] = true;
+
+        /**
+         * GESTION DES GREVES
+         * @author Juliette, Thomas
+         */
+
+        indicateurGreve=0;
+
+        /**
+         * GESTION DU RESTE DU MONDE COTE DISTRIBUTEURS
+         */
+
+        constantesMultiplicatrices = new float[nbMarchandises];
+        constantesMultiplicatrices[TABLETTES_BQ] = 431.25f;
+        constantesMultiplicatrices[TABLETTES_MQ] = 1.75f;
+        constantesMultiplicatrices[TABLETTES_HQ] = 38.35f;
+        constantesMultiplicatrices[FRIANDISES_MQ] = 46;
     }
 
     @Override
