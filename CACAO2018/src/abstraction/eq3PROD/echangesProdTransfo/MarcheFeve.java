@@ -46,19 +46,56 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 	}
 	
 
+	public String toStringListeActeur(List<Acteur>l) {
+		String s="";
+		for (Acteur a : l) {
+			s=s+a.getNom()+" ";
+		}
+		return s;
+	}
 	
-	public MarcheFeve(String nom, List<IAcheteurFeveV4> ach, List<IVendeurFeveV4> ven) {
+	//faire un update de la liste d'acteur pour l'appeler en début de chaque next
+	public MarcheFeve(String nom) {
 		this.contratPrecedent = new ArrayList<ContratFeveV3>();
 		this.contratActuel = new ArrayList<ContratFeveV3>();
 		this.nom = nom;
-		this.listAcheteurs = ach;
-		this.listVendeurs = ven;
-		
+		this.listVendeurs =new ArrayList<>();
+		this.listAcheteurs = new ArrayList<IAcheteurFeveV4>(); 
 		setNom("Marche");
 		
 		setJournal(new Journal("Journal du Marche"));
 		Monde.LE_MONDE.ajouterJournal(getJournal());
 	}
+	
+	public void setListVendeurs(List<IVendeurFeveV4> listVendeur){
+		this.listVendeurs=listVendeur;	
+	}
+	
+	public void setListAcheteurs(List<IAcheteurFeveV4> listAcheteurs) {
+		this.listAcheteurs=listAcheteurs;
+	}
+	
+	public void listVendeur() {
+		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
+		this.setListVendeurs(new ArrayList<IVendeurFeveV4>());
+		for (Acteur a : listActeurs) {
+			if (a instanceof IVendeurFeveV4) {
+				listVendeurs.add((IVendeurFeveV4) a);
+				}
+		}
+		
+	}
+	
+	public void listAcheteur(){
+		ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
+		this.setListAcheteurs(new ArrayList<IAcheteurFeveV4>()); 
+		for (Acteur a : listActeurs) {
+			if (a instanceof IAcheteurFeveV4) {
+				listAcheteurs.add((IAcheteurFeveV4) a);
+				}
+		}
+	}
+
 	
 
 	
@@ -113,21 +150,29 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 	@Override
 	public void next() {
 		
+		//ArrayList<Acteur> listActeurs = Monde.LE_MONDE.getActeurs();
+		this.listAcheteur();
+		this.listVendeur();
+		
 		this.getJournal().ajouter("Producteurs presents : "+ this.Producteurs());
 		this.getJournal().ajouter("Acheteurs presents : "+this.Acheteurs());
-		this.getJournal().ajouter("Contrats Precedents : "+this.contratPrecedent.toString());
+		
 		
 		// Reception des offres publiques (Producteurs -> Marche)
-		contratPrecedent=contratActuel;
+		contratPrecedent=new ArrayList<ContratFeveV3>();
+		for (ContratFeveV3 c : contratActuel) {
+			contratPrecedent.add(c);
+		}
 		contratActuel = new ArrayList<ContratFeveV3>();
 		 for (IVendeurFeveV4 vendeur : listVendeurs) {
+			 //System.out.println(listVendeurs);
 			 List<ContratFeveV3> cop = vendeur.getOffrePubliqueV3();
 			 for (ContratFeveV3 contrat : cop) {
 				contratActuel.add(contrat); 
 			 }
 		 }
 		 
-		 this.getJournal().ajouter("Offres Publiques en cours : "+contratActuel.toString());
+		 
 		 
 		// System.out.println(" contrats actuels 1:");
 		 //for (ContratFeveV3 c : contratActuel) {
@@ -159,10 +204,10 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 		 }
 		 /*System.out.println(" contrats actuels 2:");
 		 for (ContratFeveV3 c : contratActuel) {
-			 System.out.println(c);
+			 c.toString2();
 		 }
 		 System.out.println("------");
-		 
+		 /*
 		 this.getJournal().ajouter("Demandes privee en cours : "+contratActuel.toString());
 		*/	
 		 
@@ -185,7 +230,7 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 			 }
 		 }
 		 
-		 this.getJournal().ajouter("Propositions en cours : "+contratActuel.toString());
+		 
 			
 		 
 		// Envoi des propositions (Marche -> Transformateur)
@@ -205,7 +250,13 @@ public class MarcheFeve implements IMarcheFeve, Acteur {
 			 }
 		 }
 		 
-		 this.getJournal().ajouter("Reponses en cours : "+contratActuel.toString());
+		 
+		 for (int i=0;i<contratActuel.size();i++) {
+				if (contratActuel.get(i).getProducteur()!=null) {
+					this.getJournal().ajouter(Monde.LE_MONDE.getStep()+" Echanges réalisés ce tour : "+contratActuel.get(i).toString());
+				}
+			}
+
 			
 		 
 		 // Envoi des reponses (Marche -> Producteurs)
