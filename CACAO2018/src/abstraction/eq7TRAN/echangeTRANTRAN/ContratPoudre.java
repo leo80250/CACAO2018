@@ -6,7 +6,7 @@ public class ContratPoudre {
 	private int qualite;
 	// en tonnes
 	private int quantite;
-	// en euros
+	// en euros par tonne
 	private double prix;
 	private IAcheteurPoudre acheteur;
 	private IVendeurPoudre vendeur;

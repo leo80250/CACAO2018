@@ -1,28 +1,16 @@
 package abstraction.eq7TRAN;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Hashtable;
 import java.util.List;
 
-import abstraction.eq2PROD.echangeProd.IVendeurFevesProd;
-
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
-import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
-
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
-import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4;
-import abstraction.eq4TRAN.IVendeurChoco;
 import abstraction.eq4TRAN.IVendeurChocoBis;
-import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
-import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
-import abstraction.eq6DIST.IAcheteurChoco;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre; 
@@ -969,8 +957,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		//Mise à jour du solde
 		for(ContratPoudre livraison:contrat) {
 			if (livraison.getReponse()==true) {
+				this.getJournal().ajouter(livraison.toString());
 				this.getSolde().setValeur(this, this.getSolde().getValeur()+this.getPrixVentePoudre()[livraison.getQualite()].getValeur()*livraison.getQuantite());
-				this.getStockPoudre(livraison.getQualite()).setValeur(this, this.getStockPoudre(livraison.getQualite()).getValeur()+livraison.getQuantite());
+				this.getStockPoudre(livraison.getQualite()).setValeur(this, this.getStockPoudre(livraison.getQualite()).getValeur()-livraison.getQuantite());
 				this.getLivraisonsPoudreEnCours().add(livraison);
 			}
 		}
@@ -1136,6 +1125,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			if (contrat.getReponse()==true) {
 				this.getSolde().setValeur(this,this.getSolde().getValeur()-contrat.getProposition_Prix()*contrat.getProposition_Quantite());
 				this.setStockFeves((int)this.getStockFeves(contrat.getQualite()).getValeur()+contrat.getProposition_Quantite(), contrat.getQualite());
+				this.getJournal().ajouter(contrat.toString());
 			}
 		}
 		
