@@ -474,12 +474,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
          */
         List<ContratFeveV3> demandesPrivee = new ArrayList<ContratFeveV3>() ;
         demandesPrivee.add(this.contratFeveBQEq2) ; demandesPrivee.add(this.contratFeveMQEq2) ;demandesPrivee.add(this.contratFeveMQEq3);
-        this.contratFeveBQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix());
+        this.contratFeveBQEq2.setDemande_Prix(this.prixActualiseFeveBQ());
         this.contratFeveBQEq2.setDemande_Quantite((int) achatsSouhaites[FEVES_BQ].getValeur()*1000);
-        this.contratFeveMQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix());
+        this.contratFeveMQEq2.setDemande_Prix(this.prixActualiseFeveBQ());
         this.contratFeveMQEq2.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.3*1000));
         // On répartit nos achats de MQ en 30 % à l'équipe 2 et 70 % à l'équipe 3
-        this.contratFeveMQEq3.setDemande_Prix(contratFeveMQEq3.getOffrePublique_Prix());
+        this.contratFeveMQEq3.setDemande_Prix(this.prixActualiseFeveMQ());
         this.contratFeveMQEq3.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.7*1000));
 
         return demandesPrivee;
@@ -501,13 +501,13 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             int qualite = c.getQualite();
             if (vendeur.equals("Eq2PROD") && qualite == 0) {
                 contratFeveBQEq2.setProposition_Quantite(c.getProposition_Quantite());
-                contratFeveBQEq2.setProposition_Prix(this.prixActualiseFeveBQ());
+                contratFeveBQEq2.setProposition_Prix(c.getProposition_Prix());
             } else if (vendeur.equals("Eq2PROD") && qualite == 1) {
                 contratFeveMQEq2.setProposition_Quantite(c.getProposition_Quantite());
-                contratFeveMQEq2.setProposition_Prix(this.prixActualiseFeveMQ());
+                contratFeveMQEq2.setProposition_Prix(c.getProposition_Prix());
             } else if (vendeur.equals("Eq3PROD") && qualite == 1) {
                 contratFeveMQEq3.setProposition_Quantite(c.getProposition_Quantite());
-                contratFeveMQEq3.setDemande_Prix(this.prixActualiseFeveMQ());
+                contratFeveMQEq3.setDemande_Prix(c.getProposition_Prix());
             }
 
         }
@@ -523,7 +523,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         listeContrat.add(contratFeveMQEq3);
         
         for (ContratFeveV3 c : listeContrat) {
-            if ((c.getProposition_Prix() <= c.getDemande_Prix()) && c.getProposition_Quantite() <= c.getDemande_Quantite()) {
+            if ((c.getProposition_Prix() <= c.getDemande_Prix()) && c.getProposition_Quantite() <= c.getDemande_Quantite() && c.getProposition_Quantite()!=0) {
                 c.setReponse(true); 
                 journal.ajouter("L'équipe 5 a conclu une affaire avec "+((Acteur)c.getProducteur()).getNom()+" Quantité échangée :" + c.getProposition_Quantite()+"kT au prix de : "+c.getProposition_Prix()+ "euros !!!!!");
                 this.depenser(c.getProposition_Prix());
