@@ -102,6 +102,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	//Salaire moyen des employes
 	private final int SALAIRE_MOYEN = 1500;
 	
+	//Variable pour les couts transfo
+	double cout_transfo;
+	
 	//facteur proportionnel pour les couts de transformation
 	private final double FACTEUR_COUT_TRANSFO = 1;
 	private List<Indicateur> nombreEmployes2;
@@ -316,7 +319,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 		// ECHANGE POUDRE
 		
-		GQte[] commandes = new GQte[3];
+		/*GQte[] commandes = new GQte[3];
 		GQte commande;
 		GQte commandeLivree;
 		// Pour le moment le code des autres équipes ne nous fait aucune commande !
@@ -416,8 +419,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getJournal().ajouter("Versement des salaires = "+this.getNombreEmployes().getValeur()*this.SALAIRE_MOYEN);
 		
 		//Mise à jour du solde pour les coûts de transformation
-		double cout_transfo=0;
+		cout_transfo=0;
 		for(int qualite=0;qualite<3;qualite++){
+			this.calculateCoutTransformationPoudre(qualite);
+			this.calculateCoutTransformationTablette(qualite);
 			cout_transfo+=this.getCoutTransformationPoudre(qualite)+this.getCoutTransformationTablette(qualite);				
 		}
 		this.getSolde().setValeur(this,this.getSolde().getValeur()-cout_transfo);
@@ -430,6 +435,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getJournal().ajouter("LIVRAISONS POUDRE = " +this.getQuantitePoudreLivrees()+"t");
 		this.getJournal().ajouter("COMMANDES TABLETTES = " +this.getQuantiteTablettesCommandees()+"t");
 		this.getJournal().ajouter("LIVRAISONS TABLETTES = " +this.getQuantiteTablettesLivrees()+"t");
+		
+		//Affichage du solde
+		this.getJournal().ajouter("Nouveau solde = "+this.getSolde().getValeur()+"€");
 		
 		this.resetCommandesEnCours();
 		
@@ -1156,7 +1164,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		ArrayList<Double[]> intervalles = new ArrayList<Double[]>();
 		ArrayList<Double[]> prixs = new ArrayList<Double[]>();
 		
-		Double[] intervalle = {0.0, Double.MAX_VALUE};
+		Double[] intervalle = {0.0};
 		Double[] prix;
 		
 		for(int idProduit = 1; idProduit <= 6; idProduit++) {
