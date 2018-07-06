@@ -8,15 +8,12 @@ import java.util.Hashtable;
 import java.util.List;
 
 import abstraction.eq2PROD.echangeProd.IVendeurFevesProd;
-import abstraction.eq3PROD.echangesProdTransfo.ContratFeve;
+
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
-import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV2;
+
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeve;
-import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV2;
 import abstraction.eq3PROD.echangesProdTransfo.IVendeurFeveV4;
 import abstraction.eq4TRAN.IVendeurChoco;
 import abstraction.eq4TRAN.IVendeurChocoBis;
@@ -35,7 +32,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 
-public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeve, IAcheteurFeveV4, IVendeurChocoBis, IvendeurOccasionnelChoco {
+public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAcheteurFeveV4, IVendeurChocoBis, IvendeurOccasionnelChoco {
 	
 	// 0 = BQ, 1 = MQ, 2 = HQ
 	private Indicateur[] stockFeves;
@@ -1251,31 +1248,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public void envoyerReponse(double quantite, int qualite, int prix) {
 		this.stockTablettes[qualite-1].setValeur(this, this.stockTablettes[qualite-4].getValeur()-quantite);
 	}
-	@Override
-	public void sendOffrePublique(ContratFeve[] offrePublique) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public ContratFeve[] getDemandePrivee() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public void sendContratFictif(ContratFeve[] listContrats) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void sendOffreFinale(ContratFeve[] offreFinale) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public ContratFeve[] getResultVentes() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	
 	
 	
