@@ -415,34 +415,41 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.getJournal().ajouter("> Step "+Monde.LE_MONDE.getStep());
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Stocks & solde :");
-			this.getJournal().ajouter("- Stock moyenne qualité : "+ getStockQMoy().getValeur());
-			this.getJournal().ajouter("- Stock haute qualité : "+ getStockQHaut().getValeur());
-			this.getJournal().ajouter("- Solde : "+ getSolde2().getValeur());
+			this.getJournal().ajouter("Stock moyenne qualité : "+ getStockQMoy().getValeur());
+			this.getJournal().ajouter("Stock haute qualité : "+ getStockQHaut().getValeur());
+			this.getJournal().ajouter("Solde : "+ getSolde2().getValeur());
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Production :");
-			this.getJournal().ajouter("- Moyenne qualité (Indonésie) : "+((int) (coeffIndonesie*prodIndo)));
-			this.getJournal().ajouter("- Moyenene qualité (Brésil) : "+((int) (coeffAmerique*prodBresil)));
-			this.getJournal().ajouter("- Haute qualité (Equateur) : "+((int) (coeffAmerique*prodfin)));
+			this.getJournal().ajouter("<tt>- Moyenne qualité (Indonésie) : "+((int) (coeffIndonesie*prodIndo))+"</tt>");
+			this.getJournal().ajouter("<tt>- Moyenene qualité (Brésil) : "+((int) (coeffAmerique*prodBresil))+"</tt>");
+			this.getJournal().ajouter("<tt>- Haute qualité (Equateur) : "+((int) (coeffAmerique*prodfin))+"</tt>");
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Maladies :");
 			if (foreur.getMaladieActive() == 0 && balai.getMaladieActive() == 0) {
-				this.getJournal().ajouter("- Les plantations sont saines");
+				this.getJournal().ajouter("<tt>- Les plantations sont saines</tt>");
 			} else {
 				if (foreur.getMaladieActive() > 0) {
-					this.getJournal().ajouter("- Invasion de foreurs des cabosses en Indonésie");
+					this.getJournal().ajouter("<tt>- Invasion de foreurs des cabosses en Indonésie</tt>");
 				}
 				if (balai.getMaladieActive() > 0) {
-					this.getJournal().ajouter("- Epidémie du Balai de Sorcière en Amérique du Sud");
+					this.getJournal().ajouter("<tt>- Epidémie du Balai de Sorcière en Amérique du Sud</tt>");
 				}
 			}
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Comptes :");
-			this.getJournal().ajouter("- Dépenses (Coûts de production) : "+(prodBresil + prodIndo + prodfin)*1212+" €");
-			this.getJournal().ajouter("- Recettes (Ventes) :");
+			this.getJournal().ajouter("<tt>- Dépenses (Coûts de production) : <font color='red'>"+(prodBresil + prodIndo + prodfin)*1212+" €</font></tt>");
+			this.getJournal().ajouter("<tt>- Recettes (Ventes) : <font color='green'></tt></font>");
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Echanges :");
-			for (ContratFeveV3 contrat : this.getListeContrats()) this.getJournal().ajouter("- "+contrat.toString());
-			this.getJournal().ajouter("------------------------------------------------------------------------------");
+			this.getJournal().ajouter(" ");
+			for (ContratFeveV3 contrat : this.getListeContrats()) {
+				if (contrat.getReponse() == true && contrat.getProposition_Quantite()*contrat.getProposition_Prix() != 0) {					
+					this.getJournal().ajouter(contrat.toString3());
+					this.getJournal().ajouter(" ");
+				}
+			}
+			this.getJournal().ajouter("- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+			this.getJournal().ajouter(" ");
 			
 			//System.out.println(stockmoyen.toString());
 		}
