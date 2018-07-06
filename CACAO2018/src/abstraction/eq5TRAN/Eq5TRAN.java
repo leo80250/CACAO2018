@@ -34,8 +34,6 @@ import abstraction.fourni.Monde;
  * @author Thomas Schillaci (lieutenant)
  * 
  * TODO LIST
- * - Gestion periodes de l'annee (Noel, Pacques ...)
- * - Gestion de facteurs sociaux (isGreves ...)
  * - Systeme de fidelite client/fournisseur
  * - Determiner prix d'achat aux producteurs
  * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
@@ -170,6 +168,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
     @Override
     public void next() {
+        journal.ajouter("------------------------------- Eq5 step " + Monde.LE_MONDE.getStep() + " -------------------------------");
+
         production();
         depensesRH();
         payerSalaires();
@@ -406,29 +406,29 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
 
     public double prixActualiseFeveMQ () {
-    	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche central");
-    	int ventes = 0 ;
-    	int quantites = 0 ;
+    	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche");
+    	float ventes = 0 ;
+    	float quantites = 0 ;
 
     	for (ContratFeveV3  c : marche.getContratPrecedent()) {
     		if ( c.getQualite()==1) { ventes += c.getProposition_Quantite()*c.getProposition_Prix() ; quantites += c.getProposition_Quantite() ; }
     	}
 
-    	return ventes/quantites ;
+        return quantites==0?0:ventes/quantites ;
 
     }
 
-
+    // TODO fonction a finir
     public double prixActualiseFeveBQ () {
-    	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche central");
-    	int ventes = 0 ;
-    	int quantites = 0 ;
+    	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche");
+        float ventes = 0 ;
+    	float quantites = 0 ;
 
     	for (ContratFeveV3  c : marche.getContratPrecedent()) {
     		if ( c.getQualite()==0) { ventes += c.getProposition_Quantite()*c.getProposition_Prix() ; quantites += c.getProposition_Quantite() ; }
     	}
 
-    	return ventes/quantites ;
+    	return quantites==0?0:ventes/quantites ;
 
     }
 
@@ -502,13 +502,13 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             int qualite = c.getQualite();
             if (vendeur.equals("Eq2PROD") && qualite == 0) {
                 contratFeveBQEq2.setProposition_Quantite(c.getProposition_Quantite());
-                contratFeveBQEq2.setProposition_Prix(c.getProposition_Prix());
+                contratFeveBQEq2.setProposition_Prix(this.prixActualiseFeveBQ());
             } else if (vendeur.equals("Eq2PROD") && qualite == 1) {
                 contratFeveMQEq2.setProposition_Quantite(c.getProposition_Quantite());
-                contratFeveMQEq2.setProposition_Prix(c.getProposition_Prix());
+                contratFeveMQEq2.setProposition_Prix(this.prixActualiseFeveMQ());
             } else if (vendeur.equals("Eq3PROD") && qualite == 1) {
                 contratFeveMQEq3.setProposition_Quantite(c.getProposition_Quantite());
-                contratFeveMQEq3.setDemande_Prix(c.getProposition_Prix());
+                contratFeveMQEq3.setDemande_Prix(this.prixActualiseFeveMQ());
             }
 
         }
@@ -522,12 +522,14 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         listeContrat.add(this.contratFeveBQEq2);
         listeContrat.add(this.contratFeveMQEq2);
         listeContrat.add(contratFeveMQEq3);
+        
         for (ContratFeveV3 c : listeContrat) {
             if ((c.getProposition_Prix() <= c.getDemande_Prix()) && c.getProposition_Quantite() <= c.getDemande_Quantite()) {
                 c.setReponse(true); 
-                journal.ajouter("L'équipe 5 a conclu une affaire avec "+c.getProducteur()+" Quantité échangée :" + c.getProposition_Quantite());
+                journal.ajouter("L'équipe 5 a conclu une affaire avec "+((Acteur)c.getProducteur()).getNom()+" Quantité échangée :" + c.getProposition_Quantite()+"kT au prix de : "+c.getProposition_Prix()+ "euros !!!!!");
+                this.depenser(c.getProposition_Prix());
             } else {
-                c.setReponse(false); journal.ajouter("L'équipe 5 n'a pas conclu une affaire avec "+c.getProducteur());
+                c.setReponse(false); journal.ajouter("L'équipe 5 n'a pas conclu une affaire avec "+((Acteur)c.getProducteur()).getNom());
             }
         }
 
@@ -577,7 +579,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      */
 
     @Override
-    public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, int prix) {
+    public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
         this.depenser(-prix);
         this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * (200.0 / 10000000));
         journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de "+qualite+" qualite pour "+prix+" euros à "+acteur.getNom());
