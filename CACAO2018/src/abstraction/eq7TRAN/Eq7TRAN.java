@@ -958,26 +958,27 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			this.getCommandesPoudreEnCours().add(demande[i]);
 		}
 		return demande;
-	}
-	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
-		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
-		//Mise à jour du solde
-		for(ContratPoudre livraison:contrat) {
-			if (livraison.getReponse()==true) {
-				this.getSolde().setValeur(this, this.getSolde().getValeur()+this.getPrixVentePoudre()[livraison.getQualite()].getValeur()*livraison.getQuantite());
-				this.getLivraisonsPoudreEnCours().add(livraison);
-			}
-		}
-		
-		return contrat;
-	}
-	
+	}	
 	
 	public void sendReponsePoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		for(int qualite = 0; qualite<3; qualite++) {
 			if(contrat[qualite].getReponse())
 				this.getCommandesPoudreEnCours().add(contrat[qualite]);
 		}
+	}
+	
+	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
+		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
+		//Mise à jour du solde
+		for(ContratPoudre livraison:contrat) {
+			if (livraison.getReponse()==true) {
+				this.getSolde().setValeur(this, this.getSolde().getValeur()+this.getPrixVentePoudre()[livraison.getQualite()].getValeur()*livraison.getQuantite());
+				this.getStockPoudre(livraison.getQualite()).setValeur(this, this.getStockPoudre(livraison.getQualite()).getValeur()+livraison.getQuantite());
+				this.getLivraisonsPoudreEnCours().add(livraison);
+			}
+		}
+		
+		return contrat;
 	}
 	
 	////////////////////////////
