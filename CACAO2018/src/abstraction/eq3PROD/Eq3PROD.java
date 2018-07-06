@@ -71,8 +71,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		this.ajouterStockMoyen(75000);
 		this.ajouterStockFin(24000);
 		this.listeContrats=new ArrayList<ContratFeveV3>();
-		this.foreur = new Maladie(0.042, 0.10, 6, "Foreur des cabosses");
-		this.balai = new Maladie(0.008, 0.60, 4, "Balai de sorcière");
+		this.foreur = new Maladie(0.042, 0.10, 4, "Foreur des cabosses");
+		this.balai = new Maladie(0.008, 0.60, 3, "Balai de sorcière");
 		
 		
 		this.nom = "Eq3PROD";
@@ -398,7 +398,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			double coeffIndonesie = foreur.pertesMaladie();
 			
 			this.ajouterStockMoyen((int) (coeffAmerique*prodBresil+coeffIndonesie*prodIndo));
-			this.ajouterStockFin((int) coeffAmerique*prodfin);
+			this.ajouterStockFin((int) (coeffAmerique*prodfin));
 			this.solde -= (prodBresil + prodIndo + prodfin)*1212;
 			if(this.quantiteStockMoyen()<29000) {
 				this.solde-=((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).getPrix()*(29000-this.quantiteStockMoyen());
@@ -412,13 +412,19 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.stockQM.setValeur(this, this.quantiteStockMoyen());
 			this.solde2.setValeur(this, 400000000+this.solde);
 			
-			this.getJournal().ajouter("> Step "+Monde.LE_MONDE.getStep()+" <");
+			this.getJournal().ajouter("> Step "+Monde.LE_MONDE.getStep());
+			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("Stocks & solde :");
 			this.getJournal().ajouter("- Stock moyenne qualité : "+ getStockQMoy().getValeur());
 			this.getJournal().ajouter("- Stock haute qualité : "+ getStockQHaut().getValeur());
 			this.getJournal().ajouter("- Solde : "+ getSolde2().getValeur());
 			this.getJournal().ajouter(" ");
-			this.getJournal().ajouter("Maladies :");
+			this.getJournal().ajouter("> Production ");
+			this.getJournal().ajouter("- Moyenne qualité (Indonésie) : "+((int) (coeffIndonesie*prodIndo)));
+			this.getJournal().ajouter("- Moyenene qualité (Brésil) : "+((int) (coeffAmerique*prodBresil)));
+			this.getJournal().ajouter("- Haute qualité (Equateur) : "+((int) (coeffAmerique*prodfin)));
+			this.getJournal().ajouter(" ");
+			this.getJournal().ajouter("> Maladies :");
 			if (foreur.getMaladieActive() == 0 && balai.getMaladieActive() == 0) {
 				this.getJournal().ajouter("- Les plantations sont saines");
 			} else {
@@ -430,7 +436,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				}
 			}
 			this.getJournal().ajouter(" ");
-			this.getJournal().ajouter("Echanges :");
+			this.getJournal().ajouter("> Comptes :");
+			this.getJournal().ajouter("- Dépenses (Coûts de production) : "+(prodBresil + prodIndo + prodfin)*1212+" €");
+			this.getJournal().ajouter("- Recettes (Ventes) :");
+			this.getJournal().ajouter(" ");
+			this.getJournal().ajouter("> Echanges :");
 			for (ContratFeveV3 contrat : this.getListeContrats()) this.getJournal().ajouter("- "+contrat.toString());
 			this.getJournal().ajouter("------------------------------------------------------------------------------");
 			
