@@ -135,6 +135,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 				  solde.setValeur(this, solde.getValeur()-a);
 				  vendeursOcca.get(n).envoyerReponseTer(this,d.getQuantite(),d.getQualite(),a);
 				  this.nombreAchatsOccasionnels[i].setValeur(this,this.nombreAchatsOccasionnels[i].getValeur()+d.getQuantite());
+				  this.journal.ajouter("ACHAT OCCASIONNEL : L'équipe 1 a acheté "+d.getQuantite()+" unités de "+Type.values()[i]+" à l'équipe "+((Acteur) vendeursOcca.get(n)).getNom()); 
 				} 
 							 
 			}
@@ -172,6 +173,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 					  	solde.setValeur(this, solde.getValeur()-a);
 					  	vendeursOcca.get(n).envoyerReponseTer(this,d.getQuantite(),d.getQualite(),a);
 					  	this.nombreAchatsOccasionnels[i].setValeur(this,this.nombreAchatsOccasionnels[i].getValeur()+d.getQuantite());
+					  	this.journal.ajouter("ACHAT OCCASIONNEL : L'équipe 1 a acheté "+d.getQuantite()+" unités de "+Type.values()[i]+" à l'équipe "+((Acteur) vendeursOcca.get(n)).getNom());
 					  } 
 					 
 			}

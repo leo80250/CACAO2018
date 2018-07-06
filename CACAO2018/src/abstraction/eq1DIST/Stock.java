@@ -36,11 +36,13 @@ public class Stock {
 	}
 	
 	public void retirer(int quantite, int qualite) { // la qualite est un entier de 1 à 6
+		if(this.stock!=null) {
 		if(this.stock.get(qualite-1)!=null) {
-			while (this.stock.get(qualite-1).getStocki().get(0).getQuantite()<=quantite) {
+			while (this.stock.get(qualite-1).getStocki().get(0).getQuantite()<=quantite && this.stock.get(qualite-1).getStocki()!=null) {
 				this.stock.get(qualite-1).getStocki().remove(0);
 			}
 			this.stock.get(qualite-1).getStocki().get(0).setQuantite(this.stock.get(qualite-1).getStocki().get(0).getQuantite()-quantite);
+		}
 		}
 	}
 	
