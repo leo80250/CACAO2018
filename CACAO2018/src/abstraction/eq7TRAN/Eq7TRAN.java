@@ -1681,7 +1681,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	/** Interface IvendeurOccasionnelChoco
 	 * @author boulardmaelle
-	 * en gros nous on est concerné que par les indices 1 (tablettes BQ) 2 (tablettes MQ) et 3 (tablettes HQ)
+	 * en gros nous on est concerné que par les indices 4 (tablettes BQ) 5 (tablettes MQ) et 6 (tablettes HQ)
 	 */
 	
 	@Override
