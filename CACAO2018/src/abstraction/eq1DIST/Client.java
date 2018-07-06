@@ -220,7 +220,7 @@ public class Client implements Acteur {
 		DemandeConfBdG.setValeur(this, cm[3] + cas[3] + autre[3] + 0.0);
 		DemandeConfMdG.setValeur(this, cm[4] + cas[4] + autre[4] + 0.0);
 		DemandeConfHdG.setValeur(this, cm[5] + cas[5] + autre[5] + 0.0);
-
+		
 		for (int i = 0; i < Distributeurs.size(); i++) {
 			if (Distributeurs.get(i).getNom() == "Eq6DIST") {
 				this.journal.ajouter("");

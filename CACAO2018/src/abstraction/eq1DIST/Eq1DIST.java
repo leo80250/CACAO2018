@@ -23,7 +23,7 @@ import abstraction.fourni.Monde;
 
   
 public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurChocoBis {
-	private int[][] stock;
+	private Stock stock;
 	private Journal journal;
 	private Indicateur[] stocks;
 	private Indicateur solde;
@@ -46,20 +46,13 @@ public Eq1DIST()  {
 	Journal client = new Journal("Clients Finaux");
 	Monde.LE_MONDE.ajouterJournal(client);
 	Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche,client));
-	int[][] stock= new int[2][3];
-	stock[0][0] = 0 ;
-	stock[0][1] = 50000 ;
-	stock[0][2] = 25000;
-	stock[1][0] = 0 ;
-	stock[1][1] = 35000;
-	stock[1][2] = 15000;
+	this.stock = new Stock(0,50000,25000,0,35000,15000); 
 	this.nombreAchatsOccasionnels = new Indicateur[6];
 	this.nombreAchatsContrat = new Indicateur[6];
 	this.nombreVentes = new Indicateur[6];
 	this.stocks = new Indicateur[6];
 	this.solde = new Indicateur("Solde de "+ this.getNom(), this,0);
 	this.efficacite = new Indicateur("Efficacité de "+ this.getNom(), this,0);
-	this.stock=stock;
 	this.PrixChocoMdG=new Indicateur("Prix Choco MdG de "+this.getNom(),this,1.5);
 	this.PrixChocoHdG=new Indicateur("Prix Choco HdG de "+this.getNom(),this,3.0);
 	this.PrixConfMdG=new Indicateur("Prix Confiseries MdG de "+this.getNom(),this,2.6);
@@ -76,62 +69,41 @@ public Eq1DIST()  {
 
 	@Override
 	public void next() {
-		int[][] stocklim = new int[][] {
-			{0,120000,30000},
-			{0,40000,20000}
-		};
-		List<IvendeurOccasionnelChocoBis>vendeursOcca = new ArrayList<IvendeurOccasionnelChocoBis>();
+		// on fait une demande occasionnelle si on dépasse un seuil limite de sotck
+		int[] stocklim = {0,120000,30000,0,40000,20000};
+		List<IvendeurOccasionnelChocoBis> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoBis>();
 		for (Acteur a : Monde.LE_MONDE.getActeurs()) {
 			if (a instanceof IvendeurOccasionnelChocoBis) {
 			vendeursOcca.add((IvendeurOccasionnelChocoBis) a);
 			}
 		}
 		
-		for (int i =0; i<stock.length;i++) {//3;i++) {
-			for (int j=0;j<stock[0].length; j++) {//3;j++) {
-				if (stock[i][j]<stocklim[i][j]) {
-					DemandeAO d= new DemandeAO(stocklim[i][j]-stock[i][j],i*j);
+		for (int i =0; i<this.stock.getstock().size();i++) {
+				if (this.stock.getstock().get(i).total()<stocklim[i]) {
+					DemandeAO d= new DemandeAO(stocklim[i]-this.stock.getstock().get(i).total(),i+1);
 					ArrayList<Integer> prop= new ArrayList<Integer>();
 					for (IvendeurOccasionnelChocoBis v : vendeursOcca) {
 						prop.add(v.getReponseBis(d));
-					}/*
-					prop.add(((Eq4TRAN) Monde.LE_MONDE.getActeur("Eq4TRAN")).getReponseBis(d));
-					prop.add((int) 4);
-					prop.add(((Eq5TRAN) Monde.LE_MONDE.getActeur("Eq5TRAN")).getReponseBis(d));
-					prop.add((int) 5);
-					prop.add(((Eq7TRAN) Monde.LE_MONDE.getActeur("Eq7TRAN")).getReponseBis(d));
-					prop.add((int) 7);
-					*/
-					/*int a=prop.get(0);
-					double n= (prop.get(1));
-					 for(int ind=1; ind<3; ind++){
-					  		if(a>prop.get(ind+2)){
-					  			a=prop.get(ind+2);
-					  			n=prop.get(ind+3);
-					  		}
-					  }*/
+					}
+					int a=Integer.MAX_VALUE;
 					int n=0;
-					 int a = Integer.MAX_VALUE;
-					 for (int in=0;in<prop.size(); in++) {
-						 if (a>prop.get(in)) {
-							 a= prop.get(in);
-							 n = in;
-						 }
-					 }
+					for(int ind=0; ind<prop.size(); ind++){
+					  		if(a>prop.get(ind)){
+					  			a=prop.get(ind);
+					  			n=ind;
+					  		}
+					  }
 					 if (a!=Double.MAX_VALUE){
-					  		this.stock[i][j]+=d.getQuantite();
-					  		solde.setValeur(this, solde.getValeur()-a);
-					  		String l = "Eq"+((int) n)+"TRAN";
-					  		//((IvendeurOccasionnelChoco) Monde.LE_MONDE.getActeur(l)).
-					  		vendeursOcca.get(n).envoyerReponseBis(d.getQuantite(),d.getQualite(),a);
+					  	this.stock.ajouter(d.getQuantite(),i);
+					  	solde.setValeur(this, solde.getValeur()-a);
+					  	vendeursOcca.get(n).envoyerReponseBis(d.getQuantite(),d.getQualite(),a);
 					  } 
 					 
 				}
 					
-			}
+			
 		}	
 		if(Monde.LE_MONDE.getStep()%12==2
-				||Monde.LE_MONDE.getStep()%12==2
 				||Monde.LE_MONDE.getStep()%12==3
 				||Monde.LE_MONDE.getStep()%12==4
 				||Monde.LE_MONDE.getStep()%12==5
@@ -139,48 +111,47 @@ public Eq1DIST()  {
 				||Monde.LE_MONDE.getStep()%12==19
 				||Monde.LE_MONDE.getStep()%12==20
 				||Monde.LE_MONDE.getStep()%12==21) {
-			int[][] stockspe= new int[][] {
-				{0,29877,13125},
-				{0,21875,9375}
-			};
-			for(int i=0;i<stockspe.length;i++) {//3;i++) {
-				for(int j=0;j<stockspe[0].length;j++) {//3;j++) {
-					DemandeAO d= new DemandeAO(stockspe[i][j],i*j);
+			int[] stockspe = {0,29877,13125,0,21875,9375};
+			for (int i =0; i<this.stock.getstock().size();i++) {
+					DemandeAO d= new DemandeAO(stockspe[i],i+1);
 					ArrayList<Integer> prop= new ArrayList<Integer>();
 					for (IvendeurOccasionnelChocoBis v : vendeursOcca) {
 						prop.add(v.getReponseBis(d));
-					}/*
-					ArrayList<Double> prop= new ArrayList<Double>();
-					prop.add(((Eq4TRAN) Monde.LE_MONDE.getActeur("Eq4TRAN")).getReponseBis(d));
-					prop.add(((Eq5TRAN) Monde.LE_MONDE.getActeur("Eq5TRAN")).getReponseBis(d));
-					prop.add(((Eq7TRAN) Monde.LE_MONDE.getActeur("Eq7TRAN")).getReponseBis(d));
-					*/
+					}
+					int a=Integer.MAX_VALUE;
+					int n=0;
+					for(int ind=0; ind<prop.size(); ind++){
+					  		if(a>prop.get(ind)){
+					  			a=prop.get(ind);
+					  			n=ind;
+					  		}
+					  }
+					 if (a!=Double.MAX_VALUE){
+					  	this.stock.ajouter(d.getQuantite(),i);
+					  	solde.setValeur(this, solde.getValeur()-a);
+					  	vendeursOcca.get(n).envoyerReponseBis(d.getQuantite(),d.getQualite(),a);
+					  } 
+					 
+			}
 				}
 			}
-		}
-	}
 
 	@Override
 	public GrilleQuantite commander(GrilleQuantite Q) {
 		int[] res = new int[6];
-		double[][] prix = new double[][] {
-			{Double.MAX_VALUE,this.PrixChocoMdG.getValeur(),this.PrixChocoHdG.getValeur()},
-			{Double.MAX_VALUE,this.PrixConfMdG.getValeur(),this.PrixConfHdG.getValeur()}
-		};
-		for (int i =0; i <2;i++) {
-			for (int j = 0; j <3;j++) {
-				int f = this.stock[i][j]-Q.getValeur(3*i+j);
-				if (f>=0) {
-					res[3*i+j] = Q.getValeur(3*i+j);
-					this.stock[i][j]-=Q.getValeur(3*i+j);
-				}
-				else {
-					res[3*i+j] = stock[i][j];
-					this.stock[i][j]=0;
-					}
-				solde.setValeur(this, solde.getValeur()+res[3*i+j]*prix[i][j]);
+		double[] prix = {Double.MAX_VALUE,this.PrixChocoMdG.getValeur(),this.PrixChocoHdG.getValeur(),Double.MAX_VALUE,this.PrixConfMdG.getValeur(),this.PrixConfHdG.getValeur()};
+		for (int i =0; i <6;i++) {
+			int f = this.stock.getstock().get(i).total()-Q.getValeur(i);
+			if (f>=0) {
+				res[i] = Q.getValeur(i);
+				this.stock.retirer(Q.getValeur(i),i+1);
 			}
-		}
+			else {
+				res[i] = this.stock.getstock().get(i).total();
+				this.stock.retirer(this.stock.getstock().get(i).total(),i+1);
+				}
+				solde.setValeur(this, solde.getValeur()+res[i]*prix[i]);
+			}
 		return new GrilleQuantite(res);
 	}
 	
@@ -231,7 +202,7 @@ public Eq1DIST()  {
 	@Override
 	public double[] getPrix() {
 		// TODO Auto-generated method stub
-		return new double[] {Double.MAX_VALUE,this.PrixChocoMdG.getValeur(),this.PrixChocoHdG.getValeur(),
-				Double.MAX_VALUE,this.PrixConfMdG.getValeur(),this.PrixConfHdG.getValeur()};
+		return new double[] {0,this.PrixChocoMdG.getValeur(),this.PrixChocoHdG.getValeur(),
+				0,this.PrixConfMdG.getValeur(),this.PrixConfHdG.getValeur()};
 	}
 }

@@ -27,6 +27,7 @@ public interface InterfaceDistributeurClient extends Acteur {
 	 *            PrixChocolatHdG ; PrixConfiserieBdG ; PrixConfiserieMdG ; PrixConfiserieHdG}
 	 *            le getPrix servira à comparer les prix des distributeurs et de modifier en conséquances
 	 *            les parts de marché de façon à créer une "guerre des prix".
+	 *            NB: mettre des prix = 0.0 si le Distributeur ne propose pas ces produits.
 	 */
 	public double[] getPrix();
 	
