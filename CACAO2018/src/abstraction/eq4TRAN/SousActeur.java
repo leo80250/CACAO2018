@@ -57,6 +57,7 @@ IVendeurPoudre {
 		this.Production=Production;
 		this.taillePME = (int)(11 + (Math.random() * (250 - 11))) ;	
 		this.label=label;
+		this.chiffreDAffaire=new Indicateur("Chiffre d'Affaire",this,0);
 		}
 
 	public String getNom() {

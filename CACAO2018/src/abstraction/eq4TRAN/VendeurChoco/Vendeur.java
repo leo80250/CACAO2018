@@ -39,6 +39,7 @@ public class Vendeur implements IVendeurChocoBis{
 		stocks = new ArrayList<>(Collections.nCopies(6, 0));
 	}
 
+	
 	// Getters et setters des stocks du Vendeur
 	
 	public int getQte(int IDProduit) {
