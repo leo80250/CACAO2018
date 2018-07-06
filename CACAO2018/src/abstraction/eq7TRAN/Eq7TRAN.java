@@ -1351,6 +1351,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * Interface IVendeurPoudre
 	 * @author boulardmaelle margauxgrand bernardjoseph
 	 */
+
 	
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		ContratPoudre[] catalogue=new ContratPoudre[3];
