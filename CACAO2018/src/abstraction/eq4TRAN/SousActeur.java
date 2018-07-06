@@ -53,14 +53,8 @@ IVendeurPoudre {
 	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label) {
 		this.JournalEq4 = JournalEq4;
 		this.solde = new Indicateur("solde", this,solde);
-		ArrayList<Indicateur> stck = new ArrayList<>();
-		ArrayList<Indicateur> prod = new ArrayList<>();
-		for(int l=2;l<=6;l++) {
-			stck.add(new Indicateur("stockProduit"+l,this,Stocks.get(l-1).getValeur()));
-			prod.add(new Indicateur("prodProduit"+l,this,Production.get(l-1).getValeur()));
-		}
-		this.Stocks=stck;
-		this.Production=prod;
+		this.Stocks=Stocks;
+		this.Production=Production;
 		this.taillePME = (int)(11 + (Math.random() * (250 - 11))) ;	
 		this.label=label;
 		}
@@ -112,6 +106,14 @@ IVendeurPoudre {
 	}
 	public int getTaillePME() {
 		return this.taillePME ;
+	}
+
+	public ArrayList<Indicateur> getProduction() {
+		return Production;
+	}
+
+	public void setProduction(ArrayList<Indicateur> production) {
+		Production = production;
 	}
 
 	// Etienne Raveau
