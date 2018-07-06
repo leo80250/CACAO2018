@@ -35,7 +35,7 @@ import abstraction.fourni.Monde;
  * 
  * TODO LIST
  * - Systeme de fidelite client/fournisseur
- * - Determiner prix d'achat aux producteurs
+ * - Determiner prix d'achat aux producteurs ( done ? )
  * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
  */
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoTer, IAcheteurFeveV4 {
@@ -51,7 +51,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     private ContratFeveV3 contratFeveMQEq3; // Le contrat avec l'équipe 3 pour les fèves MQ
 
     private Indicateur banque; // en milliers d'euros
-    private Indicateur[] prix; // en €/kT
+    private Indicateur[] prix; // en €/T
 
     private Journal journal;
 
@@ -525,9 +525,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         for (ContratFeveV3 c : listeContrat) {
             if ((c.getProposition_Prix() <= c.getDemande_Prix()) && c.getProposition_Quantite() <= c.getDemande_Quantite() && c.getProposition_Quantite()!=0) {
                 c.setReponse(true); 
-                journal.ajouter("L'équipe 5 a conclu une affaire avec "+((Acteur)c.getProducteur()).getNom()+" Quantité échangée :" + c.getProposition_Quantite()+"T au prix de : "+c.getProposition_Prix()+ "euros !!!!!");
+                journal.ajouter("L'équipe 5 a conclu une affaire avec "+((Acteur)c.getProducteur()).getNom()+" Quantité échangée :" + c.getProposition_Quantite()+"T au prix de : "+c.getProposition_Prix()+ "euros par T !!!!!");
                 this.depenser(c.getProposition_Prix()); 
-                this.stocks[c.getQualite()].setValeur(this, this.stocks[c.getQualite()].getValeur()+c.getProposition_Quantite());
+                this.stocks[c.getQualite()].setValeur(this, this.stocks[c.getQualite()].getValeur()+c.getProposition_Quantite()*Math.pow(10,-3));
             } else {
                 c.setReponse(false); journal.ajouter("L'équipe 5 n'a pas conclu une affaire avec "+((Acteur)c.getProducteur()).getNom());
             }
