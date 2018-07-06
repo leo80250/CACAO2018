@@ -1159,6 +1159,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	/////////////////////////////////////
 	
 	/**
+	 * 
+	 * 
 	 * @author bernardjoseph  
 	 * @param qualite
 	 */
