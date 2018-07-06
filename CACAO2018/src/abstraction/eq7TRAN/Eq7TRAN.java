@@ -1005,9 +1005,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		// moment seulement qu'on peut tout produire avec nos employés
 		List<ContratFeveV3> offresPubliques = new ArrayList<ContratFeveV3>(offresPubliques2);
 		List<ArrayList<ContratFeveV3>> offresRetenuesParQualite = new ArrayList<ArrayList<ContratFeveV3>>();
+		int[] quantitesAttenduesParQualite = new int[3];
 		for(int qualite = 0; qualite < 3; qualite++) {
 			offresRetenuesParQualite.add(new ArrayList<ContratFeveV3>());
-		}
+			quantitesAttenduesParQualite[qualite] = (int) (this.getProductionPoudreAttendue(qualite).getValeur()*(2-this.TAUX_TRANSFORMATION_FEVES_POUDRE[qualite]) + this.getProductionTablettesAttendue(qualite).getValeur()*(2-this.TAUX_TRANSFORMATION_FEVES_TABLETTES[qualite]));
+ 		}
 		
 		Collections.sort(offresPubliques, new Comparator<ContratFeveV3>() {
 	        public int compare(ContratFeveV3 contrat1, ContratFeveV3 contrat2)
@@ -1038,6 +1040,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] > getMaximumOfProduction(3,offre.getQualite())) {
 					offre.setDemande_Quantite(getMaximumOfProduction(3,offre.getQualite()) - (sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] - offre.getOffrePublique_Quantite()));
 					stopLoop = true;
+				}
+				else if(sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] > quantitesAttenduesParQualite[offre.getQualite()]) {
+					offre.setDemande_Quantite(quantitesAttenduesParQualite[offre.getQualite()] - (sommeQuantiteOffresRetenuesParQualite[offre.getQualite()] - offre.getOffrePublique_Quantite()));
 				}
 				else
 					offre.setDemande_Quantite(offre.getOffrePublique_Quantite());
