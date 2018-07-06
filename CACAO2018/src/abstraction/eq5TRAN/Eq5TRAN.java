@@ -1,19 +1,5 @@
 package abstraction.eq5TRAN;
 
-import static abstraction.eq5TRAN.util.Marchandises.FEVES_BQ;
-import static abstraction.eq5TRAN.util.Marchandises.FEVES_MQ;
-import static abstraction.eq5TRAN.util.Marchandises.FRIANDISES_MQ;
-import static abstraction.eq5TRAN.util.Marchandises.POUDRE_BQ;
-import static abstraction.eq5TRAN.util.Marchandises.POUDRE_HQ;
-import static abstraction.eq5TRAN.util.Marchandises.POUDRE_MQ;
-import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_BQ;
-import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_HQ;
-import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_MQ;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
@@ -30,6 +16,11 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static abstraction.eq5TRAN.util.Marchandises.*;
+
 /**
  * @author Juliette Gorline (chef)
  * @author Francois Le Guernic
@@ -37,7 +28,6 @@ import abstraction.fourni.Monde;
  * @author Thomas Schillaci (lieutenant)
  * 
  * TODO LIST
- * - Determiner prix d'achat aux producteurs
  * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
  */
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoTer, IAcheteurFeveV4, IVendeurChocoBis {
@@ -647,26 +637,75 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public GPrix2 getPrix() {
         ArrayList<Double[]> intervalles = new ArrayList<Double[]>();
         intervalles.add(new Double[0]);
-        intervalles.add(new Double[]{});
+        intervalles.add(new Double[]{0.0d,stocks[FRIANDISES_MQ].getValeur()*1_000_000 / 0.2 / 2});
         intervalles.add(new Double[0]);
-        intervalles.add(new Double[]{});
-        intervalles.add(new Double[]{});
-        intervalles.add(new Double[]{});
+        intervalles.add(new Double[]{0.0d,stocks[TABLETTES_BQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{0.0d,stocks[TABLETTES_MQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{0.0d,stocks[TABLETTES_HQ].getValeur()*1_000_000 / 0.2 / 2});
 
-        ArrayList<Double[]> prix = new ArrayList<Double[]>();
-        prix.add(new Double[0]);
-        prix.add(new Double[]{});
-        prix.add(new Double[0]);
-        prix.add(new Double[]{});
-        prix.add(new Double[]{});
-        prix.add(new Double[]{});
+        ArrayList<Double[]> prixAssocies = new ArrayList<Double[]>();
+        prixAssocies.add(new Double[0]);
+        prixAssocies.add(new Double[]{prix[FRIANDISES_MQ].getValeur()*0.2/1_000_000});
+        prixAssocies.add(new Double[0]);
+        prixAssocies.add(new Double[]{prix[TABLETTES_BQ].getValeur()*0.2/1_000_000});
+        prixAssocies.add(new Double[]{prix[TABLETTES_MQ].getValeur()*0.2/1_000_000});
+        prixAssocies.add(new Double[]{prix[TABLETTES_HQ].getValeur()*0.2/1_000_000});
 
-        return new GPrix2(intervalles, prix);
+        return new GPrix2(intervalles, prixAssocies);
     }
 
     @Override
     public ArrayList<ArrayList<Integer>> getLivraison(ArrayList<ArrayList<Integer>> commandes) {
         ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+
+        ArrayList<Integer> eq1 = new ArrayList<Integer>();
+
+        eq1.add(0);
+        eq1.add((int)Math.min(commandes.get(0).get(1), stocks[FRIANDISES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq1.add(0);
+        eq1.add((int) Math.min(commandes.get(0).get(3), stocks[TABLETTES_BQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq1.add((int) Math.min(commandes.get(0).get(4), stocks[TABLETTES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq1.add((int) Math.min(commandes.get(0).get(5), stocks[TABLETTES_HQ].getValeur() * 1_000_000 / 0.2 / 2));
+        
+        ArrayList<Integer> eq6 = new ArrayList<Integer>();
+
+        eq6.add(0);
+        eq6.add((int)Math.min(commandes.get(1).get(1), stocks[FRIANDISES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq6.add(0);
+        eq6.add((int) Math.min(commandes.get(1).get(3), stocks[TABLETTES_BQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq6.add((int) Math.min(commandes.get(1).get(4), stocks[TABLETTES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq6.add((int) Math.min(commandes.get(1).get(5), stocks[TABLETTES_HQ].getValeur() * 1_000_000 / 0.2 / 2));
+
+        ArrayList<Integer> fictif = new ArrayList<Integer>();
+
+        fictif.add(0);
+        fictif.add((int)Math.min(commandes.get(2).get(1), stocks[FRIANDISES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        fictif.add(0);
+        fictif.add((int) Math.min(commandes.get(2).get(3), stocks[TABLETTES_BQ].getValeur() * 1_000_000 / 0.2 / 2));
+        fictif.add((int) Math.min(commandes.get(2).get(4), stocks[TABLETTES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        fictif.add((int) Math.min(commandes.get(2).get(5), stocks[TABLETTES_HQ].getValeur() * 1_000_000 / 0.2 / 2));
+
+        res.add(eq1);
+        res.add(eq6);
+        res.add(fictif);
+
+        String[] produits = new String[]{"","FRIANDISES_MQ","","TABLETTES_BQ","TABLETTES_MQ","TABLETTES_HQ"};
+
+        for(int i=0; i<6; i++) {
+            double prixAssocie = prix[Marchandises.getIndex(produits[i])].getValeur() / 1_000_000 * 0.2;
+            if(eq1.get(i)!=0) {
+                journal.ajouter("L'eq5 vient de vendre " + eq1.get(i) + " " + produits[i] + " pour " + prixAssocie * eq1.get(i) + "€");
+                depenser(-prixAssocie * eq1.get(i));
+            }
+            if(eq6.get(i)!=0) {
+                journal.ajouter("L'eq5 vient de vendre " + eq6.get(i) + " " + produits[i] + " pour " + prixAssocie * eq6.get(i) + "€");
+                depenser(-prixAssocie * eq6.get(i));
+            }
+            if(fictif.get(i)!=0) {
+                journal.ajouter("L'eq5 vient de vendre " + fictif.get(i) + " " + produits[i] + " pour " + prixAssocie * fictif.get(i) + "€");
+                depenser(-prixAssocie * fictif.get(i));
+            }
+        }
 
         return res;
     }
