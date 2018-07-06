@@ -50,7 +50,7 @@ public void actu() {
 	}
 	
 	public void next() {
-		actu();
+		this.actu();
 	
 		for (Acteur i : this.transformateurs) {
 		IVendeurChocoBis ibis= (IVendeurChocoBis) i;
@@ -105,7 +105,7 @@ public void actu() {
 		}
 		
 		ArrayList<ArrayList<ArrayList<Integer>>> livraison = new ArrayList<ArrayList<ArrayList<Integer>>>();
-		for(int j =0; j<3;j++) {
+		for(int j =0; j<this.transformateurs.size();j++) {
 			ArrayList<ArrayList<Integer>> Livraisoni =new ArrayList<ArrayList<Integer>>(); 
 			/*int qBonbonBQj=0;
 			int qBonbonMQj=0;
@@ -141,7 +141,7 @@ public void actu() {
 		l=0;
 		ArrayList<Double> paiement=new ArrayList<Double>();
 		ArrayList<ArrayList<Integer>> PourDIST=new ArrayList<ArrayList<Integer>>();
-		for (int j=0;j<2;j++) {
+		for (int j=0;j<this.distributeurs.size();j++) {
 			/*int qBonbonBQj=0;
 			int qBonbonMQj=0;
 			int qBonbonHQj=0;

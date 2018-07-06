@@ -368,10 +368,14 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		
 		return commande;
 	}
+	//Léopold Petitjean
 	@Override
 	public void livraison(ArrayList<Integer> livraison, double paiement) {
 		// TODO Auto-generated method stub
-		
+		for (int i=0;i<livraison.size();i++) {
+			this.stock.set(i, this.stock.get(i)+livraison.get(i));
+		}
+		this.banque.setValeur(this, this.banque.getValeur()-paiement);
 	}
 	
 	// Victor Signes
