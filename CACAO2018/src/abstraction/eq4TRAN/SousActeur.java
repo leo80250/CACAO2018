@@ -159,8 +159,7 @@ IVendeurPoudre {
 			}
 		}
 		for (int j=0;j<3;j++) {
-			this.contratFeveEnCours.get(min[j])
-			.setDemande_Quantite(Math.min(demande[min[j]],this.contratFeveEnCours.get(min[j]).getOffrePublique_Quantite()/3));
+			this.contratFeveEnCours.get(min[j]).setDemande_Quantite(Math.min(demande[min[j]],this.contratFeveEnCours.get(min[j]).getOffrePublique_Quantite()/3));
 			if (max[j]!=-1) {
 				this.contratFeveEnCours.get(max[j]).setDemande_Quantite(demande[min[j]]-Math.min(demande[min[j]],this.contratFeveEnCours.get(min[j]).getOffrePublique_Quantite()/3));
 			}
@@ -205,7 +204,6 @@ IVendeurPoudre {
 			}
 		}
 		return this.contratFeveEnCours ; 
-		
 	}
 	
 
