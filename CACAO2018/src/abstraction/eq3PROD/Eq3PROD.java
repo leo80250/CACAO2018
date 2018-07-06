@@ -30,7 +30,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private String nomEq;
 	private Indicateur stockQM=new Indicateur ("Stock de Eq3PROD de moyenne qualité", this, 75000);
 	private Indicateur stockQH=new Indicateur ("Stock de Eq3PROD de haute qualité", this, 24000);
-	private Indicateur solde2 = new Indicateur ("Solde de Eq3PROD", this, 4000000) ; 
+	private Indicateur solde2 = new Indicateur ("Solde de Eq3PROD", this, 0) ; 
 	
 	private Maladie foreur;
 	private Maladie balai;
@@ -324,6 +324,16 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				}
 			}
 		
+		public int getRecette(List<ContratFeveV3> resultVente) {
+			int recette=0;
+			for (ContratFeveV3 a : resultVente) {
+				if (a.getReponse()==true) {
+				recette+=a.getProposition_Quantite()*a.getProposition_Prix();
+				}
+			}
+			return recette;
+		}
+		
 		
 		
 		
@@ -438,7 +448,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Comptes :");
 			this.getJournal().ajouter("- Dépenses (Coûts de production) : "+(prodBresil + prodIndo + prodfin)*1212+" €");
-			this.getJournal().ajouter("- Recettes (Ventes) :");
+			String s="";
+			for (ContratFeveV3 contrat : this.getListeContrats()) if (contrat.getReponse())s+=contrat.getProposition_Quantite()*contrat.getProposition_Prix();
+			this.getJournal().ajouter("- Recettes (Ventes) :"+s);
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Echanges :");
 			for (ContratFeveV3 contrat : this.getListeContrats()) this.getJournal().ajouter("- "+contrat.toString());
