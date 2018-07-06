@@ -10,14 +10,18 @@ public class Stock {
 	 * à vendre en premier le stock le plus ancien de chacun des types
 	 */
 	
-	public Stock(Stockintermediaire a,Stockintermediaire b, Stockintermediaire c, Stockintermediaire d, Stockintermediaire e,Stockintermediaire f) {
+	public Stock (int a, int b, int c, int d, int e, int f) { // ces entiers sont les quantites initiales de notre stock
 		this.stock= new ArrayList<Stockintermediaire>();
-		this.stock.add(a);
-		this.stock.add(b);
-		this.stock.add(c);
-		this.stock.add(d);
-		this.stock.add(e);
-		this.stock.add(f);
+		this.stock.add(new Stockintermediaire(a));
+		this.stock.add(new Stockintermediaire(b));
+		this.stock.add(new Stockintermediaire(c));
+		this.stock.add(new Stockintermediaire(d));
+		this.stock.add(new Stockintermediaire(e));
+		this.stock.add(new Stockintermediaire(f));
+	}
+	
+	public List<Stockintermediaire> getstock(){
+		return this.stock;
 	}
 	
 	private void ajouter(Lot e) {
@@ -31,7 +35,7 @@ public class Stock {
 		this.ajouter(e);
 	}
 	
-	public void retirer(int quantite, int qualite) {
+	public void retirer(int quantite, int qualite) { // la qualite est un entier de 1 à 6
 		if(this.stock.get(qualite-1)!=null) {
 			while (this.stock.get(qualite-1).getStocki().get(0).getQuantite()<=quantite) {
 				this.stock.get(qualite-1).getStocki().remove(0);
@@ -40,4 +44,11 @@ public class Stock {
 		}
 	}
 	
+	public int total() {
+		int res=0;
+		for (int i=0; i<7;i++) {
+			res = res+this.stock.get(i).total();
+		}
+		return res;
+	}
 }
