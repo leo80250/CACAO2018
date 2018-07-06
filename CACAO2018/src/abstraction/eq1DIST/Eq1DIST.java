@@ -44,9 +44,8 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	private Indicateur nombreVentesTHG;
 	private Indicateur nombreVentesCMG;
 	private Indicateur nombreVentesCHG;
+
 	
-
-
 	public Eq1DIST()  {
 		double[][] PartsdeMarche= {{0.7,0.49,0,0,0.42,0},
 				                   {0,0.21,0.7,0,0.28,0.7},
@@ -56,6 +55,10 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche,client));
 		this.stock = new Stock(0,50000,25000,0,35000,15000); 
 		this.nombreAchatsOccasionnels = new Indicateur[6];
+		for(int i=0; i<6; i++) {
+			this.nombreAchatsOccasionnels[i]= new Indicateur("echange en " + Type.values()[i] + " eq1",this, 0);
+			Monde.LE_MONDE.ajouterIndicateur(this.nombreAchatsOccasionnels[i]);
+		}
 		this.nombreAchatsContrat = new Indicateur[6];
 		this.nombreVentesTMG = new Indicateur("Ventes de tablettes moyenne gamme"+this.getNom(),this,0);
 		this.stockTMG =new Indicateur("Stock de tablettes MG"+this.getNom(), this,50000);
@@ -90,7 +93,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 			journal.ajouter("Absentéisme");
 			Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
-
+	
 	@Override
 	public String getNom() {
 		return "Eq1DIST";
