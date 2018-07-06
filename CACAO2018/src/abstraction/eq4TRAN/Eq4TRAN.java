@@ -3,6 +3,7 @@ package abstraction.eq4TRAN;
 import java.util.ArrayList;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
+import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.Labellise;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
@@ -169,16 +170,13 @@ public class Eq4TRAN implements Acteur {
 		 * CHARLES ICI IL FAUT CONSTRUIRE LES CONTRATS FEVES V3
 		 */
 		
-		/**
-		 
-		this.contratFevesEnCours.add(new ContratFeveV3( (IAcheteurFeve)this.Acteur1 , (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD") , 0 , 0 , 0 , 0 , 0.0 , 0.0 , 0.0 ,false)) ; 	     	 	 		  			 	);
-		this.contratFevesEnCours.add(new ContratFeveV3((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD"),1 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false)) ;
-		contratFeveEnCours[2]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq2PROD"),2 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
-		contratFeveEnCours[3]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),0 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
-		contratFeveEnCours[4]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),1 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
-		contratFeveEnCours[5]=new ContratFeve((IAcheteurFeve)this, (IVendeurFeve)Monde.LE_MONDE.getActeur("Eq3PROD"),2 ,0 ,0 ,0 ,0.0 ,0.0 ,0.0 ,false);
-		*/
-
+		//**
+		this.contratFevesEnCours=new ArrayList<ContratFeveV3>();
+		for(int i=0;i<3;i++) {
+			this.contratFevesEnCours.add(new ContratFeveV3((IAcheteurFeveV4)this.Acteur1 , "Eq2PROD" , i )) ;
+			this.contratFevesEnCours.add(new ContratFeveV3((IAcheteurFeveV4)this.Acteur2, "Eq3PROD",i));
+			}
+	
 		//On initialise les indicateurs à 1000(arbitraire)
 
 		stockTabBQ_Eq4 = new Indicateur("Eq4 - stockTabBQ",this,this.Acteur1.getStock().get(1)+this.Acteur2.getStock().get(1)+this.Acteur3.getStock().get(1)) ;
