@@ -10,12 +10,15 @@ import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_BQ;
 import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_HQ;
 import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_MQ;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
+import abstraction.eq4TRAN.IVendeurChocoBis;
+import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq5TRAN.util.Marchandises;
@@ -37,7 +40,7 @@ import abstraction.fourni.Monde;
  * - Determiner prix d'achat aux producteurs
  * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
  */
-public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoTer, IAcheteurFeveV4 {
+public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoTer, IAcheteurFeveV4, IVendeurChocoBis {
 
     // cf Marchandises.java pour obtenir l'indexation
     private Indicateur[] productionSouhaitee; // ce qui sort de nos machines en kT
@@ -208,12 +211,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void production() {
         roulementStocks();
 
-        production(POUDRE_BQ, TABLETTES_BQ);
-        production(POUDRE_MQ, TABLETTES_MQ);
-        production(POUDRE_HQ, TABLETTES_HQ);
-        production(POUDRE_MQ, FRIANDISES_MQ);
-        production(FEVES_BQ, POUDRE_BQ);
-        production(FEVES_MQ, POUDRE_MQ);
+        production(POUDRE_BQ, TABLETTES_BQ,10);
+        production(POUDRE_MQ, TABLETTES_MQ,10);
+        production(POUDRE_HQ, TABLETTES_HQ,10);
+        production(POUDRE_MQ, FRIANDISES_MQ,1.0f/0.7f);
+        production(FEVES_BQ, POUDRE_BQ,1.0f/0.7f);
+        production(FEVES_MQ, POUDRE_MQ,1.0f/0.7f);
     }
 
     /**
@@ -233,9 +236,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     /**
      * @author Thomas Schillaci
      * Transforme la merch1 en merch2
+     * @param tauxDeConversion rapport 1kg de merch2 par le nombre de kg de merch1 necessaires pour produire ce kilo de merch1
      */
-    public void production(int merch1, int merch2) {
-        double quantite = Math.min(stocks[merch1].getValeur(), productionSouhaitee[merch2].getValeur() * (isPeriodeFetes()?3:1));
+    public void production(int merch1, int merch2, float tauxDeConversion) {
+        double quantite = Math.min(stocks[merch1].getValeur()*tauxDeConversion, productionSouhaitee[merch2].getValeur() * (isPeriodeFetes()?3:1));
         if (isGreves()) quantite *= 0.3;
         if (quantite < productionSouhaitee[merch2].getValeur()) {
             respectObjectifs[merch1] = false;
@@ -620,8 +624,50 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * (200.0 / 10000000));
         journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de "+qualite+" qualite pour "+prix+" euros à "+acteur.getNom());
     }
-    
-    
 
+    /**
+     * @author Thomas Schillaci
+     */
+    @Override
+    public ArrayList<Integer> getStock() {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        res.add(0);
+        res.add((int) (stocks[FRIANDISES_MQ].getValeur() * 1_000_000 / 0.2));
+        res.add(0);
+        res.add((int) (stocks[TABLETTES_BQ].getValeur() * 1_000_000 / 0.2));
+        res.add((int) (stocks[TABLETTES_MQ].getValeur() * 1_000_000 / 0.2));
+        res.add((int) (stocks[TABLETTES_HQ].getValeur() * 1_000_000 / 0.2));
+        return res;
+    }
 
-} 	  				 	 	   			 	
+    /**
+     * @author Thomas Schillaci
+     */
+    @Override
+    public GPrix2 getPrix() {
+        ArrayList<Double[]> intervalles = new ArrayList<Double[]>();
+        intervalles.add(new Double[0]);
+        intervalles.add(new Double[]{});
+        intervalles.add(new Double[0]);
+        intervalles.add(new Double[]{});
+        intervalles.add(new Double[]{});
+        intervalles.add(new Double[]{});
+
+        ArrayList<Double[]> prix = new ArrayList<Double[]>();
+        prix.add(new Double[0]);
+        prix.add(new Double[]{});
+        prix.add(new Double[0]);
+        prix.add(new Double[]{});
+        prix.add(new Double[]{});
+        prix.add(new Double[]{});
+
+        return new GPrix2(intervalles, prix);
+    }
+
+    @Override
+    public ArrayList<ArrayList<Integer>> getLivraison(ArrayList<ArrayList<Integer>> commandes) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+
+        return res;
+    }
+}
