@@ -2,7 +2,6 @@ package abstraction.eq4TRAN.VendeurChoco;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Scanner;
 
 import abstraction.eq4TRAN.IVendeurChocoBis;
 import abstraction.fourni.Journal;
