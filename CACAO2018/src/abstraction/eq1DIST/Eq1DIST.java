@@ -51,7 +51,8 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		this.nombreAchatsContrat = new Indicateur[6];
 		this.nombreVentes = new Indicateur[6];
 		this.stocks = new Indicateur[6];
-		this.solde = new Indicateur("Solde de "+ this.getNom(), this,0);
+		stocks[0]= new Indicateur();
+		this.solde = new Indicateur("Solde de "+ this.getNom(), this,500000);
 		Monde.LE_MONDE.ajouterIndicateur(this.solde);
 		this.efficacite = new Indicateur("Efficacité de "+ this.getNom(), this,0);
 		this.PrixChocoMdG=new Indicateur("Prix Choco MdG de "+this.getNom(),this,1.5);
@@ -197,6 +198,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		demande[3]=0;
 		demande[4]=29167;
 		demande[5]=12500;
+		double st = 
 			ArrayList<ArrayList<Integer>> commandeFinale = new ArrayList<ArrayList<Integer>>();
 			ArrayList<Integer> listeT = new ArrayList<Integer>() ;
 			String act = "" ;
@@ -279,6 +281,33 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 						
 			return commandeFinale;
 		}
+	
+	public void main(String[] Args) {
+		ArrayList<GPrix2> Prix = new ArrayList<GPrix2>() ;
+		ArrayList<ArrayList<Integer>> Stock = new ArrayList<ArrayList<Integer>>();
+		Double[] interval = {0.0,10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
+		Double[] prix2 = {4.0, 3.975, 3.95, 3.9, 3.875, 3.85, 3.825, 3.8};
+		Double[] prix3 = {4.5, 3.975, 3.55, 3.2, 3.125, 3.12, 3.36, 3.7};
+		Double[] prix4 = {4.7, 3.12, 3.74, 3.3, 3.147, 3.85, 3.52, 3.82};
+		ArrayList<Double[]> p = new ArrayList<Double[]>();
+		p.add(prix2);
+		p.add(prix3);
+		p.add(prix4);
+		p.add(prix2);
+		p.add(prix3);
+		p.add(prix4);
+		ArrayList<Double[]> i = new ArrayList<Double[]>();
+		i.add(interval);
+		i.add(interval);
+		i.add(interval);
+		i.add(interval);
+		i.add(interval);
+		i.add(interval);
+		GPrix2 prix = new GPrix2(i,p);
+		
+		
+		
+	}
 	
 	public ArrayList<Integer> listeTriee(ArrayList<Double> prix){
 		ArrayList<Double> copie = new ArrayList<Double>();
