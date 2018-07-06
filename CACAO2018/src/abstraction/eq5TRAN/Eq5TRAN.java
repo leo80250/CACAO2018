@@ -305,10 +305,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     		equipe7.sendReponsePoudre(devis, this);
     		depenser(devis[2].getPrix());
     		this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
-    		journal.ajouter("L'équipe 5 a acheté "+devis[2].getQuantite()+" tonnes de poudre HQ");
+    		journal.ajouter("L'équipe 5 a acheté "+devis[2].getQuantite()+" tonnes de poudre HQ à l'équipe 7");
     	}
     	equipe7.getEchangeFinalPoudre(demande, this);
     	}
+    
+    
 
 
 
@@ -319,8 +321,11 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
         if (stocks[POUDRE_MQ].getValeur() == 0) return new ContratPoudre[0];
 
-        ContratPoudre[] catalogue = new ContratPoudre[1];
-        catalogue[0] = new ContratPoudre(1, (int) stocks[POUDRE_MQ].getValeur()*1000, prix[POUDRE_MQ].getValeur()*stocks[POUDRE_MQ].getValeur(), acheteur, this, false);
+        ContratPoudre[] catalogue = new ContratPoudre[3];
+        catalogue[0] = new ContratPoudre();
+        catalogue[2] = new ContratPoudre(); // on ne vend que de la poudre MQ
+        catalogue[1] = new ContratPoudre(1, (int)stocks[POUDRE_MQ].getValeur()*1000, prix[POUDRE_MQ].getValeur()*stocks[POUDRE_MQ].getValeur()*1000, acheteur, this, false);
+       
         return catalogue;
 
     }
@@ -333,10 +338,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
         ContratPoudre[] devis = new ContratPoudre[demande.length];
         for (int i = 0; i < demande.length; i++) {
-            if (demande[i].getQualite() != 1 && demande[i].getQuantite() < stocks[POUDRE_MQ].getValeur()) {
-                devis[i] = new ContratPoudre(0, 0, 0, acheteur, this, false);
+            if (demande[i].getQualite() != 1 || demande[i].getQuantite() > stocks[POUDRE_MQ].getValeur()*1000) {
+                devis[i] = new ContratPoudre();
             } else {
-                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur()*demande[i].getQuantite(), acheteur, this, false);
+                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur()*demande[i].getQuantite()*1000, acheteur, this, false);
             }
         }
 
@@ -351,7 +356,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
         ContratPoudre[] reponse = new ContratPoudre[devis.length];
         for (int i = 0; i < devis.length; i++) {
-            if (devis[i].getQualite() != 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur()*1000 && devis[i].getPrix() >= prix[POUDRE_MQ].getValeur()*devis[i].getQuantite()*1000) {
+            if (devis[i].getQualite() == 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur()*1000 && devis[i].getPrix() >= prix[POUDRE_MQ].getValeur()*devis[i].getQuantite()*1000) {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), true);
             } else {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), false);
@@ -368,7 +373,14 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         ContratPoudre[] echangesEffectifs = new ContratPoudre[contrat.length];
         for (int i = 0; i < contrat.length; i++) {
             echangesEffectifs[i] = contrat[i];
+            depenser(-contrat[i].getPrix());
+            stocks[i+6].setValeur(this, stocks[i+6].getValeur()-contrat[i].getQuantite()*1000);
+            if(contrat[i].getQuantite()!=0) {
+                journal.ajouter("L'équipe 5 a vendu "+ contrat[i].getQuantite()+" tonnes de "+ Marchandises.getMarchandise(i+6) + " pour "+contrat[i].getPrix()*contrat[i].getQuantite()+" €"+" à l'équipe "+ ((Acteur)acheteur).getNom());
+            }
+         
         }
+        
         return echangesEffectifs;
     }
 
