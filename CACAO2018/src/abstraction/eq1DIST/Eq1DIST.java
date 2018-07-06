@@ -157,10 +157,12 @@ public Eq1DIST()  {
 	
 	
 
-	@Override
-	public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
-		System.out.println("appelee ...");
-		double[]demande;
+	 public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
+		ArrayList<ArrayList<Integer>> commandeFinale;
+		commandeFinale = new ArrayList<ArrayList<Integer>>();
+		/*
+		 * System.out.println("appelee ...");
+		 * double[]demande;
 		demande = new double[6];
 		demande[0]=0;
 		demande[1]=39834;
@@ -171,8 +173,7 @@ public Eq1DIST()  {
 		double[] p;
 		p= new double[3];
 		double somme;
-		ArrayList<ArrayList<Integer>> commandeFinale;
-		commandeFinale = new ArrayList<ArrayList<Integer>>();
+		
 		for (int i=0;i<6;i++){
 			somme = 0;
 			for (int h=0;h<3;h++) {
@@ -189,16 +190,20 @@ public Eq1DIST()  {
 
 	}
 			}
+		 */
 		return commandeFinale;
 		}
+	 
 	@Override
 	public void livraison(ArrayList<Integer> livraison, double paiement) {
-		for (int i=0;i<6;i++) {
+		for (int i=0;i<livraison.size();i++) {
+			this.stock.retirer(livraison.get(i), i+1);
 			stocks[i].setValeur(this, livraison.get(i));
 			solde.setValeur(this,solde.getValeur()+paiement);
 		}
 		
 	}
+	
 	@Override
 	public double[] getPrix() {
 		// TODO Auto-generated method stub
