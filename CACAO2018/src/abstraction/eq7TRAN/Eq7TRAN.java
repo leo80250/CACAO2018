@@ -897,7 +897,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		int quantite = 0;
 		for(ArrayList<Integer> commande : commandes) {
 			for(int idProduit = 1; idProduit <= 6; idProduit++) {
-				quantite += commande.get(idProduit-1);
+				quantite += commande.get(idProduit-4);
 			}
 		}
 		return quantite;
@@ -923,7 +923,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		int quantite = 0;
 		for(ArrayList<Integer> commande : commandes) {
 			for(int idProduit = 1; idProduit <= 6; idProduit++) {
-				quantite += commande.get(idProduit-1);
+				quantite += commande.get(idProduit-4);
 			}
 		}
 		return quantite;
@@ -1579,7 +1579,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		ArrayList<Double[]> intervalles = new ArrayList<Double[]>();
 		ArrayList<Double[]> prixs = new ArrayList<Double[]>();
 		
-		Double[] intervalle = {0.0};
+		Double[] intervalle = {0.0, Double.MAX_VALUE};
 		Double[] prix;
 		
 		for(int idProduit = 1; idProduit <= 6; idProduit++) {
@@ -1615,19 +1615,19 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				}
 				else {
 					// On regarde si on a en stock ou si on peut produire ce qu'on nous demande
-					if (commandes.get(idDist).get(idProduit-1) > stockTablettes[idProduit-1]) {
+					if (commandes.get(idDist).get(idProduit-4) > stockTablettes[idProduit-4]) {
 						/*double p = commande1[i]/(commande1[i]+commande2[i]);
 						deliver1[i]=(int)(p*stock[i]);
 						deliver2[i]=stock[i]-deliver1[i];*/
 						
-						int diff = commandes.get(idDist).get(idProduit-1)-stockTablettes[idProduit-1];
-						livraisons.get(idDist).set(idProduit-1, commandes.get(idDist).get(idProduit-1)-diff);
+						int diff = commandes.get(idDist).get(idProduit-4)-stockTablettes[idProduit-4];
+						livraisons.get(idDist).set(idProduit-4, commandes.get(idDist).get(idProduit-4)-diff);
 						
 						// On retire ce qu'on a utilisé de notre stock
-						this.setStockTablettes((int)(this.getStockTablettes(idProduit-4).getValeur()-livraisons.get(idDist).get(idProduit-1)), idProduit-4);
+						this.setStockTablettes((int)(this.getStockTablettes(idProduit-4).getValeur()-livraisons.get(idDist).get(idProduit-4)), idProduit-4);
 						
 						//on met à jour le solde
-						this.getSolde().setValeur(this,this.getSolde().getValeur()+livraisons.get(idDist).get(idProduit-1)*this.getPrixVenteTablettes()[idProduit-1].getValeur());
+						this.getSolde().setValeur(this,this.getSolde().getValeur()+livraisons.get(idDist).get(idProduit-4)*this.getPrixVenteTablettes()[idProduit-4].getValeur());
 					}
 				}
 			}
