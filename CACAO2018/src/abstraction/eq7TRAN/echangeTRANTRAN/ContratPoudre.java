@@ -63,4 +63,9 @@ public class ContratPoudre {
 	public void setReponse(boolean reponse) {
 		this.reponse = reponse;
 	}
+	@Override
+	public String toString() {
+		return "ContratPoudre [qualite=" + qualite + ", quantite=" + quantite + ", prix=" + prix + ", acheteur="
+				+ acheteur + ", vendeur=" + vendeur + ", reponse=" + reponse + "]";
+	}
 }
