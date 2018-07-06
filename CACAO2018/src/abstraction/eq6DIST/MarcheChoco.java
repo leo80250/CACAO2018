@@ -1,11 +1,8 @@
 package abstraction.eq6DIST; // Karel Kédémos , Victor Signes, Léopold Petitjean
 import java.util.ArrayList;
 
-import abstraction.eq4TRAN.IVendeurChoco;
 import abstraction.eq4TRAN.IVendeurChocoBis;
-import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
-import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
