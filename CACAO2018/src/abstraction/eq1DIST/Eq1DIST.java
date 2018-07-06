@@ -193,12 +193,12 @@ public Eq1DIST()  {
 public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
 	int[] demande;
 	demande = new int[6];
-	demande[0]=0;
-	demande[1]=39834; // changer les indices
-	demande[2]=17500;
 	demande[3]=0;
-	demande[4]=29167;
-	demande[5]=12500;
+	demande[4]=39834; // changer les indices
+	demande[5]=17500;
+	demande[1]=0;
+	demande[2]=29167;
+	demande[3]=12500;
 		ArrayList<ArrayList<Integer>> commandeFinale = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer> listeT = new ArrayList<Integer>() ;
 		String act = "" ;
