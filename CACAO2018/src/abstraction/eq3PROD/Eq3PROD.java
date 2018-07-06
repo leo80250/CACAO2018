@@ -35,6 +35,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private Maladie foreur;
 	private Maladie balai;
 	
+	private int stockMoyenCritique;
+	
 	
 
 
@@ -65,7 +67,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			}
 		}
 		
-		
+		this.stockMoyenCritique = 500000;
 		this.stockmoyen = new ArrayList<List<Integer>>();
 		this.stockfin = new ArrayList<List<Integer>>();
 		this.ajouterStockMoyen(75000);
@@ -149,6 +151,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		return stockf;
 	}
 	
+	public int getStockMoyenCritique() {
+		return this.stockMoyenCritique;
+	}
 	
 	public void ajouterStockMoyen(int stock) {	
 		List<Integer> stockm = new ArrayList<Integer>();
@@ -163,10 +168,6 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		stockf.add(0);
 		this.stockfin.add(stockf);
 	}
-	
-	/**
-	 * @author Pierre
-	 */
 	
 	public void vieillirStock() {
 		for(int i=0; i<this.stockmoyen.size(); i++) {
@@ -410,9 +411,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.ajouterStockMoyen((int) (coeffAmerique*prodBresil+coeffIndonesie*prodIndo));
 			this.ajouterStockFin((int) (coeffAmerique*prodfin));
 			this.solde -= (prodBresil + prodIndo + prodfin)*1212;
-			if(this.quantiteStockMoyen()<29000) {
-				this.solde-=((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).getPrix()*(29000-this.quantiteStockMoyen());
-				this.ajouterStockMoyen(((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).acheter(29000-this.quantiteStockMoyen()));
+			if(this.quantiteStockMoyen()<this.getStockMoyenCritique()) {
+				this.solde-=((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).getPrix()*(this.getStockMoyenCritique()-this.quantiteStockMoyen());
+				this.ajouterStockMoyen(((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).acheter(this.getStockMoyenCritique()-this.quantiteStockMoyen()));
 			}
 
 			this.prodFeves[1]=(int) (coeffAmerique*prodBresil+coeffIndonesie*prodIndo);
