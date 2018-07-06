@@ -81,8 +81,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         stocks = new Indicateur[nbMarchandises];
         prix = new Indicateur[nbMarchandises];
 
-        prix[FEVES_BQ] = new Indicateur("Eq5 - Prix de feves BQ", this, 0);
-        prix[FEVES_MQ] = new Indicateur("Eq5 - Prix de feves MQ", this, 0);
+        prix[FEVES_BQ] = new Indicateur("Eq5 - Prix de feves BQ", this, 1000);
+        prix[FEVES_MQ] = new Indicateur("Eq5 - Prix de feves MQ", this, 2000);
         prix[TABLETTES_BQ] = new Indicateur("Eq5 - Prix de tablettes BQ", this, 8_000_000);
         prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ", this, 10_000_000);
         prix[TABLETTES_HQ] = new Indicateur("Eq5 - Prix de tablettes HQ", this, 18_000_000);
@@ -415,8 +415,6 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * @author François Le Guernic
      *
      */
-
-
     public double prixActualiseFeveMQ () {
     	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche");
     	float ventes = 0 ;
@@ -424,10 +422,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
     	for (ContratFeveV3  c : marche.getContratPrecedent()) {
     		if ( c.getQualite()==1) { ventes += c.getProposition_Quantite()*c.getProposition_Prix() ; quantites += c.getProposition_Quantite() ; }
-    	}
-
-        return quantites==0?0:ventes/quantites ;
-
+    	}    	
+    	if ( ventes ==0 || quantites == 0 ) return 2000;
+    	
+    	return ventes/quantites ;
     }
 
     // TODO fonction a finir
@@ -439,9 +437,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     	for (ContratFeveV3  c : marche.getContratPrecedent()) {
     		if ( c.getQualite()==0) { ventes += c.getProposition_Quantite()*c.getProposition_Prix() ; quantites += c.getProposition_Quantite() ; }
     	}
-
-    	return quantites==0?0:ventes/quantites ;
-
+    	
+    	if ( ventes == 0 || quantites ==0 ) return 1000;
+     	
+    	return ventes/quantites ;
     }
 
 
@@ -488,12 +487,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         List<ContratFeveV3> demandesPrivee = new ArrayList<ContratFeveV3>() ;
         demandesPrivee.add(this.contratFeveBQEq2) ; demandesPrivee.add(this.contratFeveMQEq2) ;demandesPrivee.add(this.contratFeveMQEq3);
         this.contratFeveBQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix());
-        this.contratFeveBQEq2.setDemande_Quantite((int) achatsSouhaites[FEVES_BQ].getValeur());
+        this.contratFeveBQEq2.setDemande_Quantite((int) achatsSouhaites[FEVES_BQ].getValeur()*1000);
         this.contratFeveMQEq2.setDemande_Prix(contratFeveBQEq2.getOffrePublique_Prix());
-        this.contratFeveMQEq2.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.3));
+        this.contratFeveMQEq2.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.3*1000));
         // On répartit nos achats de MQ en 30 % à l'équipe 2 et 70 % à l'équipe 3
         this.contratFeveMQEq3.setDemande_Prix(contratFeveMQEq3.getOffrePublique_Prix());
-        this.contratFeveMQEq3.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.7));
+        this.contratFeveMQEq3.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.7*1000));
 
         return demandesPrivee;
     }
