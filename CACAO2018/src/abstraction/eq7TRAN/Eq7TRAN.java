@@ -875,6 +875,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.livraisonsFeveEnCours2.set(entrep, contrats); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
 
+	
+	
+	
 	/**
 	 * @author leofargeas
 	 */
