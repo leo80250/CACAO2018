@@ -298,24 +298,31 @@ IVendeurPoudre {
 	 * Salaires, coûts de maintenance
 	 * Plus une PME est grande, plus ses charges fixes sont 
 	 * élevées et moins ses charges variables sont élevées
+	 * Coûts variables :
+	 * coûts de matières premirères autre que les fèves 
+	 * Plus une PME est grande, moins ses charges variables 
+	 * sont élevées, avec les coûts d'échelle
+	 * Coûts aléatoires :
+	 * Coûts liés aux accidents etc 
 	 */
 	
 	public void coutsSupplementaires() {
 		double CA = this.chiffreDAffaire.getValeur() ; 
 		double soldeActuel = this.solde.getValeur() ;
 		double chargesFixes = 0 ;
-		double chargesVariables = 0 ; 
+		double chargesVariables = 0 ;
+		double chargesaléatoire=Math.random()*0.1;
 		if (this.taillePME < 50 ) {
-			chargesFixes = 0 ;
+			chargesFixes = 30000 ;
 			chargesVariables = 0.4*CA ; 
 		} else if ((50 <=this.taillePME)&&(this.taillePME < 150 )) {
-			chargesFixes = 0 ;
+			chargesFixes = 35000 ;
 			chargesVariables = 0.35*CA ;
 		} else {
-			chargesFixes = 0 ; 
+			chargesFixes = 40000 ; 
 			chargesVariables = 0.3*CA ; 
 		}
-		this.solde.setValeur(this, soldeActuel - chargesFixes - chargesVariables);
+		this.solde.setValeur(this, soldeActuel - chargesFixes - chargesVariables-chargesaléatoire);
 	}
 
 	public double getLabel() {
