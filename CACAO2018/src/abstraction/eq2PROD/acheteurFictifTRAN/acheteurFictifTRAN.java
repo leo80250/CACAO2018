@@ -77,7 +77,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 		this.contratPrecedent = new ArrayList<ContratFeveV3>();
 		this.contratPrecedent = ((MarcheFeve)(Monde.LE_MONDE.getActeur("Marche"))).getContratPrecedent();
 		List<ContratFeveV3> c = new ArrayList<ContratFeveV3>();
-		//* Pour l'acheteur ficitf :		
+		//* Pour l'acheteur fictif :		
 		int tonnageQB = 0; double prixQB =0;
 		int tonnageQM_1 = 0; double prixQM_1 = 0;
 		int tonnageQM_2 = 0; double prixQM_2 = 0;
