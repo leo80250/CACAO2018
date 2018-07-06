@@ -139,9 +139,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		for(int i=0; i<this.stockmoyen.size(); i++) {
 			stockm+=stockmoyen.get(i).get(0);
 		}
+		//System.out.println(stockmoyen);
+		//System.out.println(stockm);
 		return stockm;
 		
 	}
+	
 	
 	public int quantiteStockFin() {
 		int stockf = 0;
@@ -160,7 +163,9 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		stockm.add(stock);
 		stockm.add(0);
 		this.stockmoyen.add(stockm);
+		//System.out.println(stockmoyen);
 	}
+	
 	
 	public void ajouterStockFin(int stock) {	
 		List<Integer> stockf = new ArrayList<Integer>();
@@ -357,6 +362,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		@author Claire, Pierre et Morgane
 		**/
 		public void next() {
+			/*List<Integer> a=new ArrayList<Integer>();
+			a.add(30000);
+			a.add(0);
+			this.stockmoyen.add(a);
+			System.out.println(stockmoyen);*/
 			int x=Monde.LE_MONDE.getStep();
 			int prodBresil=0;
 			int prodIndo=0;
@@ -400,6 +410,8 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 //				prodfin=(int)(prodfin*0.4);
 //			}
 			
+			this.ajouterStockFin(prodfin);
+			this.ajouterStockMoyen(prodBresil+prodIndo);
 			
 			this.vieillirStock();
 			
