@@ -68,60 +68,61 @@ public class Eq4TRAN implements Acteur {
 		 * Constructeurs des 3 Sous-Acteurs 
 		 */
 		
-		// StocksSA pour Stocks Sous-Acteurs etc..
-		ArrayList<Indicateur> StocksSA = new ArrayList<>(6);
-		ArrayList<Indicateur> ProductionSA = new ArrayList<>(6);
 		int soldeSA=1000;
-		for(int i=0;i<6;i++) {
-			StocksSA.add(new Indicateur("stockProduit"+(i+1),this,1000));
-			ProductionSA.add(new Indicateur("productionProduit"+(i+1),this,1000));
-		}
+		ArrayList<Indicateur> Prod_Acteur1=new ArrayList<>();
+		ArrayList<Indicateur> Stocks_Acteur1 = new ArrayList<>();
+		ArrayList<Indicateur> Prod_Acteur2 = new ArrayList<>();
+		ArrayList<Indicateur> Stocks_Acteur2 = new ArrayList<>();
+		ArrayList<Indicateur> Prod_Acteur3 = new ArrayList<>();
+		ArrayList<Indicateur> Stocks_Acteur3 = new ArrayList<>();
 		
 		/**
 		 *  On construit les 3 Sous-Acteurs 
 		 */
 		
-		this.Acteur1 = new SousActeur(new Journal("JournalActeur1"),StocksSA,ProductionSA,soldeSA,50,Vendeur.COMMERCE_EQUITABLE);
-		this.Acteur2 = new SousActeur(new Journal("JournalActeur2"),StocksSA,ProductionSA,soldeSA,135,Vendeur.PRODUCTEUR_LOCAL);
-		this.Acteur3 = new SousActeur(new Journal("JournalActeur3"),StocksSA,ProductionSA,soldeSA,220,Vendeur.LUXE);
+		this.Acteur1 = new SousActeur(new Journal("JournalActeur1"),Stocks_Acteur1,Prod_Acteur1,soldeSA,50,Vendeur.COMMERCE_EQUITABLE);
+		this.Acteur2 = new SousActeur(new Journal("JournalActeur2"),Stocks_Acteur2,Prod_Acteur2,soldeSA,135,Vendeur.PRODUCTEUR_LOCAL);
+		this.Acteur3 = new SousActeur(new Journal("JournalActeur3"),Stocks_Acteur3,Prod_Acteur3,soldeSA,220,Vendeur.LUXE);
 		
 		/**
 		 * @author Mickaël, Etienne
-		 * On créé les stocks pour chaque Sous-Acteur.
+		 * On initialise les stocks ainsi que la production pour chaque Sous-Acteur.
 		 */
-				
-				ArrayList<Indicateur> Stocks_Acteur1 = new ArrayList<>();
+				Prod_Acteur1.add(new Indicateur("",this.Acteur1,0));
 				Stocks_Acteur1.add(new Indicateur("",this.Acteur1,0));
 				ArrayList<Integer> stocks_Acteur1 = new ArrayList<>();
 				stocks_Acteur1.add(0);
 				for(int i=1;i<6;i++) {
-					Stocks_Acteur1.add(new Indicateur("stockProduit"+(i+1),this,1000));
-					stocks_Acteur1.add((int)(new Indicateur("stockProduit"+(i+1),this,1000).getValeur()));
+					Stocks_Acteur1.add(new Indicateur("Acteur 1 - stockProduit"+(i+1),this.Acteur1,1000));
+					Prod_Acteur1.add(new Indicateur("Acteur 1 - prodProduit"+(i+1),this.Acteur1,1000));
+					stocks_Acteur1.add((int)(new Indicateur("Acteur 1 - stockProduit"+(i+1),this.Acteur1,1000).getValeur()));
 				}
 				this.Acteur1.setVendeur(new Vendeur(stocks_Acteur1));
 				
-				ArrayList<Indicateur> Stocks_Acteur2 = new ArrayList<>();
+				
+			    Prod_Acteur2.add(new Indicateur("",this.Acteur2,0));
 				Stocks_Acteur2.add(new Indicateur("",this.Acteur2,0));
 				ArrayList<Integer> stocks_Acteur2 = new ArrayList<>();
 				stocks_Acteur2.add(0);
 				for(int i=1;i<6;i++) {
-					Stocks_Acteur2.add(new Indicateur("stockProduit"+(i+1),this,1000));
-					stocks_Acteur2.add((int)(new Indicateur("stockProduit"+(i+1),this,1000).getValeur()));
+					Stocks_Acteur2.add(new Indicateur("Acteur 2 - stockProduit"+(i+1),this.Acteur2,1000));
+					Prod_Acteur2.add(new Indicateur("Acteur 2 - prodProduit"+(i+1),this.Acteur2,1000));
+					stocks_Acteur2.add((int)(new Indicateur("Acteur 2 - stockProduit"+(i+1),this.Acteur2,1000).getValeur()));
 				}
 				this.Acteur2.setVendeur(new Vendeur(stocks_Acteur2));
 				
-				ArrayList<Indicateur> Stocks_Acteur3 = new ArrayList<>();
+				
+				Prod_Acteur3.add(new Indicateur("",this.Acteur3,0));
 				Stocks_Acteur3.add(new Indicateur("",this.Acteur3,0));
 				ArrayList<Integer> stocks_Acteur3 = new ArrayList<>();
 				stocks_Acteur3.add(0);
 				for(int i=1;i<6;i++) {
-					Stocks_Acteur3.add(new Indicateur("stockProduit"+(i+1),this,1000));
-					stocks_Acteur3.add((int)(new Indicateur("stockProduit"+(i+1),this,1000).getValeur()));
+					Stocks_Acteur3.add(new Indicateur("Acteur 3 - stockProduit"+(i+1),this.Acteur3,1000));
+					Prod_Acteur3.add(new Indicateur("Acteur 3 - prodProduit"+(i+1),this.Acteur3,1000));
+					stocks_Acteur3.add((int)(new Indicateur("Acteur 3 - stockProduit"+(i+1),this.Acteur3,1000).getValeur()));
 				}
 				this.Acteur3.setVendeur(new Vendeur(stocks_Acteur3));
-
-		
-
+			
 				
 		/**
 		 * @Mickaël
@@ -180,16 +181,16 @@ public class Eq4TRAN implements Acteur {
 
 		//On initialise les indicateurs à 1000(arbitraire)
 
-		stockTabBQ_Eq4 = new Indicateur("Eq4 - stockTabBQ",this,1000) ;
-		stockTabMQ_Eq4 = new Indicateur("Eq4 - stockTabMQ",this,1000) ;
-		stockTabHQ_Eq4 = new Indicateur("Eq4 - stockTabHQ",this,1000) ;
-		stockChocMQ_Eq4 = new Indicateur("Eq4 - stockChocMQ",this,1000) ;
-		stockChocHQ_Eq4 = new Indicateur("Eq4 - stockTabHQ",this,1000) ;
-		prodTabBQ_Eq4 = new Indicateur("Eq4 - prodTabBQ",this,1000) ;
-		prodTabMQ_Eq4 = new Indicateur("Eq4 - prodTabMQ",this,1000) ;
-		prodTabHQ_Eq4 = new Indicateur("Eq4 - prodTabHQ",this,1000) ;
-		prodChocMQ_Eq4 = new Indicateur("Eq4 - prodChocMQ",this,1000) ;
-		prodChocHQ_Eq4 = new Indicateur("Eq4 - prodChocHQ",this,1000) ;
+		stockTabBQ_Eq4 = new Indicateur("Eq4 - stockTabBQ",this,this.Acteur1.getStock().get(1)+this.Acteur2.getStock().get(1)+this.Acteur3.getStock().get(1)) ;
+		stockTabMQ_Eq4 = new Indicateur("Eq4 - stockTabMQ",this,this.Acteur1.getStock().get(2)+this.Acteur2.getStock().get(2)+this.Acteur3.getStock().get(2)) ;
+		stockTabHQ_Eq4 = new Indicateur("Eq4 - stockTabHQ",this,this.Acteur1.getStock().get(3)+this.Acteur2.getStock().get(3)+this.Acteur3.getStock().get(3)) ;
+		stockChocMQ_Eq4 = new Indicateur("Eq4 - stockChocMQ",this,this.Acteur1.getStock().get(4)+this.Acteur2.getStock().get(4)+this.Acteur3.getStock().get(4)) ;
+		stockChocHQ_Eq4 = new Indicateur("Eq4 - stockTabHQ",this,this.Acteur1.getStock().get(5)+this.Acteur2.getStock().get(5)+this.Acteur3.getStock().get(5)) ;
+		prodTabBQ_Eq4 = new Indicateur("Eq4 - prodTabBQ",this,this.Acteur1.getProduction().get(1).getValeur()+this.Acteur2.getProduction().get(1).getValeur()+this.Acteur3.getProduction().get(1).getValeur()) ;
+		prodTabMQ_Eq4 = new Indicateur("Eq4 - prodTabMQ",this,this.Acteur1.getProduction().get(2).getValeur()+this.Acteur2.getProduction().get(2).getValeur()+this.Acteur3.getProduction().get(2).getValeur()) ;
+		prodTabHQ_Eq4 = new Indicateur("Eq4 - prodTabHQ",this,this.Acteur1.getProduction().get(3).getValeur()+this.Acteur2.getProduction().get(3).getValeur()+this.Acteur3.getProduction().get(3).getValeur()) ;
+		prodChocMQ_Eq4 = new Indicateur("Eq4 - prodChocMQ",this,this.Acteur1.getProduction().get(4).getValeur()+this.Acteur2.getProduction().get(4).getValeur()+this.Acteur3.getProduction().get(4).getValeur()) ;
+		prodChocHQ_Eq4 = new Indicateur("Eq4 - prodChocHQ",this,this.Acteur1.getProduction().get(5).getValeur()+this.Acteur2.getProduction().get(5).getValeur()+this.Acteur3.getProduction().get(5).getValeur()) ;
 
 		solde = new Indicateur("solde",this,1000) ;
 		//On crée la liste qui range nos stocks
@@ -219,29 +220,16 @@ public class Eq4TRAN implements Acteur {
 		 * IL FAUT CODER UN SOMMATEUR POUR AVOIR LES STOCKS TOTAUX DE EQ4TRAN
 		 * @author Mickaël, Etienne
 		 */
-		/*Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockChocMQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockChocHQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockTabBQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockTabMQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur1.getStockTabHQ());
-		Monde.LE_MONDE.ajouterJournal(this.Acteur1.getJournalEq4());
+		Monde.LE_MONDE.ajouterIndicateur(stockChocMQ_Eq4);
+		Monde.LE_MONDE.ajouterIndicateur(stockChocHQ_Eq4);
+		Monde.LE_MONDE.ajouterIndicateur(stockTabBQ_Eq4);
+		Monde.LE_MONDE.ajouterIndicateur(stockTabMQ_Eq4);
+		Monde.LE_MONDE.ajouterIndicateur(stockTabHQ_Eq4);
+		// Journal pour l'acteur global Eq4Tran ?
 		Monde.LE_MONDE.ajouterJournal(this.Acteur1.getVendeur().ventes);
-		
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockChocMQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockChocHQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockTabBQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockTabMQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur2.getStockTabHQ());
-		Monde.LE_MONDE.ajouterJournal(this.Acteur2.getJournalEq4());
 		Monde.LE_MONDE.ajouterJournal(this.Acteur2.getVendeur().ventes);
+		Monde.LE_MONDE.ajouterJournal(this.Acteur3.getVendeur().ventes);
 		
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockChocMQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockChocHQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockTabBQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockTabMQ());
-		Monde.LE_MONDE.ajouterIndicateur(this.Acteur3.getStockTabHQ());
-		Monde.LE_MONDE.ajouterJournal(this.Acteur3.getJournalEq4());
-		Monde.LE_MONDE.ajouterJournal(this.Acteur3.getVendeur().ventes);*/
 	}
 
 	/** Nom de l'acteur
