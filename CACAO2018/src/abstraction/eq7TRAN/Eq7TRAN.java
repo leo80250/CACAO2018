@@ -1297,6 +1297,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * @param qualite
 	 * @return
 	 */
+	//ancien code//
 	public Indicateur getStockFeves(int qualite) {
 		if(qualite < 0 || qualite > 3) 
 			return null;
@@ -1312,7 +1313,32 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			return null; 
 		return this.getStockTablettes()[qualite];
 	}
+	
+	//à écrire plus tard (faire version 2 par entreprise en dessous)
 	public Indicateur getStockPrevisionnel(int qualite) {
+		int tonnes = 0;
+		return absenteisme;
+	}
+	
+	//nouveau code//
+	public Indicateur getStockFevesParEntrep(int qualite, int entrep) {
+		if(qualite < 0 || qualite > 3) 
+			return null;
+		return this.getStockFeves2().get(entrep)[qualite];
+	} 
+	public Indicateur getStockPoudreParEntrep(int qualite, int entrep) {
+		if(qualite < 0 || qualite > 3) 
+			return null;
+		return this.getStockPoudre2().get(entrep)[qualite];
+	}
+	public Indicateur getStockTablettesParEntrep(int qualite, int entrep) {
+		if(qualite < 0 || qualite > 3) 
+			return null; 
+		return this.getStockTablettes2().get(entrep)[qualite];
+	}
+	
+	// à écrire 
+	public Indicateur getStockPrevisionnelParEntrep(int qualite, int entrep) {
 		int tonnes = 0;
 		return absenteisme;
 	}
