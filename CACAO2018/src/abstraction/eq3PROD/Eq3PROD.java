@@ -35,79 +35,14 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 	private Maladie foreur;
 	private Maladie balai;
 	
-	/**
-	 * @author Morgane
-	 */
-	public String getNom() {
-		return this.nom;
-	}
-	
-	public void setNom(String s) {
-		this.nom=s;
-	}
 	
 
-	public double getSolde() {
-		return this.solde;
-	}
-	
-	public void setSolde(double solde) {
-		this.solde=solde;
-	}
-	
-	public void setListeContrats(List<ContratFeveV3> l) {
-		this.listeContrats=(ArrayList<ContratFeveV3>) l;
-	}
-	
-	
-	/**
-	 * @author Pierre
-	 */
-	public List<List<Integer>> getStockmoyen() {
-		return stockmoyen;
-	}
 
-	public List<List<Integer>> getStockfin() {
-		return stockfin;
-	}
-	
-	public int quantiteStockMoyen() {
-		int stockm = 0;
-		for(int i=0; i<this.stockmoyen.size(); i++) {
-			stockm+=stockmoyen.get(i).get(0);
-		}
-		return stockm;
-		
-	}
-	
-	public int quantiteStockFin() {
-		int stockf = 0;
-		for(int i=0; i<this.stockfin.size(); i++) {
-			stockf+=stockfin.get(i).get(0);
-		}		
-		return stockf;
-	}
-	
-	
-	public void ajouterStockMoyen(int stock) {	
-		List<Integer> stockm = new ArrayList<Integer>();
-		stockm.add(stock);
-		stockm.add(0);
-		this.stockmoyen.add(stockm);
-	}
-	
-	public void ajouterStockFin(int stock) {	
-		List<Integer> stockf = new ArrayList<Integer>();
-		stockf.add(stock);
-		stockf.add(0);
-		this.stockfin.add(stockf);
-	}
-	
-
-	
+	// Constructeur
 	/**
 	 * @author Claire
 	 */
+
 	public Eq3PROD() {
 		
 		setNom("Eq3PROD");
@@ -147,11 +82,116 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		Monde.LE_MONDE.ajouterActeur(marche);
 	}
 	
+	
+	
+	// Getters et Setters
+	/**
+	 * @author Morgane
+	 */
+	public String getNom() {
+		return this.nom;
+	}
+	
+	public void setNom(String s) {
+		this.nom=s;
+	}
+	
+	public double getSolde() {
+		return this.solde;
+	}
+	
+	public void setSolde(double solde) {
+		this.solde=solde;
+	}
+	
+	public void setListeContrats(List<ContratFeveV3> l) {
+		this.listeContrats=(ArrayList<ContratFeveV3>) l;
+	}
+	
+	
+	/**
+	 * @author Pierre
+	 */
+	public List<List<Integer>> getStockmoyen() {
+		return stockmoyen;
+	}
+
+	public List<List<Integer>> getStockfin() {
+		return stockfin;
+	}
+	
+	public ArrayList<ContratFeveV3> getListeContrats(){
+		return this.listeContrats;
+	}
+	
+	
+	//-----------------------------------------------------------------------------------//
+	// Gestion du stock
+	
+	/**
+	 * @author Pierre
+	 * 
+	 */
+	public int quantiteStockMoyen() {
+		int stockm = 0;
+		for(int i=0; i<this.stockmoyen.size(); i++) {
+			stockm+=stockmoyen.get(i).get(0);
+		}
+		return stockm;
 		
-		public ArrayList<ContratFeveV3> getListeContrats(){
-			return this.listeContrats;
+	}
+	
+	public int quantiteStockFin() {
+		int stockf = 0;
+		for(int i=0; i<this.stockfin.size(); i++) {
+			stockf+=stockfin.get(i).get(0);
+		}		
+		return stockf;
+	}
+	
+	
+	public void ajouterStockMoyen(int stock) {	
+		List<Integer> stockm = new ArrayList<Integer>();
+		stockm.add(stock);
+		stockm.add(0);
+		this.stockmoyen.add(stockm);
+	}
+	
+	public void ajouterStockFin(int stock) {	
+		List<Integer> stockf = new ArrayList<Integer>();
+		stockf.add(stock);
+		stockf.add(0);
+		this.stockfin.add(stockf);
+	}
+	
+	/**
+	 * @author Pierre
+	 */
+	
+	public void vieillirStock() {
+		for(int i=0; i<this.stockmoyen.size(); i++) {
+			this.stockmoyen.get(i).set(1,this.stockmoyen.get(i).get(1)+1);
+		}
+		for(int i=0; i<this.stockmoyen.size(); i++) {
+			if(this.stockmoyen.get(i).get(1)>=12) {
+				this.stockmoyen.remove(i);
+			}
 		}
 		
+		for(int i=0; i<this.stockfin.size(); i++) {
+			this.stockfin.get(i).set(1,this.stockfin.get(i).get(1)+1);
+		}
+		for(int i=0; i<this.stockfin.size(); i++) {
+			if(this.stockfin.get(i).get(1)>=12) {
+				this.stockfin.remove(i);
+			}
+		}
+	}
+	
+	//-----------------------------------------------------------------------------------//
+	// Implementation du marché
+	
+
 		/**
 		 * @author Morgane et Pierre
 		 */
@@ -284,29 +324,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				}
 			}
 		
-		/**
-		 * @author Pierre
-		 */
 		
-		public void vieillirStock() {
-			for(int i=0; i<this.stockmoyen.size(); i++) {
-				this.stockmoyen.get(i).set(1,this.stockmoyen.get(i).get(1)+1);
-			}
-			for(int i=0; i<this.stockmoyen.size(); i++) {
-				if(this.stockmoyen.get(i).get(1)>=12) {
-					this.stockmoyen.remove(i);
-				}
-			}
-			
-			for(int i=0; i<this.stockfin.size(); i++) {
-				this.stockfin.get(i).set(1,this.stockfin.get(i).get(1)+1);
-			}
-			for(int i=0; i<this.stockfin.size(); i++) {
-				if(this.stockfin.get(i).get(1)>=12) {
-					this.stockfin.remove(i);
-				}
-			}
-		}
 		
 		
 //		/**
@@ -319,6 +337,11 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 //		public boolean maladieIndo() {
 //			return (Math.random()<=0.042);
 //		}
+		
+		//--------------------------------------------------------------------------------------
+		// Next
+		
+		
 		/**
 		@author Claire, Pierre et Morgane
 		**/
@@ -414,6 +437,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			//System.out.println(stockmoyen.toString());
 		}
 		
+		//------------------------------------------------------------------------------
 		//Journal 
 		/**
 		 * @author Claire
