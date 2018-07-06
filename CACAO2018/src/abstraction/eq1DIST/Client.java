@@ -58,7 +58,7 @@ public class Client implements Acteur {
 	 * 
 	 */
 
-	public void EquilibrerPartsDeMarche(int j, double ValeurInitiale, double ValeurFinale,
+	private void EquilibrerPartsDeMarche(int j, double ValeurInitiale, double ValeurFinale,
 			ArrayList<InterfaceDistributeurClient> Distributeurs) {
 		double ecart = (ValeurInitiale - ValeurFinale) / Distributeurs.size();
 		for (int i = 0; i < Distributeurs.size(); i++) {
@@ -78,7 +78,7 @@ public class Client implements Acteur {
 	 * 
 	 */
 
-	public void ModifierPartsDeMarche(int i, int j, double commande, double reponse) {
+	private void ModifierPartsDeMarche(int i, int j, double commande, double reponse) {
 		if (commande != 0) {
 			double valeur = this.getValeur(i, j) * (1 - (commande - reponse) / commande);
 			if (valeur < 0) {
@@ -103,7 +103,7 @@ public class Client implements Acteur {
 	 *         consultables dans le corps de la fonction.
 	 * 
 	 */
-	public void ModifierPartsDeMarchePrix(int i, int j, double prix,
+	private void ModifierPartsDeMarchePrix(int i, int j, double prix,
 			ArrayList<InterfaceDistributeurClient> Distributeurs) {
 		double PrixMoyen = 0;
 		for (InterfaceDistributeurClient a : Distributeurs) {
@@ -133,7 +133,7 @@ public class Client implements Acteur {
 		return this.PartdeMarche[i][j];
 	}
 
-	public void ChangementPartdeMarche(int i, int j, GrilleQuantite commande, GrilleQuantite reponse,
+	private void ChangementPartdeMarche(int i, int j, GrilleQuantite commande, GrilleQuantite reponse,
 			InterfaceDistributeurClient acteur, ArrayList<InterfaceDistributeurClient> Distributeurs) {
 		// modification des parts de marché en fonction des commandes
 		double ValeurInitiale0 = this.getValeur(i, j);
@@ -157,7 +157,7 @@ public class Client implements Acteur {
 	 *         dans h
 	 */
 
-	public int[] commande(int[] h, int i) {
+	private int[] commande(int[] h, int i) {
 		int[] cm = new int[6];
 		for (int j = 0; j <= 5; j++) {
 			cm[j] = (int) (0.7 * h[j] * this.getValeur(i, j) + (Math.random() * 0.6 * h[j] * this.getValeur(i, j)));

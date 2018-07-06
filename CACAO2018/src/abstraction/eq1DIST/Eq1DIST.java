@@ -58,12 +58,17 @@ public Eq1DIST()  {
 	this.nombreVentes = new Indicateur[6];
 	this.stocks = new Indicateur[6];
 	this.solde = new Indicateur("Solde de "+ this.getNom(), this,0);
+	Monde.LE_MONDE.ajouterIndicateur(this.solde);
 	this.efficacite = new Indicateur("Efficacité de "+ this.getNom(), this,0);
 	this.stock=stock;
 	this.PrixChocoMdG=new Indicateur("Prix Choco MdG de "+this.getNom(),this,1.5);
+	Monde.LE_MONDE.ajouterIndicateur(this.PrixChocoMdG);
 	this.PrixChocoHdG=new Indicateur("Prix Choco HdG de "+this.getNom(),this,3.0);
+	Monde.LE_MONDE.ajouterIndicateur(this.PrixChocoHdG);
 	this.PrixConfMdG=new Indicateur("Prix Confiseries MdG de "+this.getNom(),this,2.6);
+	Monde.LE_MONDE.ajouterIndicateur(this.PrixConfMdG);
 	this.PrixConfHdG=new Indicateur("Prix Confiseries HdG de "+this.getNom(),this,4.1);
+	Monde.LE_MONDE.ajouterIndicateur(this.PrixConfHdG);
 		
 		this.journal= new Journal("Journal de Eq1DIST");
 		journal.ajouter("Absentéisme");
@@ -233,5 +238,24 @@ public Eq1DIST()  {
 		// TODO Auto-generated method stub
 		return new double[] {0,this.PrixChocoMdG.getValeur(),this.PrixChocoHdG.getValeur(),
 				0,this.PrixConfMdG.getValeur(),this.PrixConfHdG.getValeur()};
+	}
+	
+	/**
+	 *
+	 * @param double[]
+	 *            PrixAchat (tableau des prix d'achats (1x6) chocoBdG,chocoMdG,chocoHdG,confBdG,confMdG,confHdG )
+	 * 
+	 * @return change les prix de ventes de façon à avoir une marge de 16%
+	 */
+	private void changerPrix(double[] PrixAchat) {
+		this.PrixChocoMdG.setValeur(this, PrixAchat[1]*1.16);
+		this.PrixChocoHdG.setValeur(this, PrixAchat[2]*1.16);
+		this.PrixConfMdG.setValeur(this, PrixAchat[4]*1.16);
+		this.PrixConfHdG.setValeur(this, PrixAchat[5]*1.16);
+		this.journal.ajouter("Changement des prix : \n"
+				+ "Prix chocolat milieu de gamme = "+this.PrixChocoMdG.getValeur()+"\n"
+				+ "Prix chocolat haut de gamme = "+this.PrixChocoHdG.getValeur()+"\n"
+				+ "Prix confiseries milieu de gamme = "+this.PrixConfMdG.getValeur()+"\n"
+				+ "Prix confiseries haut de gamme = "+this.PrixConfHdG.getValeur()+"\n");
 	}
 }
