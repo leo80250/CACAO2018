@@ -220,9 +220,7 @@ public class ContratFeveV3 {
 		else {
 			return "Pas d'échanges entre "+acheteur+" et "+vendeur;
 		}
-
-
-}
+	}
 	
 	public String toString2() {
 		return "[Transformateur : "+transformateur+" // producteur : "+producteur+ "// Qualite : "+qualite+
@@ -230,4 +228,13 @@ public class ContratFeveV3 {
 				" // QuantiteProposition : "+quantiteProposition+
 				" PrixOffrePublique : "+prixOffrePublique+ " PrixDemande : "+prixDemande+ " // PrixProposition : "+prixProposition+"]";
 		}
+	
+	public String toString3() {
+		String [] strqualite = {"basse", "moyenne", "haute"};
+		String acheteur = ((Acteur) transformateur).getNom();
+		String vendeur = ((Acteur) producteur).getNom();
+		return "<tt><u>Contrat entre "+acheteur+" (Acheteur) et "+vendeur+" (Vendeur)</u><br>"+this.getProposition_Quantite()+" tonnes de fève de qualite "+strqualite[this.getQualite()]+" à "
+		+this.getProposition_Prix()+" € la tonne<br>Soit un total de <font color='green'>"+this.getProposition_Quantite()*this.getProposition_Prix()+" €</font></tt>";
+	}
+	
 	}

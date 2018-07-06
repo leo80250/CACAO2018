@@ -346,15 +346,17 @@ public class Eq4TRAN implements Acteur {
 		stocks.add((int)stockTabHQ_Eq4.getValeur());
 		vendeur = new Vendeur(stocks);
 		
+
+		// On met à jour le journal des trois acteurs
+		journalEq4(this.Acteur1);
+		journalEq4(this.Acteur2);
+		journalEq4(this.Acteur3);
+		
 		//On prend en compte les coûts supplémentaires
 		Acteur1.coutsSupplementaires();
 		Acteur2.coutsSupplementaires();
 		Acteur3.coutsSupplementaires();
 		
-		// On met à jour le journal des trois acteurs
-		journalEq4(this.Acteur1);
-		journalEq4(this.Acteur2);
-		journalEq4(this.Acteur3);
 	}
 
 	public void journalEq4(SousActeur j) {
