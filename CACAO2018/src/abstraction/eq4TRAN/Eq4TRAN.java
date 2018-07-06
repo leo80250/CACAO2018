@@ -134,8 +134,8 @@ public class Eq4TRAN implements Acteur {
 		contratPoudreEnCoursEq7TRAN_Acteur1[1] = new ContratPoudre(1,1000,100.0, (IAcheteurPoudre)this.Acteur1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq5TRAN_Acteur1[0] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.Acteur1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_Acteur1[0] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.Acteur1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_Acteur1[2] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.Acteur1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_Acteur1[2] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.Acteur1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_Acteur1[2] = new ContratPoudre(2,0,0.0, (IAcheteurPoudre)this.Acteur1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_Acteur1[2] = new ContratPoudre(2,0,0.0, (IAcheteurPoudre)this.Acteur1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
 		this.Acteur1.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_Acteur1);
 		this.Acteur1.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_Acteur1);
@@ -145,7 +145,7 @@ public class Eq4TRAN implements Acteur {
 		 */
 		ContratPoudre[] contratPoudreEnCoursEq7TRAN_Acteur2 = new ContratPoudre[3];
 		ContratPoudre[] contratPoudreEnCoursEq5TRAN_Acteur2 = new ContratPoudre[3];
-		contratPoudreEnCoursEq5TRAN_Acteur2[0] = new ContratPoudre(0,2000,100.0, (IAcheteurPoudre)this.Acteur2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_Acteur2[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.Acteur2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq5TRAN_Acteur2[1] = new ContratPoudre(1,10000,100.0, (IAcheteurPoudre)this.Acteur2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_Acteur2[1] = new ContratPoudre(1,8000,100.0, (IAcheteurPoudre)this.Acteur2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
