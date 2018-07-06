@@ -9,10 +9,10 @@ public interface IVendeurPoudre {
 	// vendeur.nomMethode => c'est l'acheteur qui appelle les méthodes du vendeur
 	
 	// L'acheteur récupère le catalogue du vendeur (offre que tout le monde voit)
-	// L'acheteur regarde si des produits l'intéresse puis formule sa demande dans un nouveau ContratPoudre
+	// L'acheteur regarde si des produits l'intéressent puis formule sa demande dans un nouveau ContratPoudre
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur);
 	
-	// L'acheteur envoie sa demande créée juste avant au vendeur. L'acheteur reçoit la réponse du vendeur (le devis)
+	// L'acheteur passe en paramètre sa demande. L'acheteur reçoit la réponse du vendeur (le devis)
 	// Si le devis ne convient pas, on peut entrer en phase de négociation en réenvoyant une demande
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur);
 	

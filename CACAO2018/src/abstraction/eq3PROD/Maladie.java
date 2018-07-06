@@ -34,7 +34,7 @@ public class Maladie {
 	public void setMaladieActive() {
 		if (this.declencherMaladie()) {
 			Random r = new Random();
-			this.maladieActive = r.nextInt(dureeMax+1);
+			this.maladieActive = dureeMax+r.nextInt(dureeMax+1);
 		}
 	}
 	

@@ -6,7 +6,7 @@ public class ContratPoudre {
 	private int qualite;
 	// en tonnes
 	private int quantite;
-	// en euros
+	// en euros par tonne
 	private double prix;
 	private IAcheteurPoudre acheteur;
 	private IVendeurPoudre vendeur;
@@ -62,5 +62,10 @@ public class ContratPoudre {
 	}
 	public void setReponse(boolean reponse) {
 		this.reponse = reponse;
+	}
+	@Override
+	public String toString() {
+		return "ContratPoudre [qualite=" + qualite + ", quantite=" + quantite + ", prix=" + prix + ", acheteur="
+				+ acheteur + ", vendeur=" + vendeur + ", reponse=" + reponse + "]";
 	}
 }
