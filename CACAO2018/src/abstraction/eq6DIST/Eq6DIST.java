@@ -328,9 +328,9 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		int indice_equipe_moins_chere_CMG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
 		double prix_moins_chere_CMG=10000000.0;
 		for (int i=0; i<Prix.size(); i++) {
-			if (Prix.get(i).getPrixProduit((int)stock_CMG_min-1,2)<=prix_moins_chere_CMG) {
+			if (Prix.get(i).getPrixProduit((int)stock_CMG_min,2)<=prix_moins_chere_CMG) {
 				indice_equipe_moins_chere_CMG=i;
-				prix_moins_chere_CMG=Prix.get(i).getPrixProduit((int)stock_CMG_min-1,2);
+				prix_moins_chere_CMG=Prix.get(i).getPrixProduit((int)stock_CMG_min,2);
 			}
 		}
 		int stock_CMG1=0;
