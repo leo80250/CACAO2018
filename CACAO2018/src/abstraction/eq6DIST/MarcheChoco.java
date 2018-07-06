@@ -108,7 +108,7 @@ public void actu() {
 		}
 		
 		ArrayList<ArrayList<ArrayList<Integer>>> livraison = new ArrayList<ArrayList<ArrayList<Integer>>>();
-		for(int j =0; j<3;j++) {
+		for(int j =0; j<commande.get(0).size();j++) {
 			ArrayList<ArrayList<Integer>> Livraisoni =new ArrayList<ArrayList<Integer>>(); 
 			/*int qBonbonBQj=0;
 			int qBonbonMQj=0;
