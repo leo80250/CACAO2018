@@ -30,8 +30,8 @@ public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 	private Indicateur soldejournal;
 	private Indicateur meteoI;
 	private Indicateur instabiliteI;
-	private double totalVenteQB;
-	private double totalVenteQM;
+	private int totalVenteQB;
+	private int totalVenteQM;
 	public final static double ponderation = 0.1;
 	public final static Pays[] listPays = new Pays[] { Pays.COTE_IVOIRE, Pays.GHANA, Pays.NIGERIA, Pays.CAMEROUN, 
 			Pays.OUGANDA, Pays.TOGO, Pays.SIERRA_LEONE, Pays.MADAGASCAR, Pays.LIBERIA, Pays.TANZANIE }  ;
@@ -95,8 +95,8 @@ public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 		this.coeffStock = 1;
 		this.demandeTran = new ArrayList<>();
 		this.achatEq3 = false;
-		this.totalVenteQB=0.0;
-		this.totalVenteQM=0.0;
+		this.totalVenteQB=0;
+		this.totalVenteQM=0;
 		
 	}
 	
