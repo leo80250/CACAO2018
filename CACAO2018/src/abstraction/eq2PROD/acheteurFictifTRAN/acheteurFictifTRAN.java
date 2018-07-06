@@ -74,6 +74,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 
 	/* Agathe Chevalier, Guillaume Sallé */
 	public List<ContratFeveV3> getDemandePriveeV3() {
+		this.contratPrecedent = new ArrayList<ContratFeveV3>();
 		this.contratPrecedent = ((MarcheFeve)(Monde.LE_MONDE.getActeur("Marche"))).getContratPrecedent();
 		List<ContratFeveV3> c = new ArrayList<ContratFeveV3>();
 		//* Pour l'acheteur ficitf :		
@@ -92,7 +93,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 				prixQH += contrat.getDemande_Prix();
 			}
 			if(contrat.getQualite()==1) {
-				if(contrat.getProducteur()==null // Eq2PROD
+				if(contrat.getProducteur()==getVendeurs().get(0)
 						) {
 					tonnageQM_1 += (int)(contrat.getDemande_Quantite()*0.40);
 					prixQM_1 += contrat.getDemande_Prix();
@@ -101,7 +102,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 					prixQM_2 += contrat.getDemande_Prix();
 				}
 			}
-	
+
 		}
 		// On prend 40 % des tonnages 
 		
