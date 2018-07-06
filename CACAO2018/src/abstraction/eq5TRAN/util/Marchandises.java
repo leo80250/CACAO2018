@@ -39,4 +39,13 @@ public class Marchandises {
         return getMarchandise(index).contains("BQ") ? 0 : (getMarchandise(index).contains("MQ") ? 1 : 2);
     }
 
+    public static int getIndex(String marchandise) {
+        for (int i = 0; i < getNombreMarchandises(); i++) {
+            if(marchandise.equals(getMarchandise(i))) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }
