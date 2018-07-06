@@ -36,14 +36,18 @@ public class Stock {
 	}
 	
 	public void retirer(int quantite, int qualite) { // la qualite est un entier de 1 à 6
-		if(this.stock!=null) {
-		if(this.stock.get(qualite-1)!=null) {
-			while (this.stock.get(qualite-1).getStocki().get(0).getQuantite()<=quantite && this.stock.get(qualite-1).getStocki()!=null) {
+		//if(this.stock!=null) {
+		//System.out.println(this.stock+" <-- "+this.stock.size()+" <--size");
+		//System.out.println("qual = "+qualite+" size "+this.stock.get(qualite-1).getStocki().size());
+		if(this.stock.get(qualite-1).getStocki().size()!=0 && this.stock.get(qualite-1).getStocki()!=null) {
+			while (this.stock.get(qualite-1).getStocki().size()!=0 && this.stock.get(qualite-1).getStocki().get(0).getQuantite()<=quantite) {
 				this.stock.get(qualite-1).getStocki().remove(0);
 			}
+			if (this.stock.get(qualite-1).getStocki().size()!=0) {
 			this.stock.get(qualite-1).getStocki().get(0).setQuantite(this.stock.get(qualite-1).getStocki().get(0).getQuantite()-quantite);
+			}
 		}
-		}
+		//}
 	}
 	
 	public int total() {
