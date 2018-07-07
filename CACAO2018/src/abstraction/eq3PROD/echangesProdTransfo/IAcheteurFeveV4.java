@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Interface associee aux transformateurs acheteurs de feves
  * METHODES DU POINT DE VUE DU MARCHE CENTRAL
- * @author Claire
+ * @author Claire et Grégoire
  */
 
 public interface IAcheteurFeveV4 {

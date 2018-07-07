@@ -5,7 +5,7 @@ import abstraction.fourni.Acteur;
 import abstraction.fourni.Monde;
 
 /**
- * @author Claire
+ * @author Claire et Grégoire
  */
 
 public class ContratFeveV3 {
@@ -228,13 +228,94 @@ public class ContratFeveV3 {
 				" // QuantiteProposition : "+quantiteProposition+
 				" PrixOffrePublique : "+prixOffrePublique+ " PrixDemande : "+prixDemande+ " // PrixProposition : "+prixProposition+"]";
 		}
+	public static String doubleToString(double d) {
+		if (d == 0.0) return "0.00";
+	/*	long l = ((long)(d*100.0));
+		String s="";
+		while (l>0) {
+			s=l%10+s;
+			l=l/10;
+		}
+		String res="";
+		int j=-1;
+		for (int i=s.length()-1; i>=0; i--) {
+			res=s.charAt(i)+res;
+			if (i==s.length()-2) {
+				res=","+res;
+				j=0;
+			}
+			if (j >= 0) {
+				if (j == 3) {
+					res = " " + res;
+					j = 0;
+				}
+				j += 1;
+			}
+			
+		}
+		return res;
+		*/
+		String res = "";
+		boolean negatif = false;
+		if (d < 0) {
+			d = -d;
+			negatif = true;
+		}
+		String s="";
+		d=d*100;
+		while (d>=1) {
+			s=(int)(d%10)+s;
+			d=d/10;
+		}
+		int j=-1;
+		for (int i=s.length()-1; i>=0; i--) {
+			res=s.charAt(i)+res;
+			if (i==s.length()-2) {
+				res=","+res;
+				j=0;
+			}
+			if (j >= 0) {
+				if (j == 3) {
+					res = " " + res;
+					j = 0;
+				}
+				j += 1;
+			}
+			
+		}
+		if (negatif) res = "- "+res;
+		return res;
 	
+	}
+	
+	public static String longToString(long l) {
+		if (l == 0) return "0";
+		String s="";
+		while (l>0) {
+			s=l%10+s;
+			l=l/10;
+		}
+		String res="";
+		int j=1;
+		for (int i=s.length()-1; i>=0; i--) {
+			res=s.charAt(i)+res;
+			
+			if (j == 3) {
+				res = " " + res;
+				j = 0;
+			}
+			j += 1;
+			
+		}
+		return res;
+		
+	}
 	public String toString3() {
 		String [] strqualite = {"basse", "moyenne", "haute"};
 		String acheteur = ((Acteur) transformateur).getNom();
 		String vendeur = ((Acteur) producteur).getNom();
-		return "<tt><u>Contrat entre "+acheteur+" (Acheteur) et "+vendeur+" (Vendeur)</u><br>"+this.getProposition_Quantite()+" tonnes de fève de qualite "+strqualite[this.getQualite()]+" à "
-		+this.getProposition_Prix()+" € la tonne<br>Soit un total de <font color='green'>"+this.getProposition_Quantite()*this.getProposition_Prix()+" €</font></tt>";
+		return "<tt><u>Contrat entre "+acheteur+" (Acheteur) et "+vendeur+" (Vendeur)</u><br>"+longToString((long) this.getProposition_Quantite())+" tonnes de fève de qualite "+strqualite[this.getQualite()]+" à "
+		+doubleToString(this.getProposition_Prix())+" € la tonne<br>Soit un total de <font color='green'>"+doubleToString(this.getProposition_Quantite()*this.getProposition_Prix())+" €</font></tt>";
 	}
 	
 	}
