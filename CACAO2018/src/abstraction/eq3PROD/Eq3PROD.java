@@ -66,7 +66,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			}
 		}
 		
-		this.stockMoyenCritique = 500000;
+		this.stockMoyenCritique = 50000;
 		this.stockmoyen = new ArrayList<List<Integer>>();
 		this.stockfin = new ArrayList<List<Integer>>();
 		this.ajouterStockMoyen(75000);
@@ -303,20 +303,39 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		/**
 		 * @author Morgane & Pierre
 		 */
-		public void sendResultVentesV3(List<ContratFeveV3> resultVentes) { 	
+		public void sendResultVentesV3(List<ContratFeveV3> resultVentes) {
+			int quantiteTotale=0;
 			
-			for (ContratFeveV3 contrat : resultVentes) {  	  	 	  	  		   		 	 	
+			for (ContratFeveV3 contrat : resultVentes) {  
+				if (contrat.getQualite()==1 && contrat.getReponse()==true) {
+				quantiteTotale+=contrat.getProposition_Quantite();
+				}
 	
 				if(contrat.getReponse() == true) {
 					if(contrat.getQualite() == 1) { 	 	  	  		   		 	 	
 						int sommemoyen=0;
+						if (quantiteTotale<=this.quantiteStockMoyen()) {
 						while(sommemoyen+this.stockmoyen.get(0).get(0)<contrat.getProposition_Quantite()) {
 							sommemoyen+=this.stockmoyen.get(0).get(0);
 							this.stockmoyen.remove(0);
 						}
 						this.stockmoyen.get(0).set(0,this.stockmoyen.get(0).get(0)-(contrat.getProposition_Quantite()-sommemoyen));  	  		   		 	 	
-						solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;  	 	  	  		   		 	 	
-					}else { 						
+						solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;  
+						}
+						else {
+							double prixAchatAfrique = ((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).getPrix()*(quantiteTotale-this.quantiteStockMoyen()); 
+							this.setSolde(this.getSolde2().getValeur()-prixAchatAfrique);
+							this.solde2.setValeur(this, this.solde);
+							int qteAchatAfrique = ((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).acheter(quantiteTotale-this.quantiteStockMoyen()); 
+							this.ajouterStockMoyen(qteAchatAfrique);
+						while(sommemoyen+this.stockmoyen.get(0).get(0)<contrat.getProposition_Quantite()) {
+							sommemoyen+=this.stockmoyen.get(0).get(0);
+							this.stockmoyen.remove(0);
+						}
+						this.stockmoyen.get(0).set(0,this.stockmoyen.get(0).get(0)-(contrat.getProposition_Quantite()-sommemoyen));  	  		   		 	 	
+						solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;  
+						}}
+						else { 						
 						int sommefin=0;
 						while(sommefin+this.stockfin.get(0).get(0)<contrat.getProposition_Quantite()) {
 							sommefin+=this.stockfin.get(0).get(0);
@@ -324,10 +343,10 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 						}
 						this.stockfin.get(0).set(0,this.stockfin.get(0).get(0)-(contrat.getProposition_Quantite()-sommefin));  	 	  	  		   		 	 	
 						solde += contrat.getProposition_Prix()*contrat.getProposition_Quantite();
-						} 	 	  	  		   		 	 	
-					} 	 	  	  		   		 	 	
+						} 
+					} }	 	  	  		   		 	 	
 				}
-			}
+			
 		
 		public int getRecette(List<ContratFeveV3> resultVente) {
 			int recette=0;
@@ -361,6 +380,7 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		@author Claire, Pierre et Morgane
 		**/
 		public void next() {
+			//System.out.println(this.solde2.getValeur());
 			/*List<Integer> a=new ArrayList<Integer>();
 			a.add(30000);
 			a.add(0);
@@ -419,16 +439,36 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			double coeffAmerique = balai.pertesMaladie();
 			double coeffIndonesie = foreur.pertesMaladie();
 			
+
+
+
+			 
+			double prixAchatAfrique = 0.0; 
+			int qteAchatAfrique = 0;
 			
-			if(this.quantiteStockMoyen()<this.getStockMoyenCritique()) {
-				this.solde-=((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).getPrix()*(this.getStockMoyenCritique()-this.quantiteStockMoyen());
-				this.ajouterStockMoyen(((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).acheter(this.getStockMoyenCritique()-this.quantiteStockMoyen()));
-			}
 			double s=0.0;
 			for (ContratFeveV3 contrat : this.getListeContrats()) if (contrat.getReponse())s+=contrat.getProposition_Quantite()*contrat.getProposition_Prix();
-			
-			this.solde=this.solde-(prodBresil + prodIndo + prodfin)*121+s;
+			double depenses=(prodBresil + prodIndo + prodfin)*1212;
+			//System.out.println(solde);
+			this.setSolde(this.solde2.getValeur()+(s-depenses));;
+			//System.out.println(s-depenses);
+			//System.out.println(solde);
 			this.solde2.setValeur(this, this.solde);
+			
+			
+			if(this.quantiteStockMoyen()<this.getStockMoyenCritique()) {
+				//System.out.println(this.quantiteStockMoyen()<this.getStockMoyenCritique());
+				//System.out.println(this.quantiteStockMoyen());
+				//System.out.println(getStockMoyenCritique());
+				
+				prixAchatAfrique = ((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).getPrix()*(this.getStockMoyenCritique()-this.quantiteStockMoyen()); 
+				this.setSolde(this.getSolde2().getValeur()-prixAchatAfrique);
+				this.solde2.setValeur(this, this.solde);
+				qteAchatAfrique = ((IVendeurFevesProd) Monde.LE_MONDE.getActeur("Eq2PROD")).acheter(this.getStockMoyenCritique()-this.quantiteStockMoyen()); 
+				this.ajouterStockMoyen(qteAchatAfrique);}
+			//System.out.println(this.solde);
+			
+			
 			
 			
 
@@ -438,18 +478,19 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			this.stockQH.setValeur(this,this.quantiteStockFin());
 			this.stockQM.setValeur(this, this.quantiteStockMoyen());
 			
-			this.getJournal().ajouter("> Step "+Monde.LE_MONDE.getStep());
+			this.getJournal().ajouter("> Step "+x);
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Stocks & solde :");
-			this.getJournal().ajouter("Stock moyenne qualité : "+ longToString((long) this.quantiteStockMoyen()));
-			this.getJournal().ajouter("Stock haute qualité : "+ longToString((long) this.quantiteStockFin()));
-			this.getJournal().ajouter("Solde : "+ doubleToString((double) this.solde2.getValeur()));
+			this.getJournal().ajouter("Stock moyenne qualité : "+ longToString((long) this.quantiteStockMoyen())+" tonnes");
+			this.getJournal().ajouter("Stock haute qualité : "+ longToString((long) this.quantiteStockFin())+" tonnes");
+			this.getJournal().ajouter("Solde : "+ doubleToString((double) this.solde)+"€");
 
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Production :");
-			this.getJournal().ajouter("<tt>- Moyenne qualité (Indonésie) : "+longToString(((long) (coeffIndonesie*prodIndo)))+"</tt>");
-			this.getJournal().ajouter("<tt>- Moyenene qualité (Brésil) : "+longToString(((long) (coeffAmerique*prodBresil)))+"</tt>");
-			this.getJournal().ajouter("<tt>- Haute qualité (Equateur) : "+longToString(((long) (coeffAmerique*prodfin)))+"</tt>");
+			this.getJournal().ajouter("<tt>- Moyenne qualité (Indonésie) : "+longToString(((long) (coeffIndonesie*prodIndo)))+" tonnes</tt>");
+			this.getJournal().ajouter("<tt>- Moyenene qualité (Brésil) : "+longToString(((long) (coeffAmerique*prodBresil)))+" tonnes</tt>");
+			this.getJournal().ajouter("<tt>- Moyenene qualité (Importation d'Afrique) : "+longToString((long) (qteAchatAfrique))+" tonnes</tt>"); 
+			this.getJournal().ajouter("<tt>- Haute qualité (Equateur) : "+longToString(((long) (coeffAmerique*prodfin)))+" tonnes</tt>");
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Maladies :");
 			if (foreur.getMaladieActive() == 0 && balai.getMaladieActive() == 0) {
@@ -464,11 +505,17 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 			}
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Comptes :");
-			this.getJournal().ajouter("<tt>- Dépenses (Coûts de production) : <font color='red'>"+doubleToString(0.0+(prodBresil + prodIndo + prodfin)*1212)+" €</font></tt>");
-			this.getJournal().ajouter("<tt>- Recettes (Ventes) : <font color='green'>"+doubleToString(0.0+s)+" €</tt></font>");
+			this.getJournal().ajouter("<tt>- Ventes de fève : <font color='green'>"+doubleToString(0.0+s)+" €</tt></font>"); 
+			this.getJournal().ajouter("<tt>- Coûts de production : <font color='red'> "+doubleToString(0.0+(prodBresil + prodIndo + prodfin)*1212)+" €</font></tt>"); 
+			this.getJournal().ajouter("<tt>- Achat de fèves africaines : <font color='red'> "+doubleToString(qteAchatAfrique*prixAchatAfrique)+" €</tt></font>"); 
 			this.getJournal().ajouter(" ");
 			this.getJournal().ajouter("> Echanges :");
 			this.getJournal().ajouter(" ");
+			if (qteAchatAfrique != 0) { 
+			this.getJournal().ajouter("<tt><u>Contrat entre EQ3PROD (Acheteur) et Eq2PROD (Vendeur)</u><br>"+longToString((long) qteAchatAfrique)+" tonnes de fève de qualite moyenne à " 
+					+doubleToString(prixAchatAfrique)+" € la tonne<br>Soit un total de <font color='red'>"+doubleToString(qteAchatAfrique*prixAchatAfrique)+" €</font></tt>"); 
+			this.getJournal().ajouter(" "); 
+			} 
 			for (ContratFeveV3 contrat : this.getListeContrats()) {
 				if (contrat.getReponse() == true && contrat.getProposition_Quantite()*contrat.getProposition_Prix() != 0) {					
 					this.getJournal().ajouter(contrat.toString3());
@@ -525,13 +572,21 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 		 */
 		
 		public static String doubleToString(double d) {
-			long l = ((long)(d*100.0));
+			if (d == 0.0) return "0.00"; 
+			String res = ""; 
+			boolean negatif = false; 
+			if (d < 0) { 
+				d = -d; 
+				negatif = true; 
+			} 
 			String s="";
-			while (l>0) {
-				s=l%10+s;
-				l=l/10;
+			d = d*100; 
+			while (d>=1) { 
+				//System.out.println(s+" <-> "+d); 
+				s=(int)(d%10)+s; 
+				d=d/10; 
 			}
-			String res="";
+			
 			int j=-1;
 			for (int i=s.length()-1; i>=0; i--) {
 				res=s.charAt(i)+res;
@@ -548,10 +603,12 @@ public class Eq3PROD implements Acteur, abstraction.eq3PROD.echangesProdTransfo.
 				}
 				
 			}
+			if (negatif) res = "- "+res; 
 			return res;
 			
 		}
 		public static String longToString(long l) {
+			if (l == 0) return "0";
 			String s="";
 			while (l>0) {
 				s=l%10+s;
