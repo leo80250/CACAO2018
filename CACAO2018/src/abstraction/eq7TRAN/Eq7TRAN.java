@@ -73,6 +73,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private double[] coutTransformationTablette;
 	private double[] coutTransformationPoudre;
 	
+	private List<double[]> coutTransformationTablette2;
+	private List<double[]> coutTransformationPoudre2;
+	
 	private List<List<ContratFeveV3>> commandesFeveEnCours2;
 	private List<ArrayList<ContratPoudre>> commandesPoudreEnCours2;
 	private List<ArrayList<ArrayList<Integer>>> commandesTablettesEnCours2;
@@ -148,6 +151,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.coutTransformationPoudre = new double[3];
 		this.coutTransformationTablette = new double[3];
 		
+		
+		this.coutTransformationPoudre2 = new ArrayList<double[]>(3);
+		this.coutTransformationTablette2 = new ArrayList<double[]>(3);
 		
 		this.stockFeves2 = new ArrayList<Indicateur[]>(10);
 		this.stockPoudre2 = new ArrayList<Indicateur[]>(10);
@@ -414,10 +420,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 		//Mise à jour du solde pour les coûts de transformation
 		cout_transfo=0;
-		for(int qualite=0;qualite<3;qualite++){
-			this.calculateCoutTransformationPoudre(qualite);
-			this.calculateCoutTransformationTablette(qualite);
-			cout_transfo+=this.getCoutTransformationPoudre(qualite)+this.getCoutTransformationTablette(qualite);				
+		
+		for (int entrep=0; entrep<10; entrep++) {
+			for(int qualite=0;qualite<3;qualite++){
+				this.calculateCoutTransformationPoudreParEntrep(qualite, entrep);
+				this.calculateCoutTransformationTabletteParEntrep(qualite, entrep);
+				cout_transfo+=this.getCoutTransformationPoudre(qualite)+this.getCoutTransformationTablette(qualite);				
+			}
 		}
 		this.getSolde().setValeur(this,this.getSolde().getValeur()-cout_transfo);
 		this.getJournal().ajouter("COUTS TRANSFORMATION = "+cout_transfo);
@@ -813,7 +822,42 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		}
 		return total;
 	}
-	 	  	   		 			 			 	  	   		 			 			 	
+	 	 
+
+	public double[] getCoutTransformationTabletteParEntrep(int entrep) {
+		return this.coutTransformationTablette2.get(entrep);
+	}
+	public double getCoutTransformationTabletteParQualite(int qualite, int entrep){
+		return this.getCoutTransformationTabletteParEntrep(entrep)[qualite];
+	}
+	public void setCoutTransformationTabletteParEntrep(double[] cout, int entrep) {
+		this.getCoutTransformationTabletteParEntrep(entrep)[0]=cout[0];
+		this.getCoutTransformationTabletteParEntrep(entrep)[1]=cout[1];
+		this.getCoutTransformationTabletteParEntrep(entrep)[2]=cout[2];
+	}
+	
+	public double[] getCoutTransformationPoudreParEntrep(int entrep) {
+		return this.coutTransformationPoudre2.get(entrep);
+	}
+	public double getCoutTransformationPoudreParQualite(int qualite, int entrep) {
+		return this.coutTransformationPoudre2.get(entrep)[qualite];
+	}
+	public void setCoutTransformationPoudreParEntrep(double[] cout, int entrep) {
+		this.getCoutTransformationPoudreParEntrep(entrep)[0]=cout[0];
+		this.getCoutTransformationPoudreParEntrep(entrep)[1]=cout[1];
+		this.getCoutTransformationPoudreParEntrep(entrep)[2]=cout[2];
+	}
+	public void setCoutTransformationPoudreParQualite(double cout, int qualite, int entrep) {
+		double[] couts = this.coutTransformationPoudre2.get(entrep);
+		couts[qualite] = cout;
+		this.setCoutTransformationPoudreParEntrep(couts, entrep);
+	}
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * @author boulardmaelle
