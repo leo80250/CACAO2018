@@ -33,11 +33,13 @@ IVendeurPoudre {
 	private Vendeur vendeur;
 	
 	//On crée une liste pour ranger nos stocks
+	
 	private ArrayList<Indicateur> Stocks;
 	private ArrayList<Indicateur> Production;
 	private List<ContratFeveV3> contratFeveEnCours ; 
 	private ContratPoudre[] contratPoudreEnCoursEq7TRAN ;
 	private ContratPoudre[] contratPoudreEnCoursEq5TRAN;
+	private String nomPME ; 
 	private int taillePME ;
 	private double label;
 	// Indiquer un identifiant de Sous-Acteur ???
@@ -50,7 +52,7 @@ IVendeurPoudre {
 	 * @param solde
 	 * @param label
 	 */
-	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label) {
+	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label, String nomPME) {
 		this.JournalEq4 = JournalEq4;
 		this.solde = new Indicateur("solde", this,solde);
 		this.Stocks=Stocks;
@@ -58,10 +60,11 @@ IVendeurPoudre {
 		this.taillePME = (int)(11 + (Math.random() * (250 - 11))) ;	
 		this.label=label;
 		this.chiffreDAffaire=new Indicateur("Chiffre d'Affaire",this,0);
+		this.nomPME = nomPME ; 
 		}
 
 	public String getNom() {
-		return "Eq4TRAN";
+		return "Eq4TRAN" + this.nomPME ;
 	}
 
 	public void sell(int q) {
@@ -257,25 +260,25 @@ IVendeurPoudre {
 
 	@Override
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
