@@ -49,6 +49,7 @@ public void actu() {
 	}
 	
 	public void next() {
+		
 		actu();
 	
 		for (Acteur i : this.transformateurs) {
@@ -129,6 +130,7 @@ public void actu() {
 		int l=0;
 		ArrayList<ArrayList<ArrayList<Integer>>> Delivery = new ArrayList<ArrayList<ArrayList<Integer>>>();
 		for (Acteur i : this.transformateurs)	{
+			if (l<livraison.size()) {
 			IVendeurChocoBis ibis = (IVendeurChocoBis) i;
 			if (livraison.get(l).size()>=3&&this.Livraison_correct(ibis.getLivraison(livraison.get(l)))) {
 				Delivery.add(ibis.getLivraison(livraison.get(l)));
@@ -137,6 +139,7 @@ public void actu() {
 				this.Journal_Marche_choco.ajouter("getLivraison() de "+i.getNom()+"incorrecte");
 			}
 			l++;
+			}
 		}
 		l=0;
 		ArrayList<Double> paiement=new ArrayList<Double>();
