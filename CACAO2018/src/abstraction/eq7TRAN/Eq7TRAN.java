@@ -164,16 +164,16 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.coutTransformationPoudre2 = new ArrayList<double[]>(3);
 		this.coutTransformationTablette2 = new ArrayList<double[]>(3);
 		
-		this.stockFeves2 = new ArrayList<Indicateur[]>(10);
-		this.stockPoudre2 = new ArrayList<Indicateur[]>(10);
-		this.stockTablettes2 = new ArrayList<Indicateur[]>(10);
-		this.prixAchatFeves2 = new ArrayList<Indicateur[]>(10);
-		this.prixVentePoudre2 = new ArrayList<Indicateur[]>(10);
-		this.prixVenteTablettes2 = new ArrayList<Indicateur[]>(10);
-		this.productionPoudreReelle2 = new ArrayList<Indicateur[]>(10);
-		this.productionTablettesReelle2 = new ArrayList<Indicateur[]>(10);
-		this.productionPoudreAttendue2 = new ArrayList<Indicateur[]>(10);
-		this.productionTablettesAttendue2 = new ArrayList<Indicateur[]>(10);
+		this.stockFeves2 = new ArrayList<Indicateur[]>();
+		this.stockPoudre2 = new ArrayList<Indicateur[]>();
+		this.stockTablettes2 = new ArrayList<Indicateur[]>();
+		this.prixAchatFeves2 = new ArrayList<Indicateur[]>();
+		this.prixVentePoudre2 = new ArrayList<Indicateur[]>();
+		this.prixVenteTablettes2 = new ArrayList<Indicateur[]>();
+		this.productionPoudreReelle2 = new ArrayList<Indicateur[]>();
+		this.productionTablettesReelle2 = new ArrayList<Indicateur[]>();
+		this.productionPoudreAttendue2 = new ArrayList<Indicateur[]>();
+		this.productionTablettesAttendue2 = new ArrayList<Indicateur[]>();
 		
 		this.nombreEmployes2 = new ArrayList<Indicateur>();
 		for (int i=0; i<10; i++) {
@@ -188,13 +188,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.livraisonsTablettesEnCours = new ArrayList<ArrayList<Integer>>();
 		this.offresFevesPubliquesEnCours = new ArrayList<ContratFeveV3>();
 	
-		this.commandesFeveEnCours2 = new ArrayList<List<ContratFeveV3>>(10);
-		this.commandesPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>(10);
-		this.commandesTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>(10);
-		this.livraisonsFeveEnCours2 = new ArrayList<List<ContratFeveV3>>(10);
-		this.livraisonsPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>(10);
-		this.livraisonsTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>(10);
-		this.offresFevesPubliquesEnCours2 = new ArrayList<List<ContratFeveV3>>(10);
+		this.commandesFeveEnCours2 = new ArrayList<List<ContratFeveV3>>();
+		this.commandesPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>(Collections.nCopies(10, new ArrayList<ContratPoudre>()));
+		this.commandesTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
+		this.livraisonsFeveEnCours2 = new ArrayList<List<ContratFeveV3>>();
+		this.livraisonsPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>();
+		this.livraisonsTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
+		this.offresFevesPubliquesEnCours2 = new ArrayList<List<ContratFeveV3>>();
 		
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
@@ -1783,69 +1783,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		Collections.shuffle(repartition);
 		return repartition;
 	}
-	
-	
-	
-	
-	
-		
-
-	
-	
-	/**
-	 * @author josephbernard  leofargeas boulardmaelle margauxgrand
-	 */
-	/*
-	public List<GQte> getLivraison(List<GQte> commandes) {
-		int[] stock= {this.getStockTablette(0).getValeur(),this.getStockTablette(1).getValeur(),this.getStockTablette(2).getValeur()};
-		int[] commande1= {commandes.get(0).getqTabletteBQ(),commandes.get(0).getqTabletteMQ(),commandes.get(0).getqTabletteHQ()};
-		int[] commande2= {commandes.get(1).getqTabletteBQ(),commandes.get(1).getqTabletteMQ(),commandes.get(1).getqTabletteHQ()};
-		int[] deliver1= new int[3];
-		int[] deliver2= new int[3];
-			
-		for(int i=0;i<3;i++) {
-			if (commande1[i]+commande2[i]<=stock[i]) {
-				deliver1[i]=commande1[i];
-				deliver2[i]=commande2[i];
-			}
-			else {
-				double p=commande1[i]/(commande1[i]+commande2[i]);
-				deliver1[i]=(int)(p*stock[i]);
-				deliver2[i]=stock[i]-deliver1[i];
-			}
-			this.stockTablettes[i].setValeur(this.getNom(),this.stockTablette [i].getValeur()-deliver1[i]-deliver2[i]);
-		}
-			
-		//setvaleur sur le solde
-		List<GQte> livraison= new ArrayList<GQte>();
-		livraison.add(new GQte(0,0,0,deliver1[0],deliver1[1],deliver1[2]));
-		livraison.add(new GQte(0,0,0,deliver2[0],deliver2[1],deliver2[2]));
-
-		return livraison;
-		}
-	}
->>>>>>> branch 'master' of https://github.com/leo80250/CACAO2018.git
-	@Override
-	public void sendOffrePublique(ContratFeve[] offrePublique) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public GQte getLivraison(GQte[] commandes) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	*/
-	
-	
-	
-
-	//IAcheteurFeve à laisser vide
-	/**
-	 * code à laisser vide, correspond à la V1, doit demeurer vide, et on doit toujour implémenter IAcheteurFeve
-	 * 
-	 */
 	
 	
 }
