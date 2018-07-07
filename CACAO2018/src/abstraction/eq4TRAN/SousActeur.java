@@ -156,20 +156,16 @@ IVendeurPoudre {
 		int[] demande= this.demandeFèves ; 
 		 
 		double[] prixMin= { 100000.0 , 100000.0 , 100000.0 } ;
-		int[] min= new int[this.contratFeveEnCours.size()];
-		int[] max= new int[this.contratFeveEnCours.size()];
-		for(int j=0;j<this.contratFeveEnCours.size();j++) {
-			min[j]=-1;
-			max[j]=-1;
-		}
+		int[] min= {-1,-1,-1};
+		int[] max= {-1,-1,-1};
 		for (int i=0;i<this.contratFeveEnCours.size();i++) {
 			int qualite=this.contratFeveEnCours.get(i).getQualite();
 			if (this.contratFeveEnCours.get(i).getOffrePublique_Prix()<prixMin[qualite]) {
 				prixMin[qualite]=this.contratFeveEnCours.get(i).getOffrePublique_Prix();
-				if (min[i]!=-1) {
+				if (min[qualite]!=-1) {
 					max[qualite]=i;
 				}
-				min[i]=this.contratFeveEnCours.get(i).getQualite();
+				min[qualite]=this.contratFeveEnCours.get(i).getQualite();
 			}
 		}
 		for (int j=0;j<3;j++) {
