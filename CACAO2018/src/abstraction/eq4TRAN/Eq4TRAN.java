@@ -143,6 +143,8 @@ public class Eq4TRAN implements Acteur {
 				
 		ContratPoudre[] contratPoudreEnCoursEq7TRAN_PME1 = new ContratPoudre[3];
 		ContratPoudre[] contratPoudreEnCoursEq5TRAN_PME1 = new ContratPoudre[3];
+		// Changer prix contrats à ceux définis dans devis des eq5 et eq7
+		
 		// Contrats Poudre Basse Qualité
 		contratPoudreEnCoursEq5TRAN_PME1[0] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.PME1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_PME1[0] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.PME1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
@@ -163,13 +165,13 @@ public class Eq4TRAN implements Acteur {
 
 		ContratPoudre[] contratPoudreEnCoursEq7TRAN_PME2 = new ContratPoudre[3];
 		ContratPoudre[] contratPoudreEnCoursEq5TRAN_PME2 = new ContratPoudre[3];
-		contratPoudreEnCoursEq5TRAN_PME2[0] = new ContratPoudre(0,2000,100.0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_PME2[0] = new ContratPoudre(0,0,0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_PME2[1] = new ContratPoudre(1,10000,100.0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_PME2[1] = new ContratPoudre(1,8000,100.0, (IAcheteurPoudre)this.PME2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_PME2[0] = new ContratPoudre(0,2000/24,100.0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_PME2[0] = new ContratPoudre(0,0,0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_PME2[1] = new ContratPoudre(1,10000/24,100.0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_PME2[1] = new ContratPoudre(1,8000/24,100.0, (IAcheteurPoudre)this.PME2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq5TRAN_PME2[2] = new ContratPoudre(2,0,0.0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_PME2[2] = new ContratPoudre(2,0,0.0, (IAcheteurPoudre)this.PME2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-
+		
 		
 		this.PME2.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_PME2);
 		this.PME2.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_PME2);
@@ -183,8 +185,8 @@ public class Eq4TRAN implements Acteur {
 		contratPoudreEnCoursEq7TRAN_PME3[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq5TRAN_PME3[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_PME3[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_PME3[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_PME3[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_PME3[2] = new ContratPoudre(2,18000/24,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_PME3[2] = new ContratPoudre(2,18000/24,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
 		
 		this.PME3.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_PME3);
@@ -265,15 +267,103 @@ public class Eq4TRAN implements Acteur {
 
 
 	public void next() {
+		
+		ArrayList<SousActeur> nosPME = new ArrayList<>();
+		nosPME.add(PME1);
+		nosPME.add(PME2);
+		nosPME.add(PME3);
+		
+		for(SousActeur acteur : nosPME) {
+			for(int i = 0 ; i < contratFevesEnCours.size() ; i++) {
+				
+				/**
+				 * Selon la qualité
+				 * On récupère les qtés de fèves achetées
+				 * Elles sont transformées immédiatement en produits
+				 * Les produits sont ajoutés aux stocks
+				 * Le coût total de l'achat est retiré au solde
+				 */
+				
+				if (contratFevesEnCours.get(i).getReponse()) {
+					for(int j=0;j<3;j++) {
+						if(contratFevesEnCours.get(i).getQualite() == j) {
+							acteur.getProduction().get(j+3).setValeur(acteur, contratFevesEnCours.get(i).getProposition_Quantite()); 
+							double ancienStockTabBQ = acteur.getStocks().get(j+3).getValeur();
+							acteur.getStocks().get(j+3).setValeur(acteur, ancienStockTabBQ + acteur.getProduction().get(j+3).getValeur());
+							solde.setValeur(acteur, contratFevesEnCours.get(i).getProposition_Prix()*contratFevesEnCours.get(i).getProposition_Quantite());
+						}
+					}
+					
+				}
 	
-		/**
-		 * pour chaque contrat on récupère prix et qté
-		 */
-		/**
-		 * pour contrat fève 
-		 */
-		for(int i = 0 ; i < contratFevesEnCours.size() ; i++) {
+			}
+	
+	
+	
+			/**
+			 * @Mickaël
+			 * on doit faire la stratégie marketing
+			 */
 			
+			//Dupliquer pour chaque pme
+			
+			IVendeurPoudre Eq5TRAN = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq5TRAN");
+			IVendeurPoudre Eq7TRAN = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN");
+			Eq5TRAN.getDevisPoudre(acteur.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)acteur);
+			Eq7TRAN.getDevisPoudre(acteur.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)acteur);
+			for (int i=0;i<acteur.getContratPoudreEnCoursEq5TRAN().length;i++) {
+				acteur.getContratPoudreEnCoursEq5TRAN()[i].setReponse(true);
+				acteur.getContratPoudreEnCoursEq7TRAN()[i].setReponse(true);
+			}
+			if (1==1) { // Pour l'instant on accepte l'achat sans condition 
+				Eq5TRAN.sendReponsePoudre(acteur.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)acteur);
+				Eq7TRAN.sendReponsePoudre(acteur.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)acteur);
+			}
+	
+			ContratPoudre[] contratfinalEq5TRAN = new ContratPoudre[3];
+			ContratPoudre[] contratfinalEq7TRAN = new ContratPoudre[3];
+			contratfinalEq5TRAN = Eq5TRAN.getEchangeFinalPoudre(acteur.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)acteur);
+			contratfinalEq7TRAN = Eq7TRAN.getEchangeFinalPoudre(acteur.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)acteur);
+	
+			ArrayList<ContratPoudre> contratPoudreEnCours = new ArrayList<ContratPoudre>();
+			contratPoudreEnCours.add(contratfinalEq5TRAN[0]);
+			contratPoudreEnCours.add(contratfinalEq5TRAN[1]);
+			contratPoudreEnCours.add(contratfinalEq5TRAN[2]);
+			contratPoudreEnCours.add(contratfinalEq7TRAN[0]);
+			contratPoudreEnCours.add(contratfinalEq7TRAN[1]);
+			contratPoudreEnCours.add(contratfinalEq7TRAN[2]);
+	
+			for(int i = 0 ; i < contratPoudreEnCours.size() ; i++ ) {
+	
+				/**
+				 * On récupère les qtés de poudre achetée
+				 * On les transforme en produits
+				 * Puis on les stocke
+				 */
+	
+				if(contratPoudreEnCours.get(i).isReponse()) {
+					for(int j=1;j<=2;j++) {
+						if (contratPoudreEnCours.get(i).getQualite() == j) {
+							acteur.getProduction().get(j).setValeur(acteur, contratPoudreEnCours.get(i).getQuantite());
+							double ancienStockChocMQ = acteur.getStocks().get(j).getValeur() ;
+							acteur.getStocks().get(j).setValeur(acteur, ancienStockChocMQ + acteur.getProduction().get(j).getValeur());
+							solde.setValeur(acteur, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
+		
+						} 
+				}
+			} 
+	
+			// On se transforme désormais en vendeur, le réapprovisionnement de nos stocks ayant été effectué
+			// Nous allons alors vendre des fèves aux distributeurs par l'intermédiaire du MarchéChoco()
+			ArrayList<Integer> stocks = new ArrayList<>();
+			stocks.add(0); // Nono met l'indicateur de stock ChocBQ
+			for(int k=1;k<6;k++) {
+				stocks.add((int)acteur.getStocks().get(k).getValeur());
+			}
+			vendeur = new Vendeur(stocks);
+			}	
+			
+		}
 			/**
 			 * Selon la qualité
 			 * On récupère les qtés de fèves achetées
@@ -281,98 +371,6 @@ public class Eq4TRAN implements Acteur {
 			 * Les produits sont ajoutés aux stocks
 			 * Le coût total de l'achat est retiré au solde
 			 */
-			
-			if (contratFevesEnCours.get(i).getReponse()) {
-				if(contratFevesEnCours.get(i).getQualite() == 0) {
-					prodTabBQ_Eq4.setValeur(this, contratFevesEnCours.get(i).getProposition_Quantite()); 
-					double ancienStockTabBQ = stockTabBQ_Eq4.getValeur() ;
-					stockTabBQ_Eq4.setValeur(Eq4TRAN, ancienStockTabBQ + prodTabBQ_Eq4.getValeur());
-					solde.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Prix()*contratFevesEnCours.get(i).getProposition_Quantite());
-				}
-				else if(contratFevesEnCours.get(i).getQualite() == 1) {
-					prodTabMQ_Eq4.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Quantite());
-					double ancienStockTabMQ = stockTabMQ_Eq4.getValeur() ;
-					stockTabMQ_Eq4.setValeur(Eq4TRAN, ancienStockTabMQ + prodTabMQ_Eq4.getValeur());
-					solde.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Prix()*contratFevesEnCours.get(i).getProposition_Quantite());
-
-				}
-				else if(contratFevesEnCours.get(i).getQualite() == 2) {
-					prodTabHQ_Eq4.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Quantite());
-					double ancienStockTabHQ = stockTabHQ_Eq4.getValeur() ;
-					stockTabHQ_Eq4.setValeur(Eq4TRAN, ancienStockTabHQ + prodTabMQ_Eq4.getValeur());
-					solde.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Prix()*contratFevesEnCours.get(i).getProposition_Quantite());
-
-				}
-			}
-
-		}
-
-
-
-		/**
-		 * @Mickaël
-		 * on doit faire la stratégie marketing
-		 */
-		IVendeurPoudre Eq5TRAN = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq5TRAN");
-		IVendeurPoudre Eq7TRAN = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN");
-		Eq5TRAN.getDevisPoudre(this.PME1.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)this.PME1);
-		Eq7TRAN.getDevisPoudre(this.PME1.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)this.PME1);
-		for (int i=0;i<this.PME1.getContratPoudreEnCoursEq5TRAN().length;i++) {
-			this.PME1.getContratPoudreEnCoursEq5TRAN()[i].setReponse(true);
-			this.PME1.getContratPoudreEnCoursEq7TRAN()[i].setReponse(true);
-		}
-		if (1==1) { // Pour l'instant on accepte l'achat sans condition 
-			Eq5TRAN.sendReponsePoudre(this.PME1.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)this.PME1);
-			Eq7TRAN.sendReponsePoudre(this.PME1.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)this.PME1);
-		}
-
-		ContratPoudre[] contratfinalEq5TRAN = new ContratPoudre[3];
-		ContratPoudre[] contratfinalEq7TRAN = new ContratPoudre[3];
-		contratfinalEq5TRAN = Eq5TRAN.getEchangeFinalPoudre(this.PME1.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)this.PME1);
-		contratfinalEq7TRAN = Eq7TRAN.getEchangeFinalPoudre(this.PME1.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)this.PME1);
-
-		ArrayList<ContratPoudre> contratPoudreEnCours = new ArrayList<ContratPoudre>();
-		contratPoudreEnCours.add(contratfinalEq5TRAN[0]);
-		contratPoudreEnCours.add(contratfinalEq5TRAN[1]);
-		contratPoudreEnCours.add(contratfinalEq5TRAN[2]);
-		contratPoudreEnCours.add(contratfinalEq7TRAN[0]);
-		contratPoudreEnCours.add(contratfinalEq7TRAN[1]);
-		contratPoudreEnCours.add(contratfinalEq7TRAN[2]);
-
-		for(int i = 0 ; i < contratPoudreEnCours.size() ; i++ ) {
-
-			/**
-			 * On récupère les qtés de poudre achetée
-			 * On les transforme en produits
-			 * Puis on les stocke
-			 */
-
-			if(contratPoudreEnCours.get(i).isReponse()) {
-				if (contratPoudreEnCours.get(i).getQualite() == 1) {
-					prodChocMQ_Eq4.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getQuantite());
-					double ancienStockChocMQ = stockChocMQ_Eq4.getValeur() ;
-					stockChocMQ_Eq4.setValeur(Eq4TRAN, ancienStockChocMQ + prodChocMQ_Eq4.getValeur());
-					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
-
-				} else if (contratPoudreEnCours.get(i).getQualite() == 2 ) {
-					prodChocHQ_Eq4.setValeur(Eq4TRAN, contratFevesEnCours.get(i).getProposition_Quantite());
-					double ancienStockChocHQ = stockChocHQ_Eq4.getValeur() ;
-					stockChocHQ_Eq4.setValeur(Eq4TRAN, ancienStockChocHQ + prodChocHQ_Eq4.getValeur()); 
-					solde.setValeur(Eq4TRAN, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
-				}
-			}
-		} 
-
-		// On se transforme désormais en vendeur, le réapprovisionnement de nos stocks ayant été effectué
-		// Nous allons alors vendre des fèves aux distributeurs par l'intermédiaire du MarchéChoco()
-		ArrayList<Integer> stocks = new ArrayList<>();
-		stocks.add(0);
-		stocks.add((int)stockChocMQ_Eq4.getValeur());
-		stocks.add((int)stockChocHQ_Eq4.getValeur());
-		stocks.add((int)stockTabBQ_Eq4.getValeur());
-		stocks.add((int)stockTabMQ_Eq4.getValeur());
-		stocks.add((int)stockTabHQ_Eq4.getValeur());
-		vendeur = new Vendeur(stocks);
 		
 
 		// On met à jour le journal des trois acteurs

@@ -13,6 +13,7 @@ import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
+import abstraction.fourni.Monde;
 
 public class SousActeur implements Acteur, 
 ITransformateur, IAcheteurFeveV4,
@@ -292,7 +293,7 @@ IVendeurPoudre {
 
 	@Override
 	public void next() {
-		// NE RIEN CODER, VOIR EQ4TRAN 
+		
 		
 	}
 	
