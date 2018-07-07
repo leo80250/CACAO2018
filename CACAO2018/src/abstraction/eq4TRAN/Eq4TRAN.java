@@ -198,7 +198,8 @@ public class Eq4TRAN implements Acteur {
 		for(int i=0;i<3;i++) {
 			this.contratFevesEnCours.add(new ContratFeveV3((IAcheteurFeveV4)this.PME1 , "Eq2PROD" , i )) ;
 			this.contratFevesEnCours.add(new ContratFeveV3((IAcheteurFeveV4)this.PME2, "Eq3PROD",i));
-			}
+			
+		}
 	
 		//On initialise les indicateurs à 1000(arbitraire)
 		
@@ -274,29 +275,7 @@ public class Eq4TRAN implements Acteur {
 		nosPME.add(PME3);
 		
 		for(SousActeur acteur : nosPME) {
-			for(int i = 0 ; i < contratFevesEnCours.size() ; i++) {
-				
-				/**
-				 * Selon la qualité
-				 * On récupère les qtés de fèves achetées
-				 * Elles sont transformées immédiatement en produits
-				 * Les produits sont ajoutés aux stocks
-				 * Le coût total de l'achat est retiré au solde
-				 */
-				
-				if (contratFevesEnCours.get(i).getReponse()) {
-					for(int j=0;j<3;j++) {
-						if(contratFevesEnCours.get(i).getQualite() == j) {
-							acteur.getProduction().get(j+3).setValeur(acteur, contratFevesEnCours.get(i).getProposition_Quantite()); 
-							double ancienStockTabBQ = acteur.getStocks().get(j+3).getValeur();
-							acteur.getStocks().get(j+3).setValeur(acteur, ancienStockTabBQ + acteur.getProduction().get(j+3).getValeur());
-							solde.setValeur(acteur, contratFevesEnCours.get(i).getProposition_Prix()*contratFevesEnCours.get(i).getProposition_Quantite());
-						}
-					}
-					
-				}
-	
-			}
+			
 	
 	
 	

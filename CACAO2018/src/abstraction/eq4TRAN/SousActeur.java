@@ -209,6 +209,13 @@ IVendeurPoudre {
 					contrat.setReponse(true);
 					double ancienneSolde = this.getSolde().getValeur() ; 
 					this.solde.setValeur(this, ancienneSolde - coutTotal ) ; 
+					for(int j=0;j<3;j++) {
+						if(contrat.getQualite() == j) {
+							this.getProduction().get(j+3).setValeur(this, contrat.getProposition_Quantite()); 
+							double ancienStock = this.getStocks().get(j+3).getValeur();
+							this.getStocks().get(j+3).setValeur(this, ancienStock + this.getProduction().get(j+3).getValeur());
+						}
+					}
 				}
 			}
 		}
