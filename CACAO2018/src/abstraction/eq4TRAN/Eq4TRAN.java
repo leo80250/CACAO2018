@@ -42,6 +42,7 @@ public class Eq4TRAN implements Acteur {
 	private Indicateur stockTabBQ_Eq4;
 	private Indicateur stockTabMQ_Eq4;
 	private Indicateur stockTabHQ_Eq4;
+	private Indicateur stockChocBQ_Eq4 ;
 	private Indicateur stockChocMQ_Eq4;
 	private Indicateur stockChocHQ_Eq4;
 	private Indicateur prodTabBQ_Eq4 ;
@@ -53,20 +54,18 @@ public class Eq4TRAN implements Acteur {
 	private Indicateur solde ; 
 	//Journal rendant compte de nos activités et de l'évolution de nos indicateurs
 	private Journal JournalEq4 = new Journal("JournalEq4") ;
-	//Rôle de vendeur que nous incarnerons à chaque next() et qui se mettra à jour à cette même fréquence
+	// Rôle de vendeur que nous incarnerons à chaque next() et qui se mettra à jour à cette même fréquence
 	private Vendeur vendeur;
-	//On crée une liste pour ranger nos stocks
+	// On crée une liste pour ranger nos stocks
 	private ArrayList<Indicateur> Stocks;
 	
 	private ArrayList<ContratFeveV3> contratFevesEnCours ; 
 	
-	/** Initialisation des indicateurs 
-	 *
-	 */
+	
 	public Eq4TRAN() {
 		/**
 		 * @Mickaël
-		 * Constructeurs des 3 Sous-Acteurs 
+		 * Initialise des tableaux d'indicateurs 
 		 */
 		
 		int soldeSA=1000;
@@ -88,6 +87,7 @@ public class Eq4TRAN implements Acteur {
 		/**
 		 * @author Mickaël, Etienne
 		 * On initialise les stocks ainsi que la production pour chaque Sous-Acteur.
+		 * Ici, on peut modifier les valeurs des stocks au départ 
 		 */
 				Prod_PME1.add(new Indicateur("",this.PME1,0));
 				Stocks_PME1.add(new Indicateur("",this.PME1,0));
