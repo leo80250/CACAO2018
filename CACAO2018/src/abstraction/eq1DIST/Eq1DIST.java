@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
-import abstraction.eq6DIST.IAcheteurChoco;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
@@ -12,7 +11,7 @@ import abstraction.fourni.Monde;
 
 
   
-public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurChoco {
+public class Eq1DIST implements Acteur, InterfaceDistributeurClient {
 	private int[][] stock;
 	private double banque;
 	private Journal journal;
@@ -78,7 +77,7 @@ public Eq1DIST()  {
 		}
 		return new GrilleQuantite(res);
 	}
-	@Override
+
 	public ArrayList<GQte> getCommande(ArrayList<GPrix> gPrix, ArrayList<GQte> stock) {
 		ArrayList<GQte> l = new ArrayList<GQte>();
 		l.add(new GQte(0,7500,7500,0,29167,12500));

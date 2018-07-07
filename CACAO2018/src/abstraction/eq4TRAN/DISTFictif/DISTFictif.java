@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.GQte;
-import abstraction.eq6DIST.IAcheteurChoco;
 import abstraction.eq6DIST.IAcheteurChocoBis;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
