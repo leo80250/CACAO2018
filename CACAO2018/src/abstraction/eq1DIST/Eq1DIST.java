@@ -33,14 +33,6 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	private Indicateur PrixChocoHdG;
 	private Indicateur PrixConfMdG;
 	private Indicateur PrixConfHdG;
-	private Indicateur stockTMG;
-	private Indicateur stockTHG;
-	private Indicateur stockCMG;
-	private Indicateur stockCHG;
-	private Indicateur nombreVentesTMG;
-	private Indicateur nombreVentesTHG;
-	private Indicateur nombreVentesCMG;
-	private Indicateur nombreVentesCHG;
 
 	
 	public Eq1DIST()  {
@@ -50,33 +42,46 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		Journal client = new Journal("Clients Finaux");
 		Monde.LE_MONDE.ajouterJournal(client);
 		Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche,client));
+		
 		this.stock = new Stock(0,50000,25000,0,35000,15000); 
+		
 		this.nombreAchatsOccasionnels = new Indicateur[6];
 		for(int i=0; i<6; i++) {
-			this.nombreAchatsOccasionnels[i]= new Indicateur("echange occasionnels en " + Type.values()[i] + " eq1",this, 0);
-			Monde.LE_MONDE.ajouterIndicateur(this.nombreAchatsOccasionnels[i]);
+			this.nombreAchatsOccasionnels[i]= new Indicateur("echanges occasionnels en " + Type.values()[i] + " eq1",this, 0);
+			if(i!=0 && i!=3) { //on enlevera cette condition si un jour on choisit de faire du basse gamme
+				Monde.LE_MONDE.ajouterIndicateur(this.nombreAchatsOccasionnels[i]);
+			}
 		}
+		
 		this.nombreAchatsContrat = new Indicateur[6];
-		this.nombreVentesTMG = new Indicateur("Ventes de tablettes moyenne gamme"+this.getNom(),this,0);
-		this.stockTMG =new Indicateur("Stock de tablettes MG"+this.getNom(), this,50000);
-		Monde.LE_MONDE.ajouterIndicateur(this.stockTMG);
-		this.stockTHG =new Indicateur("Stock de tablettes HG"+this.getNom(), this,25000);
-		Monde.LE_MONDE.ajouterIndicateur(this.stockTHG);
-		this.stockCMG =new Indicateur("Stock de  confiseries MG"+this.getNom(), this,35000);
-		Monde.LE_MONDE.ajouterIndicateur(this.stockCMG);
-		this.stockCHG =new Indicateur("Stock de confiseries HG"+this.getNom(), this,15000);
-		Monde.LE_MONDE.ajouterIndicateur(this.stockCHG);
-		this.nombreVentesTMG = new Indicateur("Ventes de tablette MG"+this.getNom(),this,0);
-		Monde.LE_MONDE.ajouterIndicateur(this.nombreVentesTMG);
-		this.nombreVentesTHG = new Indicateur("Ventes de tablette HG"+this.getNom(),this,0);
-		Monde.LE_MONDE.ajouterIndicateur(this.nombreVentesTHG);
-		this.nombreVentesCMG = new Indicateur("Ventes de confiseries MG"+this.getNom(),this,0);
-		Monde.LE_MONDE.ajouterIndicateur(this.nombreVentesCMG);
-		this.nombreVentesCHG = new Indicateur("Ventes de confiseries HG"+this.getNom(),this,0);
-		Monde.LE_MONDE.ajouterIndicateur(this.nombreVentesCHG);		
+		for(int i=0; i<6; i++) {
+			this.nombreAchatsContrat[i]= new Indicateur("echanges contrat en " + Type.values()[i] + " eq1",this, 0);
+			if(i!=0 && i!=3) {
+				Monde.LE_MONDE.ajouterIndicateur(this.nombreAchatsContrat[i]);
+			}
+		}
+		
+		this.stocks = new Indicateur[6];
+		for (int i=0;i<6;i++) {
+			this.stocks[i] = new Indicateur("stock"+Type.values()[i]+" eq1",this,0);
+			if(i!=0 && i!=3) {
+				Monde.LE_MONDE.ajouterIndicateur(this.stocks[i]);
+			}
+		}
+		
+		this.nombreVentes = new Indicateur[6];
+		for (int i=0;i<6;i++) {
+			this.nombreVentes[i] = new Indicateur("nombre vente en "+Type.values()[i]+" eq1",this,0);
+			if(i!=0 && i!=3) {
+				Monde.LE_MONDE.ajouterIndicateur(this.nombreVentes[i]);
+			}
+		}
+		
 		this.solde = new Indicateur("Solde de "+ this.getNom(), this,500000);
 		Monde.LE_MONDE.ajouterIndicateur(this.solde);
 		this.efficacite = new Indicateur("Efficacité de "+ this.getNom(), this,0);
+		Monde.LE_MONDE.ajouterIndicateur(this.efficacite);
+		
 		this.PrixChocoMdG=new Indicateur("Prix Choco MdG de "+this.getNom(),this,1.5);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixChocoMdG);
 		this.PrixChocoHdG=new Indicateur("Prix Choco HdG de "+this.getNom(),this,3.0);
@@ -86,8 +91,8 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		this.PrixConfHdG=new Indicateur("Prix Confiseries HdG de "+this.getNom(),this,4.1);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixConfHdG);
 			
-			this.journal= new Journal("Journal de Eq1DIST");
-			Monde.LE_MONDE.ajouterJournal(this.journal);
+		this.journal= new Journal("Journal de Eq1DIST");
+		Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
 	
 	@Override
@@ -131,9 +136,10 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 			  		}
 				}
 				if (a!=Double.MAX_VALUE){
-				  this.stock.ajouter(d.getQuantite(),i);
+				  this.stock.ajouter(d.getQuantite(),i+1);
 				  solde.setValeur(this, solde.getValeur()-a);
 				  vendeursOcca.get(n).envoyerReponseTer(this,d.getQuantite(),d.getQualite(),a);
+				  this.stocks[i].setValeur(this, this.stocks[i].getValeur()+d.getQuantite());
 				  this.nombreAchatsOccasionnels[i].setValeur(this,this.nombreAchatsOccasionnels[i].getValeur()+d.getQuantite());
 				  this.journal.ajouter("ACHAT OCCASIONNEL : L'équipe 1 a acheté "+d.getQuantite()+" unités de "+Type.values()[i]+" à l'équipe "+((Acteur) vendeursOcca.get(n)).getNom()); 
 				} 
@@ -143,7 +149,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	}
 	
 	public void venteOccaspe() {
-		// on fait une demande occasionnelle en prevision des mois de forte consomation
+		// on fait une demande occasionnelle en prevision des mois de forte consommation
 		if(Monde.LE_MONDE.getStep()%12==2
 				||Monde.LE_MONDE.getStep()%12==3
 				||Monde.LE_MONDE.getStep()%12==4
@@ -173,6 +179,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 					  	solde.setValeur(this, solde.getValeur()-a);
 					  	vendeursOcca.get(n).envoyerReponseTer(this,d.getQuantite(),d.getQualite(),a);
 					  	this.nombreAchatsOccasionnels[i].setValeur(this,this.nombreAchatsOccasionnels[i].getValeur()+d.getQuantite());
+					  	this.stocks[i].setValeur(this, this.stocks[i].getValeur()+d.getQuantite());
 					  	this.journal.ajouter("ACHAT OCCASIONNEL : L'équipe 1 a acheté "+d.getQuantite()+" unités de "+Type.values()[i]+" à l'équipe "+((Acteur) vendeursOcca.get(n)).getNom());
 					  } 
 					 
@@ -282,10 +289,10 @@ public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayLi
 		for(ArrayList<Integer> l: commandeFinale) {
 				this.journal.ajouter("Tablettes MQ : "+l.get(4)+"; Tablettes HQ : "+l.get(5)+"; Confiseries MQ : "+l.get(1)+"; Confiseries MQ : "+l.get(2));	
 				this.journal.ajouter("");
-				//this.stockTMG.setValeur(this, this.stockTMG.getValeur()+l.get(4));
-				//this.stockTHG.setValeur(this, this.stockTHG.getValeur()+l.get(5));
-				//this.stockCMG.setValeur(this, this.stockCMG.getValeur()+l.get(1));
-				//this.stockCHG.setValeur(this, this.stockCHG.getValeur()+l.get(2));
+				this.stocks[1].setValeur(this, this.stocks[1].getValeur()+l.get(4));
+				this.stocks[2].setValeur(this, this.stocks[2].getValeur()+l.get(5));
+				this.stocks[4].setValeur(this, this.stocks[4].getValeur()+l.get(1));
+				this.stocks[5].setValeur(this, this.stocks[5].getValeur()+l.get(2));
 				this.solde.setValeur(this,this.solde.getValeur()-Prix.get(4).getPrixProduit(l.get(4), 4)-Prix.get(5).getPrixProduit(l.get(5),5)-Prix.get(1).getPrixProduit(l.get(1), 1)-Prix.get(2).getPrixProduit(l.get(2), 2));
 				stock.ajouter(l.get(4),1);
 				stock.ajouter(l.get(5),2);
