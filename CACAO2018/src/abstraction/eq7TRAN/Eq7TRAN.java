@@ -850,6 +850,12 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getCoutTransformationTabletteParEntrep(entrep)[2]=cout[2];
 	}
 	
+	public void setCoutTransformationTabletteParQualite(double cout, int qualite, int entrep) {
+		double[] couts = this.coutTransformationTablette2.get(entrep);
+		couts[qualite] = cout;
+		this.setCoutTransformationTabletteParEntrep(couts, entrep);
+	}
+	
 	public double[] getCoutTransformationPoudreParEntrep(int entrep) {
 		return this.coutTransformationPoudre2.get(entrep);
 	}
@@ -1177,14 +1183,14 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		return this.FACTEUR_COUT_TRANSFO*(qualite+1)*this.getProductionPoudreAttendue2().get(entrep)[qualite].getValeur(); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
 	public void calculateCoutTransformationPoudreParEntrep(int qualite, int entrep) { 	  	   		 			 			 	
-		this.setCoutTransformationPoudre(this.FACTEUR_COUT_TRANSFO*(qualite+1)*this.getProductionPoudreReelle2().get(entrep)[qualite].getValeur(), qualite); 	  	   		 			 			 	
+		this.setCoutTransformationPoudreParQualite(this.FACTEUR_COUT_TRANSFO*(qualite+1)*this.getProductionPoudreReelle2().get(entrep)[qualite].getValeur(), qualite, entrep); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
 		  	   		 			 			 	
 	public double estimateCoutTransformationTabletteParEntrep(int qualite, int entrep) { 	  	   		 			 			 	
 		return this.FACTEUR_COUT_TRANSFO*(qualite+1)*this.getProductionTablettesAttendue2().get(entrep)[qualite].getValeur(); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
 	public void calculateCoutTransformationTabletteParEntrep(int qualite, int entrep) { 	  	   		 			 			 	
-		this.setCoutTransformationTablette(this.FACTEUR_COUT_TRANSFO*(qualite+1)*getProductionTablettesReelle2().get(entrep)[qualite].getValeur(), qualite); 	  	   		 			 			 	
+		this.setCoutTransformationTabletteParQualite(this.FACTEUR_COUT_TRANSFO*(qualite+1)*getProductionTablettesReelle2().get(entrep)[qualite].getValeur(), qualite, entrep); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
 	 	  	   		 			 			 	
 	public double estimatePrixAchatFevesParEntrep(int qualite, int entrep) { 	  	   		 			 			 	
@@ -1494,6 +1500,35 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		else
 			return productionTotaleMax[qualite];
 	}
+	
+	public int getMaximumOfProductionParEntrep(int type, int qualite, int entrep) {
+		List<int[]> productionTotaleMax = new ArrayList<int[]>(3);
+		List<int[]> productionPoudreMax = new ArrayList<int[]>(3);
+		List<int[]> productionTabletteMax = new ArrayList<int[]>(3);
+		//int[] productionTotaleMin = new int[3];
+		//int[] productionPoudreMin = new int[3];
+		//int[] productionTabletteMin = new int[3];
+		
+			productionPoudreMax.get(entrep)[qualite] = (int) (this.TAUX_TRANSFORMATION_FEVES_POUDRE[qualite]*this.MOY_PROD_POUDRE_PAR_EMPLOYE[qualite]*this.getNombreEmployesParEntrep(entrep).getValeur()*this.getEfficacite().getValeur());
+			productionTabletteMax.get(entrep)[qualite] = (int) (this.TAUX_TRANSFORMATION_FEVES_TABLETTES[qualite]*this.MOY_PROD_TABLETTE_PAR_EMPLOYE[qualite]*this.getNombreEmployesParEntrep(entrep).getValeur()*this.getEfficacite().getValeur());
+			productionTotaleMax.get(entrep)[qualite] = Math.max(productionPoudreMax.get(entrep)[qualite], productionTabletteMax.get(entrep)[qualite]);
+			//productionPoudreMin[qualite] = (int) this.getProductionPoudreAttendue(qualite).getValeur();
+			//productionTabletteMin[qualite] = (int) this.getProductionTablettesAttendue(qualite).getValeur();
+			//productionTotaleMin[qualite] = productionPoudreMin[qualite] + productionTabletteMin[qualite];
+			
+			if(type == 0)
+				return productionPoudreMax.get(entrep)[qualite];
+			else if(type == 1)
+				return productionTabletteMax.get(entrep)[qualite];
+			else
+				return productionTotaleMax.get(entrep)[qualite];
+		
+	}
+	
+	
+	
+
+	
 	
 	public List<ContratFeveV3> analyseOffresPubliquesFeves(List<ContratFeveV3> offresPubliques2) {
 		// on boucle sur les offres publiques et on vérifie pour le 
