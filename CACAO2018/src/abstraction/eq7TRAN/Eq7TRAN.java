@@ -306,9 +306,18 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			this.calculateTauxEfficaciteParEntrep(entrep);
 		}
 		
-		this.getJournal().ajouter("STOCK FEVES DEBUT = " + (int)this.getStockFeves()[0].getValeur()+"t, "+(int)this.getStockFeves()[1].getValeur()+"t, "+(int)this.getStockFeves()[2].getValeur()+"t");
-		this.getJournal().ajouter("STOCK POUDRE DEBUT = " + (int)this.getStockPoudre()[0].getValeur()+"t, "+(int)this.getStockPoudre()[1].getValeur()+"t, "+(int)this.getStockPoudre()[2].getValeur()+"t");
-		this.getJournal().ajouter("STOCK TABLETTES DEBUT = " + (int)this.getStockTablettes()[0].getValeur()+"t, "+(int)this.getStockTablettes()[1].getValeur()+"t, "+(int)this.getStockTablettes()[2].getValeur()+"t");
+		int stockFevesTotal=0;
+		int stockPoudreTotal=0;
+		int stockTablettesTotal =0;
+		for (int entrep=0; entrep<10; entrep++) {
+			stockFevesTotal=(int)this.getStockFevesParEntrep(0,entrep).getValeur()+(int)this.getStockFevesParEntrep(1,entrep).getValeur()+(int)this.getStockFevesParEntrep(2,entrep).getValeur();
+			stockPoudreTotal=(int)this.getStockPoudreParEntrep(0,entrep).getValeur()+(int)this.getStockPoudreParEntrep(1,entrep).getValeur()+(int)this.getStockPoudreParEntrep(2,entrep).getValeur();
+			stockTablettesTotal=(int)this.getStockTablettesParEntrep(0,entrep).getValeur()+(int)this.getStockTablettesParEntrep(1,entrep).getValeur()+(int)this.getStockTablettesParEntrep(2,entrep).getValeur();
+		}
+		
+		this.getJournal().ajouter("STOCK FEVES DEBUT ="+stockFevesTotal+"t");
+		this.getJournal().ajouter("STOCK POUDRE DEBUT = " + stockPoudreTotal+"t");
+		this.getJournal().ajouter("STOCK TABLETTES DEBUT = " + stockTablettesTotal+"t");
 		
 		/*
 		 Pour le moment, on reçoit des commandes des distributeurs qu'on essaye un maximum de remplir avec notre stock
@@ -527,6 +536,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * @param qualite
 	 * @author boulardmaelle
 	 */
+	//ancien code//
 	public void setStockPoudre(int value, int qualite) {
 		Indicateur[] stockPoudre = this.getStockPoudre();
 		stockPoudre[qualite].setValeur(this, value);
@@ -1318,7 +1328,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				productionAttendue += commandesEnCours.get(i).getQuantite(); 	  	   		 			 			 	
 			} 	  	   		 			 			 	
 		} 	  	   		 			 			 	
-		this.setProductionPoudreAttendue((int)(productionAttendue*(1+MOY_STOCK_POUDRE_SUR_ENSEMBLE_COMMANDES)), qualite); 	  	   		 			 			 	
+		this.setProductionPoudreAttendueParEntrep((int)(productionAttendue*(1+MOY_STOCK_POUDRE_SUR_ENSEMBLE_COMMANDES)), qualite, entrep); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
 	 	  	   		 			 			 	
 	public void calculateProductionPoudreReelleParEntrep(int qualite, int entrep) { 	  	   		 			 			 	
@@ -1509,8 +1519,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		//int[] productionPoudreMin = new int[3];
 		//int[] productionTabletteMin = new int[3];
 		
-			productionPoudreMax.get(entrep)[qualite] = (int) (this.TAUX_TRANSFORMATION_FEVES_POUDRE[qualite]*this.MOY_PROD_POUDRE_PAR_EMPLOYE[qualite]*this.getNombreEmployesParEntrep(entrep).getValeur()*this.getEfficacite().getValeur());
-			productionTabletteMax.get(entrep)[qualite] = (int) (this.TAUX_TRANSFORMATION_FEVES_TABLETTES[qualite]*this.MOY_PROD_TABLETTE_PAR_EMPLOYE[qualite]*this.getNombreEmployesParEntrep(entrep).getValeur()*this.getEfficacite().getValeur());
+			productionPoudreMax.get(entrep)[qualite] = (int) (this.TAUX_TRANSFORMATION_FEVES_POUDRE[qualite]*this.MOY_PROD_POUDRE_PAR_EMPLOYE[qualite]*this.getNombreEmployesParEntrep(entrep).getValeur()*this.getEfficaciteParEntrep(entrep).getValeur());
+			productionTabletteMax.get(entrep)[qualite] = (int) (this.TAUX_TRANSFORMATION_FEVES_TABLETTES[qualite]*this.MOY_PROD_TABLETTE_PAR_EMPLOYE[qualite]*this.getNombreEmployesParEntrep(entrep).getValeur()*this.getEfficaciteParEntrep(entrep).getValeur());
 			productionTotaleMax.get(entrep)[qualite] = Math.max(productionPoudreMax.get(entrep)[qualite], productionTabletteMax.get(entrep)[qualite]);
 			//productionPoudreMin[qualite] = (int) this.getProductionPoudreAttendue(qualite).getValeur();
 			//productionTabletteMin[qualite] = (int) this.getProductionTablettesAttendue(qualite).getValeur();
