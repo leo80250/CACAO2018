@@ -74,10 +74,13 @@ public class GPrix2{
 		 * 5=TablettesMQ
 		 * 6=TablettesHQ
 		 */
-		int j =0;
-		while((j<getIntervalles().size())&&(getIntervalles().get(idProduit-1)[j]>quantite)) {
-			j++;
+		if(getIntervalles().size()>0) {
+			int j =0;
+			while((j<getIntervalles().size())&&(getIntervalles().get(idProduit-1)[j]>quantite)) {
+				j++;
+			}
+			return getPrix().get(idProduit-1)[j];
 		}
-		return getPrix().get(idProduit-1)[j];
+		else return 0;
 	}
 }
