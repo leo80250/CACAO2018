@@ -311,23 +311,27 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     	demande[0]= new ContratPoudre();
     	demande[1]= new ContratPoudre();
     	    	//Si l'équipe 7 n'a pas assez de stocks, on demande le maximum disponible
-    	if(catalogue[2].getQuantite()<210) {
-    		demande[2] = new ContratPoudre(2,catalogue[2].getQuantite(),catalogue[2].getPrix(),this,equipe7,false);
-    	}
-    	
-    	else {
-    		demande[2]=new ContratPoudre(2,(int)besoinPoudre,catalogue[2].getPrix(),this,equipe7,false);
-    	}  	
-    	ContratPoudre[] devis = equipe7.getDevisPoudre(demande, this);
-    	if(devis[2].getPrix()==demande[2].getPrix() && devis[2].getQuantite()==demande[2].getQuantite()) {
-    		devis[2].setReponse(true);
-    		equipe7.sendReponsePoudre(devis, this);
-    		depenser(devis[2].getPrix());
-    		this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
-    		journal.ajouter("L'équipe 5 a acheté "+devis[2].getQuantite()+" tonnes de poudre HQ à l'équipe 7");
-    	}
+        if(catalogue[2]!=null) {
+            if(catalogue[2].getQuantite()<210) {
+                demande[2] = new ContratPoudre(2,catalogue[2].getQuantite(),catalogue[2].getPrix(),this,equipe7,false);
+            }
+
+            else {
+                demande[2]=new ContratPoudre(2,(int)besoinPoudre,catalogue[2].getPrix(),this,equipe7,false);
+            }
+        }
+        ContratPoudre[] devis = equipe7.getDevisPoudre(demande, this);
+        if(demande[2]!=null && devis[2]!=null) {
+            if(devis[2].getPrix()==demande[2].getPrix() && devis[2].getQuantite()==demande[2].getQuantite()) {
+                devis[2].setReponse(true);
+                equipe7.sendReponsePoudre(devis, this);
+                depenser(devis[2].getPrix());
+                this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
+                journal.ajouter("L'équipe 5 a acheté "+devis[2].getQuantite()+" tonnes de poudre HQ à l'équipe 7");
+            }
+        }
     	equipe7.getEchangeFinalPoudre(demande, this);
-    	}
+    }
     
     
 
