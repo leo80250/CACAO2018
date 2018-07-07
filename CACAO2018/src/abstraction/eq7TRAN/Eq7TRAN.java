@@ -327,6 +327,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			this.calculateTauxEfficaciteParEntrep(entrep);
 		}
 		
+		
 		int stockFevesTotal=0;
 		int stockPoudreTotal=0;
 		int stockTablettesTotal =0;
