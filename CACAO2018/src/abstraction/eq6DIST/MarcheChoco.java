@@ -39,17 +39,17 @@ public void actu() {
 	this.transformateurs.add( Monde.LE_MONDE.getActeur("Eq5TRAN"));
 	this.transformateurs.add( Monde.LE_MONDE.getActeur("Eq7TRAN"));*/
 	this.stock= new ArrayList <ArrayList<Integer>>();
-	this.prix= new ArrayList <GPrix2>();
-
-
-
+	this.prix= new ArrayList <GPrix2>();	
+	
+	
+		
 	}
 	private ArrayList<ArrayList<Integer>> getStock(){
 		return this.stock;
 	}
-
+	
 	public void next() {
-
+		
 		actu();
 	
 		for (Acteur i : this.transformateurs) {
@@ -62,17 +62,17 @@ public void actu() {
 			this.Journal_Marche_choco.ajouter("Prix de "+i.getNom()+"incorrect");
 		}
 		if (this.Stock_correct((ibis.getStock()))){
-
+			
 		this.stock.add(ibis.getStock());
 		this.Journal_Marche_choco.ajouter("Stock de "+i.getNom()+"correct et ajouté");
 		}else {
 			this.Journal_Marche_choco.ajouter("Stock de "+i.getNom()+"incorrect");
 		}
-		}
+		}		
 
-
-
-		/*boolean annexe_stock_vide =true;
+		
+		
+		/*boolean annexe_stock_vide =true; 
 		for (int i=0;i<this.getStock().size();i++) {
 			ArrayList<Integer> Stock_vide= new ArrayList<Integer>();//6);
 			for (int ii=1; ii<=6; ii++) {
@@ -87,7 +87,7 @@ public void actu() {
 			ArrayList<ArrayList<Integer>> Commande_nulle= new ArrayList<ArrayList<Integer>>();
 			ArrayList<Integer> a=new ArrayList<Integer>(6);
 			for (int i=0; i<this.distributeurs.size();i++) {
-				Commande_nulle.add(a);
+				Commande_nulle.add(a);				
 			}*/
 			ArrayList<ArrayList<ArrayList<Integer>>> commande=  new ArrayList<ArrayList<ArrayList<Integer>>>();
 		for (Acteur i : this.distributeurs) {
@@ -102,7 +102,7 @@ public void actu() {
 			}else {
 				this.Journal_Marche_choco.ajouter("Commande de "+i.getNom()+"incorrecte");
 			}
-
+			
 		}
 		
 		ArrayList<ArrayList<ArrayList<Integer>>> livraison = new ArrayList<ArrayList<ArrayList<Integer>>>();

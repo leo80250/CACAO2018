@@ -77,7 +77,7 @@ public Eq1DIST()  {
 		}
 		return new GrilleQuantite(res);
 	}
-
+	
 	public ArrayList<GQte> getCommande(ArrayList<GPrix> gPrix, ArrayList<GQte> stock) {
 		ArrayList<GQte> l = new ArrayList<GQte>();
 		l.add(new GQte(0,7500,7500,0,29167,12500));
