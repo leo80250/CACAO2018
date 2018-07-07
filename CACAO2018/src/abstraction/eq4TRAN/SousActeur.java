@@ -13,6 +13,7 @@ import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
+import abstraction.fourni.Monde;
 
 public class SousActeur implements Acteur, 
 ITransformateur, IAcheteurFeveV4,
@@ -33,13 +34,16 @@ IVendeurPoudre {
 	private Vendeur vendeur;
 	
 	//On crée une liste pour ranger nos stocks
+	
 	private ArrayList<Indicateur> Stocks;
 	private ArrayList<Indicateur> Production;
 	private List<ContratFeveV3> contratFeveEnCours ; 
 	private ContratPoudre[] contratPoudreEnCoursEq7TRAN ;
 	private ContratPoudre[] contratPoudreEnCoursEq5TRAN;
+	private String nomPME ; 
 	private int taillePME ;
 	private double label;
+	private int[] demandeFèves ;
 	// Indiquer un identifiant de Sous-Acteur ???
 
 	/**
@@ -50,7 +54,7 @@ IVendeurPoudre {
 	 * @param solde
 	 * @param label
 	 */
-	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label) {
+	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label, String nomPME, int[] demandeFèves) {
 		this.JournalEq4 = JournalEq4;
 		this.solde = new Indicateur("solde", this,solde);
 		this.Stocks=Stocks;
@@ -58,10 +62,15 @@ IVendeurPoudre {
 		this.taillePME = (int)(11 + (Math.random() * (250 - 11))) ;	
 		this.label=label;
 		this.chiffreDAffaire=new Indicateur("Chiffre d'Affaire",this,0);
-		}
+		this.nomPME = nomPME ; 
+		Monde.LE_MONDE.ajouterActeur(this);
+		this.demandeFèves = demandeFèves ; 
 
+		}
+	
+	
 	public String getNom() {
-		return "Eq4TRAN";
+		return "Eq4TRAN" + this.nomPME ;
 	}
 
 	public void sell(int q) {
@@ -144,13 +153,17 @@ IVendeurPoudre {
 	 */
 	@Override
 	public List<ContratFeveV3> getDemandePriveeV3() {
-		int[] demande= {13000,70000,25000};
+		int[] demande= this.demandeFèves ; 
 		 
 		double[] prixMin= { 100000.0 , 100000.0 , 100000.0 } ;
-		int[] min= {-1,-1,-1};
-		int[] max= {-1,-1,-1};
+		int[] min= new int[this.contratFeveEnCours.size()];
+		int[] max= new int[this.contratFeveEnCours.size()];
+		for(int j=0;j<this.contratFeveEnCours.size();j++) {
+			min[j]=-1;
+			max[j]=-1;
+		}
 		for (int i=0;i<this.contratFeveEnCours.size();i++) {
-			int qualite=this.contratFeveEnCours.get(i).getOffrePublique_Quantite();
+			int qualite=this.contratFeveEnCours.get(i).getQualite();
 			if (this.contratFeveEnCours.get(i).getOffrePublique_Prix()<prixMin[qualite]) {
 				prixMin[qualite]=this.contratFeveEnCours.get(i).getOffrePublique_Prix();
 				if (min[i]!=-1) {
@@ -188,21 +201,34 @@ IVendeurPoudre {
 
 	/*
 	 * @author Noémie, Charles
-	 */
-	@Override
-	/*
+	 *
 	 *  Stratégie à réécrire pour l'acceptation ou non des contrats 
 	 *  et revoir comment ranger les contrats selon le producteur 
+	 *  
+	 *  MàJ des stocks et des comptes dès que l'on accepte un contrat 
 	 */
+	
+	@Override
+	
 	public List<ContratFeveV3> getResultVentesV3() {
 		for (ContratFeveV3 contrat : this.contratFeveEnCours) {
 			if ( contrat.getReponse() ) {
 			double coutTotal = contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;
 				if (1.5*coutTotal < this.solde.getValeur()) {
 					contrat.setReponse(true);
+					double ancienneSolde = this.getSolde().getValeur() ; 
+					this.solde.setValeur(this, ancienneSolde - coutTotal ) ; 
+					for(int j=0;j<3;j++) {
+						if(contrat.getQualite() == j) {
+							this.getProduction().get(j+3).setValeur(this, contrat.getProposition_Quantite()); 
+							double ancienStock = this.getStocks().get(j+3).getValeur();
+							this.getStocks().get(j+3).setValeur(this, ancienStock + this.getProduction().get(j+3).getValeur());
+						}
+					}
 				}
 			}
 		}
+		
 		return this.contratFeveEnCours ; 
 	}
 	
@@ -257,25 +283,25 @@ IVendeurPoudre {
 
 	@Override
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -283,7 +309,7 @@ IVendeurPoudre {
 
 	@Override
 	public void next() {
-		// NE RIEN CODER, VOIR EQ4TRAN 
+		
 		
 	}
 	
