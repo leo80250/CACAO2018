@@ -62,6 +62,7 @@ IVendeurPoudre {
 		this.label=label;
 		this.chiffreDAffaire=new Indicateur("Chiffre d'Affaire",this,0);
 		this.nomPME = nomPME ; 
+		Monde.LE_MONDE.ajouterActeur(this);
 		}
 
 	public String getNom() {
