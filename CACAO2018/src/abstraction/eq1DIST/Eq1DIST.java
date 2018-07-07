@@ -75,18 +75,18 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 			}
 		}
 
-		this.solde = new Indicateur("Solde de " + this.getNom(), this, 500000);
+		this.solde = new Indicateur("solde eq1", this, 500000);
 		Monde.LE_MONDE.ajouterIndicateur(this.solde);
-		this.efficacite = new Indicateur("Efficacité de " + this.getNom(), this, 0);
+		this.efficacite = new Indicateur("efficacite eq1", this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.efficacite);
 
-		this.PrixChocoMdG = new Indicateur("Prix Choco MdG de " + this.getNom(), this, 1.5);
+		this.PrixChocoMdG = new Indicateur("Prix Choco MdG eq1", this, 1.5);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixChocoMdG);
-		this.PrixChocoHdG = new Indicateur("Prix Choco HdG de " + this.getNom(), this, 3.0);
+		this.PrixChocoHdG = new Indicateur("Prix Choco HdG eq1", this, 3.0);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixChocoHdG);
-		this.PrixConfMdG = new Indicateur("Prix Confiseries MdG de " + this.getNom(), this, 2.6);
+		this.PrixConfMdG = new Indicateur("Prix Confiseries MdG eq1", this, 2.6);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixConfMdG);
-		this.PrixConfHdG = new Indicateur("Prix Confiseries HdG de " + this.getNom(), this, 4.1);
+		this.PrixConfHdG = new Indicateur("Prix Confiseries HdG eq1", this, 4.1);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixConfHdG);
 
 		this.journal = new Journal("Journal de Eq1DIST");
@@ -100,6 +100,9 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 	@Override
 	public void next() {
+		this.journal.ajouter("Periode "+Monde.LE_MONDE.getStep());
+		this.journal.ajouter("");
+		
 		for (int i = 0; i < 6; i++) {
 			this.nombreAchatsOccasionnels[i].setValeur(this, 0);
 		}
@@ -107,6 +110,8 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		this.venteOccaspe();
 
 		this.salaires();
+		
+		this.journal.ajouter("");
 	}
 
 	public void venteOccalim() {
