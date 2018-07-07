@@ -130,7 +130,7 @@ public void actu() {
 		ArrayList<ArrayList<ArrayList<Integer>>> Delivery = new ArrayList<ArrayList<ArrayList<Integer>>>();
 		for (Acteur i : this.transformateurs)	{
 			IVendeurChocoBis ibis = (IVendeurChocoBis) i;
-			if (this.Livraison_correct(ibis.getLivraison(livraison.get(l)))) {
+			if (livraison.get(l).size()>=3&&this.Livraison_correct(ibis.getLivraison(livraison.get(l)))) {
 				Delivery.add(ibis.getLivraison(livraison.get(l)));
 				this.Journal_Marche_choco.ajouter("getLivraison() de "+i.getNom()+"correcte et ajoutée");
 			}else {
