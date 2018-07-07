@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
 import abstraction.eq4TRAN.Eq4TRAN;
 import abstraction.eq4TRAN.IVendeurChocoBis;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
@@ -12,10 +13,12 @@ import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq6DIST.IAcheteurChocoBis;
 import abstraction.eq7TRAN.Eq7TRAN;
+
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
+
 
 public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurChocoBis {
 	private Stock stock;
@@ -227,6 +230,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		return new GrilleQuantite(res);
 
 	}
+<<<<<<< HEAD
 
 
 	public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
@@ -255,6 +259,25 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 				ListeInterieur.add(0);
 			}
 			commandeFinale.add(ListeInterieur);
+=======
+	
+	public ArrayList<GQte> getCommande(ArrayList<GPrix> gPrix, ArrayList<GQte> stock) {
+		ArrayList<GQte> l = new ArrayList<GQte>();
+		l.add(new GQte(0,7500,7500,0,29167,12500));
+		l.add(new GQte(0,16167,5000,0,0,0));
+		l.add(new GQte(0,16167,5000,0,0,0));
+		return l;
+	}
+	
+	public void livraison(GQte d,double solde) {
+		for(int i=0; i<3;i++) {
+			stock[0][0] += d.getqTabletteBQ();
+			stock[0][1] += d.getqTabletteMQ();
+			stock[0][2] += d.getqTabletteHQ();
+			stock[1][0] += d.getqBonbonBQ();
+			stock[1][1] += d.getqBonbonMQ();
+			stock[1][2] += d.getqBonbonHQ();
+>>>>>>> branch 'master' of https://github.com/CACAO2018/CACAO2018.git
 		}
 			double[] m = new double[6];
 			for (int i =0;i<6;i++) {
