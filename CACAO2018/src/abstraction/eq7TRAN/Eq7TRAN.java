@@ -853,8 +853,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.setCoutTransformationPoudreParEntrep(couts, entrep);
 	}
 	
-	
-	
+
 	
 	
 	
