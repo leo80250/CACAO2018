@@ -168,20 +168,19 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.coutTransformationPoudre = new double[3];
 		this.coutTransformationTablette = new double[3];
 		
-		this.coutTransformationPoudre2 = new ArrayList<double[]>(Collections.nCopies(10, new double[3]));
-		this.coutTransformationTablette2 = new ArrayList<double[]>(Collections.nCopies(10, new double[3]));
+		this.coutTransformationPoudre2 = new ArrayList<double[]>();
+		this.coutTransformationTablette2 = new ArrayList<double[]>();
 
-		
 		this.stockFeves2 = new ArrayList<Indicateur[]>();
 		this.stockPoudre2 = new ArrayList<Indicateur[]>();
 		this.stockTablettes2 = new ArrayList<Indicateur[]>();
 		this.prixAchatFeves2 = new ArrayList<Indicateur[]>();
 		this.prixVentePoudre2 = new ArrayList<Indicateur[]>();
 		this.prixVenteTablettes2 = new ArrayList<Indicateur[]>();
-		this.productionPoudreReelle2 = new ArrayList<Indicateur[]>(Collections.nCopies(10, new Indicateur[3]));
-		this.productionTablettesReelle2 = new ArrayList<Indicateur[]>(Collections.nCopies(10, new Indicateur[3]));
-		this.productionPoudreAttendue2 = new ArrayList<Indicateur[]>(Collections.nCopies(10, new Indicateur[3]));
-		this.productionTablettesAttendue2 = new ArrayList<Indicateur[]>(Collections.nCopies(10, new Indicateur[3]));
+		this.productionPoudreReelle2 = new ArrayList<Indicateur[]>();
+		this.productionTablettesReelle2 = new ArrayList<Indicateur[]>();
+		this.productionPoudreAttendue2 = new ArrayList<Indicateur[]>();
+		this.productionTablettesAttendue2 = new ArrayList<Indicateur[]>();
 		
 		this.nombreEmployes2 = new ArrayList<Indicateur>();
 		for (int i=0; i<10; i++) {
@@ -266,13 +265,15 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			stockFeves2.add(stockFeves2i);
 			stockPoudre2.add(stockPoudre2i);
 			stockTablettes2.add(stockTablettes2i);
-			prixAchatFeves2.add(prixAchatFeves2i);
-			prixVentePoudre2.add(prixVentePoudre2i);
-			prixVenteTablettes2.add(prixVenteTablettes2i);
 			productionPoudreReelle2.add(productionPoudreReelle2i);
 			productionTablettesReelle2.add(productionTablettesReelle2i);
 			productionPoudreAttendue2.add(productionPoudreAttendue2i);
 			productionTablettesAttendue2.add(productionTablettesAttendue2i);
+			prixAchatFeves2.add(prixAchatFeves2i);
+			prixVentePoudre2.add(prixVentePoudre2i);
+			prixVenteTablettes2.add(prixVenteTablettes2i);
+			/*
+			*/
 		}
 		
 		for(int i = 0; i < 3; i++) {
@@ -1271,7 +1272,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public double estimateCoutTransformationPoudreParEntrep(int qualite, int entrep) { 	  	   		 			 			 	
 		return this.FACTEUR_COUT_TRANSFO*(qualite+1)*this.getProductionPoudreAttendue2().get(entrep)[qualite].getValeur(); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
-	public void calculateCoutTransformationPoudreParEntrep(int qualite, int entrep) { 	  	   		 			 			 	
+	public void calculateCoutTransformationPoudreParEntrep(int qualite, int entrep) {
 		this.setCoutTransformationPoudreParQualite(this.FACTEUR_COUT_TRANSFO*(qualite+1)*this.getProductionPoudreReelle2().get(entrep)[qualite].getValeur(), qualite, entrep); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
 		  	   		 			 			 	
@@ -1843,7 +1844,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				if(idProduit <= 3) {
 				}
 				else {
-					System.out.println(commandes.get(idDist).get(idProduit-4));
 					// On regarde si on a en stock ou si on peut produire ce qu'on nous demande
 					if (commandes.get(idDist).get(idProduit-4) > stockTablettes[idProduit-4]) {
 						/*double p = commande1[i]/(commande1[i]+commande2[i]);
@@ -1877,7 +1877,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	@Override
 	public double getReponseTer(DemandeAO d) {
-		System.out.println(d);
 		if (d.getQualite()==1 || d.getQualite()==2 || d.getQualite()==3) { //on a pas de confiseries donc on est pas interessés
 			return Double.MAX_VALUE;
 		} else {
