@@ -53,7 +53,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		this.stock = new Stock(0,50000,25000,0,35000,15000); 
 		this.nombreAchatsOccasionnels = new Indicateur[6];
 		for(int i=0; i<6; i++) {
-			this.nombreAchatsOccasionnels[i]= new Indicateur("echange en " + Type.values()[i] + " eq1",this, 0);
+			this.nombreAchatsOccasionnels[i]= new Indicateur("echange occasionnels en " + Type.values()[i] + " eq1",this, 0);
 			Monde.LE_MONDE.ajouterIndicateur(this.nombreAchatsOccasionnels[i]);
 		}
 		this.nombreAchatsContrat = new Indicateur[6];
@@ -208,7 +208,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 			a = a + (Q.getValeur(i)-res[i]);
 			somme = somme + Q.getValeur(i);
 		}
-		solde.setValeur(this, 1-(double) a/somme);
+		efficacite.setValeur(this, 1-(double) a/somme);
 		
 		return new GrilleQuantite(res);
 		
