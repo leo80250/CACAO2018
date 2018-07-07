@@ -103,6 +103,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		this.venteOccalim();
 		this.venteOccaspe();
 		
+		this.salaires();
 	}
 	
 	public void venteOccalim() {
