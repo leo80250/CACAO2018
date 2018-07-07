@@ -1376,14 +1376,16 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
 		int n = demande.length;
 		for(int i = 0; i<n; i++) {
-			int qualite = demande[i].getQualite();
-			// Si on a pas la bonne quantité on refuse
-			if(demande[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
-				demande[i].setQuantite((int)this.getStockPoudre()[qualite].getValeur());
-				//demande[i].setReponse(false);
+			if(demande[i] != null) {
+				int qualite = demande[i].getQualite();
+				// Si on a pas la bonne quantité on refuse
+				if(demande[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
+					demande[i].setQuantite((int)this.getStockPoudre()[qualite].getValeur());
+					//demande[i].setReponse(false);
+				}
+				
+				this.getCommandesPoudreEnCours().add(demande[i]);
 			}
-			
-			this.getCommandesPoudreEnCours().add(demande[i]);
 		}
 		return demande;
 	}	
@@ -1399,11 +1401,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
 		//Mise à jour du solde
 		for(ContratPoudre livraison:contrat) {
-			if (livraison.getReponse()==true) {
-				this.getJournal().ajouter(livraison.toString());
-				this.getSolde().setValeur(this, this.getSolde().getValeur()+this.getPrixVentePoudre()[livraison.getQualite()].getValeur()*livraison.getQuantite());
-				this.getStockPoudre(livraison.getQualite()).setValeur(this, this.getStockPoudre(livraison.getQualite()).getValeur()-livraison.getQuantite());
-				this.getLivraisonsPoudreEnCours().add(livraison);
+			if(livraison != null) {
+				if (livraison.getReponse()==true) {
+					this.getJournal().ajouter(livraison.toString());
+					this.getSolde().setValeur(this, this.getSolde().getValeur()+this.getPrixVentePoudre()[livraison.getQualite()].getValeur()*livraison.getQuantite());
+					this.getStockPoudre(livraison.getQualite()).setValeur(this, this.getStockPoudre(livraison.getQualite()).getValeur()-livraison.getQuantite());
+					this.getLivraisonsPoudreEnCours().add(livraison);
+				}
 			}
 		}
 		
