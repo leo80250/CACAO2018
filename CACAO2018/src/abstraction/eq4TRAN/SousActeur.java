@@ -43,6 +43,7 @@ IVendeurPoudre {
 	private String nomPME ; 
 	private int taillePME ;
 	private double label;
+	private int[] demandeFèves ;
 	// Indiquer un identifiant de Sous-Acteur ???
 
 	/**
@@ -53,7 +54,7 @@ IVendeurPoudre {
 	 * @param solde
 	 * @param label
 	 */
-	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label, String nomPME) {
+	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label, String nomPME, int[] demandeFèves) {
 		this.JournalEq4 = JournalEq4;
 		this.solde = new Indicateur("solde", this,solde);
 		this.Stocks=Stocks;
@@ -63,8 +64,11 @@ IVendeurPoudre {
 		this.chiffreDAffaire=new Indicateur("Chiffre d'Affaire",this,0);
 		this.nomPME = nomPME ; 
 		Monde.LE_MONDE.ajouterActeur(this);
-		}
+		this.demandeFèves = demandeFèves ; 
 
+		}
+	
+	
 	public String getNom() {
 		return "Eq4TRAN" + this.nomPME ;
 	}
@@ -149,7 +153,7 @@ IVendeurPoudre {
 	 */
 	@Override
 	public List<ContratFeveV3> getDemandePriveeV3() {
-		int[] demande= {13000,70000,25000};
+		int[] demande= this.demandeFèves ; 
 		 
 		double[] prixMin= { 100000.0 , 100000.0 , 100000.0 } ;
 		int[] min= new int[this.contratFeveEnCours.size()];
