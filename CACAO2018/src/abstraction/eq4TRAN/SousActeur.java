@@ -191,21 +191,27 @@ IVendeurPoudre {
 
 	/*
 	 * @author Noémie, Charles
-	 */
-	@Override
-	/*
+	 *
 	 *  Stratégie à réécrire pour l'acceptation ou non des contrats 
 	 *  et revoir comment ranger les contrats selon le producteur 
+	 *  
+	 *  MàJ des stocks et des comptes dès que l'on accepte un contrat 
 	 */
+	
+	@Override
+	
 	public List<ContratFeveV3> getResultVentesV3() {
 		for (ContratFeveV3 contrat : this.contratFeveEnCours) {
 			if ( contrat.getReponse() ) {
 			double coutTotal = contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;
 				if (1.5*coutTotal < this.solde.getValeur()) {
 					contrat.setReponse(true);
+					double ancienneSolde = this.getSolde().getValeur() ; 
+					this.solde.setValeur(this, ancienneSolde - coutTotal ) ; 
 				}
 			}
 		}
+		
 		return this.contratFeveEnCours ; 
 	}
 	

@@ -123,7 +123,12 @@ public class Eq4TRAN implements Acteur {
 					stocks_PME3.add((int)(new Indicateur("Acteur 3 - stockProduit"+(i+1),this.PME3,1000).getValeur()));
 				}
 				this.PME3.setVendeur(new Vendeur(stocks_PME3));
-			
+		
+		/**
+		 * @author Noémie
+		 * 
+		 * On initialise les contrats d'échanges de fèves 
+		 */
 				
 		/**
 		 * @Mickaël
@@ -194,7 +199,10 @@ public class Eq4TRAN implements Acteur {
 			}
 	
 		//On initialise les indicateurs à 1000(arbitraire)
-
+		
+		/**
+		 * Sommateur des stocks des 3 PME pour avoir les stocks de Eq4TRAN
+		 */
 
 		stockTabBQ_Eq4 = new Indicateur("Eq4 - stockTabBQ",this,this.PME1.getStock().get(1)+this.PME2.getStock().get(1)+this.PME3.getStock().get(1)) ;
 		stockTabMQ_Eq4 = new Indicateur("Eq4 - stockTabMQ",this,this.PME1.getStock().get(2)+this.PME2.getStock().get(2)+this.PME3.getStock().get(2)) ;
@@ -207,7 +215,7 @@ public class Eq4TRAN implements Acteur {
 		prodChocMQ_Eq4 = new Indicateur("Eq4 - prodChocMQ",this,this.PME1.getProduction().get(4).getValeur()+this.PME2.getProduction().get(4).getValeur()+this.PME3.getProduction().get(4).getValeur()) ;
 		prodChocHQ_Eq4 = new Indicateur("Eq4 - prodChocHQ",this,this.PME1.getProduction().get(5).getValeur()+this.PME2.getProduction().get(5).getValeur()+this.PME3.getProduction().get(5).getValeur()) ;
 
-
+		
 		solde = new Indicateur("solde",this,1000) ;
 		//On crée la liste qui range nos stocks
 		ArrayList<Indicateur> Stocks = new ArrayList<>();
@@ -233,7 +241,6 @@ public class Eq4TRAN implements Acteur {
 		/**
 		 * On ajoute nos indicateurs et notre journal de production et de vente dans la fenêtre principale du Monde
 		 * 
-		 * IL FAUT CODER UN SOMMATEUR POUR AVOIR LES STOCKS TOTAUX DE EQ4TRAN
 		 * @author Mickaël, Etienne
 		 */
 		Monde.LE_MONDE.ajouterIndicateur(stockChocMQ_Eq4);
@@ -249,6 +256,7 @@ public class Eq4TRAN implements Acteur {
 	}
 
 	/** Nom de l'acteur
+	 * Cela ne sert pas ?
 	 */
 	@Override
 	public String getNom() {
