@@ -168,9 +168,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.coutTransformationPoudre = new double[3];
 		this.coutTransformationTablette = new double[3];
 		
-		
 		this.coutTransformationPoudre2 = new ArrayList<double[]>(Collections.nCopies(10, new double[3]));
 		this.coutTransformationTablette2 = new ArrayList<double[]>(Collections.nCopies(10, new double[3]));
+
 		
 		this.stockFeves2 = new ArrayList<Indicateur[]>();
 		this.stockPoudre2 = new ArrayList<Indicateur[]>();
@@ -220,10 +220,14 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.efficacite2 = new ArrayList<Indicateur>(Collections.nCopies(10, new Indicateur("",this)));
 		
 		Indicateur[] stockFeves2i, stockPoudre2i, stockTablettes2i, prixAchatFeves2i, prixVentePoudre2i, prixVenteTablettes2i, productionPoudreReelle2i, productionTablettesReelle2i, productionPoudreAttendue2i, productionTablettesAttendue2i;
+		double[] coutTransformationPoudre2i, coutTransformationTablette2i;
 		for (int i=0; i<10; i++) {
 			solde2.add(new Indicateur(this.getNom()+" a un solde de ", this, 200000.0));
 			absenteisme2.add(new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0));
 			efficacite2.add(new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 1.0));
+			
+			coutTransformationPoudre2i = new double[3];
+			coutTransformationTablette2i = new double[3];
 			
 			stockFeves2i = new Indicateur[3];
 			stockPoudre2i = new Indicateur[3];
@@ -257,10 +261,18 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 				this.productionTablettesAttendue2.get(i)[j] = new Indicateur(this.getNom()+"."+i+" a dernièrement souhaité produire une quantité de tablettes de", this, SUM_MOY_VENTE_TABLETTES);
 				*/
 			}
+			coutTransformationPoudre2.add(coutTransformationPoudre2i);
+			coutTransformationTablette2.add(coutTransformationTablette2i);
 			stockFeves2.add(stockFeves2i);
 			stockPoudre2.add(stockPoudre2i);
 			stockTablettes2.add(stockTablettes2i);
-			
+			prixAchatFeves2.add(prixAchatFeves2i);
+			prixVentePoudre2.add(prixVentePoudre2i);
+			prixVenteTablettes2.add(prixVenteTablettes2i);
+			productionPoudreReelle2.add(productionPoudreReelle2i);
+			productionTablettesReelle2.add(productionTablettesReelle2i);
+			productionPoudreAttendue2.add(productionPoudreAttendue2i);
+			productionTablettesAttendue2.add(productionTablettesAttendue2i);
 		}
 		
 		for(int i = 0; i < 3; i++) {
@@ -1878,11 +1890,11 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	@Override
 	public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
-		this.stockTablettes[qualite-1].setValeur(this, this.stockTablettes[qualite-4].getValeur()-quantite/10/1000);
+		this.stockTablettes[qualite-4].setValeur(this, this.stockTablettes[qualite-4].getValeur()-quantite/10/1000);
 		this.getSolde().setValeur(this, this.getSolde().getValeur()+prix*quantite);
 	}
 	
-	/**
+	/** 
 	 * @author bernardjoseph
 	 * @param var2 une variable de V2
 	 * @return Total des 10 acteurs, pour une quantite (non applicable à un prix par exemple)
