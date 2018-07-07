@@ -1,17 +1,13 @@
 package abstraction.eq6DIST;
 
-import java.util.ArrayList;
-
-import abstraction.eq1DIST.IVenteConso;
-import abstraction.eq4TRAN.VendeurChoco.GPrix;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
-import abstraction.eq4TRAN.VendeurChoco.GQte;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
+
+import java.util.ArrayList;
 
  
 public class Eq6DIST implements Acteur, IAcheteurChocoBis {
