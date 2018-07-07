@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 import abstraction.eq4TRAN.Eq4TRAN;
 import abstraction.eq4TRAN.IVendeurChocoBis;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
@@ -13,12 +12,10 @@ import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq6DIST.IAcheteurChocoBis;
 import abstraction.eq7TRAN.Eq7TRAN;
-
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
-
 
 public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurChocoBis {
 	private Stock stock;
@@ -37,7 +34,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	private Indicateur PrixConfHdG;
 
 	public Eq1DIST() {
-		double[][] PartsdeMarche = {{ 0, 0.21, 0.7, 0, 0.28, 0.7 },{ 0.7, 0.49, 0, 0, 0.42, 0 },
+		double[][] PartsdeMarche = { { 0.7, 0.49, 0, 0, 0.42, 0 }, { 0, 0.21, 0.7, 0, 0.28, 0.7 },
 				{ 0.3, 0.3, 0.3, 0, 0.3, 0.3 } };
 		Journal client = new Journal("Clients Finaux");
 		Monde.LE_MONDE.ajouterJournal(client);
@@ -78,18 +75,18 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 			}
 		}
 
-		this.solde = new Indicateur("solde eq1", this, 500000);
+		this.solde = new Indicateur("Solde de " + this.getNom(), this, 500000);
 		Monde.LE_MONDE.ajouterIndicateur(this.solde);
-		this.efficacite = new Indicateur("efficacite eq1", this, 0);
+		this.efficacite = new Indicateur("Efficacité de " + this.getNom(), this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.efficacite);
 
-		this.PrixChocoMdG = new Indicateur("Prix Choco MdG eq1", this, 1.5);
+		this.PrixChocoMdG = new Indicateur("Prix Choco MdG de " + this.getNom(), this, 1.5);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixChocoMdG);
-		this.PrixChocoHdG = new Indicateur("Prix Choco HdG eq1", this, 3.0);
+		this.PrixChocoHdG = new Indicateur("Prix Choco HdG de " + this.getNom(), this, 3.0);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixChocoHdG);
-		this.PrixConfMdG = new Indicateur("Prix Confiseries MdG eq1", this, 2.6);
+		this.PrixConfMdG = new Indicateur("Prix Confiseries MdG de " + this.getNom(), this, 2.6);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixConfMdG);
-		this.PrixConfHdG = new Indicateur("Prix Confiseries HdG eq1", this, 4.1);
+		this.PrixConfHdG = new Indicateur("Prix Confiseries HdG de " + this.getNom(), this, 4.1);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixConfHdG);
 
 		this.journal = new Journal("Journal de Eq1DIST");
@@ -103,9 +100,6 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 	@Override
 	public void next() {
-		this.journal.ajouter("Periode "+Monde.LE_MONDE.getStep());
-		this.journal.ajouter("");
-		
 		for (int i = 0; i < 6; i++) {
 			this.nombreAchatsOccasionnels[i].setValeur(this, 0);
 		}
@@ -113,13 +107,11 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		this.venteOccaspe();
 
 		this.salaires();
-		
-		this.journal.ajouter("");
 	}
 
 	public void venteOccalim() {
 		// on fait une demande occasionnelle si on dépasse un seuil limite de stock
-		int[] stocklim = { 0, 1, 1, 0, 1, 1 };
+		int[] stocklim = { 0, 120000, 30000, 0, 40000, 20000 };
 		List<IvendeurOccasionnelChocoTer> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoTer>();
 		for (Acteur a : Monde.LE_MONDE.getActeurs()) {
 			if (a instanceof IvendeurOccasionnelChocoTer) {
@@ -132,7 +124,6 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 				ArrayList<Double> prop = new ArrayList<Double>();
 				for (IvendeurOccasionnelChocoTer v : vendeursOcca) {
 					prop.add(v.getReponseTer(d));
-					System.out.println(v.getReponseTer(d));
 				}
 				double a = Double.MAX_VALUE;
 				int n = 0;
@@ -230,8 +221,6 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		return new GrilleQuantite(res);
 
 	}
-<<<<<<< HEAD
-
 
 	public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
 		int[] demande;
@@ -252,74 +241,48 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		for (Acteur a : acteurs) {
 			if (a instanceof IVendeurChocoBis) {
 				transfo.add((IVendeurChocoBis) a);
-			}}
-		for(int c=0;c<transfo.size();c++) {
-			ArrayList<Integer> ListeInterieur = new ArrayList<Integer>();
-			for(int v=0;v<6;v++) {
-				ListeInterieur.add(0);
+
 			}
-			commandeFinale.add(ListeInterieur);
-=======
-	
-	public ArrayList<GQte> getCommande(ArrayList<GPrix> gPrix, ArrayList<GQte> stock) {
-		ArrayList<GQte> l = new ArrayList<GQte>();
-		l.add(new GQte(0,7500,7500,0,29167,12500));
-		l.add(new GQte(0,16167,5000,0,0,0));
-		l.add(new GQte(0,16167,5000,0,0,0));
-		return l;
-	}
-	
-	public void livraison(GQte d,double solde) {
-		for(int i=0; i<3;i++) {
-			stock[0][0] += d.getqTabletteBQ();
-			stock[0][1] += d.getqTabletteMQ();
-			stock[0][2] += d.getqTabletteHQ();
-			stock[1][0] += d.getqBonbonBQ();
-			stock[1][1] += d.getqBonbonMQ();
-			stock[1][2] += d.getqBonbonHQ();
->>>>>>> branch 'master' of https://github.com/CACAO2018/CACAO2018.git
 		}
-			double[] m = new double[6];
-			for (int i =0;i<6;i++) {
-				//while ( m[i]!=1){
-				
-					ArrayList<Double> prix ;
-					prix = new ArrayList<Double>();
-					for (int j =0; j<transfo.size();j++) {
-						prix.add(transfo.get(j).getPrix().getPrixProduit(demande[i],i+1));
-						PrixVente[j][i]=transfo.get(j).getPrix().getPrixProduit(demande[i],i+1);
-					}
-					listeT = listeTriee(prix,transfo.size());
-					
-						if(Stock.get(listeT.get(0)).get(i)>= 0.6*demande[i]){
-							commandeFinale.get(listeT.get(0)).set(i,(((int)0.6*demande[i]))) ;
-							m[i]+=0.6;
-							if(Stock.get(listeT.get(1)).get(i)>= 0.3*demande[i]) {
-								commandeFinale.get(listeT.get(1)).set(i,((int)0.3*demande[i]));
-								m[i]+=0.3;
-								/*if(Stock.get(listeT.get(2)).get(i)>= 0.1*demande[i]) {
-									commandeFinale.get(listeT.get(2)).set(i,((int)(0.1*demande[i])));
-									m[i]+=0.1;
-								}
-								else {
-									commandeFinale.get(listeT.get(2)).set(i,((int)(Stock.get(listeT.get(2)).get(i))));
-									m[i]=1;
-								}*/
-							}
-							else {
-								commandeFinale.get(listeT.get(1)).set(i,((int)(Stock.get(listeT.get(1)).get(i))));
-								m[i]+=Stock.get(listeT.get(1)).get(i)/demande[i];
-								if(Stock.get(listeT.get(2)).get(i)>= (1-m[i])*demande[i]) {
-									commandeFinale.get(listeT.get(2)).set(i,((int)((1-m[i])*demande[i])));
-								}
-								/*else {
-									commandeFinale.get(listeT.get(2)).set(i,((int)(Stock.get(listeT.get(2)).get(i))));
-									m[i]=1;
-								}*/
-							}
+		double[] m = new double[6];
+		for (int i = 0; i < 6; i++) {
+			while (m[i] != 1) {
+
+				ArrayList<Double> prix;
+				prix = new ArrayList<Double>();
+				for (int j = 0; j < transfo.size(); j++) {
+					prix.add(transfo.get(j).getPrix().getPrixProduit(demande[i], i));
+					PrixVente[j][i] = transfo.get(j).getPrix().getPrixProduit(demande[i], i);
+				}
+
+				listeT = listeTriee(prix);
+
+				if (Stock.get(listeT.indexOf(0)).get(i) >= 0.6 * demande[i]) {
+					commandeFinale.get(listeT.indexOf(0)).set(i, (((int) 0.6 * demande[i])));
+					m[i] += 0.6;
+					if (Stock.get(listeT.indexOf(1)).get(i) >= 0.3 * demande[i]) {
+						commandeFinale.get(listeT.indexOf(1)).set(i, ((int) 0.3 * demande[i]));
+						m[i] += 0.3;
+						if (Stock.get(listeT.indexOf(2)).get(i) >= 0.1 * demande[i]) {
+							commandeFinale.get(listeT.indexOf(2)).set(i, ((int) (0.1 * demande[i])));
+							m[i] += 0.1;
+						} else {
+							commandeFinale.get(listeT.indexOf(2)).set(i, ((int) (Stock.get(listeT.indexOf(2)).get(i))));
+							m[i] = 1;
 						}
-			}//}
-		
+					} else {
+						commandeFinale.get(listeT.indexOf(1)).set(i, ((int) (Stock.get(listeT.indexOf(1)).get(i))));
+						m[i] += Stock.get(listeT.indexOf(1)).get(i) / demande[i];
+						if (Stock.get(listeT.indexOf(2)).get(i) >= (1 - m[i]) * demande[i]) {
+							commandeFinale.get(listeT.indexOf(2)).set(i, ((int) ((1 - m[i]) * demande[i])));
+						} else {
+							commandeFinale.get(listeT.indexOf(2)).set(i, ((int) (Stock.get(listeT.indexOf(2)).get(i))));
+							m[i] = 1;
+						}
+					}
+				}
+			}
+		}
 		this.journal.ajouter("CONTRAT :");
 		this.journal.ajouter("");
 		for (ArrayList<Integer> l : commandeFinale) {
@@ -347,20 +310,18 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		return commandeFinale;
 	}
 
-
-public ArrayList<Integer> listeTriee(ArrayList<Double> prix,int taille){
-	ArrayList<Double> copie = new ArrayList<Double>();
-	for (int i=0;i<taille;i++) {
-		copie.add(prix.get(i));
+	public ArrayList<Integer> listeTriee(ArrayList<Double> prix) {
+		ArrayList<Double> copie = new ArrayList<Double>();
+		for (int i = 0; i < 3; i++) {
+			copie.add(prix.get(i));
 		}
-		
-	Collections.sort(copie);
-	ArrayList<Integer> min = new ArrayList<Integer>();
-	for (int i=0;i<taille;i++) {
-		min.add(prix.indexOf(copie.get(i)));
+		Collections.sort(copie);
+		ArrayList<Integer> min = new ArrayList<Integer>();
+		min.add(prix.indexOf(copie.get(0)));
+		min.add(prix.indexOf(copie.get(1)));
+		min.add(prix.indexOf(copie.get(2)));
+		return min;
 	}
-	return min;
-			}
 
 	public void main(String[] Args) {
 		ArrayList<GPrix2> Prix = new ArrayList<GPrix2>();

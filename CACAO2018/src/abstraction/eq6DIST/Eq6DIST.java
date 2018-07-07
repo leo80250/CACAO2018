@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import abstraction.eq1DIST.GrilleQuantite;
 import abstraction.eq1DIST.InterfaceDistributeurClient;
 import abstraction.eq4TRAN.Eq4TRAN;
-
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
