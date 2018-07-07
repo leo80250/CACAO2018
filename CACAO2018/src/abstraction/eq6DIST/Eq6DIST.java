@@ -219,15 +219,15 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 	// Victor Signes
 	@Override
 	public GrilleQuantite commander(GrilleQuantite Q) {
-		int[][] res = new int[1][6];
+		int[] res = new int[6];
 		for (int i=0;i<6;i++) {
-			int c = this.stock.get(i) - Q.getValeur(1, i);
+			int c = this.stock.get(i) - Q.getValeur( i);
 			if (c>=0) {
-				res[1][i]=(Q.getValeur(1, i));
+				res[i]=(Q.getValeur(i));
 			}else {
-				res[1][i]=(this.stock.get(i));
+				res[i]=(this.stock.get(i));
 			}
-			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i)*res[1][i]);		
+			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i)*res[i]);		
 		}
 		
 		return new GrilleQuantite(res);
@@ -246,7 +246,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		
 		for (int i=0;i<6;i++) {  //on calcule la marge pour chaque type de chocolat
 			
-			Nmarge=this.prix.get(i)*Q.getValeur(1, i)*p;
+			Nmarge=this.prix.get(i)*Q.getValeur(i)*p;
 			margeUnitaire=this.prix.get(i)*p;
 			if(Nmarge<this.marge.get(i) && (this.prix.get(i)+margeUnitaire)<=prixMax.get(i)) {
 				this.prix.set(i, this.prix.get(i)+margeUnitaire); //on définit le nouveau prix
@@ -257,8 +257,10 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			this.marge.set(i, Nmarge);
 		}
 	}
-	
-	
-	
-	
-}
+	@Override
+	public double[] getPrix() {
+		// TODO Auto-generated method stub
+		return new double[] {this.prix_TBQ.getValeur(),this.prix_TMQ.getValeur(),this.prix_THQ.getValeur(),
+				this.prix_BBQ.getValeur(),this.prix_BMQ.getValeur(),this.prix_BHQ.getValeur()};
+		}
+	}
