@@ -7,9 +7,7 @@ import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.Labellise;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
-import abstraction.eq5TRAN.appeldOffre.DemandeAO;
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoBis;
+import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
@@ -52,6 +50,7 @@ public class Eq4TRAN implements Acteur {
 	private Indicateur prodChocHQ_Eq4;
 	//Indicateur de notre solde bancaire
 	private Indicateur solde ; 
+
 	//Journal rendant compte de nos activités et de l'évolution de nos indicateurs
 	private Journal JournalEq4 = new Journal("JournalEq4") ;
 	// Rôle de vendeur que nous incarnerons à chaque next() et qui se mettra à jour à cette même fréquence
@@ -78,6 +77,7 @@ public class Eq4TRAN implements Acteur {
 		
 		/**
 		 *  On construit les 3 Sous-Acteurs 
+		 *  
 		 */
 		
 		this.PME1 = new SousActeur(new Journal("JournalPME1"),Stocks_PME1,Prod_PME1,soldeSA,50,Vendeur.COMMERCE_EQUITABLE,"PME1");
@@ -135,6 +135,7 @@ public class Eq4TRAN implements Acteur {
 		/**
 		 * Acteur 1 labellisé commerce équitable 
 		 */
+				
 		ContratPoudre[] contratPoudreEnCoursEq7TRAN_PME1 = new ContratPoudre[3];
 		ContratPoudre[] contratPoudreEnCoursEq5TRAN_PME1 = new ContratPoudre[3];
 		// Contrats Poudre Basse Qualité
@@ -147,12 +148,14 @@ public class Eq4TRAN implements Acteur {
 		contratPoudreEnCoursEq5TRAN_PME1[2] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.PME1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_PME1[2] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.PME1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
+
 		this.PME1.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_PME1);
 		this.PME1.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_PME1);
 		
 		/**
 		 * Acteur 2 labellisé Local
 		 */
+
 		ContratPoudre[] contratPoudreEnCoursEq7TRAN_PME2 = new ContratPoudre[3];
 		ContratPoudre[] contratPoudreEnCoursEq5TRAN_PME2 = new ContratPoudre[3];
 		contratPoudreEnCoursEq5TRAN_PME2[0] = new ContratPoudre(0,2000,100.0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
@@ -178,13 +181,10 @@ public class Eq4TRAN implements Acteur {
 		contratPoudreEnCoursEq5TRAN_PME3[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_PME3[2] = new ContratPoudre(2,18000,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
+		
 		this.PME3.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_PME3);
 		this.PME3.setContratPoudreEnCoursEq7TRAN(contratPoudreEnCoursEq7TRAN_PME3);
 		
-		
-		/**
-		 * CHARLES ICI IL FAUT CONSTRUIRE LES CONTRATS FEVES V3
-		 */
 		
 		//**
 		this.contratFevesEnCours=new ArrayList<ContratFeveV3>();
@@ -194,6 +194,7 @@ public class Eq4TRAN implements Acteur {
 			}
 	
 		//On initialise les indicateurs à 1000(arbitraire)
+
 
 		stockTabBQ_Eq4 = new Indicateur("Eq4 - stockTabBQ",this,this.PME1.getStock().get(1)+this.PME2.getStock().get(1)+this.PME3.getStock().get(1)) ;
 		stockTabMQ_Eq4 = new Indicateur("Eq4 - stockTabMQ",this,this.PME1.getStock().get(2)+this.PME2.getStock().get(2)+this.PME3.getStock().get(2)) ;
@@ -205,6 +206,7 @@ public class Eq4TRAN implements Acteur {
 		prodTabHQ_Eq4 = new Indicateur("Eq4 - prodTabHQ",this,this.PME1.getProduction().get(3).getValeur()+this.PME2.getProduction().get(3).getValeur()+this.PME3.getProduction().get(3).getValeur()) ;
 		prodChocMQ_Eq4 = new Indicateur("Eq4 - prodChocMQ",this,this.PME1.getProduction().get(4).getValeur()+this.PME2.getProduction().get(4).getValeur()+this.PME3.getProduction().get(4).getValeur()) ;
 		prodChocHQ_Eq4 = new Indicateur("Eq4 - prodChocHQ",this,this.PME1.getProduction().get(5).getValeur()+this.PME2.getProduction().get(5).getValeur()+this.PME3.getProduction().get(5).getValeur()) ;
+
 
 		solde = new Indicateur("solde",this,1000) ;
 		//On crée la liste qui range nos stocks
@@ -240,9 +242,9 @@ public class Eq4TRAN implements Acteur {
 		Monde.LE_MONDE.ajouterIndicateur(stockTabMQ_Eq4);
 		Monde.LE_MONDE.ajouterIndicateur(stockTabHQ_Eq4);
 		// Journal pour l'acteur global Eq4Tran ?
-		Monde.LE_MONDE.ajouterJournal(this.PME1.getVendeur().ventes);
-		Monde.LE_MONDE.ajouterJournal(this.PME2.getVendeur().ventes);
-		Monde.LE_MONDE.ajouterJournal(this.PME3.getVendeur().ventes);
+		Monde.LE_MONDE.ajouterJournal(this.PME1.getJournalEq4());
+		Monde.LE_MONDE.ajouterJournal(this.PME2.getJournalEq4());
+		Monde.LE_MONDE.ajouterJournal(this.PME3.getJournalEq4());
 		
 	}
 
