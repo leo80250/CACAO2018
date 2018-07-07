@@ -1400,11 +1400,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		// est-ce qu'il a eu des probs pour la réalisation du contrat ?
 		//Mise à jour du solde
 		for(ContratPoudre livraison:contrat) {
-			if (livraison.getReponse()==true) {
-				this.getJournal().ajouter(livraison.toString());
-				this.getSolde().setValeur(this, this.getSolde().getValeur()+this.getPrixVentePoudre()[livraison.getQualite()].getValeur()*livraison.getQuantite());
-				this.getStockPoudre(livraison.getQualite()).setValeur(this, this.getStockPoudre(livraison.getQualite()).getValeur()-livraison.getQuantite());
-				this.getLivraisonsPoudreEnCours().add(livraison);
+			if(livraison != null) {
+				if (livraison.getReponse()==true) {
+					this.getJournal().ajouter(livraison.toString());
+					this.getSolde().setValeur(this, this.getSolde().getValeur()+this.getPrixVentePoudre()[livraison.getQualite()].getValeur()*livraison.getQuantite());
+					this.getStockPoudre(livraison.getQualite()).setValeur(this, this.getStockPoudre(livraison.getQualite()).getValeur()-livraison.getQuantite());
+					this.getLivraisonsPoudreEnCours().add(livraison);
+				}
 			}
 		}
 		
