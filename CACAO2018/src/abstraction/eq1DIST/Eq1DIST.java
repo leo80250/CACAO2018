@@ -275,16 +275,18 @@ public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayLi
 		this.journal.ajouter("CONTRAT :");	
 		this.journal.ajouter("");	
 		for(ArrayList<Integer> l: commandeFinale) {
-			for(Integer i: l) {
 				this.journal.ajouter("Tablettes MQ : "+l.get(4)+"; Tablettes HQ : "+l.get(5)+"; Confiseries MQ : "+l.get(1)+"; Confiseries MQ : "+l.get(2));	
 				this.journal.ajouter("");
-				this.stockTMG.setValeur(this, this.stockTMG.getValeur()+l.get(4));
-				this.stockTHG.setValeur(this, this.stockTHG.getValeur()+l.get(5));
-				this.stockCMG.setValeur(this, this.stockCMG.getValeur()+l.get(1));
-				this.stockCHG.setValeur(this, this.stockCHG.getValeur()+l.get(2));
-				this.solde.s
+				//this.stockTMG.setValeur(this, this.stockTMG.getValeur()+l.get(4));
+				//this.stockTHG.setValeur(this, this.stockTHG.getValeur()+l.get(5));
+				//this.stockCMG.setValeur(this, this.stockCMG.getValeur()+l.get(1));
+				//this.stockCHG.setValeur(this, this.stockCHG.getValeur()+l.get(2));
+				this.solde.setValeur(this,this.solde.getValeur()-Prix.get(4).getPrixProduit(l.get(4), 4)-Prix.get(5).getPrixProduit(l.get(5),5)-Prix.get(1).getPrixProduit(l.get(1), 1)-Prix.get(2).getPrixProduit(l.get(2), 2));
+				stock.ajouter(l.get(4),1);
+				stock.ajouter(l.get(5),2);
+				stock.ajouter(l.get(1),4);
+				stock.ajouter(l.get(2),5);			
 			}
-		}
 		double[] PrixMoyenVente = new double[6];
 		for(int i=0;i<6;i++) {
 			PrixMoyenVente[i]=(PrixVente[0][i]+PrixVente[1][i]+PrixVente[3][i])/3;
