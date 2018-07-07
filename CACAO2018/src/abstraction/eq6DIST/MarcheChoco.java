@@ -167,6 +167,7 @@ public void actu() {
 			}
 			
 			}
+		l=0;
 		for (Acteur i : this.distributeurs) {
 			IAcheteurChocoBis ibis = (IAcheteurChocoBis) i;
 			this.Journal_Marche_choco.ajouter("Envoie de "+PourDIST.get(l).toString()+" à "+i.getNom()+"et ce dernier doit payer "+paiement.get(l));
