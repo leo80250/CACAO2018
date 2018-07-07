@@ -31,10 +31,10 @@ public class GPrix2{
 	private ArrayList<Double[]> intervalles; //6 tableaux concaténés représentants les intervalles voulus de prix pour 
 											 //chaque produit.
 											 // ex pour un produit :
-											 // Double[] interval = {0.0,10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
+											 // Double[] interval = {10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
 	private ArrayList<Double[]> prix; // Les prix associés (le premier prix correspond à l'achat du produit dans une 
 	//quantité appartenant à [0;10[ puis le deuxième prix à l'intervalle [10,50[ etc..
-	// ex (pour un produit) : Double[] prix2 = {4.0, 3.975, 3.95, 3.9, 3.875, 3.85, 3.825, 3.8};
+	// ex (pour un produit) : Double[] prix2 = {4.0, 3.95, 3.9, 3.875, 3.85, 3.825, 3.8};
 	
 	/*
 	 * Classe définissant un tableau de prix étalonnés par tranche (tableau fournit par les transformateurs)
