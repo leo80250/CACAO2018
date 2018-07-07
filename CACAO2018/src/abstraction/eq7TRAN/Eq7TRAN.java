@@ -1360,9 +1360,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 */
 	
 	
-	@Override
-
-	
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
 		ContratPoudre[] catalogue=new ContratPoudre[3];
 		for(Indicateur[] prix_vente_entrep:this.prixVentePoudre2) {
@@ -1374,20 +1371,24 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
-		int n = demande.length;
-		for(int i = 0; i<n; i++) {
-			int qualite = demande[i].getQualite();
-			// Si on a pas la bonne quantité on refuse
-			if(demande[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
-				demande[i].setQuantite((int)this.getStockPoudre()[qualite].getValeur());
-				//demande[i].setReponse(false);
+		for(ContratPoudre demande_i:demande) {
+			int qualite=demande_i.getQualite();
+			double prix=demande_i.getPrix();
+			List<Integer> demande_i_parEntrep=this.repart(demande_i.getQuantite());
+			int total=0;
+			for(int acteur10=0;acteur10<10;acteur10++) {
+				if (demande_i_parEntrep.get(acteur10)>this.getStockPoudre2().get(acteur10)[qualite].getValeur())
+					demande_i_parEntrep.set(acteur10, (int)(this.getStockPoudre2().get(acteur10)[qualite].getValeur()));
+				this.getCommandesPoudreEnCoursParEntrep(acteur10).add(new ContratPoudre(qualite,
+						demande_i_parEntrep.get(acteur10),prix,acheteur,this,false));
+				total+=demande_i_parEntrep.get(acteur10);
 			}
-			
-			this.getCommandesPoudreEnCours().add(demande[i]);
+			demande_i=new ContratPoudre(qualite,total,prix,acheteur,this,false);
 		}
 		return demande;
-	}	
+	}
 	
+	//on ne peut pas mettre à jour chacune des 10 commandes en cours sans connaitre la répartition
 	public void sendReponsePoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		for(int qualite = 0; qualite<3; qualite++) {
 			if(contrat[qualite].getReponse())
@@ -1717,6 +1718,20 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			total[2].setValeur(this, total[2].getValeur()+i[2].getValeur());
 		}
 		return total;
+	}
+	
+	public List<Integer> repart(int valeur) {
+		int total=0;
+		int val;
+		List<Integer> repartition=new ArrayList<Integer>();
+		for(int i=0;i<10;i++) {
+			val=(int)(.2*(valeur-total)*Math.random());
+			repartition.add(val);
+			total+=val;
+		}
+		repartition.add(valeur-total);
+		Collections.shuffle(repartition);
+		return repartition;
 	}
 	
 	
