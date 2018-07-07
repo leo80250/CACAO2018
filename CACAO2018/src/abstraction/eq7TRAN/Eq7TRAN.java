@@ -1895,7 +1895,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getSolde().setValeur(this, this.getSolde().getValeur()+prix*quantite);
 	}
 	
-	/**
+	/** 
 	 * @author bernardjoseph
 	 * @param var2 une variable de V2
 	 * @return Total des 10 acteurs, pour une quantite (non applicable à un prix par exemple)
