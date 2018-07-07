@@ -8,7 +8,6 @@ import java.util.List;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq4TRAN.IVendeurChocoBis;
-import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
@@ -168,9 +167,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.coutTransformationPoudre = new double[3];
 		this.coutTransformationTablette = new double[3];
 		
-		
-		this.coutTransformationPoudre2 = new ArrayList<double[]>();
-		this.coutTransformationTablette2 = new ArrayList<double[]>();
+		this.coutTransformationPoudre2 = new ArrayList<double[]>(Collections.nCopies(10, new double[3]));
+		this.coutTransformationTablette2 = new ArrayList<double[]>(Collections.nCopies(10, new double[3]));
+
 		
 		this.stockFeves2 = new ArrayList<Indicateur[]>();
 		this.stockPoudre2 = new ArrayList<Indicateur[]>();
@@ -178,10 +177,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.prixAchatFeves2 = new ArrayList<Indicateur[]>();
 		this.prixVentePoudre2 = new ArrayList<Indicateur[]>();
 		this.prixVenteTablettes2 = new ArrayList<Indicateur[]>();
-		this.productionPoudreReelle2 = new ArrayList<Indicateur[]>();
-		this.productionTablettesReelle2 = new ArrayList<Indicateur[]>();
-		this.productionPoudreAttendue2 = new ArrayList<Indicateur[]>();
-		this.productionTablettesAttendue2 = new ArrayList<Indicateur[]>();
+		this.productionPoudreReelle2 = new ArrayList<Indicateur[]>(Collections.nCopies(10, new Indicateur[3]));
+		this.productionTablettesReelle2 = new ArrayList<Indicateur[]>(Collections.nCopies(10, new Indicateur[3]));
+		this.productionPoudreAttendue2 = new ArrayList<Indicateur[]>(Collections.nCopies(10, new Indicateur[3]));
+		this.productionTablettesAttendue2 = new ArrayList<Indicateur[]>(Collections.nCopies(10, new Indicateur[3]));
 		
 		this.nombreEmployes2 = new ArrayList<Indicateur>();
 		for (int i=0; i<10; i++) {
@@ -203,21 +202,21 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.livraisonsTablettesEnCours = new ArrayList<ArrayList<Integer>>();
 		this.offresFevesPubliquesEnCours = new ArrayList<ContratFeveV3>();
 	
-		this.commandesFeveEnCours2 = new ArrayList<List<ContratFeveV3>>();
+		this.commandesFeveEnCours2 = new ArrayList<List<ContratFeveV3>>(Collections.nCopies(10, new ArrayList<ContratFeveV3>()));
 		this.commandesPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>(Collections.nCopies(10, new ArrayList<ContratPoudre>()));
-		this.commandesTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
-		this.livraisonsFeveEnCours2 = new ArrayList<List<ContratFeveV3>>();
-		this.livraisonsPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>();
-		this.livraisonsTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
+		this.commandesTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>(Collections.nCopies(10, new ArrayList<ArrayList<Integer>>()));
+		this.livraisonsFeveEnCours2 = new ArrayList<List<ContratFeveV3>>(Collections.nCopies(10, new ArrayList<ContratFeveV3>()));
+		this.livraisonsPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>(Collections.nCopies(10, new ArrayList<ContratPoudre>()));
+		this.livraisonsTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>(Collections.nCopies(10, new ArrayList<ArrayList<Integer>>()));
 		this.offresFevesPubliquesEnCours2 = new ArrayList<List<ContratFeveV3>>();
 		
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
 		this.efficacite = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 1.0);
 		
-		this.solde2 = new ArrayList<Indicateur>();
-		this.absenteisme2 = new ArrayList<Indicateur>();
-		this.efficacite2 = new ArrayList<Indicateur>();
+		this.solde2 = new ArrayList<Indicateur>(Collections.nCopies(10, new Indicateur("",this)));
+		this.absenteisme2 = new ArrayList<Indicateur>(Collections.nCopies(10, new Indicateur("",this)));
+		this.efficacite2 = new ArrayList<Indicateur>(Collections.nCopies(10, new Indicateur("",this)));
 		
 		Indicateur[] stockFeves2i, stockPoudre2i, stockTablettes2i, prixAchatFeves2i, prixVentePoudre2i, prixVenteTablettes2i, productionPoudreReelle2i, productionTablettesReelle2i, productionPoudreAttendue2i, productionTablettesAttendue2i;
 		double[] coutTransformationPoudre2i, coutTransformationTablette2i;
@@ -548,9 +547,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public List<Indicateur[]> getStockFeves2() { 	  	   		 			 			 	
 		return this.stockFeves2; 	  	   		 			 			 	
 	} 
-	public Indicateur[] getStockFevesPourEntre(int entrep) {
+	public Indicateur[] getStockFevesParEntrep(int entrep) {
 		return this.stockFeves2.get(entrep);
-		
 	}
 	public void setStockFeves2(List<Indicateur[]> stockFeves) { 	  	   		 			 			 	
 		this.stockFeves2 = stockFeves; 	  	   		 			 			 	
