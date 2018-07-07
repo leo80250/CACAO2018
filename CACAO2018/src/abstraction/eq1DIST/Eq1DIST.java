@@ -178,6 +178,10 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 			}
 		}
 	}
+	
+	public void salaires() {
+		solde.setValeur(this, solde.getValeur()-200000);
+	}
 
 	@Override
 	public GrilleQuantite commander(GrilleQuantite Q) {
