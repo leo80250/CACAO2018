@@ -149,16 +149,16 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.coutTransformationTablette = new double[3];
 		
 		
-		this.stockFeves2 = new ArrayList<Indicateur[]>();
-		this.stockPoudre2 = new ArrayList<Indicateur[]>();
-		this.stockTablettes2 = new ArrayList<Indicateur[]>();
-		this.prixAchatFeves2 = new ArrayList<Indicateur[]>();
-		this.prixVentePoudre2 = new ArrayList<Indicateur[]>();
-		this.prixVenteTablettes2 = new ArrayList<Indicateur[]>();
-		this.productionPoudreReelle2 = new ArrayList<Indicateur[]>();
-		this.productionTablettesReelle2 = new ArrayList<Indicateur[]>();
-		this.productionPoudreAttendue2 = new ArrayList<Indicateur[]>();
-		this.productionTablettesAttendue2 = new ArrayList<Indicateur[]>();
+		this.stockFeves2 = new ArrayList<Indicateur[]>(10);
+		this.stockPoudre2 = new ArrayList<Indicateur[]>(10);
+		this.stockTablettes2 = new ArrayList<Indicateur[]>(10);
+		this.prixAchatFeves2 = new ArrayList<Indicateur[]>(10);
+		this.prixVentePoudre2 = new ArrayList<Indicateur[]>(10);
+		this.prixVenteTablettes2 = new ArrayList<Indicateur[]>(10);
+		this.productionPoudreReelle2 = new ArrayList<Indicateur[]>(10);
+		this.productionTablettesReelle2 = new ArrayList<Indicateur[]>(10);
+		this.productionPoudreAttendue2 = new ArrayList<Indicateur[]>(10);
+		this.productionTablettesAttendue2 = new ArrayList<Indicateur[]>(10);
 		
 		this.nombreEmployes2 = new ArrayList<Indicateur>();
 		for (int i=0; i<10; i++) {
@@ -173,13 +173,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.livraisonsTablettesEnCours = new ArrayList<ArrayList<Integer>>();
 		this.offresFevesPubliquesEnCours = new ArrayList<ContratFeveV3>();
 	
-		this.commandesFeveEnCours2 = new ArrayList<List<ContratFeveV3>>();
-		this.commandesPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>();
-		this.commandesTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
-		this.livraisonsFeveEnCours2 = new ArrayList<List<ContratFeveV3>>();
-		this.livraisonsPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>();
-		this.livraisonsTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>();
-		this.offresFevesPubliquesEnCours2 = new ArrayList<List<ContratFeveV3>>();
+		this.commandesFeveEnCours2 = new ArrayList<List<ContratFeveV3>>(10);
+		this.commandesPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>(10);
+		this.commandesTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>(10);
+		this.livraisonsFeveEnCours2 = new ArrayList<List<ContratFeveV3>>(10);
+		this.livraisonsPoudreEnCours2 = new ArrayList<ArrayList<ContratPoudre>>(10);
+		this.livraisonsTablettesEnCours2 = new ArrayList<ArrayList<ArrayList<Integer>>>(10);
+		this.offresFevesPubliquesEnCours2 = new ArrayList<List<ContratFeveV3>>(10);
 		
 		this.solde = new Indicateur(this.getNom()+" a un solde de ", this, 0.0);
 		this.absenteisme = new Indicateur(this.getNom()+" a un taux d'absenteisme de ", this, 0.0);
