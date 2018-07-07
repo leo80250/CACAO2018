@@ -9,10 +9,7 @@ import abstraction.eq4TRAN.IVendeurChocoBis;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoBis;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
-import abstraction.eq6DIST.IAcheteurChoco;
 import abstraction.eq6DIST.IAcheteurChocoBis;
 import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.fourni.Acteur;
@@ -90,7 +87,6 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixConfHdG);
 			
 			this.journal= new Journal("Journal de Eq1DIST");
-			journal.ajouter("Absentéisme");
 			Monde.LE_MONDE.ajouterJournal(this.journal);
 	}
 	
@@ -219,7 +215,7 @@ public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayLi
 	int[] demande;
 	demande = new int[6];
 	demande[3]=0;
-	demande[4]=39834; // changer les indices
+	demande[4]=39834; 
 	demande[5]=17500;
 	demande[1]=0;
 	demande[2]=29167;
@@ -282,6 +278,11 @@ public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayLi
 			for(Integer i: l) {
 				this.journal.ajouter("Tablettes MQ : "+l.get(4)+"; Tablettes HQ : "+l.get(5)+"; Confiseries MQ : "+l.get(1)+"; Confiseries MQ : "+l.get(2));	
 				this.journal.ajouter("");
+				this.stockTMG.setValeur(this, this.stockTMG.getValeur()+l.get(4));
+				this.stockTHG.setValeur(this, this.stockTHG.getValeur()+l.get(5));
+				this.stockCMG.setValeur(this, this.stockCMG.getValeur()+l.get(1));
+				this.stockCHG.setValeur(this, this.stockCHG.getValeur()+l.get(2));
+				this.solde.s
 			}
 		}
 		double[] PrixMoyenVente = new double[6];
