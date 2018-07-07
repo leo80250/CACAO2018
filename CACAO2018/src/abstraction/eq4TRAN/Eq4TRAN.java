@@ -79,10 +79,12 @@ public class Eq4TRAN implements Acteur {
 		 *  On construit les 3 Sous-Acteurs 
 		 *  
 		 */
-		
-		this.PME1 = new SousActeur(new Journal("JournalPME1"),Stocks_PME1,Prod_PME1,soldeSA,50,Vendeur.COMMERCE_EQUITABLE,"PME1");
-		this.PME2 = new SousActeur(new Journal("JournalPME2"),Stocks_PME2,Prod_PME2,soldeSA,135,Vendeur.PRODUCTEUR_LOCAL,"PME2");
-		this.PME3= new SousActeur(new Journal("JournalPME3"),Stocks_PME3,Prod_PME3,soldeSA,220,Vendeur.LUXE,"PME3");
+		int[] demandeFèvesPME1 = {0,1000,0} ; 
+		int[] demandeFèvesPME2 = {500,1300,0} ;
+		int[] demandeFèvesPME3 = {0,0,1000} ; 
+		this.PME1 = new SousActeur(new Journal("JournalPME1"),Stocks_PME1,Prod_PME1,soldeSA,50,Vendeur.COMMERCE_EQUITABLE,"PME1",demandeFèvesPME1);
+		this.PME2 = new SousActeur(new Journal("JournalPME2"),Stocks_PME2,Prod_PME2,soldeSA,135,Vendeur.PRODUCTEUR_LOCAL,"PME2",demandeFèvesPME2);
+		this.PME3= new SousActeur(new Journal("JournalPME3"),Stocks_PME3,Prod_PME3,soldeSA,220,Vendeur.LUXE,"PME3",demandeFèvesPME3);
 		
 		/**
 		 * @author Mickaël, Etienne
