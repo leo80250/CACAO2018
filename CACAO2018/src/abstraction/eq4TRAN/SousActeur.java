@@ -174,7 +174,6 @@ IVendeurPoudre {
 	 */
 	@Override
 	public void sendContratFictifV3(List<ContratFeveV3> listContrats) {
-		
 	}
 
 
@@ -199,7 +198,7 @@ IVendeurPoudre {
 		for (ContratFeveV3 contrat : this.contratFeveEnCours) {
 			if ( contrat.getReponse() ) {
 			double coutTotal = contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;
-				if (coutTotal < this.solde.getValeur()) {
+				if (1.5*coutTotal < this.solde.getValeur()) {
 					contrat.setReponse(true);
 				}
 			}
