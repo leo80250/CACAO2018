@@ -404,8 +404,13 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		}*/
 		
 		//Mise à jour du solde pour les salaires
-		this.getSolde().setValeur(this,this.getSolde().getValeur()-(1-this.getAbsenteisme().getValeur())*this.getNombreEmployes().getValeur()*this.SALAIRE_MOYEN);
-		this.getJournal().ajouter("Versement des salaires = "+(1-this.getAbsenteisme().getValeur())*this.getNombreEmployes().getValeur()*this.SALAIRE_MOYEN);
+		
+		double totalSalaire=0;
+		for (int entrep=0; entrep<10; entrep++) {
+			this.getSoldeParEntrep(entrep).setValeur(this, this.getSoldeParEntrep(entrep).getValeur()-(1-this.getAbsenteismeParEntrep(entrep).getValeur()*this.getNombreEmployesParEntrep(entrep).getValeur()*this.SALAIRE_MOYEN));
+			totalSalaire+=this.getSoldeParEntrep(entrep).getValeur()-(1-this.getAbsenteismeParEntrep(entrep).getValeur()*this.getNombreEmployesParEntrep(entrep).getValeur()*this.SALAIRE_MOYEN);
+		}
+		this.getJournal().ajouter("Versement des salaires = "+totalSalaire); 
 		
 		//Mise à jour du solde pour les coûts de transformation
 		cout_transfo=0;
@@ -742,6 +747,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 *@author margauxgrand
 	 * @param offres
 	 */
+	
+	//ancien code
 	public void setOffresFevesPubliquesEnCours(List<ContratFeveV3> offres) {
 		this.offresFevesPubliquesEnCours = offres;
 	}
@@ -790,14 +797,22 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	} 	  	   		 			 			 	
 	public List<List<ContratFeveV3>> getOffresFevesPubliquesEnCours2() { 	  	   		 			 			 	
 		return this.offresFevesPubliquesEnCours2; 	  	   		 			 			 	
-	} 	  	   		 			 			 	
-	public List<Indicateur> getNombreEmployes2() { 	  	   		 			 			 	
-		return this.nombreEmployes2; 	  	   		 			 			 	
+	} 	
+	
+	public Indicateur getNombreEmployesParEntrep(int entrep) { 	  	   		 			 			 	
+		return this.nombreEmployes2.get(entrep); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
 	public void setNombreEmployesParEntrep(int n, int entrep) { 	  	   		 			 			 	
 		this.nombreEmployes2.get(entrep).setValeur(this, (double)n); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
-	 	  	   		 			 			 	
+	 	  	 
+	public int getNombreEmployeTotal() {
+		int total=0;
+		for (int i=0; i<10; i++) {
+			total+=this.getNombreEmployesParEntrep(i).getValeur();
+		}
+		return total;
+	}
 	 	  	   		 			 			 	  	   		 			 			 	
 
 	/**
@@ -1072,7 +1087,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	/*nouveau code*/
 	public void calculateTauxEfficaciteParEntrep(int entrep) { 	  	   		 			 			 	
 		double abs = this.getAbsenteisme2().get(entrep).getValeur(); 	  	   		 			 			 	
-		int emplPresents= (int) (this.getNombreEmployes2().get(entrep).getValeur()*(1-abs)*100/this.getNombreEmployes2().get(entrep).getValeur()); 	  	   		 			 			 	
+		int emplPresents= (int) (this.getNombreEmployesParEntrep(entrep).getValeur()*(1-abs)*100/this.getNombreEmployesParEntrep(entrep).getValeur()); 	  	   		 			 			 	
 		double efficaciteAbs = emplPresents/3; 	  	   		 			 			 	
 		double chancebeautemps = Math.random(); 	  	   		 			 			 	
 		double efficaciteTemps; 	  	   		 			 			 	
