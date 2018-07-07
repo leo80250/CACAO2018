@@ -34,7 +34,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	private Indicateur PrixConfHdG;
 
 	public Eq1DIST() {
-		double[][] PartsdeMarche = { { 0.7, 0.49, 0, 0, 0.42, 0 }, { 0, 0.21, 0.7, 0, 0.28, 0.7 },
+		double[][] PartsdeMarche = { { 0, 0.21, 0.7, 0, 0.28, 0.7 },{ 0.7, 0.49, 0, 0, 0.42, 0 },
 				{ 0.3, 0.3, 0.3, 0, 0.3, 0.3 } };
 		Journal client = new Journal("Clients Finaux");
 		Monde.LE_MONDE.ajouterJournal(client);
