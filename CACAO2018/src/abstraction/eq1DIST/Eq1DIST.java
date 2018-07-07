@@ -289,15 +289,6 @@ public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayLi
 		for(ArrayList<Integer> l: commandeFinale) {
 				this.journal.ajouter("Tablettes MQ : "+l.get(4)+"; Tablettes HQ : "+l.get(5)+"; Confiseries MQ : "+l.get(1)+"; Confiseries MQ : "+l.get(2));	
 				this.journal.ajouter("");
-				this.stocks[1].setValeur(this, this.stocks[1].getValeur()+l.get(4));
-				this.stocks[2].setValeur(this, this.stocks[2].getValeur()+l.get(5));
-				this.stocks[4].setValeur(this, this.stocks[4].getValeur()+l.get(1));
-				this.stocks[5].setValeur(this, this.stocks[5].getValeur()+l.get(2));
-				this.solde.setValeur(this,this.solde.getValeur()-Prix.get(4).getPrixProduit(l.get(4), 4)-Prix.get(5).getPrixProduit(l.get(5),5)-Prix.get(1).getPrixProduit(l.get(1), 1)-Prix.get(2).getPrixProduit(l.get(2), 2));
-				stock.ajouter(l.get(4),1);
-				stock.ajouter(l.get(5),2);
-				stock.ajouter(l.get(1),4);
-				stock.ajouter(l.get(2),5);			
 			}
 		double[] PrixMoyenVente = new double[6];
 		for(int i=0;i<6;i++) {
@@ -387,13 +378,16 @@ public ArrayList<Integer> listeTriee(ArrayList<Double> prix){
 	 
 	@Override
 	public void livraison(ArrayList<Integer> livraison, double paiement) {
-		for (int i=0;i<livraison.size();i++) {
-			this.stock.retirer(livraison.get(i), i+1);
-			stocks[i].setValeur(this, this.stock.getstock().get(i).total());
-			solde.setValeur(this,solde.getValeur()+paiement);
+		this.stocks[1].setValeur(this, this.stocks[1].getValeur()+livraison.get(4));
+		this.stocks[2].setValeur(this, this.stocks[2].getValeur()+livraison.get(5));
+		this.stocks[4].setValeur(this, this.stocks[4].getValeur()+livraison.get(1));
+		this.stocks[5].setValeur(this, this.stocks[5].getValeur()+livraison.get(2)); 
+		stock.ajouter(livraison.get(4),1);
+		stock.ajouter(livraison.get(5),2);
+		stock.ajouter(livraison.get(1),4);
+		stock.ajouter(livraison.get(2),5);			
+		solde.setValeur(this,solde.getValeur()+paiement);
 		}
-		
-	}
 	
 	@Override
 	public double[] getPrix() {
