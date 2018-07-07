@@ -34,7 +34,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	private Indicateur PrixConfHdG;
 
 	public Eq1DIST() {
-		double[][] PartsdeMarche = { { 0.7, 0.49, 0, 0, 0.42, 0 }, { 0, 0.21, 0.7, 0, 0.28, 0.7 },
+		double[][] PartsdeMarche = {{ 0, 0.21, 0.7, 0, 0.28, 0.7 },{ 0.7, 0.49, 0, 0, 0.42, 0 },
 				{ 0.3, 0.3, 0.3, 0, 0.3, 0.3 } };
 		Journal client = new Journal("Clients Finaux");
 		Monde.LE_MONDE.ajouterJournal(client);
@@ -116,7 +116,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 	public void venteOccalim() {
 		// on fait une demande occasionnelle si on dépasse un seuil limite de stock
-		int[] stocklim = { 0, 120000, 30000, 0, 40000, 20000 };
+		int[] stocklim = { 0, 1, 1, 0, 1, 1 };
 		List<IvendeurOccasionnelChocoTer> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoTer>();
 		for (Acteur a : Monde.LE_MONDE.getActeurs()) {
 			if (a instanceof IvendeurOccasionnelChocoTer) {
@@ -129,6 +129,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 				ArrayList<Double> prop = new ArrayList<Double>();
 				for (IvendeurOccasionnelChocoTer v : vendeursOcca) {
 					prop.add(v.getReponseTer(d));
+					System.out.println(v.getReponseTer(d));
 				}
 				double a = Double.MAX_VALUE;
 				int n = 0;

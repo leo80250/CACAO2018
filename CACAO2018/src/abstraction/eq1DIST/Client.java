@@ -118,6 +118,34 @@ public class Client implements Acteur {
 		this.PartdeMarche[i][j] = (double) Math.round((1 - 0.3 * facteur) * this.PartdeMarche[i][j] * 1000) / 1000;
 
 	}
+	
+	/**
+	 *
+	 * @param InterfaceDistributeurClient Distributeur, int elt (position dans la liste des distributeurs récupérés)
+	 * 
+	 * @return Modifie l'ordre des parts de marchés pour éviter les conflits
+	 * 
+	 */
+	private void OrdonnerPartsDeMarche(InterfaceDistributeurClient Distributeur, int elt) {
+		if (Distributeur.getNom()=="Eq1DIST") {
+			double[] copie1 = new double[6];
+			copie1 = this.PartdeMarche[elt];
+			this.PartdeMarche[elt]= this.PartdeMarche[0];
+			this.PartdeMarche[0]=copie1;
+		}
+		else if (Distributeur.getNom()=="Eq6DIST") {
+			double[] copie1 = new double[6];
+			copie1 = this.PartdeMarche[elt];
+			this.PartdeMarche[elt]= this.PartdeMarche[1];
+			this.PartdeMarche[1]=copie1;
+		}
+		else {
+			double[] copie1 = new double[6];
+			copie1 = this.PartdeMarche[elt];
+			this.PartdeMarche[elt]= this.PartdeMarche[2];
+			this.PartdeMarche[2]=copie1;
+			}
+		}
 
 	/**
 	 *
@@ -198,19 +226,25 @@ public class Client implements Acteur {
 		// ligne 1 : choco BdG , choco MdG, choco HdG
 		// ligne 2 : confiseries BdG , confiseries MdG, confiseries HdG
 		int[] h = { a[0][periode], a[1][periode], a[2][periode], b[0][periode], b[1][periode], b[2][periode] };
+		
 
 		ArrayList<Acteur> Acteurs = Monde.LE_MONDE.getActeurs();
 		ArrayList<InterfaceDistributeurClient> Distributeurs = new ArrayList<InterfaceDistributeurClient>();
 		// récupération des instances de distributeurs
+		int elt =0;
 		for (Acteur c : Acteurs) {
 			if (c instanceof InterfaceDistributeurClient) {
 				Distributeurs.add((InterfaceDistributeurClient) c);
+				if (Monde.LE_MONDE.getStep()==1) {
+					this.OrdonnerPartsDeMarche((InterfaceDistributeurClient)c , elt);
+				}
+				elt+=1;
 			}
 		}
 
-		int[] cm = this.commande(h, 0); // commande pour l'eq6 (Mousquetaire)
+		int[] cm = this.commande(h, 1); // commande pour l'eq6 (Mousquetaire)
 		GrilleQuantite CommandeMousquetaire = new GrilleQuantite(cm);
-		int[] cas = this.commande(h, 1); // commande pour l'eq1 (Casino)
+		int[] cas = this.commande(h, 0); // commande pour l'eq1 (Casino)
 		GrilleQuantite CommandeCasino = new GrilleQuantite(cas);
 		int[] autre = this.commande(h, 2); // commande pour le distributeur fictif
 
@@ -236,15 +270,15 @@ public class Client implements Acteur {
 				this.journal.ajouter("");
 
 				for (int j = 0; j <= 5; j++) {
-					this.ChangementPartdeMarche(0, j, CommandeMousquetaire, ReponseMousquetaire, Mousquetaire,
+					this.ChangementPartdeMarche(i, j, CommandeMousquetaire, ReponseMousquetaire, Mousquetaire,
 							Distributeurs);
 				}
 
 				this.journal.ajouter("- Les parts de marché des magasins Mousquetaire sont désormais : "
-						+ this.getValeur(0, 0) + "% sur les Tablettes BG ; " + this.getValeur(0, 1)
-						+ "% sur les Tablettes MG ; " + this.getValeur(0, 2) + "% sur les Tablettes HG ; "
-						+ this.getValeur(0, 3) + "% sur les Confiseries BG ; " + this.getValeur(0, 4)
-						+ "% sur les Confiseries MG ; " + this.getValeur(0, 5) + "% sur les Confiseries HG.");
+						+ this.getValeur(0, 0) + "% sur les Tablettes BG ; " + this.getValeur(1, 1)
+						+ "% sur les Tablettes MG ; " + this.getValeur(1, 2) + "% sur les Tablettes HG ; "
+						+ this.getValeur(1, 3) + "% sur les Confiseries BG ; " + this.getValeur(1, 4)
+						+ "% sur les Confiseries MG ; " + this.getValeur(1, 5) + "% sur les Confiseries HG.");
 				this.journal.ajouter("");
 			} else if (Distributeurs.get(i).getNom() == "Eq1DIST") {
 				this.journal.ajouter("");
@@ -260,14 +294,14 @@ public class Client implements Acteur {
 				this.journal.ajouter("");
 
 				for (int j = 0; j <= 5; j++) {
-					this.ChangementPartdeMarche(1, j, CommandeCasino, ReponseCasino, Casino, Distributeurs);
+					this.ChangementPartdeMarche(i, j, CommandeCasino, ReponseCasino, Casino, Distributeurs);
 				}
 
 				this.journal.ajouter("- Les parts de marché des magasins Casino sont désormais : "
-						+ this.getValeur(1, 0) + "% sur les Tablettes BG ; " + this.getValeur(1, 1)
+						+ this.getValeur(0, 0) + "% sur les Tablettes BG ; " + this.getValeur(0, 1)
 						+ "% sur les Tablettes MG ; " + this.getValeur(1, 2) + "% sur les Tablettes HG ; "
-						+ this.getValeur(1, 3) + "% sur les Confiseries BG ; " + this.getValeur(1, 4)
-						+ "% sur les Confiseries MG ; " + this.getValeur(1, 5) + "% sur les Confiseries HG.");
+						+ this.getValeur(0, 3) + "% sur les Confiseries BG ; " + this.getValeur(0, 4)
+						+ "% sur les Confiseries MG ; " + this.getValeur(0, 5) + "% sur les Confiseries HG.");
 				this.journal.ajouter("");
 			} else {
 				GrilleQuantite CommandeAutre = new GrilleQuantite(autre);
@@ -283,7 +317,7 @@ public class Client implements Acteur {
 				this.journal.ajouter("");
 
 				for (int j = 0; j <= 5; j++) {
-					this.ChangementPartdeMarche(2, j, CommandeAutre, ReponseAutre, Autre, Distributeurs);
+					this.ChangementPartdeMarche(i, j, CommandeAutre, ReponseAutre, Autre, Distributeurs);
 				}
 
 				this.journal.ajouter("Les parts de marché des autres magasins sont désormais : " + this.getValeur(2, 0)
