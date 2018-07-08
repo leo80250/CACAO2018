@@ -60,10 +60,12 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		}
 
 		this.stocks = new Indicateur[6];
+		this.stocks[0] = new Indicateur("stock" + Type.values()[0] + " eq1", this, 0); //on n'ajoutera cet indicateur au monde que si on fait des TB un jour
 		this.stocks[1] = new Indicateur("stock" + Type.values()[1] + " eq1", this, 50000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stocks[1]);
 		this.stocks[2] = new Indicateur("stock" + Type.values()[2] + " eq1", this, 25000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stocks[2]);
+		this.stocks[3] = new Indicateur("stock" + Type.values()[3] + " eq1", this, 0); //idem
 		this.stocks[4] = new Indicateur("stock" + Type.values()[4] + " eq1", this, 35000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stocks[4]);
 		this.stocks[5] = new Indicateur("stock" + Type.values()[5] + " eq1", this, 15000);
