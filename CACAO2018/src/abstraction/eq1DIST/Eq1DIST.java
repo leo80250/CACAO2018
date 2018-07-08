@@ -354,20 +354,20 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	 */
 	private void changerPrix(double[] PrixAchat) {
 		if(PrixAchat[1]!=0) {
-		this.PrixChocoMdG.setValeur(this, PrixAchat[1] * 1.16);
+		this.PrixConfMdG.setValeur(this, PrixAchat[1] * 1.16);
 		}
 		if(PrixAchat[2]!=0) {
-		this.PrixChocoHdG.setValeur(this, PrixAchat[2] * 1.16);
+		this.PrixConfHdG.setValeur(this, PrixAchat[2] * 1.16);
 		}
 		if(PrixAchat[4]!=0) {
-		this.PrixConfMdG.setValeur(this, PrixAchat[4] * 1.16);
+		this.PrixChocoMdG.setValeur(this, PrixAchat[4] * 1.16);
 		}
 		if(PrixAchat[5]!=0) {
-		this.PrixConfHdG.setValeur(this, PrixAchat[5] * 1.16);
+		this.PrixChocoHdG.setValeur(this, PrixAchat[5] * 1.16);
 		}
 		this.journal.ajouter("• Changement des prix • ");
-		this.journal.ajouter("Prix chocolat milieu de gamme = " + this.PrixChocoMdG.getValeur()+ "€");
-		this.journal.ajouter( "Prix chocolat haut de gamme = " + this.PrixChocoHdG.getValeur() + "€");
+		this.journal.ajouter("Prix tablettes milieu de gamme = " + this.PrixChocoMdG.getValeur()+ "€");
+		this.journal.ajouter( "Prix tablettes haut de gamme = " + this.PrixChocoHdG.getValeur() + "€");
 		this.journal.ajouter("Prix confiseries milieu de gamme = " + this.PrixConfMdG.getValeur() + "€");
 		this.journal.ajouter("Prix confiseries haut de gamme = " + this.PrixConfHdG.getValeur() + "€");
 	}
