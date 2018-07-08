@@ -10,7 +10,7 @@ import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
- 
+
 import java.util.ArrayList;
 
  
@@ -115,7 +115,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		this.marge_TMQ.setValeur(this, this.marge.get(4));
 		this.marge_THQ.setValeur(this, this.marge.get(5));
 
-		//Victor Signes
+		//Victor Signes, Karel Kédémos
 		//Achat occasionnel
 
 		for(int i=0;i<6;i++) {
@@ -137,7 +137,9 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 						 a=acteurs.get(i);
 					 }
 				}
+				if (p<10000000) {
 				((IvendeurOccasionnelChocoTer)a).envoyerReponseTer(this, d.getQuantite(), d.getQualite(), p); //envoi de la proposition choisie
+				}
 
 			}
 		}
