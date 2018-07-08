@@ -120,8 +120,9 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 	public void venteOccalim() {
 		// on fait une demande occasionnelle si on dépasse un seuil limite de stock
-		int[] stocklim = { 0, 120000, 30000, 0, 40000, 20000 };
+		int[] stocklim = { 0, 12000, 3000, 0, 4000, 2000 };
 		List<IvendeurOccasionnelChocoTer> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoTer>();
+		double[] PrixAchat = new double[6];
 		for (Acteur a : Monde.LE_MONDE.getActeurs()) {
 			if (a instanceof IvendeurOccasionnelChocoTer) {
 				vendeursOcca.add((IvendeurOccasionnelChocoTer) a);
@@ -131,8 +132,10 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 			if (this.stock.getstock().get(i).total() < stocklim[i]) {
 				DemandeAO d = new DemandeAO(stocklim[i] - this.stock.getstock().get(i).total(), i + 1);
 				ArrayList<Double> prop = new ArrayList<Double>();
+				if(d.getQualite()>=1) {
 				for (IvendeurOccasionnelChocoTer v : vendeursOcca) {
 					prop.add(v.getReponseTer(d));
+				}
 				}
 				double a = Double.MAX_VALUE;
 				int n = 0;
@@ -143,6 +146,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 					}
 				}
 				if (a != Double.MAX_VALUE) {
+					PrixAchat[i]=a;
 					this.stock.ajouter(d.getQuantite(), i + 1);
 					solde.setValeur(this, solde.getValeur() - a);
 					vendeursOcca.get(n).envoyerReponseTer(this, d.getQuantite(), d.getQualite(), a);
@@ -155,6 +159,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 			}
 		}
+		this.changerPrix(PrixAchat);
 	}
 
 	public void venteOccaspe() {
@@ -163,13 +168,21 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 				|| Monde.LE_MONDE.getStep() % 12 == 4 || Monde.LE_MONDE.getStep() % 12 == 5
 				|| Monde.LE_MONDE.getStep() % 12 == 18 || Monde.LE_MONDE.getStep() % 12 == 19
 				|| Monde.LE_MONDE.getStep() % 12 == 20 || Monde.LE_MONDE.getStep() % 12 == 21) {
-			int[] stockspe = { 0, 29877, 13125, 0, 21875, 9375 };
+			int[] stockspe = { 0, 2987, 1312, 0, 2187, 937 };
 			List<IvendeurOccasionnelChocoTer> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoTer>();
+			double[] PrixAchat = new double[6];
+			for (Acteur a : Monde.LE_MONDE.getActeurs()) {
+				if (a instanceof IvendeurOccasionnelChocoTer) {
+					vendeursOcca.add((IvendeurOccasionnelChocoTer) a);
+				}
+			}
 			for (int i = 0; i < this.stock.getstock().size(); i++) {
 				DemandeAO d = new DemandeAO(stockspe[i], i + 1);
 				ArrayList<Double> prop = new ArrayList<Double>();
+				if(d.getQualite()>=1) {
 				for (IvendeurOccasionnelChocoTer v : vendeursOcca) {
 					prop.add(v.getReponseTer(d));
+				}
 				}
 				double a = Double.MAX_VALUE;
 				int n = 0;
@@ -180,6 +193,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 					}
 				}
 				if (a != Double.MAX_VALUE) {
+					PrixAchat[i]=a;
 					this.stock.ajouter(d.getQuantite(), i);
 					solde.setValeur(this, solde.getValeur() - a);
 					vendeursOcca.get(n).envoyerReponseTer(this, d.getQuantite(), d.getQualite(), a);
@@ -191,6 +205,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 				}
 
 			}
+			this.changerPrix(PrixAchat);
 		}
 	}
 
@@ -232,91 +247,15 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	}
 
 	public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
-		int[] demande;
-		demande = new int[6];
-		demande[3] = 0;
-		demande[4] = 39834;
-		demande[5] = 17500;
-		demande[1] = 0;
-		demande[2] = 29167;
-		demande[3] = 12500;
-		double[][] PrixVentes = new double[3][6];
-		ArrayList<ArrayList<Integer>> commandeFinale = new ArrayList<ArrayList<Integer>>();
-		ArrayList<Integer> listeT = new ArrayList<Integer>();
-		String act = "";
-		ArrayList<Acteur> acteurs = Monde.LE_MONDE.getActeurs();
-		ArrayList<IVendeurChocoBis> transfo = new ArrayList<IVendeurChocoBis>();
-		Double[][] PrixVente = new Double[3][6];
-		for (Acteur a : acteurs) {
-			if (a instanceof IVendeurChocoBis) {
-				transfo.add((IVendeurChocoBis) a);
-
+		int nombre_transfo=Prix.size();
+		ArrayList<ArrayList<Integer>> commande = new ArrayList<ArrayList<Integer>>();
+		for (int i=0;i<nombre_transfo;i++) {
+			commande.add(new ArrayList<Integer>());
+			for (int j=0;j<6;j++) {
+				commande.get(i).add(0);
 			}
 		}
-		double[] m = new double[6];
-		for (int i = 0; i < 6; i++) {
-			while (m[i] != 1) {
-
-				ArrayList<Double> prix;
-				prix = new ArrayList<Double>();
-				for (int j = 0; j < transfo.size(); j++) {
-					prix.add(transfo.get(j).getPrix().getPrixProduit(demande[i], i));
-					PrixVente[j][i] = transfo.get(j).getPrix().getPrixProduit(demande[i], i);
-				}
-
-				listeT = listeTriee(prix);
-
-				if (Stock.get(listeT.indexOf(0)).get(i) >= 0.6 * demande[i]) {
-					commandeFinale.get(listeT.indexOf(0)).set(i, (((int) 0.6 * demande[i])));
-					m[i] += 0.6;
-					if (Stock.get(listeT.indexOf(1)).get(i) >= 0.3 * demande[i]) {
-						commandeFinale.get(listeT.indexOf(1)).set(i, ((int) 0.3 * demande[i]));
-						m[i] += 0.3;
-						if (Stock.get(listeT.indexOf(2)).get(i) >= 0.1 * demande[i]) {
-							commandeFinale.get(listeT.indexOf(2)).set(i, ((int) (0.1 * demande[i])));
-							m[i] += 0.1;
-						} else {
-							commandeFinale.get(listeT.indexOf(2)).set(i, ((int) (Stock.get(listeT.indexOf(2)).get(i))));
-							m[i] = 1;
-						}
-					} else {
-						commandeFinale.get(listeT.indexOf(1)).set(i, ((int) (Stock.get(listeT.indexOf(1)).get(i))));
-						m[i] += Stock.get(listeT.indexOf(1)).get(i) / demande[i];
-						if (Stock.get(listeT.indexOf(2)).get(i) >= (1 - m[i]) * demande[i]) {
-							commandeFinale.get(listeT.indexOf(2)).set(i, ((int) ((1 - m[i]) * demande[i])));
-						} else {
-							commandeFinale.get(listeT.indexOf(2)).set(i, ((int) (Stock.get(listeT.indexOf(2)).get(i))));
-							m[i] = 1;
-						}
-					}
-				}
-			}
-		}
-		this.journal.ajouter("CONTRAT :");
-		this.journal.ajouter("");
-		for (ArrayList<Integer> l : commandeFinale) {
-			this.journal.ajouter("Tablettes MQ : " + l.get(4) + "; Tablettes HQ : " + l.get(5) + "; Confiseries MQ : "
-					+ l.get(1) + "; Confiseries MQ : " + l.get(2));
-			this.journal.ajouter("");
-			this.stocks[1].setValeur(this, this.stocks[1].getValeur() + l.get(4));
-			this.stocks[2].setValeur(this, this.stocks[2].getValeur() + l.get(5));
-			this.stocks[4].setValeur(this, this.stocks[4].getValeur() + l.get(1));
-			this.stocks[5].setValeur(this, this.stocks[5].getValeur() + l.get(2));
-			this.solde.setValeur(this,
-					this.solde.getValeur() - Prix.get(4).getPrixProduit(l.get(4), 4)
-							- Prix.get(5).getPrixProduit(l.get(5), 5) - Prix.get(1).getPrixProduit(l.get(1), 1)
-							- Prix.get(2).getPrixProduit(l.get(2), 2));
-			stock.ajouter(l.get(4), 1);
-			stock.ajouter(l.get(5), 2);
-			stock.ajouter(l.get(1), 4);
-			stock.ajouter(l.get(2), 5);
-		}
-		double[] PrixMoyenVente = new double[6];
-		for (int i = 0; i < 6; i++) {
-			PrixMoyenVente[i] = (PrixVente[0][i] + PrixVente[1][i] + PrixVente[3][i]) / 3;
-		}
-		this.changerPrix(PrixMoyenVente);
-		return commandeFinale;
+		return commande;
 	}
 
 	public ArrayList<Integer> listeTriee(ArrayList<Double> prix) {
@@ -415,10 +354,18 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	 * @return change les prix de ventes de façon à avoir une marge de 16%
 	 */
 	private void changerPrix(double[] PrixAchat) {
+		if(PrixAchat[1]!=0) {
 		this.PrixChocoMdG.setValeur(this, PrixAchat[1] * 1.16);
+		}
+		if(PrixAchat[2]!=0) {
 		this.PrixChocoHdG.setValeur(this, PrixAchat[2] * 1.16);
+		}
+		if(PrixAchat[4]!=0) {
 		this.PrixConfMdG.setValeur(this, PrixAchat[4] * 1.16);
+		}
+		if(PrixAchat[5]!=0) {
 		this.PrixConfHdG.setValeur(this, PrixAchat[5] * 1.16);
+		}
 		this.journal
 				.ajouter("Changement des prix : \n" + "Prix chocolat milieu de gamme = " + this.PrixChocoMdG.getValeur()
 						+ "\n" + "Prix chocolat haut de gamme = " + this.PrixChocoHdG.getValeur() + "\n"
