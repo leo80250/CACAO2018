@@ -111,8 +111,9 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 	public void venteOccalim() {
 		// on fait une demande occasionnelle si on dépasse un seuil limite de stock
-		int[] stocklim = { 0, 120000, 30000, 0, 40000, 20000 };
+		int[] stocklim = { 0, 12000, 3000, 0, 4000, 2000 };
 		List<IvendeurOccasionnelChocoTer> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoTer>();
+		double[] PrixAchat = new double[6];
 		for (Acteur a : Monde.LE_MONDE.getActeurs()) {
 			if (a instanceof IvendeurOccasionnelChocoTer) {
 				vendeursOcca.add((IvendeurOccasionnelChocoTer) a);
@@ -122,8 +123,10 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 			if (this.stock.getstock().get(i).total() < stocklim[i]) {
 				DemandeAO d = new DemandeAO(stocklim[i] - this.stock.getstock().get(i).total(), i + 1);
 				ArrayList<Double> prop = new ArrayList<Double>();
+				if(d.getQualite()>=1) {
 				for (IvendeurOccasionnelChocoTer v : vendeursOcca) {
 					prop.add(v.getReponseTer(d));
+				}
 				}
 				double a = Double.MAX_VALUE;
 				int n = 0;
@@ -134,6 +137,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 					}
 				}
 				if (a != Double.MAX_VALUE) {
+					PrixAchat[i]=a;
 					this.stock.ajouter(d.getQuantite(), i + 1);
 					solde.setValeur(this, solde.getValeur() - a);
 					vendeursOcca.get(n).envoyerReponseTer(this, d.getQuantite(), d.getQualite(), a);
@@ -146,6 +150,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 			}
 		}
+		this.changerPrix(PrixAchat);
 	}
 
 	public void venteOccaspe() {
@@ -154,13 +159,21 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 				|| Monde.LE_MONDE.getStep() % 12 == 4 || Monde.LE_MONDE.getStep() % 12 == 5
 				|| Monde.LE_MONDE.getStep() % 12 == 18 || Monde.LE_MONDE.getStep() % 12 == 19
 				|| Monde.LE_MONDE.getStep() % 12 == 20 || Monde.LE_MONDE.getStep() % 12 == 21) {
-			int[] stockspe = { 0, 29877, 13125, 0, 21875, 9375 };
+			int[] stockspe = { 0, 2987, 1312, 0, 2187, 937 };
 			List<IvendeurOccasionnelChocoTer> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoTer>();
+			double[] PrixAchat = new double[6];
+			for (Acteur a : Monde.LE_MONDE.getActeurs()) {
+				if (a instanceof IvendeurOccasionnelChocoTer) {
+					vendeursOcca.add((IvendeurOccasionnelChocoTer) a);
+				}
+			}
 			for (int i = 0; i < this.stock.getstock().size(); i++) {
 				DemandeAO d = new DemandeAO(stockspe[i], i + 1);
 				ArrayList<Double> prop = new ArrayList<Double>();
+				if(d.getQualite()>=1) {
 				for (IvendeurOccasionnelChocoTer v : vendeursOcca) {
 					prop.add(v.getReponseTer(d));
+				}
 				}
 				double a = Double.MAX_VALUE;
 				int n = 0;
@@ -171,6 +184,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 					}
 				}
 				if (a != Double.MAX_VALUE) {
+					PrixAchat[i]=a;
 					this.stock.ajouter(d.getQuantite(), i);
 					solde.setValeur(this, solde.getValeur() - a);
 					vendeursOcca.get(n).envoyerReponseTer(this, d.getQuantite(), d.getQualite(), a);
@@ -182,6 +196,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 				}
 
 			}
+			this.changerPrix(PrixAchat);
 		}
 	}
 
@@ -330,10 +345,18 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	 * @return change les prix de ventes de façon à avoir une marge de 16%
 	 */
 	private void changerPrix(double[] PrixAchat) {
+		if(PrixAchat[1]!=0) {
 		this.PrixChocoMdG.setValeur(this, PrixAchat[1] * 1.16);
+		}
+		if(PrixAchat[2]!=0) {
 		this.PrixChocoHdG.setValeur(this, PrixAchat[2] * 1.16);
+		}
+		if(PrixAchat[4]!=0) {
 		this.PrixConfMdG.setValeur(this, PrixAchat[4] * 1.16);
+		}
+		if(PrixAchat[5]!=0) {
 		this.PrixConfHdG.setValeur(this, PrixAchat[5] * 1.16);
+		}
 		this.journal
 				.ajouter("Changement des prix : \n" + "Prix chocolat milieu de gamme = " + this.PrixChocoMdG.getValeur()
 						+ "\n" + "Prix chocolat haut de gamme = " + this.PrixChocoHdG.getValeur() + "\n"
