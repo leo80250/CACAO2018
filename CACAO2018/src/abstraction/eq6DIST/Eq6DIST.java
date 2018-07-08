@@ -10,7 +10,7 @@ import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
-
+ 
 import java.util.ArrayList;
 
  
