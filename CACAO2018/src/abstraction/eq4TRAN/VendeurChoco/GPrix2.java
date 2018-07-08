@@ -40,17 +40,17 @@ public class GPrix2{
 	 * Classe définissant un tableau de prix étalonnés par tranche (tableau fournit par les transformateurs)
 	 */
 	public GPrix2(ArrayList<Double[]> intervalles, ArrayList<Double[]> prix) {
-		if(intervalles.get(0).length!=prix.get(0).length) {
-			throw new IllegalArgumentException("Le nombre d'intervalles ne correspond pas au nombre de tarifs annoncés.");
+		if(intervalles.size()!=prix.size()) {
+			throw new IllegalArgumentException("Les informations ne sont pas remplies pour chacune des 6 équipes");
 		}
 		else {
-			if(intervalles.size()!=prix.size()) {
-				throw new IllegalArgumentException("Les informations ne sont pas remplies pour chacune des 6 équipes");
+			for(int i=0; i<intervalles.size();i++) {
+				if(intervalles.get(i).length!=prix.get(i).length) {
+					throw new IllegalArgumentException("Le nombre d'intervalles ne correspond pas au nombre de tarifs annoncés.");
+				}
 			}
-			else {
-				this.intervalles=intervalles;
-				this.prix=prix;
-			}
+			this.intervalles=intervalles;
+			this.prix=prix;
 		}
 	}
 	
@@ -76,7 +76,7 @@ public class GPrix2{
 		 */
 		if(getIntervalles().size()>0) {
 			int j =0;
-			while((j<getIntervalles().size())&&(getIntervalles().get(idProduit-1)[j]>quantite)) {
+			while((j<getIntervalles().get(idProduit-1).length)&&(getIntervalles().get(idProduit-1)[j]>quantite)) {
 				j++;
 			}
 			return getPrix().get(idProduit-1)[j];
