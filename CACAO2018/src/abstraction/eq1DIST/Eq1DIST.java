@@ -73,9 +73,9 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		this.efficacite = new Indicateur("efficacite eq1", this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.efficacite);
 		//prix
-		this.PrixChocoMdG = new Indicateur("Prix Choco MdG eq1", this, 1.5);
+		this.PrixChocoMdG = new Indicateur("Prix Tablettes MdG eq1", this, 1.5);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixChocoMdG);
-		this.PrixChocoHdG = new Indicateur("Prix Choco HdG eq1", this, 3.0);
+		this.PrixChocoHdG = new Indicateur("Prix Tablettes HdG eq1", this, 3.0);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixChocoHdG);
 		this.PrixConfMdG = new Indicateur("Prix Confiseries MdG eq1", this, 2.6);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixConfMdG);
@@ -204,13 +204,16 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 	public void salaires() {
 		solde.setValeur(this, solde.getValeur() - 200000);
-		this.journal.ajouter("Réglement des salaires : 200000€");
+		this.journal.ajouter("• Réglement des salaires • ");
+		this.journal.ajouter("Salaires = 200000€");
 	}
 
 	@Override
 	public GrilleQuantite commander(GrilleQuantite Q) {
 		this.journal.ajouter("------------------------------ Période n°" + Monde.LE_MONDE.getStep()
 		+ " ------------------------------");
+		this.journal.ajouter("");
+		this.journal.ajouter("• Ventes de la période •");
 		int[] res = new int[6];
 		double[] prix = { Double.MAX_VALUE, this.PrixChocoMdG.getValeur(), this.PrixChocoHdG.getValeur(),
 				Double.MAX_VALUE, this.PrixConfMdG.getValeur(), this.PrixConfHdG.getValeur() };
@@ -326,10 +329,10 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		stock.ajouter(livraison.get(2),5);			
 		solde.setValeur(this,solde.getValeur()+paiement);
 		if(Monde.LE_MONDE.getStep()%12==0) {
-			this.journal.ajouter("L'équipe 1 a acheté :"+ livraison.get(4) + "TM");
-			this.journal.ajouter("L'équipe 1 a acheté :"+ livraison.get(5) + "TH");
-			this.journal.ajouter("L'équipe 1 a acheté :"+ livraison.get(1) + "CM");
-			this.journal.ajouter("L'équipe 1 a acheté :"+ livraison.get(2) + "CH");
+			this.journal.ajouter("L'équipe 1 a acheté :"+ livraison.get(4) + "tablettes MdG");
+			this.journal.ajouter("L'équipe 1 a acheté :"+ livraison.get(5) + "tablettes HdG");
+			this.journal.ajouter("L'équipe 1 a acheté :"+ livraison.get(1) + "confiseries MdG");
+			this.journal.ajouter("L'équipe 1 a acheté :"+ livraison.get(2) + "confiseries HdG");
 		}
 
 	}
@@ -351,21 +354,21 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	 */
 	private void changerPrix(double[] PrixAchat) {
 		if(PrixAchat[1]!=0) {
-		this.PrixChocoMdG.setValeur(this, PrixAchat[1] * 1.16);
+		this.PrixConfMdG.setValeur(this, PrixAchat[1] * 1.16);
 		}
 		if(PrixAchat[2]!=0) {
-		this.PrixChocoHdG.setValeur(this, PrixAchat[2] * 1.16);
+		this.PrixConfHdG.setValeur(this, PrixAchat[2] * 1.16);
 		}
 		if(PrixAchat[4]!=0) {
-		this.PrixConfMdG.setValeur(this, PrixAchat[4] * 1.16);
+		this.PrixChocoMdG.setValeur(this, PrixAchat[4] * 1.16);
 		}
 		if(PrixAchat[5]!=0) {
-		this.PrixConfHdG.setValeur(this, PrixAchat[5] * 1.16);
+		this.PrixChocoHdG.setValeur(this, PrixAchat[5] * 1.16);
 		}
-		this.journal
-				.ajouter("Changement des prix : \n" + "Prix chocolat milieu de gamme = " + this.PrixChocoMdG.getValeur()
-						+ "\n" + "Prix chocolat haut de gamme = " + this.PrixChocoHdG.getValeur() + "\n"
-						+ "Prix confiseries milieu de gamme = " + this.PrixConfMdG.getValeur() + "\n"
-						+ "Prix confiseries haut de gamme = " + this.PrixConfHdG.getValeur() + "\n");
+		this.journal.ajouter("• Changement des prix • ");
+		this.journal.ajouter("Prix tablettes milieu de gamme = " + this.PrixChocoMdG.getValeur()+ "€");
+		this.journal.ajouter( "Prix tablettes haut de gamme = " + this.PrixChocoHdG.getValeur() + "€");
+		this.journal.ajouter("Prix confiseries milieu de gamme = " + this.PrixConfMdG.getValeur() + "€");
+		this.journal.ajouter("Prix confiseries haut de gamme = " + this.PrixConfHdG.getValeur() + "€");
 	}
 }
