@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import abstraction.eq4TRAN.Eq4TRAN;
-import abstraction.eq4TRAN.IVendeurChocoBis;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
-import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq6DIST.IAcheteurChocoBis;
-import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
@@ -22,43 +18,19 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	private Journal journal;
 	private Indicateur[] stocks;
 	private Indicateur solde;
-	private String nom;
 	private Indicateur[] nombreVentes;
 	private Indicateur[] nombreAchatsOccasionnels;
 	private Indicateur[] nombreAchatsContrat;
 	private Indicateur efficacite;
-
 	private Indicateur PrixChocoMdG;
 	private Indicateur PrixChocoHdG;
 	private Indicateur PrixConfMdG;
 	private Indicateur PrixConfHdG;
 
 	public Eq1DIST() {
-		double[][] PartsdeMarche = { { 0.7, 0.49, 0, 0, 0.42, 0 }, { 0, 0.21, 0.7, 0, 0.28, 0.7 },
-				{ 0.3, 0.3, 0.3, 0, 0.3, 0.3 } };
-		Journal client = new Journal("Clients Finaux");
-		Monde.LE_MONDE.ajouterJournal(client);
-		Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche, client));
-
+		// création du distributeur
+		// variables de stock
 		this.stock = new Stock(0, 50000, 25000, 0, 35000, 15000);
-
-		this.nombreAchatsOccasionnels = new Indicateur[6];
-		for (int i = 0; i < 6; i++) {
-			this.nombreAchatsOccasionnels[i] = new Indicateur("echanges occasionnels en " + Type.values()[i] + " eq1",
-					this, 0);
-			if (i != 0 && i != 3) { // on enlevera cette condition si un jour on choisit de faire du basse gamme
-				Monde.LE_MONDE.ajouterIndicateur(this.nombreAchatsOccasionnels[i]);
-			}
-		}
-
-		this.nombreAchatsContrat = new Indicateur[6];
-		for (int i = 0; i < 6; i++) {
-			this.nombreAchatsContrat[i] = new Indicateur("echanges contrat en " + Type.values()[i] + " eq1", this, 0);
-			if (i != 0 && i != 3) {
-				Monde.LE_MONDE.ajouterIndicateur(this.nombreAchatsContrat[i]);
-			}
-		}
-
 		this.stocks = new Indicateur[6];
 		this.stocks[0] = new Indicateur("stock" + Type.values()[0] + " eq1", this, 0); //on n'ajoutera cet indicateur au monde que si on fait des TB un jour
 		this.stocks[1] = new Indicateur("stock" + Type.values()[1] + " eq1", this, 50000);
@@ -70,7 +42,24 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		Monde.LE_MONDE.ajouterIndicateur(this.stocks[4]);
 		this.stocks[5] = new Indicateur("stock" + Type.values()[5] + " eq1", this, 15000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stocks[5]);
-
+		this.nombreAchatsOccasionnels = new Indicateur[6];
+		//échanges occasionnels
+		for (int i = 0; i < 6; i++) {
+			this.nombreAchatsOccasionnels[i] = new Indicateur("echanges occasionnels en " + Type.values()[i] + " eq1",
+					this, 0);
+			if (i != 0 && i != 3) { // on enlevera cette condition si un jour on choisit de faire du basse gamme
+				Monde.LE_MONDE.ajouterIndicateur(this.nombreAchatsOccasionnels[i]);
+			}
+		}
+		//échanges contractuels
+		this.nombreAchatsContrat = new Indicateur[6];
+		for (int i = 0; i < 6; i++) {
+			this.nombreAchatsContrat[i] = new Indicateur("echanges contrat en " + Type.values()[i] + " eq1", this, 0);
+			if (i != 0 && i != 3) {
+				Monde.LE_MONDE.ajouterIndicateur(this.nombreAchatsContrat[i]);
+			}
+		}
+		//nb de ventes
 		this.nombreVentes = new Indicateur[6];
 		for (int i = 0; i < 6; i++) {
 			this.nombreVentes[i] = new Indicateur("nombre vente en " + Type.values()[i] + " eq1", this, 0);
@@ -78,12 +67,12 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 				Monde.LE_MONDE.ajouterIndicateur(this.nombreVentes[i]);
 			}
 		}
-
+		//solde
 		this.solde = new Indicateur("solde eq1", this, 500000);
 		Monde.LE_MONDE.ajouterIndicateur(this.solde);
 		this.efficacite = new Indicateur("efficacite eq1", this, 0);
 		Monde.LE_MONDE.ajouterIndicateur(this.efficacite);
-
+		//prix
 		this.PrixChocoMdG = new Indicateur("Prix Choco MdG eq1", this, 1.5);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixChocoMdG);
 		this.PrixChocoHdG = new Indicateur("Prix Choco HdG eq1", this, 3.0);
@@ -92,9 +81,16 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixConfMdG);
 		this.PrixConfHdG = new Indicateur("Prix Confiseries HdG eq1", this, 4.1);
 		Monde.LE_MONDE.ajouterIndicateur(this.PrixConfHdG);
-
+		//journal
 		this.journal = new Journal("Journal de Eq1DIST");
 		Monde.LE_MONDE.ajouterJournal(this.journal);
+		
+		// création des consommateurs
+				double[][] PartsdeMarche = { { 0.7, 0.49, 0, 0, 0.42, 0 }, { 0, 0.21, 0.7, 0, 0.28, 0.7 },
+						{ 0.3, 0.3, 0.3, 0, 0.3, 0.3 } };
+				Journal client = new Journal("Clients Finaux");
+				Monde.LE_MONDE.ajouterJournal(client);
+				Monde.LE_MONDE.ajouterActeur(new Client(PartsdeMarche, client));
 	}
 
 	@Override
@@ -104,9 +100,6 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 	@Override
 	public void next() {
-		this.journal.ajouter("Periode "+Monde.LE_MONDE.getStep());
-		this.journal.ajouter("");
-		
 		for (int i = 0; i < 6; i++) {
 			this.nombreAchatsOccasionnels[i].setValeur(this, 0);
 		}
@@ -153,7 +146,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 					this.stocks[i].setValeur(this, this.stocks[i].getValeur() + d.getQuantite());
 					this.nombreAchatsOccasionnels[i].setValeur(this,
 							this.nombreAchatsOccasionnels[i].getValeur() + d.getQuantite());
-					this.journal.ajouter("ACHAT OCCASIONNEL : L'équipe 1 a acheté " + d.getQuantite() + " unités de "
+					this.journal.ajouter("ACHAT OCCASIONNEL LIMITE: L'équipe 1 a acheté " + d.getQuantite() + " unités de "
 							+ Type.values()[i] + " à l'équipe " + ((Acteur) vendeursOcca.get(n)).getNom());
 				}
 
@@ -200,7 +193,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 					this.nombreAchatsOccasionnels[i].setValeur(this,
 							this.nombreAchatsOccasionnels[i].getValeur() + d.getQuantite());
 					this.stocks[i].setValeur(this, this.stocks[i].getValeur() + d.getQuantite());
-					this.journal.ajouter("ACHAT OCCASIONNEL : L'équipe 1 a acheté " + d.getQuantite() + " unités de "
+					this.journal.ajouter("ACHAT OCCASIONNEL PERIODE DE FETE: L'équipe 1 a acheté " + d.getQuantite() + " unités de "
 							+ Type.values()[i] + " à l'équipe " + ((Acteur) vendeursOcca.get(n)).getNom());
 				}
 
@@ -211,10 +204,13 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 	public void salaires() {
 		solde.setValeur(this, solde.getValeur() - 200000);
+		this.journal.ajouter("Réglement des salaires : 200000€");
 	}
 
 	@Override
 	public GrilleQuantite commander(GrilleQuantite Q) {
+		this.journal.ajouter("------------------------------ Période n°" + Monde.LE_MONDE.getStep()
+		+ " ------------------------------");
 		int[] res = new int[6];
 		double[] prix = { Double.MAX_VALUE, this.PrixChocoMdG.getValeur(), this.PrixChocoHdG.getValeur(),
 				Double.MAX_VALUE, this.PrixConfMdG.getValeur(), this.PrixConfHdG.getValeur() };
