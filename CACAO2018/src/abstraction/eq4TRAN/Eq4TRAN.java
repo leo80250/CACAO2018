@@ -283,13 +283,34 @@ public class Eq4TRAN implements Acteur {
 			
 			IVendeurPoudre Eq5TRAN = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq5TRAN");
 			IVendeurPoudre Eq7TRAN = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN");
-			Eq5TRAN.getDevisPoudre(acteur.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)acteur);
-			Eq7TRAN.getDevisPoudre(acteur.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)acteur);
+			ContratPoudre[] DevisPoudreEq5_1= new ContratPoudre[3];
+			ContratPoudre[] DevisPoudreEq5_2= new ContratPoudre[3];
+			ContratPoudre[] DevisPoudreEq7_1= new ContratPoudre[3];
+			ContratPoudre[] DevisPoudreEq7_2= new ContratPoudre[3];
 			
-//			for (int i=0;i<acteur.getContratPoudreEnCoursEq5TRAN().length;i++) {
-//				acteur.getContratPoudreEnCoursEq5TRAN()[i].setReponse(true);
-//				acteur.getContratPoudreEnCoursEq7TRAN()[i].setReponse(true);
-//			}
+			// On demande les devis pour tous les contrats pour comparer les prix entre les deux transformateurs.
+			DevisPoudreEq5_1 = Eq5TRAN.getDevisPoudre(acteur.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)acteur);
+			DevisPoudreEq5_2 = Eq5TRAN.getDevisPoudre(acteur.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)acteur);
+			DevisPoudreEq7_1 = Eq7TRAN.getDevisPoudre(acteur.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)acteur);
+			DevisPoudreEq7_2 = Eq7TRAN.getDevisPoudre(acteur.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)acteur);
+			
+			for (int i=0;i<3;i++) {
+				if(DevisPoudreEq5_1[i].getPrix()<DevisPoudreEq7_1[i].getPrix() && DevisPoudreEq5_1[i].getPrix()>0) {
+					acteur.getContratPoudreEnCoursEq5TRAN()[i] = DevisPoudreEq5_1[i];
+				} else if (DevisPoudreEq7_1[i].getPrix()<DevisPoudreEq5_1[i].getPrix() && DevisPoudreEq7_1[i].getPrix()>0) {
+					acteur.getContratPoudreEnCoursEq5TRAN()[i] = DevisPoudreEq7_1[i];
+					acteur.getContratPoudreEnCoursEq5TRAN()[i].setVendeur(Eq5TRAN);
+				}
+				
+				if(DevisPoudreEq5_2[i].getPrix()<DevisPoudreEq7_2[i].getPrix() && DevisPoudreEq5_2[i].getPrix()>0) {
+					acteur.getContratPoudreEnCoursEq7TRAN()[i] = DevisPoudreEq5_1[i];
+					acteur.getContratPoudreEnCoursEq7TRAN()[i].setVendeur(Eq7TRAN);
+				} else if (DevisPoudreEq7_2[i].getPrix()<DevisPoudreEq5_2[i].getPrix() && DevisPoudreEq7_2[i].getPrix()>0) {
+					acteur.getContratPoudreEnCoursEq7TRAN()[i] = DevisPoudreEq7_2[i];
+				}
+				
+				}
+			
 			if (1==1) { // Pour l'instant on accepte l'achat sans condition 
 				Eq5TRAN.sendReponsePoudre(acteur.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)acteur);
 				Eq7TRAN.sendReponsePoudre(acteur.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)acteur);
