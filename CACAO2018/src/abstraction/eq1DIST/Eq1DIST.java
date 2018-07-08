@@ -30,17 +30,17 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	public Eq1DIST() {
 		// création du distributeur
 		// variables de stock
-		this.stock = new Stock(0, 50000, 25000, 0, 35000, 15000);
+		this.stock = new Stock(0, 35000, 15000, 0, 50000, 25000);
 		this.stocks = new Indicateur[6];
 		this.stocks[0] = new Indicateur("stock" + Type.values()[0] + " eq1", this, 0); //on n'ajoutera cet indicateur au monde que si on fait des TB un jour
-		this.stocks[1] = new Indicateur("stock" + Type.values()[1] + " eq1", this, 50000);
+		this.stocks[1] = new Indicateur("stock" + Type.values()[1] + " eq1", this, 35000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stocks[1]);
-		this.stocks[2] = new Indicateur("stock" + Type.values()[2] + " eq1", this, 25000);
+		this.stocks[2] = new Indicateur("stock" + Type.values()[2] + " eq1", this, 15000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stocks[2]);
 		this.stocks[3] = new Indicateur("stock" + Type.values()[3] + " eq1", this, 0); //idem
-		this.stocks[4] = new Indicateur("stock" + Type.values()[4] + " eq1", this, 35000);
+		this.stocks[4] = new Indicateur("stock" + Type.values()[4] + " eq1", this, 50000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stocks[4]);
-		this.stocks[5] = new Indicateur("stock" + Type.values()[5] + " eq1", this, 15000);
+		this.stocks[5] = new Indicateur("stock" + Type.values()[5] + " eq1", this, 25000);
 		Monde.LE_MONDE.ajouterIndicateur(this.stocks[5]);
 		this.nombreAchatsOccasionnels = new Indicateur[6];
 		//échanges occasionnels
@@ -113,7 +113,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 	public void venteOccalim() {
 		// on fait une demande occasionnelle si on dépasse un seuil limite de stock
-		int[] stocklim = { 0, 1, 1, 0, 1, 1 };
+		int[] stocklim = { 0, 6000, 3000, 0, 6000, 3000 };
 		List<IvendeurOccasionnelChocoTer> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoTer>();
 		double[] PrixAchat = new double[6];
 		for (Acteur a : Monde.LE_MONDE.getActeurs()) {
@@ -161,7 +161,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 				|| Monde.LE_MONDE.getStep() % 12 == 4 || Monde.LE_MONDE.getStep() % 12 == 5
 				|| Monde.LE_MONDE.getStep() % 12 == 18 || Monde.LE_MONDE.getStep() % 12 == 19
 				|| Monde.LE_MONDE.getStep() % 12 == 20 || Monde.LE_MONDE.getStep() % 12 == 21) {
-			int[] stockspe = { 0, 2987, 1312, 0, 2187, 937 };
+			int[] stockspe = { 0, 2187, 937, 0, 2987, 1312 };
 			List<IvendeurOccasionnelChocoTer> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoTer>();
 			double[] PrixAchat = new double[6];
 			for (Acteur a : Monde.LE_MONDE.getActeurs()) {

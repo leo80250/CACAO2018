@@ -2,5 +2,5 @@
 package abstraction.eq1DIST;
 
 public enum Type {
-	TB,TM,TH,CB,CM,CH;
+	CB,CM,CH,TB,TM,TH;
 }
