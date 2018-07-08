@@ -31,7 +31,7 @@ IvendeurOccasionnelChocoTer{
 	private Indicateur solde ; 
 	
 	//Journal rendant compte de nos activités et de l'évolution de nos indicateurs
-	private Journal JournalEq4;
+	private Journal JournalSousActeur;
 	
 	//Rôle de vendeur que nous incarnerons à chaque next() et qui se mettra à jour à cette même fréquence
 	private Vendeur vendeur;
@@ -51,14 +51,14 @@ IvendeurOccasionnelChocoTer{
 
 	/**
 	 *  Constructeur sous acteur par initialisation de ses différentes variables d'instance
-	 * @param JournalEq4
+	 * @param JournalSousActeur
 	 * @param Stocks
 	 * @param Production
 	 * @param solde
 	 * @param label
 	 */
-	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label, String nomPME, int[] demandeFèves) {
-		this.JournalEq4 = JournalEq4;
+	public SousActeur(Journal JournalSousActeur, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label, String nomPME, int[] demandeFèves) {
+		this.JournalSousActeur = JournalSousActeur ;
 		this.solde = new Indicateur("solde", this,solde);
 		this.Stocks=Stocks;
 		this.Production=Production;
@@ -88,11 +88,11 @@ IvendeurOccasionnelChocoTer{
 	public void setSolde(Indicateur solde) {
 		this.solde = solde;
 	}
-	public Journal getJournalEq4() {
-		return JournalEq4;
+	public Journal getJournalSousActeur() {
+		return JournalSousActeur;
 	}
-	public void setJournalEq4(Journal journalEq4) {
-		JournalEq4 = journalEq4;
+	public void setJournalSousActeur(Journal JournalSousActeur) {
+		JournalSousActeur = JournalSousActeur;
 	}
 	public Vendeur getVendeur() {
 		return vendeur;
@@ -342,13 +342,13 @@ IvendeurOccasionnelChocoTer{
 		double chargesVariables = 0 ;
 		double chargesaléatoire=Math.random()*0.1;
 		if (this.taillePME < 50 ) {
-			chargesFixes = 30000 ;
+			chargesFixes = 1500 ;
 			chargesVariables = 0.4*CA ; 
 		} else if ((50 <=this.taillePME)&&(this.taillePME < 150 )) {
-			chargesFixes = 35000 ;
+			chargesFixes = 2500 ;
 			chargesVariables = 0.35*CA ;
 		} else {
-			chargesFixes = 40000 ; 
+			chargesFixes = 4000 ; 
 			chargesVariables = 0.3*CA ; 
 		}
 		this.solde.setValeur(this, soldeActuel - chargesFixes - chargesVariables-chargesaléatoire);
@@ -362,17 +362,40 @@ IvendeurOccasionnelChocoTer{
 		this.label = label;
 	}
 
-
+	/**
+	 * 
+	 * @author Noémie 
+	 * Selon ce que vend le SousActeur:
+	 * Qualité = 1 = Chocolats BQ
+	 * ...
+	 * Qualité = 6 = Tablettes HQ
+	 * On ne vend pas de Chocolats BQ 
+	 * 
+	 */
 	@Override
 	public double getReponseTer(DemandeAO d) {
-		// TODO Auto-generated method stub
-		return 0;
+		if (d.getQualite()==1) {
+			return Double.MAX_VALUE ; 
+		}
+		else {
+			if (d.getQuantite() < this.getStocks().get(d.getQualite()).getValeur()) {
+				double prix = this.getPrix().getPrixProduit(d.quantite, d.qualite) ;
+				return prix*d.quantite*1.2 ; 
+			} else {
+				return Double.MAX_VALUE ; 
+			}
+			
+		}
 	}
 
 
 	@Override
 	public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
-		// TODO Auto-generated method stub
+			double ancienSolde = this.solde.getValeur() ; 
+			this.solde.setValeur(this, ancienSolde + prix);
+			double ancienStock = this.Stocks.get(qualite).getValeur() ; 
+			this.Stocks.get(qualite).setValeur(this, ancienStock - quantite );
+			JournalSousActeur.ajouter(this.getNom()+" a vendu " + quantite + "de qualité " + quantite+ " à " + acteur.getNom());
 		
 	}
 	

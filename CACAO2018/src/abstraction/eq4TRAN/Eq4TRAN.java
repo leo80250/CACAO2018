@@ -89,15 +89,15 @@ public class Eq4TRAN implements Acteur {
 		 * @author Mickaël, Etienne
 		 * On initialise les stocks ainsi que la production pour chaque Sous-Acteur.
 		 * Ici, on peut modifier les valeurs des stocks au départ 
-		 */
+		 */	
 				Prod_PME1.add(new Indicateur("",this.PME1,0));
 				Stocks_PME1.add(new Indicateur("",this.PME1,0));
 				ArrayList<Integer> stocks_PME1 = new ArrayList<>();
 				stocks_PME1.add(0);
 				for(int i=1;i<6;i++) {
-					Stocks_PME1.add(new Indicateur("Acteur 1 - stockProduit"+(i+1),this.PME1,1000));
-					Prod_PME1.add(new Indicateur("Acteur 1 - prodProduit"+(i+1),this.PME1,1000));
-					stocks_PME1.add((int)(new Indicateur("Acteur 1 - stockProduit"+(i+1),this.PME1,1000).getValeur()));
+					Stocks_PME1.add(new Indicateur("PME 1 - stockProduit"+(i+1),this.PME1,1000));
+					Prod_PME1.add(new Indicateur("PME 1 - prodProduit"+(i+1),this.PME1,1000));
+					stocks_PME1.add((int)(new Indicateur("PME 1 - stockProduit"+(i+1),this.PME1,1000).getValeur()));
 				}
 				this.PME1.setVendeur(new Vendeur(stocks_PME1));
 				
@@ -107,9 +107,9 @@ public class Eq4TRAN implements Acteur {
 				ArrayList<Integer> stocks_PME2 = new ArrayList<>();
 				stocks_PME2.add(0);
 				for(int i=1;i<6;i++) {
-					Stocks_PME2.add(new Indicateur("Acteur 2 - stockProduit"+(i+1),this.PME2,1000));
-					Prod_PME2.add(new Indicateur("Acteur 2 - prodProduit"+(i+1),this.PME2,1000));
-					stocks_PME2.add((int)(new Indicateur("Acteur 2 - stockProduit"+(i+1),this.PME2,1000).getValeur()));
+					Stocks_PME2.add(new Indicateur("PME 2 - stockProduit"+(i+1),this.PME2,1000));
+					Prod_PME2.add(new Indicateur("PME 2 - prodProduit"+(i+1),this.PME2,1000));
+					stocks_PME2.add((int)(new Indicateur("PME 2 - stockProduit"+(i+1),this.PME2,1000).getValeur()));
 				}
 				this.PME2.setVendeur(new Vendeur(stocks_PME2));
 				
@@ -119,18 +119,12 @@ public class Eq4TRAN implements Acteur {
 				ArrayList<Integer> stocks_PME3= new ArrayList<>();
 				stocks_PME3.add(0);
 				for(int i=1;i<6;i++) {
-					Stocks_PME3.add(new Indicateur("Acteur 3 - stockProduit"+(i+1),this.PME3,1000));
-					Prod_PME3.add(new Indicateur("Acteur 3 - prodProduit"+(i+1),this.PME3,1000));
-					stocks_PME3.add((int)(new Indicateur("Acteur 3 - stockProduit"+(i+1),this.PME3,1000).getValeur()));
+					Stocks_PME3.add(new Indicateur("PME 3 - stockProduit"+(i+1),this.PME3,1000));
+					Prod_PME3.add(new Indicateur("PME 3 - prodProduit"+(i+1),this.PME3,1000));
+					stocks_PME3.add((int)(new Indicateur("PME 3 - stockProduit"+(i+1),this.PME3,1000).getValeur()));
 				}
 				this.PME3.setVendeur(new Vendeur(stocks_PME3));
-		
-		/**
-		 * @author Noémie
-		 * 
-		 * On initialise les contrats d'échanges de fèves 
-		 */
-				
+			
 		/**
 		 * @Mickaël
 		 * On initialise les contrats d'échange de POUDRE avec les autres transformateurs 
@@ -252,10 +246,11 @@ public class Eq4TRAN implements Acteur {
 		Monde.LE_MONDE.ajouterIndicateur(stockTabBQ_Eq4);
 		Monde.LE_MONDE.ajouterIndicateur(stockTabMQ_Eq4);
 		Monde.LE_MONDE.ajouterIndicateur(stockTabHQ_Eq4);
+		Monde.LE_MONDE.ajouterIndicateur(solde) ; 
 		// Journal pour l'acteur global Eq4Tran ?
-		Monde.LE_MONDE.ajouterJournal(this.PME1.getJournalEq4());
-		Monde.LE_MONDE.ajouterJournal(this.PME2.getJournalEq4());
-		Monde.LE_MONDE.ajouterJournal(this.PME3.getJournalEq4());
+		Monde.LE_MONDE.ajouterJournal(this.PME1.getJournalSousActeur());
+		Monde.LE_MONDE.ajouterJournal(this.PME2.getJournalSousActeur());
+		Monde.LE_MONDE.ajouterJournal(this.PME3.getJournalSousActeur());
 		
 	}
 
@@ -382,11 +377,11 @@ public class Eq4TRAN implements Acteur {
 	}
 
 	public void journalEq4(SousActeur j) {
-		j.getJournalEq4().ajouter("Stock des tablettes Basse Qualité = "+j.getQuantite(6));
-		j.getJournalEq4().ajouter("Stock des tablettes Moyenne Qualité = "+j.getQuantite(5));
-		j.getJournalEq4().ajouter("Stock des tablettes Basse Qualité = "+j.getQuantite(4));
-		j.getJournalEq4().ajouter("Stock des chocolats Moyenne Qualité = "+j.getQuantite(3));
-		j.getJournalEq4().ajouter("Stock des chocolats Haute Qualité = "+j.getQuantite(2));
+		j.getJournalSousActeur().ajouter("Stock des tablettes Basse Qualité = "+j.getQuantite(6));
+		j.getJournalSousActeur().ajouter("Stock des tablettes Moyenne Qualité = "+j.getQuantite(5));
+		j.getJournalSousActeur().ajouter("Stock des tablettes Basse Qualité = "+j.getQuantite(4));
+		j.getJournalSousActeur().ajouter("Stock des chocolats Moyenne Qualité = "+j.getQuantite(3));
+		j.getJournalSousActeur().ajouter("Stock des chocolats Haute Qualité = "+j.getQuantite(2));
 		// Les Sous-Acteurs produisent ils vraiment des choses ? (rajouter alors getQuantitePorduite() et setter dans 
 		// Sous-Acteur
 		
