@@ -311,23 +311,27 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     	demande[0]= new ContratPoudre();
     	demande[1]= new ContratPoudre();
     	    	//Si l'équipe 7 n'a pas assez de stocks, on demande le maximum disponible
-    	if(catalogue[2].getQuantite()<210) {
-    		demande[2] = new ContratPoudre(2,catalogue[2].getQuantite(),catalogue[2].getPrix(),this,equipe7,false);
-    	}
-    	
-    	else {
-    		demande[2]=new ContratPoudre(2,(int)besoinPoudre,catalogue[2].getPrix(),this,equipe7,false);
-    	}  	
-    	ContratPoudre[] devis = equipe7.getDevisPoudre(demande, this);
-    	if(devis[2].getPrix()==demande[2].getPrix() && devis[2].getQuantite()==demande[2].getQuantite()) {
-    		devis[2].setReponse(true);
-    		equipe7.sendReponsePoudre(devis, this);
-    		depenser(devis[2].getPrix());
-    		this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
-    		journal.ajouter("L'équipe 5 a acheté "+devis[2].getQuantite()+" tonnes de poudre HQ à l'équipe 7");
-    	}
+        if(catalogue[2]!=null) {
+            if(catalogue[2].getQuantite()<210) {
+                demande[2] = new ContratPoudre(2,catalogue[2].getQuantite(),catalogue[2].getPrix(),this,equipe7,false);
+            }
+
+            else {
+                demande[2]=new ContratPoudre(2,(int)besoinPoudre,catalogue[2].getPrix(),this,equipe7,false);
+            }
+        }
+        ContratPoudre[] devis = equipe7.getDevisPoudre(demande, this);
+        if(demande[2]!=null && devis[2]!=null) {
+            if(devis[2].getPrix()==demande[2].getPrix() && devis[2].getQuantite()==demande[2].getQuantite()) {
+                devis[2].setReponse(true);
+                equipe7.sendReponsePoudre(devis, this);
+                depenser(devis[2].getPrix());
+                this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
+                journal.ajouter("L'équipe 5 a acheté "+devis[2].getQuantite()+" tonnes de poudre HQ à l'équipe 7");
+            }
+        }
     	equipe7.getEchangeFinalPoudre(demande, this);
-    	}
+    }
     
     
 
@@ -577,28 +581,28 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
                 return Double.MAX_VALUE;
             }
             case 2:
-                if (d.getQuantite() < 0.2 * stocks[FRIANDISES_MQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[FRIANDISES_MQ].getValeur() / 1_000_000 * 0.2) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000 + "€ à getReponse(d)");
+                    return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
             case 3: {
                 journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)");
                 return Double.MAX_VALUE;
             }
             case 4:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_BQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[TABLETTES_BQ].getValeur()* 0.2 / 1_000_000) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse(d)");
+                    return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
             case 5:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_MQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[TABLETTES_MQ].getValeur()* 0.2 / 1_000_000) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse(d)");
+                    return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
             case 6:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_HQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[TABLETTES_HQ].getValeur()* 0.2 / 1_000_000) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000+ "€ à getReponse(d)");
+                    return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
         }
         return Double.MAX_VALUE;

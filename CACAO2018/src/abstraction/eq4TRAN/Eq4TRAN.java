@@ -1,15 +1,8 @@
 package abstraction.eq4TRAN;
 
-import java.util.ArrayList;
-
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
-import abstraction.eq4TRAN.VendeurChoco.GPrix2;
-import abstraction.eq4TRAN.VendeurChoco.Labellise;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
-import abstraction.eq5TRAN.appeldOffre.DemandeAO;
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoBis;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
@@ -17,6 +10,8 @@ import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
+
+import java.util.ArrayList;
 
 /**
  * 
