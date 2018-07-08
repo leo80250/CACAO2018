@@ -7,18 +7,22 @@ import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
+import abstraction.eq5TRAN.appeldOffre.DemandeAO;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
+import abstraction.fourni.Monde;
 
 public class SousActeur implements Acteur, 
 ITransformateur, IAcheteurFeveV4,
 IVendeurChocoBis,
 IAcheteurPoudre,
-IVendeurPoudre {
+IVendeurPoudre,
+IvendeurOccasionnelChocoTer{
 	
 	//Indicateur du chiffre d'affaire
 	private Indicateur chiffreDAffaire ;
@@ -27,40 +31,50 @@ IVendeurPoudre {
 	private Indicateur solde ; 
 	
 	//Journal rendant compte de nos activités et de l'évolution de nos indicateurs
-	private Journal JournalEq4;
+	private Journal JournalSousActeur;
 	
 	//Rôle de vendeur que nous incarnerons à chaque next() et qui se mettra à jour à cette même fréquence
 	private Vendeur vendeur;
 	
 	//On crée une liste pour ranger nos stocks
+	
 	private ArrayList<Indicateur> Stocks;
 	private ArrayList<Indicateur> Production;
 	private List<ContratFeveV3> contratFeveEnCours ; 
 	private ContratPoudre[] contratPoudreEnCoursEq7TRAN ;
 	private ContratPoudre[] contratPoudreEnCoursEq5TRAN;
+	private String nomPME ; 
 	private int taillePME ;
 	private double label;
+	private int[] demandeFèves ;
 	// Indiquer un identifiant de Sous-Acteur ???
 
 	/**
 	 *  Constructeur sous acteur par initialisation de ses différentes variables d'instance
-	 * @param JournalEq4
+	 * @param JournalSousActeur
 	 * @param Stocks
 	 * @param Production
 	 * @param solde
 	 * @param label
 	 */
-	public SousActeur(Journal JournalEq4, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label) {
-		this.JournalEq4 = JournalEq4;
+	public SousActeur(Journal JournalSousActeur, ArrayList<Indicateur> Stocks, ArrayList<Indicateur> Production, int solde, int taillePME, double label, String nomPME, int[] demandeFèves) {
+		this.JournalSousActeur = JournalSousActeur ;
 		this.solde = new Indicateur("solde", this,solde);
 		this.Stocks=Stocks;
 		this.Production=Production;
 		this.taillePME = (int)(11 + (Math.random() * (250 - 11))) ;	
 		this.label=label;
-		}
+		this.chiffreDAffaire=new Indicateur("Chiffre d'Affaire",this,0);
+		this.nomPME = nomPME ; 
 
+		Monde.LE_MONDE.ajouterActeur(this);
+		this.demandeFèves = demandeFèves ; 
+
+		}
+	
+	
 	public String getNom() {
-		return "Eq4TRAN";
+		return "Eq4TRAN" + this.nomPME ;
 	}
 
 	public void sell(int q) {
@@ -74,11 +88,11 @@ IVendeurPoudre {
 	public void setSolde(Indicateur solde) {
 		this.solde = solde;
 	}
-	public Journal getJournalEq4() {
-		return JournalEq4;
+	public Journal getJournalSousActeur() {
+		return JournalSousActeur;
 	}
-	public void setJournalEq4(Journal journalEq4) {
-		JournalEq4 = journalEq4;
+	public void setJournalSousActeur(Journal JournalSousActeur) {
+		JournalSousActeur = JournalSousActeur;
 	}
 	public Vendeur getVendeur() {
 		return vendeur;
@@ -140,27 +154,29 @@ IVendeurPoudre {
 	
 	/*
 	 * @author Charles, Noémie 
+	 * 
+	 * On cherche qui vend le moins cher la qualité que l'on souhaite
+	 * On envoie aux producteurs notre demande
 	 */
 	@Override
 	public List<ContratFeveV3> getDemandePriveeV3() {
-		int[] demande= {13000,70000,25000};
+		int[] demande= this.demandeFèves ; 
 		 
 		double[] prixMin= { 100000.0 , 100000.0 , 100000.0 } ;
 		int[] min= {-1,-1,-1};
 		int[] max= {-1,-1,-1};
 		for (int i=0;i<this.contratFeveEnCours.size();i++) {
-			int qualite=this.contratFeveEnCours.get(i).getOffrePublique_Quantite();
+			int qualite=this.contratFeveEnCours.get(i).getQualite();
 			if (this.contratFeveEnCours.get(i).getOffrePublique_Prix()<prixMin[qualite]) {
 				prixMin[qualite]=this.contratFeveEnCours.get(i).getOffrePublique_Prix();
-				if (min[i]!=-1) {
+				if (min[qualite]!=-1) {
 					max[qualite]=i;
 				}
-				min[i]=this.contratFeveEnCours.get(i).getQualite();
+				min[qualite]=this.contratFeveEnCours.get(i).getQualite();
 			}
 		}
 		for (int j=0;j<3;j++) {
-			this.contratFeveEnCours.get(min[j])
-			.setDemande_Quantite(Math.min(demande[min[j]],this.contratFeveEnCours.get(min[j]).getOffrePublique_Quantite()/3));
+			this.contratFeveEnCours.get(min[j]).setDemande_Quantite(Math.min(demande[min[j]],this.contratFeveEnCours.get(min[j]).getOffrePublique_Quantite()/3));
 			if (max[j]!=-1) {
 				this.contratFeveEnCours.get(max[j]).setDemande_Quantite(demande[min[j]]-Math.min(demande[min[j]],this.contratFeveEnCours.get(min[j]).getOffrePublique_Quantite()/3));
 			}
@@ -174,7 +190,6 @@ IVendeurPoudre {
 	 */
 	@Override
 	public void sendContratFictifV3(List<ContratFeveV3> listContrats) {
-		
 	}
 
 
@@ -189,23 +204,37 @@ IVendeurPoudre {
 
 	/*
 	 * @author Noémie, Charles
-	 */
-	@Override
-	/*
+	 *
 	 *  Stratégie à réécrire pour l'acceptation ou non des contrats 
 	 *  et revoir comment ranger les contrats selon le producteur 
+	 *  
+	 *  MàJ des stocks et des comptes dès que l'on accepte un contrat 
 	 */
+	
+	@Override
+	
 	public List<ContratFeveV3> getResultVentesV3() {
 		for (ContratFeveV3 contrat : this.contratFeveEnCours) {
-			if ( contrat.getReponse() ) {
 			double coutTotal = contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;
-				if (coutTotal < this.solde.getValeur()) {
+				//if (1.5*coutTotal < this.solde.getValeur()) {
+					if (true) {
 					contrat.setReponse(true);
+					//màj du solde 
+					double ancienneSolde = this.getSolde().getValeur() ; 
+					this.solde.setValeur(this, ancienneSolde - coutTotal ) ; 
+					//màj des stocks
+					for(int j=0;j<3;j++) {
+						if(contrat.getQualite() == j) {
+							this.getProduction().get(j+3).setValeur(this, contrat.getProposition_Quantite()); 
+							double ancienStock = this.getStocks().get(j+3).getValeur();
+							this.getStocks().get(j+3).setValeur(this, ancienStock + this.getProduction().get(j+3).getValeur());
+						}
+					}
 				}
-			}
+			
 		}
-		return this.contratFeveEnCours ; 
 		
+		return this.contratFeveEnCours ; 
 	}
 	
 
@@ -259,25 +288,25 @@ IVendeurPoudre {
 
 	@Override
 	public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
 	@Override
 	public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 
 	}
 
 	@Override
 	public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 	
@@ -285,7 +314,7 @@ IVendeurPoudre {
 
 	@Override
 	public void next() {
-		// NE RIEN CODER, VOIR EQ4TRAN 
+		
 		
 	}
 	
@@ -313,13 +342,13 @@ IVendeurPoudre {
 		double chargesVariables = 0 ;
 		double chargesaléatoire=Math.random()*0.1;
 		if (this.taillePME < 50 ) {
-			chargesFixes = 30000 ;
+			chargesFixes = 1500 ;
 			chargesVariables = 0.4*CA ; 
 		} else if ((50 <=this.taillePME)&&(this.taillePME < 150 )) {
-			chargesFixes = 35000 ;
+			chargesFixes = 2500 ;
 			chargesVariables = 0.35*CA ;
 		} else {
-			chargesFixes = 40000 ; 
+			chargesFixes = 4000 ; 
 			chargesVariables = 0.3*CA ; 
 		}
 		this.solde.setValeur(this, soldeActuel - chargesFixes - chargesVariables-chargesaléatoire);
@@ -331,6 +360,43 @@ IVendeurPoudre {
 
 	public void setLabel(double label) {
 		this.label = label;
+	}
+
+	/**
+	 * 
+	 * @author Noémie 
+	 * Selon ce que vend le SousActeur:
+	 * Qualité = 1 = Chocolats BQ
+	 * ...
+	 * Qualité = 6 = Tablettes HQ
+	 * On ne vend pas de Chocolats BQ 
+	 * 
+	 */
+	@Override
+	public double getReponseTer(DemandeAO d) {
+		if (d.getQualite()==1) {
+			return Double.MAX_VALUE ; 
+		}
+		else {
+			if (d.getQuantite() < this.getStocks().get(d.getQualite()).getValeur()) {
+				double prix = this.getPrix().getPrixProduit(d.quantite, d.qualite) ;
+				return prix*d.quantite*1.2 ; 
+			} else {
+				return Double.MAX_VALUE ; 
+			}
+			
+		}
+	}
+
+
+	@Override
+	public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
+			double ancienSolde = this.solde.getValeur() ; 
+			this.solde.setValeur(this, ancienSolde + prix);
+			double ancienStock = this.Stocks.get(qualite).getValeur() ; 
+			this.Stocks.get(qualite).setValeur(this, ancienStock - quantite );
+			JournalSousActeur.ajouter(this.getNom()+" a vendu " + quantite + "de qualité " + quantite+ " à " + acteur.getNom());
+		
 	}
 	
 	
