@@ -217,20 +217,35 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		int[] res = new int[6];
 		double[] prix = { Double.MAX_VALUE, this.PrixChocoMdG.getValeur(), this.PrixChocoHdG.getValeur(),
 				Double.MAX_VALUE, this.PrixConfMdG.getValeur(), this.PrixConfHdG.getValeur() };
-		for (int i = 0; i < 6; i++) {
-			int f = this.stock.getstock().get(i).total() - Q.getValeur(i);
+		for (int i = 0; i < 3; i++) {
+			int f = this.stock.getstock().get(i).total() - Q.getValeur(i+3);
 			if (f >= 0) {
-				res[i] = Q.getValeur(i);
-				this.stock.retirer(Q.getValeur(i), i + 1);
+				res[i+3] = Q.getValeur(i+3);
+				this.stock.retirer(Q.getValeur(i+3), i + 1);
 			} else {
-				res[i] = this.stock.getstock().get(i).total();
+				res[i+3] = this.stock.getstock().get(i).total();
 				this.stock.retirer(this.stock.getstock().get(i).total(), i + 1);
 			}
-			solde.setValeur(this, solde.getValeur() + res[i] * prix[i]);
+			solde.setValeur(this, solde.getValeur() + res[i+3] * prix[i+3]);
 			stocks[i].setValeur(this, stock.getstock().get(i).total());
-			this.nombreVentes[i].setValeur(this, res[i]);
-			this.journal.ajouter("l'équipe 1 a vendu " + res[i] + " unités de " + Type.values()[i]);
+			this.nombreVentes[i].setValeur(this, res[i+3]);
+			this.journal.ajouter("l'équipe 1 a vendu " + res[i+3] + " unités de " + Type.values()[i]);
 		}
+		for (int i = 3; i < 6; i++) {
+			int f = this.stock.getstock().get(i).total() - Q.getValeur(i-3);
+			if (f >= 0) {
+				res[i-3] = Q.getValeur(i-3);
+				this.stock.retirer(Q.getValeur(i-3), i + 1);
+			} else {
+				res[i-3] = this.stock.getstock().get(i).total();
+				this.stock.retirer(this.stock.getstock().get(i).total(), i + 1);
+			}
+			solde.setValeur(this, solde.getValeur() + res[i-3] * prix[i-3]);
+			stocks[i].setValeur(this, stock.getstock().get(i).total());
+			this.nombreVentes[i].setValeur(this, res[i-3]);
+			this.journal.ajouter("l'équipe 1 a vendu " + res[i-3] + " unités de " + Type.values()[i]);
+		}
+		
 		// mise a jour de l'efficacite en fonction de ce qu'on a pu vendre
 		// selon ce qu'on nous avait demande
 		double somme = 0;
