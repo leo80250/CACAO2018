@@ -120,7 +120,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 
 	public void venteOccalim() {
 		// on fait une demande occasionnelle si on dépasse un seuil limite de stock
-		int[] stocklim = { 0, 12000, 3000, 0, 4000, 2000 };
+		int[] stocklim = { 0, 1, 1, 0, 1, 1 };
 		List<IvendeurOccasionnelChocoTer> vendeursOcca = new ArrayList<IvendeurOccasionnelChocoTer>();
 		double[] PrixAchat = new double[6];
 		for (Acteur a : Monde.LE_MONDE.getActeurs()) {
@@ -153,7 +153,6 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 					this.stocks[i].setValeur(this, this.stocks[i].getValeur() + d.getQuantite());
 					this.nombreAchatsOccasionnels[i].setValeur(this,
 							this.nombreAchatsOccasionnels[i].getValeur() + d.getQuantite());
-					System.out.println(this.nombreAchatsOccasionnels[i].getValeur());
 					this.journal.ajouter("ACHAT OCCASIONNEL : L'équipe 1 a acheté " + d.getQuantite() + " unités de "
 							+ Type.values()[i] + " à l'équipe " + ((Acteur) vendeursOcca.get(n)).getNom());
 				}
