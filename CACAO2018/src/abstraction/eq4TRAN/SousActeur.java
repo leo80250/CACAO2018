@@ -7,6 +7,8 @@ import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
+import abstraction.eq5TRAN.appeldOffre.DemandeAO;
+import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre;
@@ -19,7 +21,8 @@ public class SousActeur implements Acteur,
 ITransformateur, IAcheteurFeveV4,
 IVendeurChocoBis,
 IAcheteurPoudre,
-IVendeurPoudre {
+IVendeurPoudre,
+IvendeurOccasionnelChocoTer{
 	
 	//Indicateur du chiffre d'affaire
 	private Indicateur chiffreDAffaire ;
@@ -352,6 +355,20 @@ IVendeurPoudre {
 
 	public void setLabel(double label) {
 		this.label = label;
+	}
+
+
+	@Override
+	public double getReponseTer(DemandeAO d) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	@Override
+	public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

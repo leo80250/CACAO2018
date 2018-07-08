@@ -285,10 +285,11 @@ public class Eq4TRAN implements Acteur {
 			IVendeurPoudre Eq7TRAN = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN");
 			Eq5TRAN.getDevisPoudre(acteur.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)acteur);
 			Eq7TRAN.getDevisPoudre(acteur.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)acteur);
-			for (int i=0;i<acteur.getContratPoudreEnCoursEq5TRAN().length;i++) {
-				acteur.getContratPoudreEnCoursEq5TRAN()[i].setReponse(true);
-				acteur.getContratPoudreEnCoursEq7TRAN()[i].setReponse(true);
-			}
+			
+//			for (int i=0;i<acteur.getContratPoudreEnCoursEq5TRAN().length;i++) {
+//				acteur.getContratPoudreEnCoursEq5TRAN()[i].setReponse(true);
+//				acteur.getContratPoudreEnCoursEq7TRAN()[i].setReponse(true);
+//			}
 			if (1==1) { // Pour l'instant on accepte l'achat sans condition 
 				Eq5TRAN.sendReponsePoudre(acteur.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)acteur);
 				Eq7TRAN.sendReponsePoudre(acteur.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)acteur);
