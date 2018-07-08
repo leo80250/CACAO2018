@@ -334,14 +334,14 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	@Override
 	public void livraison(ArrayList<Integer> livraison, double paiement) {
 		//ATENTION ORDRE DE LIVRAISON DIFFERENT A REVOIR
-		this.stocks[1].setValeur(this, this.stocks[1].getValeur()+livraison.get(4));
-		this.stocks[2].setValeur(this, this.stocks[2].getValeur()+livraison.get(5));
-		this.stocks[4].setValeur(this, this.stocks[4].getValeur()+livraison.get(1));
-		this.stocks[5].setValeur(this, this.stocks[5].getValeur()+livraison.get(2)); 
-		stock.ajouter(livraison.get(4),1);
-		stock.ajouter(livraison.get(5),2);
-		stock.ajouter(livraison.get(1),4);
-		stock.ajouter(livraison.get(2),5);			
+		this.stocks[1].setValeur(this, this.stocks[1].getValeur()+livraison.get(1));
+		this.stocks[2].setValeur(this, this.stocks[2].getValeur()+livraison.get(2));
+		this.stocks[4].setValeur(this, this.stocks[4].getValeur()+livraison.get(4));
+		this.stocks[5].setValeur(this, this.stocks[5].getValeur()+livraison.get(5)); 
+		stock.ajouter(livraison.get(4),4);
+		stock.ajouter(livraison.get(5),5);
+		stock.ajouter(livraison.get(1),1);
+		stock.ajouter(livraison.get(2),2);			
 		solde.setValeur(this,solde.getValeur()+paiement);
 		if(Monde.LE_MONDE.getStep()%12==0) {
 			this.journal.ajouter("L'équipe 1 a acheté :"+ livraison.get(4) + "tablettes MdG");
