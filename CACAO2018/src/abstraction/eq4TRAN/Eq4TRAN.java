@@ -30,11 +30,10 @@ public class Eq4TRAN implements Acteur {
 	 *  @author Mickaël
 	 */
 	
-	// Créer ArrayList<Indicateur> production pour factoriser notre code !!! 
 	
-	private SousActeur PME1;
-	private SousActeur PME2;
-	private SousActeur PME3;
+	public SousActeur PME1;
+	public SousActeur PME2;
+	public SousActeur PME3;
 	
 	//Indicateurs de stock et de production
 	private Indicateur stockTabBQ_Eq4;
@@ -154,8 +153,8 @@ public class Eq4TRAN implements Acteur {
 		contratPoudreEnCoursEq5TRAN_PME1[1] = new ContratPoudre(1,375,100.0, (IAcheteurPoudre)this.PME1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_PME1[1] = new ContratPoudre(1,50 ,100.0, (IAcheteurPoudre)this.PME1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		// Contrats Poudre Haute Qualité
-		contratPoudreEnCoursEq5TRAN_PME1[2] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.PME1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_PME1[2] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.PME1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_PME1[2] = new ContratPoudre(2,0,0.0, (IAcheteurPoudre)this.PME1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_PME1[2] = new ContratPoudre(2,0,0.0, (IAcheteurPoudre)this.PME1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
 
 		this.PME1.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_PME1);
@@ -260,9 +259,6 @@ public class Eq4TRAN implements Acteur {
 		
 	}
 
-	/** Nom de l'acteur
-	 * Cela ne sert pas ?
-	 */
 	@Override
 	public String getNom() {
 		return "Eq4TRAN";
@@ -277,9 +273,6 @@ public class Eq4TRAN implements Acteur {
 		nosPME.add(PME3);
 		
 		for(SousActeur acteur : nosPME) {
-			
-	
-	
 	
 			/**
 			 * @Mickaël
@@ -323,12 +316,12 @@ public class Eq4TRAN implements Acteur {
 				 */
 	
 				if(contratPoudreEnCours.get(i).isReponse()) {
-					for(int j=1;j<=2;j++) {
+					for(int j=0;j<=2;j++) {
 						if (contratPoudreEnCours.get(i).getQualite() == j) {
 							acteur.getProduction().get(j).setValeur(acteur, contratPoudreEnCours.get(i).getQuantite());
-							double ancienStockChocMQ = acteur.getStocks().get(j).getValeur() ;
-							acteur.getStocks().get(j).setValeur(acteur, ancienStockChocMQ + acteur.getProduction().get(j).getValeur());
-							solde.setValeur(acteur, contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
+							double ancienStockChoc = acteur.getStocks().get(j).getValeur() ;
+							acteur.getStocks().get(j).setValeur(acteur, ancienStockChoc + acteur.getProduction().get(j).getValeur());
+							solde.setValeur(acteur, solde.getValeur()-contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
 		
 						} 
 				}
@@ -341,7 +334,7 @@ public class Eq4TRAN implements Acteur {
 			for(int k=1;k<6;k++) {
 				stocks.add((int)acteur.getStocks().get(k).getValeur());
 			}
-			vendeur = new Vendeur(stocks);
+			acteur.setVendeur(new Vendeur(stocks));
 			}	
 			
 		}
