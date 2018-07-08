@@ -44,7 +44,7 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 	public void setContratPrecedent(List<ContratFeveV3> l) {
 		this.contratPrecedent = new ArrayList<ContratFeveV3>();
 		for (ContratFeveV3 c : l) {
-			if (c.getTransformateur() != this) {
+			if ((c.getTransformateur() != this)&&(c.getReponse())) {
 				this.contratPrecedent.add(c);
 			}
 		}
