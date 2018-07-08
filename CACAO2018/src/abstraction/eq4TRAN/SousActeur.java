@@ -150,6 +150,9 @@ IVendeurPoudre {
 	
 	/*
 	 * @author Charles, Noémie 
+	 * 
+	 * On cherche qui vend le moins cher la qualité que l'on souhaite
+	 * On envoie aux producteurs notre demande
 	 */
 	@Override
 	public List<ContratFeveV3> getDemandePriveeV3() {
@@ -212,12 +215,14 @@ IVendeurPoudre {
 	
 	public List<ContratFeveV3> getResultVentesV3() {
 		for (ContratFeveV3 contrat : this.contratFeveEnCours) {
-			if ( contrat.getReponse() ) {
 			double coutTotal = contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;
-				if (1.5*coutTotal < this.solde.getValeur()) {
+				//if (1.5*coutTotal < this.solde.getValeur()) {
+					if (true) {
 					contrat.setReponse(true);
+					//màj du solde 
 					double ancienneSolde = this.getSolde().getValeur() ; 
 					this.solde.setValeur(this, ancienneSolde - coutTotal ) ; 
+					//màj des stocks
 					for(int j=0;j<3;j++) {
 						if(contrat.getQualite() == j) {
 							this.getProduction().get(j+3).setValeur(this, contrat.getProposition_Quantite()); 
@@ -226,7 +231,7 @@ IVendeurPoudre {
 						}
 					}
 				}
-			}
+			
 		}
 		
 		return this.contratFeveEnCours ; 
