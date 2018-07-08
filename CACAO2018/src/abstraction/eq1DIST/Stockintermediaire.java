@@ -13,9 +13,9 @@ public class Stockintermediaire {
 		}
 	}
 	
-	public Stockintermediaire (int a) {
+	public Stockintermediaire (int a, int n) {
 		List<Lot> liste = new ArrayList<Lot>();
-		liste.add(new Lot(a,Type.TB));
+		liste.add(new Lot(a,Type.values()[n]));
 		this.stocki=liste;
 	}
 	
