@@ -17,6 +17,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static abstraction.eq5TRAN.util.Marchandises.*;
@@ -615,8 +616,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     @Override
     public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
         this.depenser(-prix);
-        this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * (200.0 / 10000000));
-        journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de "+qualite+" qualite pour "+prix+" euros à "+acteur.getNom());
+        this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * 0.2 / 1_000_000);
+        journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de qualite " +qualite + " pour "+prix+"€ à "+acteur.getNom());
     }
 
     /**
