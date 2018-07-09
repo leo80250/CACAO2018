@@ -1623,6 +1623,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * @return
 	 */
 	
+	
 	public int getMaximumOfProduction(int type, int qualite) {
 		int[] productionTotaleMax = new int[3];
 		int[] productionPoudreMax = new int[3];
