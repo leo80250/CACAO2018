@@ -72,7 +72,9 @@ public class GPrix2{
 			while((j<getIntervalles().get(idProduit-1).length)&&(getIntervalles().get(idProduit-1)[j]>quantite)) {
 				j++;
 			}
-			return getPrix().get(idProduit-1)[j];
+			if(j==getIntervalles().get(idProduit-1).length) return getPrix().get(idProduit-1)[j-1];
+			else return getPrix().get(idProduit-1)[j];
+			
 		}
 		else return 0;
 	}
