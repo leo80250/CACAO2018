@@ -304,10 +304,9 @@ public class Eq4TRAN implements Acteur {
 				
 				}
 			
-			if (1==1) { // Pour l'instant on accepte l'achat sans condition 
+
 				Eq5TRAN.sendReponsePoudre(acteur.getContratPoudreEnCoursEq5TRAN(), (IAcheteurPoudre)acteur);
 				Eq7TRAN.sendReponsePoudre(acteur.getContratPoudreEnCoursEq7TRAN(), (IAcheteurPoudre)acteur);
-			}
 	
 			ContratPoudre[] contratfinalEq5TRAN = new ContratPoudre[3];
 			ContratPoudre[] contratfinalEq7TRAN = new ContratPoudre[3];
