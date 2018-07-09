@@ -138,12 +138,14 @@ public class Eq4TRAN implements Acteur {
 		ContratPoudre[] contratPoudreEnCoursEq5TRAN_PME1 = new ContratPoudre[3];
 		// Changer prix contrats à ceux définis dans devis des eq5 et eq7
 		
+		IVendeurPoudre Eq5TRAN = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq5TRAN");
+		IVendeurPoudre Eq7TRAN = (IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN");
 		// Contrats Poudre Basse Qualité
 		contratPoudreEnCoursEq5TRAN_PME1[0] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.PME1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_PME1[0] = new ContratPoudre(0,0,0.0, (IAcheteurPoudre)this.PME1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		// Contrats Poudre Moyenne Qualité
-		contratPoudreEnCoursEq5TRAN_PME1[1] = new ContratPoudre(1,375,100.0, (IAcheteurPoudre)this.PME1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_PME1[1] = new ContratPoudre(1,50 ,100.0, (IAcheteurPoudre)this.PME1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_PME1[1] = new ContratPoudre(1,375,Eq5TRAN.getCataloguePoudre(PME1)[1].getPrix(), (IAcheteurPoudre)this.PME1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_PME1[1] = new ContratPoudre(1,50 ,Eq7TRAN.getCataloguePoudre(PME1)[1].getPrix(), (IAcheteurPoudre)this.PME1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		// Contrats Poudre Haute Qualité
 		contratPoudreEnCoursEq5TRAN_PME1[2] = new ContratPoudre(2,0,0.0, (IAcheteurPoudre)this.PME1, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_PME1[2] = new ContratPoudre(2,0,0.0, (IAcheteurPoudre)this.PME1,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
@@ -158,10 +160,10 @@ public class Eq4TRAN implements Acteur {
 
 		ContratPoudre[] contratPoudreEnCoursEq7TRAN_PME2 = new ContratPoudre[3];
 		ContratPoudre[] contratPoudreEnCoursEq5TRAN_PME2 = new ContratPoudre[3];
-		contratPoudreEnCoursEq5TRAN_PME2[0] = new ContratPoudre(0,2000/24,100.0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_PME2[0] = new ContratPoudre(0,2000/24,Eq5TRAN.getCataloguePoudre(PME2)[0].getPrix(), (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_PME2[0] = new ContratPoudre(0,0,0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_PME2[1] = new ContratPoudre(1,10000/24,100.0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_PME2[1] = new ContratPoudre(1,8000/24,100.0, (IAcheteurPoudre)this.PME2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_PME2[1] = new ContratPoudre(1,10000/24,Eq5TRAN.getCataloguePoudre(PME2)[1].getPrix(), (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_PME2[1] = new ContratPoudre(1,8000/24,Eq7TRAN.getCataloguePoudre(PME2)[1].getPrix(), (IAcheteurPoudre)this.PME2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq5TRAN_PME2[2] = new ContratPoudre(2,0,0.0, (IAcheteurPoudre)this.PME2, (IVendeurPoudre)Monde.LE_MONDE.getActeur("Eq5TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_PME2[2] = new ContratPoudre(2,0,0.0, (IAcheteurPoudre)this.PME2,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		
@@ -174,12 +176,12 @@ public class Eq4TRAN implements Acteur {
 		 */
 		ContratPoudre[] contratPoudreEnCoursEq7TRAN_PME3= new ContratPoudre[3];
 		ContratPoudre[] contratPoudreEnCoursEq5TRAN_PME3= new ContratPoudre[3];
-		contratPoudreEnCoursEq5TRAN_PME3[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_PME3[0] = new ContratPoudre(0,0,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_PME3[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_PME3[1] = new ContratPoudre(1,0,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_PME3[2] = new ContratPoudre(2,18000/24,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_PME3[2] = new ContratPoudre(2,18000/24,100.0, (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_PME3[0] = new ContratPoudre(0,0,Eq5TRAN.getCataloguePoudre(PME3)[0].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_PME3[0] = new ContratPoudre(0,0,Eq7TRAN.getCataloguePoudre(PME3)[0].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_PME3[1] = new ContratPoudre(1,0,Eq5TRAN.getCataloguePoudre(PME3)[1].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_PME3[1] = new ContratPoudre(1,0,Eq7TRAN.getCataloguePoudre(PME3)[1].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_PME3[2] = new ContratPoudre(2,18000/24,Eq5TRAN.getCataloguePoudre(PME3)[3].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_PME3[2] = new ContratPoudre(2,18000/24,Eq7TRAN.getCataloguePoudre(PME3)[3].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
 		
 		this.PME3.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_PME3);

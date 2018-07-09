@@ -6,6 +6,7 @@ import java.util.List;
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
+import abstraction.eq4TRAN.VendeurChoco.Labellise;
 import abstraction.eq4TRAN.VendeurChoco.Vendeur;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
@@ -22,7 +23,7 @@ ITransformateur, IAcheteurFeveV4,
 IVendeurChocoBis,
 IAcheteurPoudre,
 IVendeurPoudre,
-IvendeurOccasionnelChocoTer{
+IvendeurOccasionnelChocoTer, Labellise{
 	
 	//Indicateur du chiffre d'affaire
 	private Indicateur chiffreDAffaire ;
@@ -92,7 +93,7 @@ IvendeurOccasionnelChocoTer{
 		return JournalSousActeur;
 	}
 	public void setJournalSousActeur(Journal JournalSousActeur) {
-		JournalSousActeur = JournalSousActeur;
+		this.JournalSousActeur = JournalSousActeur;
 	}
 	public Vendeur getVendeur() {
 		return vendeur;
