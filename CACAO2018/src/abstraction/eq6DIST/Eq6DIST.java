@@ -44,18 +44,18 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		this.banque= new Indicateur("Solde bancaire Eq6 : ",this, 120000);
 		this.stock= new ArrayList<Integer>();this.stock.add(0);	this.stock.add(58000/26);this.stock.add(0);this.stock.add(42000/26);this.stock.add(577500/26);this.stock.add(0);
 		this.marge= new ArrayList<Double>();this.marge.add(0.0);	this.marge.add(0.0);this.marge.add(0.0);this.marge.add(0.0);this.marge.add(0.0);this.marge.add(0.0);
-		this.stock_BBQ= new Indicateur("Stock de bonbons BQ Eq6 :",this);
-		this.stock_BMQ=new Indicateur("Stock de bonbons MQ Eq6 :",this);
-		this.stock_BHQ=new Indicateur("Stock de bonbons HQ Eq6 :",this);
-		this.stock_TBQ=new Indicateur("Stock de tablettes BQ Eq6 :",this);
-		this.stock_TMQ=new Indicateur("Stock de tablettes MQ Eq6 :",this);
-		this.stock_THQ=new Indicateur("Stock de tablettes HQ Eq6 :",this);
-		this.prix_BBQ=new Indicateur("Prix de bonbons BQ Eq6 :",this);
-		this.prix_BMQ=new Indicateur("Prix de bonbons MQ Eq6 :",this);
-		this.prix_BHQ=new Indicateur("Prix de bonbons HQ Eq6 :",this);
-		this.prix_TBQ=new Indicateur("Prix de tablettes BQ Eq6 :",this);
-		this.prix_TMQ=new Indicateur("Prix de tablettes MQ Eq6 :",this);
-		this.prix_THQ=new Indicateur("Prix de tablettes BQ Eq6 :",this);
+		this.stock_BBQ= new Indicateur("Stock de bonbons BQ Eq6 :",this,500);
+		this.stock_BMQ=new Indicateur("Stock de bonbons MQ Eq6 :",this,500);
+		this.stock_BHQ=new Indicateur("Stock de bonbons HQ Eq6 :",this,500);
+		this.stock_TBQ=new Indicateur("Stock de tablettes BQ Eq6 :",this,500);
+		this.stock_TMQ=new Indicateur("Stock de tablettes MQ Eq6 :",this,500);
+		this.stock_THQ=new Indicateur("Stock de tablettes HQ Eq6 :",this,500);
+		this.prix_BBQ=new Indicateur("Prix de bonbons BQ Eq6 :",this,0.0);
+		this.prix_BMQ=new Indicateur("Prix de bonbons MQ Eq6 :",this,1.931666667);
+		this.prix_BHQ=new Indicateur("Prix de bonbons HQ Eq6 :",this,0.0);
+		this.prix_TBQ=new Indicateur("Prix de tablettes BQ Eq6 :",this,0.9942857143);
+		this.prix_TMQ=new Indicateur("Prix de tablettes MQ Eq6 :",this,2.145);
+		this.prix_THQ=new Indicateur("Prix de tablettes BQ Eq6 :",this,0.0);
 		this.marge_BBQ= new Indicateur("Marge sur bonbons BQ Eq6 :",this);
 		this.marge_BMQ=new Indicateur("Marge sur bonbons MQ Eq6 :",this);
 		this.marge_BHQ=new Indicateur("Marge sur bonbons HQ Eq6 :",this);
@@ -135,7 +135,8 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				Acteur a=acteurs.get(0);
 				int b = 0;
 				for(Double j : prop) {
-					 if(j<p && b<acteurs.size()) { 
+
+					 if(j<p && i<acteurs.size()) {
 						 p=j; //on choisit la proposition avec le prix minimum
 						 a=acteurs.get(b);
 					 }else {
@@ -214,6 +215,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			if (stock_TMG_min>=Stock.get(i).get(4)&&Stock.get(i).get(4)!=0) {
 				stock_TMG_min=Stock.get(i).get(4);
 				equipe_stock_TMG_min=i;
+				commande.get(i).add(1000);
 			}
 		}
 		int indice_equipe_moins_chere_TMG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
