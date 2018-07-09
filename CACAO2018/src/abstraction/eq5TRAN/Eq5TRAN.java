@@ -197,8 +197,6 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         payerSalaires();
         achatPoudre();
         indicateurGreve = Monde.LE_MONDE.getStep();
-        this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+110.0/24); /** achat de poudre à l'acteur fictif**/
-        depenser(this.prix[POUDRE_HQ].getValeur()*(110.0/24));
     }
 
     /**
@@ -337,6 +335,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             }
         }
     	equipe7.getEchangeFinalPoudre(demande, this);
+    	
+
+        this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+110.0/24); /** achat de poudre à l'acteur fictif**/
+        depenser(this.prix[POUDRE_HQ].getValeur()*(110.0/24));
     }
     
     
@@ -401,7 +403,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
         ContratPoudre[] echangesEffectifs = new ContratPoudre[contrat.length];
         for (int i = 0; i < contrat.length; i++) {
-        	if(contrat[i].getReponse()) {
+        	
         		echangesEffectifs[i] = contrat[i];
                 depenser(-contrat[i].getPrix()*contrat[i].getQuantite());
                 stocks[i+6].setValeur(this, stocks[i+6].getValeur()-contrat[i].getQuantite()*1000);
@@ -409,7 +411,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
                 	journal.ajouter("");
                     journal.ajouter("L'équipe 5 a vendu "+ contrat[i].getQuantite()+" tonnes de "+ Marchandises.getMarchandise(i+6) + " pour "+contrat[i].getPrix()*contrat[i].getQuantite()+" €"+" à l'équipe "+ ((Acteur)acheteur).getNom());
         	}
-            }
+            
          
         }
         
