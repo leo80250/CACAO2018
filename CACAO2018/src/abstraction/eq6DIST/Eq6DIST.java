@@ -143,7 +143,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 						 b+=1;
 					 }
 				}
-				if (p<1000000000) {
+				if (p<1000000000) { 
 				((IvendeurOccasionnelChocoTer)a).envoyerReponseTer(this, d.getQuantite(), d.getQualite(), p); //envoi de la proposition choisie
 				}
 
