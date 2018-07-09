@@ -446,10 +446,10 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		double Nmarge= 0; //nouvelle marge
 		double margeUnitaire=0; //marge sur une tablette
 
-		for (int i=0;i<6;i++) {  //on calcule la marge pour chaque type de chocolat
+		for (int i=0;i<3;i++) {  //on calcule la marge pour chaque type de chocolat
 
 			
-			Nmarge=this.prix.get(i)*Q.getValeur(i)*p;
+			Nmarge=this.prix.get(i)*Q.getValeur(i+3)*p;
 
 			margeUnitaire=this.prix.get(i)*p;
 			if(Nmarge<this.marge.get(i) && (this.prix.get(i)+margeUnitaire)<=prixMax.get(i)) {
@@ -460,6 +460,22 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			}
 			this.marge.set(i, Nmarge);
 		}
+		
+		for (int i=3;i<6;i++) {  //on calcule la marge pour chaque type de chocolat
+
+			
+			Nmarge=this.prix.get(i)*Q.getValeur(i-3)*p;
+
+			margeUnitaire=this.prix.get(i)*p;
+			if(Nmarge<this.marge.get(i) && (this.prix.get(i)+margeUnitaire)<=prixMax.get(i)) {
+				this.prix.set(i, this.prix.get(i)+margeUnitaire); //on définit le nouveau prix
+			}
+			if(Nmarge>this.marge.get(i) && (this.prix.get(i)-margeUnitaire)>=prixMin.get(i)) {
+				this.prix.set(i, this.prix.get(i)-margeUnitaire); //on définit le nouveau prix
+			}
+			this.marge.set(i, Nmarge);
+		}
+		
 	}
 
 	@Override
