@@ -131,7 +131,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 						acteurs.add(acteur);
 					}
 				}
-				double p=prop.get(0);
+				double p=0.0;
 				Acteur a=acteurs.get(0);
 				int b = 0;
 				for(Double j : prop) {
@@ -143,7 +143,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 						 b+=1;
 					 }
 				}
-				if (p<10000000) {
+				if (p<1000000000) {
 				((IvendeurOccasionnelChocoTer)a).envoyerReponseTer(this, d.getQuantite(), d.getQualite(), p); //envoi de la proposition choisie
 				}
 
@@ -402,25 +402,25 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 	public GrilleQuantite commander(GrilleQuantite Q) {
 		int[] res = new int[6];
 		for(int i=0;i<3;i++) {
-			int c = this.stock.get(i) - Q.getValeur(i+3);
+			int c = this.stock.get(i+3) - Q.getValeur(i);
 			if (c>=0) {
-				res[i]=(Q.getValeur(i+3));
+				res[i]=(Q.getValeur(i));
 			}else {
-				res[i]=(this.stock.get(i));
+				res[i]=(this.stock.get(i+3));
 			}
 			
-			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i)*res[i]);		
+			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i+3)*res[i]);		
 
 		}
 		for (int i=3;i<6;i++) {
-			int c = this.stock.get(i) - Q.getValeur(i-3);
+			int c = this.stock.get(i-3) - Q.getValeur(i);
 			if (c>=0) {
-				res[i]=(Q.getValeur(i-3));
+				res[i]=(Q.getValeur(i));
 			}else {
-				res[i]=(this.stock.get(i));
+				res[i]=(this.stock.get(i-3));
 			}
 
-			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i)*res[i]);		
+			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i-3)*res[i]);		
 
 		}
 		
