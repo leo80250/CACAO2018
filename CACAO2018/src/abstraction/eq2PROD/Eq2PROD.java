@@ -409,8 +409,8 @@ public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 	
 	protected void setStockAffichage() {
 		calculCoeffStock();
-		addStockQM( (int) (getCoeffSolde()*MOY_QM));
-		addStockQB( (int) (getCoeffSolde()*MOY_QB));
+		addStockQM( (int) (getCoeffStock()*MOY_QM));
+		addStockQB( (int) (getCoeffStock()*MOY_QB));
 	}
 	
 	
