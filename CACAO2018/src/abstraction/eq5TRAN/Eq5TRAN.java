@@ -335,6 +335,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             }
         }
     	equipe7.getEchangeFinalPoudre(demande, this);
+    	
+
+        this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+110.0/24); /** achat de poudre à l'acteur fictif**/
+        depenser(this.prix[POUDRE_HQ].getValeur()*(110.0/24));
     }
     
     
@@ -400,15 +404,15 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         ContratPoudre[] echangesEffectifs = new ContratPoudre[contrat.length];
         for (int i = 0; i < contrat.length; i++) {
             echangesEffectifs[i] = contrat[i];
-            depenser(-contrat[i].getPrix()*contrat[i].getQuantite()*1000);
-            stocks[i+6].setValeur(this, stocks[i+6].getValeur()-contrat[i].getQuantite()*1000);
-            if(contrat[i].getQuantite()!=0) {
-            	journal.ajouter("");
-                journal.ajouter("L'équipe 5 a vendu "+ contrat[i].getQuantite()+" tonnes de "+ Marchandises.getMarchandise(i+6) + " pour "+contrat[i].getPrix()*contrat[i].getQuantite()+" €"+" à l'équipe "+ ((Acteur)acheteur).getNom());
+            depenser(-contrat[i].getPrix() * contrat[i].getQuantite());
+            stocks[i + 6].setValeur(this, stocks[i + 6].getValeur() - contrat[i].getQuantite() * 1000);
+            if (contrat[i].getQuantite() != 0 && contrat[i].getQualite()==1) {
+                journal.ajouter("");
+                journal.ajouter("L'équipe 5 a vendu " + contrat[i].getQuantite() + " tonnes de " + Marchandises.getMarchandise(i + 6) + " pour " + contrat[i].getPrix() * contrat[i].getQuantite() + " €" + " à l'équipe " + ((Acteur) acheteur).getNom());
             }
-         
+
         }
-        
+
         return echangesEffectifs;
     }
 
@@ -514,12 +518,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
          */
         List<ContratFeveV3> demandesPrivee = new ArrayList<ContratFeveV3>() ;
         demandesPrivee.add(this.contratFeveBQEq2) ; demandesPrivee.add(this.contratFeveMQEq2) ;demandesPrivee.add(this.contratFeveMQEq3);
-        this.contratFeveBQEq2.setDemande_Prix(this.prixActualiseFeveBQ());
+        this.contratFeveBQEq2.setDemande_Prix((int)this.prixActualiseFeveBQ());
         this.contratFeveBQEq2.setDemande_Quantite((int) achatsSouhaites[FEVES_BQ].getValeur()*1000);
-        this.contratFeveMQEq2.setDemande_Prix(this.prixActualiseFeveBQ());
+        this.contratFeveMQEq2.setDemande_Prix((int)this.prixActualiseFeveBQ());
         this.contratFeveMQEq2.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.3*1000));
         // On répartit nos achats de MQ en 30 % à l'équipe 2 et 70 % à l'équipe 3
-        this.contratFeveMQEq3.setDemande_Prix(this.prixActualiseFeveMQ());
+        this.contratFeveMQEq3.setDemande_Prix((int)this.prixActualiseFeveMQ());
         this.contratFeveMQEq3.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.7*1000));
 
         return demandesPrivee;
@@ -564,6 +568,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         listeContrat.add(contratFeveMQEq3);
         
         for (ContratFeveV3 c : listeContrat) {
+        	journal.ajouter("Le prix actualisé de fèves MQ est" +(int)this.prixActualiseFeveMQ());
+        	journal.ajouter("Le prix actualisé de fèves BQ est "+(int)this.prixActualiseFeveBQ());
             if ((c.getProposition_Prix() <= c.getDemande_Prix()) && c.getProposition_Quantite() <= c.getDemande_Quantite() && c.getProposition_Quantite()!=0) {
                 c.setReponse(true); 
                 journal.ajouter(c.toString3());
@@ -584,31 +590,31 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public double getReponseTer(DemandeAO d) {
         switch (d.getQualite()) {
             case 1: {
-                journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                //journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                 return Double.MAX_VALUE;
             }
             case 2:
                 if (d.getQuantite() < stocks[FRIANDISES_MQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    //journal.ajouter("Eq5 renvoie " + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                     return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
             case 3: {
-                journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                //journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                 return Double.MAX_VALUE;
             }
             case 4:
                 if (d.getQuantite() < stocks[TABLETTES_BQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    //journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                     return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
             case 5:
                 if (d.getQuantite() < stocks[TABLETTES_MQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    //journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                     return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
             case 6:
                 if (d.getQuantite() < stocks[TABLETTES_HQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000+ "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    //journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000+ "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                     return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
         }
@@ -621,9 +627,15 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
     @Override
     public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
+        if(prix>Math.pow(10,9)) return;
         this.depenser(-prix);
         this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite *(0.2/1_000_000));
-        journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de qualite " +qualite + " pour "+prix+"€ à "+acteur.getNom());
+        switch (qualite) {
+        case 2: journal.ajouter("Eq5 a vendu "+quantite+" friandises de moyenne qualité pour "+prix+"€ à "+acteur.getNom());
+        case 4: journal.ajouter("Eq5 a vendu "+quantite+" tablettes de basse qualité pour "+prix+"€ à "+acteur.getNom());
+        case 5: journal.ajouter("Eq5 a vendu "+quantite+" tablettes de moyenne qualité pour "+prix+"€ à "+acteur.getNom());
+        case 6: journal.ajouter("Eq5 a vendu "+quantite+" tablettes de haute qualité pour "+prix+"€ à "+acteur.getNom());
+        }
     }
 
     /**
