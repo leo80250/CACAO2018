@@ -126,7 +126,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				ArrayList<Double> prop = new ArrayList<Double>();
 				ArrayList<Acteur> acteurs = new ArrayList<Acteur>();
 				for(Acteur acteur : Monde.LE_MONDE.getActeurs()) {
-					if(acteur instanceof IvendeurOccasionnelChocoTer) {
+					if(acteur instanceof IvendeurOccasionnelChocoTer) { 
 						prop.add(((IvendeurOccasionnelChocoTer)acteur).getReponseTer(d));
 						acteurs.add(acteur);
 					}
