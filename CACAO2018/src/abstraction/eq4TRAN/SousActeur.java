@@ -382,7 +382,7 @@ IvendeurOccasionnelChocoTer, Labellise{
 			return Double.MAX_VALUE ; 
 		}
 		else {
-			if (d.getQuantite() < this.getStocks().get(d.getQualite()).getValeur()) {
+			if (d.getQuantite() < this.getStocks().get(d.getQualite()-1).getValeur()) {
 				double prix = this.getPrix().getPrixProduit(d.quantite, d.qualite) ;
 				return prix*d.quantite*1.2 ; 
 			} else {
@@ -399,7 +399,7 @@ IvendeurOccasionnelChocoTer, Labellise{
 			this.solde.setValeur(this, ancienSolde + prix);
 			double ancienStock = this.Stocks.get(qualite).getValeur() ; 
 			this.Stocks.get(qualite).setValeur(this, ancienStock - quantite );
-			this.getJournalSousActeur().ajouter(this.getNom()+" a vendu " + quantite + "de qualité " + qualite+ " à " + acteur.getNom());
+			this.getJournalSousActeur().ajouter(this.getNom()+" a vendu " + quantite + "de qualité " + Marchandises.getMarchandise(qualite) + " à " + acteur.getNom());
 		
 	}
 	
