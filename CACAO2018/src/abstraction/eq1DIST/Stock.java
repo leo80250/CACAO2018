@@ -12,12 +12,12 @@ public class Stock {
 	
 	public Stock (int a, int b, int c, int d, int e, int f) { // ces entiers sont les quantites initiales de notre stock
 		this.stock= new ArrayList<Stockintermediaire>();
-		this.stock.add(new Stockintermediaire(a));
-		this.stock.add(new Stockintermediaire(b));
-		this.stock.add(new Stockintermediaire(c));
-		this.stock.add(new Stockintermediaire(d));
-		this.stock.add(new Stockintermediaire(e));
-		this.stock.add(new Stockintermediaire(f));
+		this.stock.add(new Stockintermediaire(a,0));
+		this.stock.add(new Stockintermediaire(b,1));
+		this.stock.add(new Stockintermediaire(c,2));
+		this.stock.add(new Stockintermediaire(d,3));
+		this.stock.add(new Stockintermediaire(e,4));
+		this.stock.add(new Stockintermediaire(f,5));
 	}
 	
 	public List<Stockintermediaire> getstock(){
