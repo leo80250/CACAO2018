@@ -33,7 +33,8 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	
 	
 	/**
-	 * @author Elisa Gressier-Monard
+	 * Gestion des indicateurs
+	 * @author Elisa Gressier-Monard et Alice Gauthier
 	 **/
 	public Eq1DIST() {
 		// création du distributeur
@@ -106,7 +107,11 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		return "Eq1DIST";
 	}
 
+	
 	@Override
+	/**
+	 * @author Antoine et Alice
+	 */
 	public void next() {
 		for (int i = 0; i < 6; i++) {
 			this.nombreAchatsOccasionnels[i].setValeur(this, 0);
@@ -119,6 +124,9 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		this.journal.ajouter("");
 	}
 
+	/**
+	 * @author Alice
+	 */
 	public void venteOccalim() {
 		// on fait une demande occasionnelle si on dépasse un seuil limite de stock
 		int[] stocklim = { 0, 6000, 3000, 0, 6000, 3000 };
@@ -168,7 +176,10 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		//modification des prix de ventes en fonction des prix d'achat
 		this.changerPrix(PrixAchat);
 	}
-
+	
+	/**
+	 * @author Alice
+	 */
 	public void venteOccaspe() {
 		// on fait une demande occasionnelle en prevision des mois de forte consommation
 		if (Monde.LE_MONDE.getStep() % 12 == 2 || Monde.LE_MONDE.getStep() % 12 == 3
@@ -215,7 +226,10 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 			this.changerPrix(PrixAchat);
 		}
 	}
-
+	
+	/**
+	 * @author Alice et Antoine
+	 */
 	public void salaires() {
 		solde.setValeur(this, solde.getValeur() - 200000);
 		this.journal.ajouter("• Réglement des salaires • ");
@@ -223,6 +237,9 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	}
 
 	@Override
+	/**
+	 * @author Alice
+	 */
 	public GrilleQuantite commander(GrilleQuantite Q) {
 		//méthode appelée en premier par les Clients Finaux donc on initialise ici le journal
 		this.journal.ajouter("------------------------------ Période n°" + Monde.LE_MONDE.getStep()
@@ -276,7 +293,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	}
 	
 	/**
-	 * @author Elisa Gressier-Monard
+	 * @author Elisa Gressier-Monard et Antoine
 	 **/
 
 	public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
@@ -333,7 +350,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 //	}
 
 	/**
-	 * @author Elisa Gressier-Monard
+	 * @author Elisa Gressier-Monard et Antoine
 	 **/
 	// véritable fonction getCommande que nous ne sommes pas parvenus à implémenter (indices outofbounds mystérieux)
 //	public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
