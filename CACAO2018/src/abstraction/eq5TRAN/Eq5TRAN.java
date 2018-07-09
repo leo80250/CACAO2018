@@ -103,8 +103,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         productionSouhaitee[POUDRE_HQ] = new Indicateur("Eq5 - Production souhaitee de poudre HQ", this, 0);
         productionSouhaitee[FRIANDISES_MQ] = new Indicateur("Eq5 - Production souhaitee de friandises MQ", this, 115.0/24);
 
-        achatsSouhaites[FEVES_BQ] = new Indicateur("Eq5 - Achats souhaites de feves BQ", this, 360.0/24);
-        achatsSouhaites[FEVES_MQ] = new Indicateur("Eq5 - Achats souhaites de feves MQ", this, 840.0/24);
+        achatsSouhaites[FEVES_BQ] = new Indicateur("Eq5 - Achats souhaites de feves BQ", this, 2520.0/24);
+        achatsSouhaites[FEVES_MQ] = new Indicateur("Eq5 - Achats souhaites de feves MQ", this, 5880.0/24);
         achatsSouhaites[TABLETTES_BQ] = new Indicateur("Eq5 - Achats souhaites de tablettes BQ", this, 0);
         achatsSouhaites[TABLETTES_MQ] = new Indicateur("Eq5 - Achats souhaites de tablettes MQ", this, 0);
         achatsSouhaites[TABLETTES_HQ] = new Indicateur("Eq5 - Achats souhaites de tablettes HQ", this, 0);
@@ -205,9 +205,9 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         production(POUDRE_BQ, TABLETTES_BQ,10);
         production(POUDRE_MQ, TABLETTES_MQ,10);
         production(POUDRE_HQ, TABLETTES_HQ,10);
-        production(POUDRE_MQ, FRIANDISES_MQ,1.0f/0.7f);
-        production(FEVES_BQ, POUDRE_BQ,1.0f/0.7f);
-        production(FEVES_MQ, POUDRE_MQ,1.0f/0.7f);
+        production(POUDRE_MQ, FRIANDISES_MQ,0.7f);
+        production(FEVES_BQ, POUDRE_BQ,0.7f);
+        production(FEVES_MQ, POUDRE_MQ,0.7f);
     }
 
     /**
