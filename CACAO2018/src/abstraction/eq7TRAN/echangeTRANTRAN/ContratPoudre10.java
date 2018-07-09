@@ -7,7 +7,7 @@ import java.util.List;
  * 
  * @author bernardjoseph
  * 
- * Le but de cet objet est d'avoir un équivalent de ContratPoudre, tout en connaissant sa répartition entre les 10 transformateurs
+ * @return agrégation d'un ContratPoudre et de sa répartition entre les 10 acteurs
  *
  */
 
