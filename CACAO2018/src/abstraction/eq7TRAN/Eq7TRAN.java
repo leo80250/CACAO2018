@@ -12,6 +12,7 @@ import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre10;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre; 
 import abstraction.fourni.Acteur;
@@ -964,6 +965,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	/*nouveau code*/
+	
 	public ArrayList<ContratPoudre> getCommandesPoudreEnCoursParEntrep(int entrep) { 	  	   		 			 			 	
 		return this.commandesPoudreEnCours2.get(entrep); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
@@ -1516,7 +1518,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
-		int n = demande.length;
+	/*	
+	    int n = demande.length;
 		for(int i = 0; i<n; i++) {
 			if(demande[i] != null) {
 				int qualite = demande[i].getQualite();
@@ -1525,32 +1528,55 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 					demande[i].setQuantite((int)this.getStockPoudre()[qualite].getValeur());
 					//demande[i].setReponse(false);
 				}
-		/*
-		for(ContratPoudre demande_i:demande) {
-			int qualite=demande_i.getQualite();
-			double prix=demande_i.getPrix();
-			List<Integer> demande_i_parEntrep=this.repart(demande_i.getQuantite());
+			}
+		}
+		return demande;
+	}
+	*/
+		
+		int qualite;
+		for(ContratPoudre demande_i:demande) {	
+			qualite=demande_i.getQualite();
+			ContratPoudre10 demande_i10=new ContratPoudre10(demande_i,this.repart(demande_i.getQuantite()));
 			int total=0;
 			for(int acteur10=0;acteur10<10;acteur10++) {
-				if (demande_i_parEntrep.get(acteur10)>this.getStockPoudre2().get(acteur10)[qualite].getValeur())
-					demande_i_parEntrep.set(acteur10, (int)(this.getStockPoudre2().get(acteur10)[qualite].getValeur()));
-				this.getCommandesPoudreEnCoursParEntrep(acteur10).add(new ContratPoudre(qualite,
-						demande_i_parEntrep.get(acteur10),prix,acheteur,this,false));
-				total+=demande_i_parEntrep.get(acteur10);
+				if (demande_i10.getQteActeur(acteur10)>this.getStockPoudre2().get(acteur10)[qualite].getValeur())
+					demande_i10.setQteActeur(acteur10, (int)(this.getStockPoudre2().get(acteur10)[qualite].getValeur()));
+				
+				this.getCommandesPoudreEnCoursParEntrep(acteur10).add(demande_i10.getContrats().get(acteur10));
+				total+=demande_i10.getQteActeur(acteur10);
 			
 			}
-			demande_i=new ContratPoudre(qualite,total,prix,acheteur,this,false);
-		*/
-			}
+			demande_i.setQuantite(total);
+			this.getCommandesPoudreEnCours().add(demande_i10);
 		}
 		return demande;
 	}
 	
 	//on ne peut pas mettre à jour chacune des 10 commandes en cours sans connaitre la répartition
+	//on doit donc récupérer le devis correspondant pour connaître sa répartitions
 	public void sendReponsePoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		for(int qualite = 0; qualite<3; qualite++) {
-			if(contrat[qualite].getReponse())
-				this.getCommandesPoudreEnCours().add(contrat[qualite]);
+			
+			//On cherche le devis correspondant au contrat que l'on passe
+			boolean stoploop=false;
+			ContratPoudre10 eldevis=null;
+			for(ContratPoudre devis:this.getCommandesPoudreEnCours()) {
+				if (!stoploop) {
+					if (devis.equals(contrat[qualite])) {
+						eldevis=(ContratPoudre10)devis;
+						stoploop=true;						
+					}
+				}
+			}
+			
+			//On met à jour la liste des contrats en cours
+			if(contrat[qualite].getReponse()&&eldevis!=null) {
+				this.getCommandesPoudreEnCours().add(new ContratPoudre10(contrat[qualite],eldevis.getRepart()));
+				for(int acteur10=0;acteur10<10;acteur10++) {
+					this.getCommandesPoudreEnCoursParEntrep(acteur10).add(((ContratPoudre10)contrat[qualite]).getContrats().get(acteur10));
+				}
+			}
 		}
 	}
 	
