@@ -72,7 +72,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	private ArrayList<ArrayList<Integer>> livraisonsTablettesPassees;
 	
 	private List<ContratFeveV3> commandesFeveEnCours;
-	private ArrayList<ContratPoudre> commandesPoudreEnCours;
+	private ArrayList<ContratPoudre10> commandesPoudreEnCours;
 	private ArrayList<ArrayList<Integer>> commandesTablettesEnCours;
 	private List<ContratFeveV3> livraisonsFeveEnCours;
 	private ArrayList<ContratPoudre> livraisonsPoudreEnCours;
@@ -196,7 +196,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.livraisonsTablettesPassees = new ArrayList<ArrayList<Integer>>();
 		
 		this.commandesFeveEnCours = new ArrayList<ContratFeveV3>();
-		this.commandesPoudreEnCours = new ArrayList<ContratPoudre>();
+		this.commandesPoudreEnCours = new ArrayList<ContratPoudre10>(Collections.nCopies(10,new ContratPoudre10()));
 		this.commandesTablettesEnCours = new ArrayList<ArrayList<Integer>>();
 		this.livraisonsFeveEnCours = new ArrayList<ContratFeveV3>();
 		this.livraisonsPoudreEnCours = new ArrayList<ContratPoudre>();
@@ -966,7 +966,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * @author boulardmaelle
 	 * @return
 	 */
-	public ArrayList<ContratPoudre> getCommandesPoudreEnCours() {
+	public ArrayList<ContratPoudre10> getCommandesPoudreEnCours() {
 		return this.commandesPoudreEnCours;
 	}
 	public ArrayList<ArrayList<Integer>> getCommandesTablettesEnCours() {
@@ -981,7 +981,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public void setCommandesTablettesEnCours(ArrayList<ArrayList<Integer>> contrats) {
 		this.commandesTablettesEnCours = contrats;
 	}
-	public void setCommandesPoudreEnCours(ArrayList<ContratPoudre> contrats) {
+	public void setCommandesPoudreEnCours(ArrayList<ContratPoudre10> contrats) {
 		this.commandesPoudreEnCours = contrats;
 	}
 	public ArrayList<ArrayList<Integer>> getLivraisonsTablettesEnCours() {
@@ -1061,7 +1061,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		
 		this.commandesFeveEnCours = new ArrayList<ContratFeveV3>();;
 		this.commandesTablettesEnCours = new ArrayList<ArrayList<Integer>>();
-		this.commandesPoudreEnCours = new ArrayList<ContratPoudre>();
+		this.commandesPoudreEnCours = new ArrayList<ContratPoudre10>();
 		this.livraisonsFeveEnCours =new ArrayList<ContratFeveV3>();;
 		this.livraisonsTablettesEnCours = new ArrayList<ArrayList<Integer>>();
 		this.livraisonsPoudreEnCours = new ArrayList<ContratPoudre>();
@@ -1077,7 +1077,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		return quantite;
 	}
 	public int getQuantitePoudreCommandees() {
-		ArrayList<ContratPoudre> commandes = this.getCommandesPoudreEnCours();
+		ArrayList<ContratPoudre10> commandes = this.getCommandesPoudreEnCours();
 		int quantite = 0;
 		for(ContratPoudre commande : commandes) {
 			quantite += commande.getQuantite();
@@ -1379,7 +1379,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	public void estimateProductionPoudreAttendue(int qualite) {
 		int productionAttendue = 0;
-		ArrayList<ContratPoudre> commandesEnCours = this.getCommandesPoudreEnCours();
+		ArrayList<ContratPoudre10> commandesEnCours = this.getCommandesPoudreEnCours();
 		for(int i = 0; i < commandesEnCours.size(); i++) {
 			if(commandesEnCours.get(i).getQualite() == qualite) {
 				productionAttendue += commandesEnCours.get(i).getQuantite();
@@ -1597,25 +1597,20 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public void sendReponsePoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		for(int qualite = 0; qualite<3; qualite++) {
 			
-			//On cherche le devis correspondant au contrat que l'on passe
-			boolean stoploop=false;
-			ContratPoudre10 eldevis=null;
-			for(ContratPoudre devis:this.getCommandesPoudreEnCours()) {
-				if (!stoploop) {
-					if (devis.equals(contrat[qualite])) {
-						eldevis=(ContratPoudre10)devis;
-						stoploop=true;						
-					}
-				}
+			//on cherche le devis correspondant au contrat en paramètre
+			ContratPoudre10 DEVIS=new ContratPoudre10();
+			for(ContratPoudre10 devis:this.getCommandesPoudreEnCours()) {
+				ContratPoudre10 tocompare=new ContratPoudre10(contrat[qualite],devis.getRepart());
+				if (devis==tocompare)
+					DEVIS=devis;
 			}
 			
-			//On met à jour la liste des contrats en cours
-			if(contrat[qualite].getReponse()&&eldevis!=null) {
-				this.getCommandesPoudreEnCours().add(new ContratPoudre10(contrat[qualite],eldevis.getRepart()));
-				for(int acteur10=0;acteur10<10;acteur10++) {
-					this.getCommandesPoudreEnCoursParEntrep(acteur10).add(((ContratPoudre10)contrat[qualite]).getContrats().get(acteur10));
-				}
+			//on met à jour la liste des commandes
+			if(contrat[qualite].getReponse()) {
+				this.getCommandesPoudreEnCours().add(new ContratPoudre10(contrat[qualite],DEVIS.getRepart()));
+				//getCommandesPoudreEnCoursParEntrep provoque des erreurs d'index, on ne le met pas à jour ici
 			}
+				
 		}
 	}
 	
