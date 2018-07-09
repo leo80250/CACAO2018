@@ -397,7 +397,7 @@ public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 		return this.soldejournal;
 	}
 	public void setSoldeJournal(Indicateur i) {
-		this.soldejournal = i;
+		this.soldejournal = i; 
 	}
 	public Indicateur getStockQMoy() {
 		return this.stockQMoy;
