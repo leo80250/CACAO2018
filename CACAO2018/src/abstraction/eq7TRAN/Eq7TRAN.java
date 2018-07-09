@@ -1938,7 +1938,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		int total=0;
 		int val;
 		List<Integer> repartition=new ArrayList<Integer>();
-		for(int i=0;i<10;i++) {
+		for(int i=0;i<9;i++) {
 			val=(int)(.2*(valeur-total)*Math.random());
 			repartition.add(val);
 			total+=val;
