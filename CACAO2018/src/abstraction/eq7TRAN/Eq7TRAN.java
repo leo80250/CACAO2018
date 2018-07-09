@@ -1439,7 +1439,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		TauxFinauxTetP[0]=tauxPoudre; 	  	   		 			 			 	
 		TauxFinauxTetP[1]=tauxTablette; 	  	   		 			 			 	
 		return TauxFinauxTetP; 	  	   		 			 			 	
-	} 	  	   		 			 			 	
+	} 	  	
+	
+	
 	 	  	   		 			 			 	
 	public void estimateProductionPoudreAttendueParEntrep(int qualite, int entrep) { 	  	   		 			 			 	
 		int productionAttendue = 0; 	  	   		 			 			 	
