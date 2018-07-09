@@ -415,7 +415,8 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				res[i]=(this.stock.get(i+3));
 			}
 			
-			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i+3)*res[i]);		
+			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i+3)*res[i]);
+			this.stock.set(i+3, this.stock.get(i+3)-res[i]);
 
 		}
 		for (int i=3;i<6;i++) {
@@ -426,10 +427,11 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				res[i]=(this.stock.get(i-3));
 			}
 
-			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i-3)*res[i]);		
+			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i-3)*res[i]);	
+			this.stock.set(i-3, this.stock.get(i-3)-res[i]);
 
 		}
-		
+		this.modifPrix(Q);
 		return new GrilleQuantite(res); 
 	}
 	
