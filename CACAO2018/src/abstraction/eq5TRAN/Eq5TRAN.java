@@ -17,6 +17,7 @@ import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static abstraction.eq5TRAN.util.Marchandises.*;
@@ -581,28 +582,28 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
                 return Double.MAX_VALUE;
             }
             case 2:
-                if (d.getQuantite() < 0.2 * stocks[FRIANDISES_MQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[FRIANDISES_MQ].getValeur() / 1_000_000 * 0.2) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000 + "€ à getReponse(d)");
+                    return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
             case 3: {
                 journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)");
                 return Double.MAX_VALUE;
             }
             case 4:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_BQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[TABLETTES_BQ].getValeur()* 0.2 / 1_000_000) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse(d)");
+                    return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
             case 5:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_MQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[TABLETTES_MQ].getValeur()* 0.2 / 1_000_000) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse(d)");
+                    return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
             case 6:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_HQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[TABLETTES_HQ].getValeur()* 0.2 / 1_000_000) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000+ "€ à getReponse(d)");
+                    return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
         }
         return Double.MAX_VALUE;
@@ -615,8 +616,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     @Override
     public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
         this.depenser(-prix);
-        this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * (200.0 / 10000000));
-        journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de "+qualite+" qualite pour "+prix+" euros à "+acteur.getNom());
+        this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * 0.2 / 1_000_000);
+        journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de qualite " +qualite + " pour "+prix+"€ à "+acteur.getNom());
     }
 
     /**
@@ -641,11 +642,11 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public GPrix2 getPrix() {
         ArrayList<Double[]> intervalles = new ArrayList<Double[]>();
         intervalles.add(new Double[0]);
-        intervalles.add(new Double[]{0.0d,stocks[FRIANDISES_MQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{stocks[FRIANDISES_MQ].getValeur()*1_000_000 / 0.2 / 2});
         intervalles.add(new Double[0]);
-        intervalles.add(new Double[]{0.0d,stocks[TABLETTES_BQ].getValeur()*1_000_000 / 0.2 / 2});
-        intervalles.add(new Double[]{0.0d,stocks[TABLETTES_MQ].getValeur()*1_000_000 / 0.2 / 2});
-        intervalles.add(new Double[]{0.0d,stocks[TABLETTES_HQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{stocks[TABLETTES_BQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{stocks[TABLETTES_MQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{stocks[TABLETTES_HQ].getValeur()*1_000_000 / 0.2 / 2});
 
         ArrayList<Double[]> prixAssocies = new ArrayList<Double[]>();
         prixAssocies.add(new Double[0]);

@@ -24,6 +24,15 @@ public class ContratPoudre {
 	public ContratPoudre() {
 		this(0,0,0,null,null,false);
 	}
+	public ContratPoudre(ContratPoudre contrat) {
+		this.qualite=contrat.getQualite();
+		this.quantite=contrat.getQuantite();
+		this.prix=contrat.getPrix();
+		this.acheteur=contrat.getAcheteur();
+		this.vendeur=contrat.getVendeur();
+		this.reponse=contrat.getReponse();
+	}
+	
 	public int getQualite() {
 		return this.qualite;
 	}
@@ -68,4 +77,14 @@ public class ContratPoudre {
 		return "ContratPoudre [qualite=" + qualite + ", quantite=" + quantite + ", prix=" + prix + ", acheteur="
 				+ acheteur + ", vendeur=" + vendeur + ", reponse=" + reponse + "]";
 	}
+	
+	public boolean equals(Object o) {
+		ContratPoudre ob=(ContratPoudre)o;
+		return o!=null
+				&& o instanceof ContratPoudre
+				&& ob.getQualite()==this.getQualite()
+				&& ob.getAcheteur().equals(this.getAcheteur())
+				&& ob.getVendeur().equals(this.getVendeur());
+	}
+	
 }

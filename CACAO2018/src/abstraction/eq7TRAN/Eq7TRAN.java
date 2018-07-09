@@ -12,6 +12,7 @@ import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre;
+import abstraction.eq7TRAN.echangeTRANTRAN.ContratPoudre10;
 import abstraction.eq7TRAN.echangeTRANTRAN.IAcheteurPoudre;
 import abstraction.eq7TRAN.echangeTRANTRAN.IVendeurPoudre; 
 import abstraction.fourni.Acteur;
@@ -497,7 +498,23 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		 * @author boulardmaelle
 		 */
 		
-		for (int entrep=0; entrep<10; entrep++) {
+		this.getJournal().ajouter("Nouveau solde = "+this.getSolde().getValeur()+"€");
+		
+		this.resetCommandesEnCours();
+	
+		this.getJournal().ajouter(" - Estimation production poudre = " + this.getProductionPoudreAttendue(0).getValeur()+"t, "+this.getProductionPoudreAttendue(1).getValeur()+"t, "+this.getProductionPoudreAttendue(2).getValeur()+"t");
+		this.getJournal().ajouter(" - Estimation production tablettes = " + this.getProductionTablettesAttendue(0).getValeur()+"t, "+this.getProductionTablettesAttendue(1).getValeur()+"t, "+this.getProductionTablettesAttendue(2).getValeur()+"t");
+		this.getJournal().ajouter("PRODUCTION POUDRE REELLE = " + (int)this.getProductionPoudreReelle()[0].getValeur()+"t, "+(int)this.getProductionPoudreReelle()[1].getValeur()+"t, "+(int)this.getProductionPoudreReelle()[2].getValeur()+"t");
+		this.getJournal().ajouter("PRODUCTION TABLETTES REELLE = " + (int)this.getProductionTablettesReelle()[0].getValeur()+"t, "+(int)this.getProductionTablettesReelle()[1].getValeur()+"t, "+(int)this.getProductionTablettesReelle()[2].getValeur()+"t");
+
+		this.getJournal().ajouter("STOCK FEVES FIN = " + (int)this.getStockFeves(0).getValeur()+"t, "+(int)this.getStockFeves(1).getValeur()+"t, "+(int)this.getStockFeves(2).getValeur()+"t");
+		this.getJournal().ajouter("STOCK POUDRE FIN = " + (int)this.getStockPoudre(0).getValeur()+"t, "+(int)this.getStockPoudre(1).getValeur()+"t, "+(int)this.getStockPoudre(2).getValeur()+"t");
+		this.getJournal().ajouter("STOCK TABLETTES FIN = " + (int)this.getStockTablettes(0).getValeur()+"t, "+(int)this.getStockTablettes(1).getValeur()+"t, "+(int)this.getStockTablettes(2).getValeur()+"t");
+	
+		this.getJournal().ajouter(" - Estimation prix achat feves = " + this.estimatePrixAchatFeves(0)+"€, "+this.estimatePrixAchatFeves(1)+"€, "+this.estimatePrixAchatFeves(2)+"€");
+		this.getJournal().ajouter(" - Estimation prix vente poudre = " + this.estimatePrixVentePoudre(0)+"€, "+this.estimatePrixVentePoudre(1)+"€, "+this.estimatePrixVentePoudre(2)+"€");
+		
+		/*for (int entrep=0; entrep<10; entrep++) {
 			this.getJournal().ajouter("Nouveau solde = "+this.getSoldeParEntrep(entrep).getValeur()+"€");
 		
 			this.resetCommandesEnCours();
@@ -514,7 +531,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			this.getJournal().ajouter(" - Estimation prix achat feves = " + this.estimatePrixAchatFevesParEntrep(0,entrep)+"€, "+this.estimatePrixAchatFevesParEntrep(1,entrep)+"€, "+this.estimatePrixAchatFevesParEntrep(2,entrep)+"€");
 			this.getJournal().ajouter(" - Estimation prix vente poudre = " + this.estimatePrixVentePoudreParEntrep(0,entrep)+"€, "+this.estimatePrixVentePoudreParEntrep(1,entrep)+"€, "+this.estimatePrixVentePoudreParEntrep(2,entrep)+"€");
 			this.getJournal().ajouter("-----------------Entreprise suivante-----------------");
-		}
+		}*/
 		this.getJournal().ajouter("-------------------------------------------------------------");
 	}
 
@@ -987,6 +1004,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	/*nouveau code*/
+	
 	public ArrayList<ContratPoudre> getCommandesPoudreEnCoursParEntrep(int entrep) { 	  	   		 			 			 	
 		return this.commandesPoudreEnCours2.get(entrep); 	  	   		 			 			 	
 	} 	  	   		 			 			 	
@@ -1052,10 +1070,10 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		ArrayList<ArrayList<Integer>> commandes = this.getCommandesTablettesEnCours();
 		int quantite = 0;
 		for(ArrayList<Integer> commande : commandes) {
-			for(int idProduit = 1; idProduit <= 6; idProduit++) {
-				quantite += commande.get(idProduit-4);
+			for(int idProduit = 4; idProduit <= 6; idProduit++) {
+				quantite += commande.get(idProduit-4); 
 			}
-		}
+		} 
 		return quantite;
 	}
 	public int getQuantitePoudreCommandees() {
@@ -1078,7 +1096,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		ArrayList<ArrayList<Integer>> commandes = this.getLivraisonsTablettesEnCours();
 		int quantite = 0;
 		for(ArrayList<Integer> commande : commandes) {
-			for(int idProduit = 1; idProduit <= 6; idProduit++) {
+			for(int idProduit = 4; idProduit <= 6; idProduit++) {
 				quantite += commande.get(idProduit-4);
 			}
 		}
@@ -1380,8 +1398,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		int productionAttendue = 0;
 		ArrayList<ArrayList<Integer>> commandesEnCours = this.getCommandesTablettesEnCours();
 		for(int i = 0; i < commandesEnCours.size(); i++) {
-			for(int idDist = 0; idDist < 3; idDist++) {
-				productionAttendue += commandesEnCours.get(idDist).get(4+qualite);
+			for(int idDist = 0; idDist < 2; idDist++) {
+				productionAttendue += commandesEnCours.get(idDist).get(3+qualite);
 			}
 		}
 		//productionAttendue -= (int)this.getStockTablettes(qualite).getValeur();
@@ -1444,7 +1462,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		int productionAttendue = 0; 	  	   		 			 			 	
 		ArrayList<ArrayList<Integer>> commandesEnCours = this.getCommandesTablettesEnCoursParEntrep(entrep); 	  	   		 			 			 	
 		for(int i = 0; i < commandesEnCours.size(); i++) { 	  	   		 			 			 	
-			for(int idDist = 0; idDist < 3; idDist++) { 	  	   		 			 			 	
+			for(int idDist = 0; idDist < 2; idDist++) { 	  	   		 			 			 	
 				productionAttendue += commandesEnCours.get(idDist).get(4+qualite); 	  	   		 			 			 	
 			} 	  	   		 			 			 	
 		} 	  	   		 			 			 	
@@ -1539,7 +1557,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
-		int n = demande.length;
+	/*	
+	    int n = demande.length;
 		for(int i = 0; i<n; i++) {
 			if(demande[i] != null) {
 				int qualite = demande[i].getQualite();
@@ -1548,32 +1567,55 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 					demande[i].setQuantite((int)this.getStockPoudre()[qualite].getValeur());
 					//demande[i].setReponse(false);
 				}
-		/*
-		for(ContratPoudre demande_i:demande) {
-			int qualite=demande_i.getQualite();
-			double prix=demande_i.getPrix();
-			List<Integer> demande_i_parEntrep=this.repart(demande_i.getQuantite());
+			}
+		}
+		return demande;
+	}
+	*/
+		
+		int qualite;
+		for(ContratPoudre demande_i:demande) {	
+			qualite=demande_i.getQualite();
+			ContratPoudre10 demande_i10=new ContratPoudre10(demande_i,this.repart(demande_i.getQuantite()));
 			int total=0;
 			for(int acteur10=0;acteur10<10;acteur10++) {
-				if (demande_i_parEntrep.get(acteur10)>this.getStockPoudre2().get(acteur10)[qualite].getValeur())
-					demande_i_parEntrep.set(acteur10, (int)(this.getStockPoudre2().get(acteur10)[qualite].getValeur()));
-				this.getCommandesPoudreEnCoursParEntrep(acteur10).add(new ContratPoudre(qualite,
-						demande_i_parEntrep.get(acteur10),prix,acheteur,this,false));
-				total+=demande_i_parEntrep.get(acteur10);
+				if (demande_i10.getQteActeur(acteur10)>this.getStockPoudre2().get(acteur10)[qualite].getValeur())
+					demande_i10.setQteActeur(acteur10, (int)(this.getStockPoudre2().get(acteur10)[qualite].getValeur()));
+				
+				this.getCommandesPoudreEnCoursParEntrep(acteur10).add(demande_i10.getContrats().get(acteur10));
+				total+=demande_i10.getQteActeur(acteur10);
 			
 			}
-			demande_i=new ContratPoudre(qualite,total,prix,acheteur,this,false);
-		*/
-			}
+			demande_i.setQuantite(total);
+			this.getCommandesPoudreEnCours().add(demande_i10);
 		}
 		return demande;
 	}
 	
 	//on ne peut pas mettre à jour chacune des 10 commandes en cours sans connaitre la répartition
+	//on doit donc récupérer le devis correspondant pour connaître sa répartitions
 	public void sendReponsePoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		for(int qualite = 0; qualite<3; qualite++) {
-			if(contrat[qualite].getReponse())
-				this.getCommandesPoudreEnCours().add(contrat[qualite]);
+			
+			//On cherche le devis correspondant au contrat que l'on passe
+			boolean stoploop=false;
+			ContratPoudre10 eldevis=null;
+			for(ContratPoudre devis:this.getCommandesPoudreEnCours()) {
+				if (!stoploop) {
+					if (devis.equals(contrat[qualite])) {
+						eldevis=(ContratPoudre10)devis;
+						stoploop=true;						
+					}
+				}
+			}
+			
+			//On met à jour la liste des contrats en cours
+			if(contrat[qualite].getReponse()&&eldevis!=null) {
+				this.getCommandesPoudreEnCours().add(new ContratPoudre10(contrat[qualite],eldevis.getRepart()));
+				for(int acteur10=0;acteur10<10;acteur10++) {
+					this.getCommandesPoudreEnCoursParEntrep(acteur10).add(((ContratPoudre10)contrat[qualite]).getContrats().get(acteur10));
+				}
+			}
 		}
 	}
 	
@@ -1603,6 +1645,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	 * @param offresPubliques2
 	 * @return
 	 */
+	
 	
 	public int getMaximumOfProduction(int type, int qualite) {
 		int[] productionTotaleMax = new int[3];
@@ -1861,26 +1904,28 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		ArrayList<ArrayList<Integer>> livraisons = new ArrayList<ArrayList<Integer>>();
 			
 		// boucle sur les distributeurs
-		for(int idDist=0;idDist<3;idDist++) {
+		for(int idDist=0;idDist<2;idDist++) {
+			livraisons.add(new ArrayList<Integer>());
 			// boucle sur les types de produits
 			for(int idProduit = 1; idProduit <= 6; idProduit++) {
+				livraisons.get(idDist).add(0);
 				if(idProduit <= 3) {
 				}
 				else {
 					// On regarde si on a en stock ou si on peut produire ce qu'on nous demande
-					if (commandes.get(idDist).get(idProduit-4) > stockTablettes[idProduit-4]) {
+					if (commandes.get(idDist).get(idProduit-4) < stockTablettes[idProduit-4]) {
 						/*double p = commande1[i]/(commande1[i]+commande2[i]);
 						deliver1[i]=(int)(p*stock[i]);
 						deliver2[i]=stock[i]-deliver1[i];*/
 						
-						int diff = commandes.get(idDist).get(idProduit-4)-stockTablettes[idProduit-4];
-						livraisons.get(idDist).set(idProduit-4, commandes.get(idDist).get(idProduit-4)-diff);
+						int diff = commandes.get(idDist).get(idProduit-1)-stockTablettes[idProduit-4];
+						livraisons.get(idDist).set(idProduit-1, commandes.get(idDist).get(idProduit-1)-diff);
 						
 						// On retire ce qu'on a utilisé de notre stock
-						this.setStockTablettes((int)(this.getStockTablettes(idProduit-4).getValeur()-livraisons.get(idDist).get(idProduit-4)), idProduit-4);
+						this.setStockTablettes((int)(this.getStockTablettes(idProduit-4).getValeur()-livraisons.get(idDist).get(idProduit-1)), idProduit-4);
 						
 						//on met à jour le solde
-						this.getSolde().setValeur(this,this.getSolde().getValeur()+livraisons.get(idDist).get(idProduit-4)*this.getPrixVenteTablettes()[idProduit-4].getValeur());
+						this.getSolde().setValeur(this,this.getSolde().getValeur()+livraisons.get(idDist).get(idProduit-1)*this.getPrixVenteTablettes()[idProduit-4].getValeur());
 					}
 				}
 			}
@@ -1903,17 +1948,20 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		if (d.getQualite()==1 || d.getQualite()==2 || d.getQualite()==3) { //on a pas de confiseries donc on est pas interessés
 			return Double.MAX_VALUE;
 		} else {
-			if (d.getQuantite()<stockTablettes[d.getQualite()-4].getValeur()) {
+			return this.estimatePrixVenteTablette(d.getQualite()-4);
+			/*if (d.getQuantite()<stockTablettes[d.getQualite()-4].getValeur()) {
 				return this.estimatePrixVenteTablette(d.getQualite()-4);
 			} else {
 				return Double.MAX_VALUE;
-			}
+			}*/
 		}
 	}
 	@Override
 	public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
-		this.stockTablettes[qualite-4].setValeur(this, this.stockTablettes[qualite-4].getValeur()-quantite/10/1000);
-		this.getSolde().setValeur(this, this.getSolde().getValeur()+prix*quantite);
+		if(qualite >= 4) {
+			this.stockTablettes[qualite-4].setValeur(this, this.stockTablettes[qualite-4].getValeur()-quantite/10/1000);
+			this.getSolde().setValeur(this, this.getSolde().getValeur()+prix*quantite);
+		}
 	}
 	
 	/** 
