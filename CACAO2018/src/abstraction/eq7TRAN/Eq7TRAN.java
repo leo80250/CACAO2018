@@ -457,6 +457,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		this.getJournal().ajouter("COMMANDES TABLETTES = " +this.getQuantiteTablettesCommandees()+"t");
 		this.getJournal().ajouter("LIVRAISONS TABLETTES = " +this.getQuantiteTablettesLivrees()+"t");
 		
+		this.getJournal().ajouter("TAUX PROD TABLETTES = "+this.getTauxProductionTablettesPoudre()[0]);
+		this.getJournal().ajouter("TAUX PROD POUDRE = "+this.getTauxProductionTablettesPoudre()[1]);
 		//Affichage du solde
 		
 		this.getJournal().ajouter("Nouveau solde = "+this.getSolde().getValeur()+"€");
