@@ -397,15 +397,9 @@ IvendeurOccasionnelChocoTer, Labellise{
 	public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
 			double ancienSolde = this.solde.getValeur() ; 
 			this.solde.setValeur(this, ancienSolde + prix);
-<<<<<<< HEAD
-			double ancienStock = this.Stocks.get(qualite).getValeur() ; 
-			this.Stocks.get(qualite).setValeur(this, ancienStock - quantite );
-			this.getJournalSousActeur().ajouter(this.getNom()+" a vendu " + quantite + "de qualité " + Marchandises.getMarchandise(qualite) + " à " + acteur.getNom());
-=======
 			double ancienStock = this.Stocks.get(qualite-1).getValeur() ; 
 			this.Stocks.get(qualite-1).setValeur(this, ancienStock - quantite );
 			this.getJournalSousActeur().ajouter(this.getNom()+" a vendu " + quantite + "de qualité " + qualite+ " à " + acteur.getNom());
->>>>>>> branch 'master' of https://github.com/Carlivoix/CACAO2018.git
 		
 	}
 	
