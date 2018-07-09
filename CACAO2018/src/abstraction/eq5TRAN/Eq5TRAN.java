@@ -85,13 +85,13 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
         prix[FEVES_BQ] = new Indicateur("Eq5 - Prix de feves BQ", this, 1000);
         prix[FEVES_MQ] = new Indicateur("Eq5 - Prix de feves MQ", this, 2000);
-        prix[TABLETTES_BQ] = new Indicateur("Eq5 - Prix de tablettes BQ", this, 8_000_000);
-        prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ", this, 10_000_000);
-        prix[TABLETTES_HQ] = new Indicateur("Eq5 - Prix de tablettes HQ", this, 18_000_000);
+        prix[TABLETTES_BQ] = new Indicateur("Eq5 - Prix de tablettes BQ", this, 5_000_000);
+        prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ", this, 7_500_000);
+        prix[TABLETTES_HQ] = new Indicateur("Eq5 - Prix de tablettes HQ", this, 10_000_000);
         prix[POUDRE_BQ] = new Indicateur("Eq5 - Prix de poudre BQ", this, 0);
         prix[POUDRE_MQ] = new Indicateur("Eq5 - Prix de poudre MQ", this, 5_000_000);
         prix[POUDRE_HQ] = new Indicateur("Eq5 - Prix de poudre HQ", this, 0);
-        prix[FRIANDISES_MQ] = new Indicateur("Eq5 - Prix de friandises MQ", this, 8_000_000);
+        prix[FRIANDISES_MQ] = new Indicateur("Eq5 - Prix de friandises MQ", this, 7_500_000);
 
         productionSouhaitee[FEVES_BQ] = new Indicateur("Eq5 - Production souhaitee de feves BQ", this, 0);
         productionSouhaitee[FEVES_MQ] = new Indicateur("Eq5 - Production souhaitee de feves MQ", this, 0);
@@ -578,32 +578,32 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public double getReponseTer(DemandeAO d) {
         switch (d.getQualite()) {
             case 1: {
-                journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)");
+                journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                 return Double.MAX_VALUE;
             }
             case 2:
                 if (d.getQuantite() < stocks[FRIANDISES_MQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000 + "€ à getReponse(d)");
-                    return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite()* (1_000_000 / 0.2));
+                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
             case 3: {
-                journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)");
+                journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                 return Double.MAX_VALUE;
             }
             case 4:
                 if (d.getQuantite() < stocks[TABLETTES_BQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* (1_000_000 / 0.2));
+                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
             case 5:
                 if (d.getQuantite() < stocks[TABLETTES_MQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* (1_000_000 / 0.2));
+                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
             case 6:
                 if (d.getQuantite() < stocks[TABLETTES_HQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000+ "€ à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite()* (1_000_000 / 0.2));
+                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000+ "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
         }
         return Double.MAX_VALUE;
