@@ -118,7 +118,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		//Victor Signes
 		//Achat occasionnel
 
-		for(int i=0;i<6;i++) {
+		for(int i=0;i<6;i++) { 
 			ArrayList<Double> stocksInitiaux = new ArrayList<Double>();
 			stocksInitiaux.add((double) 0); stocksInitiaux.add((double) (58000/26)); stocksInitiaux.add((double) 0); stocksInitiaux.add((double) (42000/26)); stocksInitiaux.add((double) (577500/26)); stocksInitiaux.add((double) 0);
 			if(this.stock.get(i)<0.1*stocksInitiaux.get(i)) { //hypothèse stock minimal
