@@ -439,7 +439,7 @@ public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 		}
 		this.getJournalOccasionel().ajouter("------------------------------------------------------------------------------");
 		setStockAffichage();
-		setQuantiteEq3(false);
+		setQuantiteEq3(false); 
 		indicateurQB.setValeur(this, getStockQB());
 		indicateurQM.setValeur(this, getStockQM());
 		soldejournal.setValeur(this, getSolde());
