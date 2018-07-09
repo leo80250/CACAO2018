@@ -67,7 +67,7 @@ public class GPrix2{
 		 * 5=TablettesMQ
 		 * 6=TablettesHQ
 		 */
-		if(getIntervalles().size()>0) {
+		if(getIntervalles().get(idProduit-1).length>0) {
 			int j =0;
 			while((j<getIntervalles().get(idProduit-1).length)&&(getIntervalles().get(idProduit-1)[j]>quantite)) {
 				j++;
