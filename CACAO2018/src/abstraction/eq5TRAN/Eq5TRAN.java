@@ -29,15 +29,12 @@ import static abstraction.eq5TRAN.util.Marchandises.*;
  * @author Thomas Schillaci (lieutenant)
  * 
  * TODO LIST
-<<<<<<< HEAD
-<<<<<<< HEAD
+
  * - Systeme de fidelite client/fournisseur
- * - Determiner prix d'achat aux producteurs ( done ? )
-=======
- * - Determiner prix d'achat aux producteurs
->>>>>>> branch 'master' of https://github.com/ThomasSchillaci/CACAO2018.git
-=======
->>>>>>> branch 'master' of https://github.com/ThomasSchillaci/CACAO2018.git
+
+
+ 
+
  * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
  */
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoTer, IAcheteurFeveV4, IVendeurChocoBis {
