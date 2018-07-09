@@ -629,6 +629,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
     @Override
     public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
+        if(prix>Math.pow(10,9)) return;
         this.depenser(-prix);
         this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite *(0.2/1_000_000));
         switch (qualite) {
