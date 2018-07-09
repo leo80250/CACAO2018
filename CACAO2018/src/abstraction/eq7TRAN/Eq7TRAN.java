@@ -1500,19 +1500,40 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	}
 	
 	public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
-		int n = demande.length;
-		for(int i = 0; i<n; i++) {
-			if(demande[i] != null) {
-				int qualite = demande[i].getQualite();
-				// Si on a pas la bonne quantité on refuse
-				if(demande[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
-					demande[i].setQuantite((int)this.getStockPoudre()[qualite].getValeur());
-					//demande[i].setReponse(false);
+		/*	
+		    int n = demande.length;
+			for(int i = 0; i<n; i++) {
+				if(demande[i] != null) {
+					int qualite = demande[i].getQualite();
+					// Si on a pas la bonne quantité on refuse
+					if(demande[i].getQuantite() > this.getStockPoudre()[qualite].getValeur()) {
+						demande[i].setQuantite((int)this.getStockPoudre()[qualite].getValeur());
+						//demande[i].setReponse(false);
+					}
 				}
 			}
+			return demande;
 		}
-		return demande;
-	}
+		*/
+			
+			int qualite;
+			for(ContratPoudre demande_i:demande) {	
+				qualite=demande_i.getQualite();
+				ContratPoudre10 demande_i10=new ContratPoudre10(demande_i,this.repart(demande_i.getQuantite()));
+				int total=0;
+				for(int acteur10=0;acteur10<10;acteur10++) {
+					if (demande_i10.getQteActeur(acteur10)>this.getStockPoudre2().get(acteur10)[qualite].getValeur())
+						demande_i10.setQteActeur(acteur10, (int)(this.getStockPoudre2().get(acteur10)[qualite].getValeur()));
+					
+					this.getCommandesPoudreEnCoursParEntrep(acteur10).add(demande_i10.getContrats().get(acteur10));
+					total+=demande_i10.getQteActeur(acteur10);
+				
+				}
+				demande_i.setQuantite(total);
+				this.getCommandesPoudreEnCours().add(demande_i10);
+			}
+			return demande;
+		}
 	
 	//on ne peut pas mettre à jour chacune des 10 commandes en cours sans connaitre la répartition
 	public void sendReponsePoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
