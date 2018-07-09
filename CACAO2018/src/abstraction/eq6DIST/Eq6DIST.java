@@ -394,6 +394,12 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		for (int i=0;i<livraison.size();i++) {
 			this.stock.set(i, this.stock.get(i)+livraison.get(i));
 		}
+		this.stock_BBQ.setValeur(this, livraison.get(0)+this.stock_BBQ.getValeur());
+		this.stock_BMQ.setValeur(this, livraison.get(1)+this.stock_BMQ.getValeur());
+		this.stock_BHQ.setValeur(this, livraison.get(2)+this.stock_BHQ.getValeur());
+		this.stock_TBQ.setValeur(this, livraison.get(3)+this.stock_TBQ.getValeur());
+		this.stock_TMQ.setValeur(this, livraison.get(4)+this.stock_TMQ.getValeur());
+		this.stock_THQ.setValeur(this, livraison.get(5)+this.stock_THQ.getValeur());
 		this.banque.setValeur(this, this.banque.getValeur()-paiement);
 	}
 
