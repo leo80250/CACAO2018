@@ -180,8 +180,8 @@ public class Eq4TRAN implements Acteur {
 		contratPoudreEnCoursEq7TRAN_PME3[0] = new ContratPoudre(0,0,Eq7TRAN.getCataloguePoudre(PME3)[0].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq5TRAN_PME3[1] = new ContratPoudre(1,0,Eq5TRAN.getCataloguePoudre(PME3)[1].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 		contratPoudreEnCoursEq7TRAN_PME3[1] = new ContratPoudre(1,0,Eq7TRAN.getCataloguePoudre(PME3)[1].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq5TRAN_PME3[2] = new ContratPoudre(2,18000/24,Eq5TRAN.getCataloguePoudre(PME3)[3].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
-		contratPoudreEnCoursEq7TRAN_PME3[2] = new ContratPoudre(2,18000/24,Eq7TRAN.getCataloguePoudre(PME3)[3].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq5TRAN_PME3[2] = new ContratPoudre(2,18000/24,Eq5TRAN.getCataloguePoudre(PME3)[2].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
+		contratPoudreEnCoursEq7TRAN_PME3[2] = new ContratPoudre(2,18000/24,Eq7TRAN.getCataloguePoudre(PME3)[2].getPrix(), (IAcheteurPoudre)this.PME3,(IVendeurPoudre) Monde.LE_MONDE.getActeur("Eq7TRAN"),false);
 
 		
 		this.PME3.setContratPoudreEnCoursEq5TRAN(contratPoudreEnCoursEq5TRAN_PME3);
