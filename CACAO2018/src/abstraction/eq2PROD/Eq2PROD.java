@@ -304,9 +304,13 @@ public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 	public double coeffFinal() {
 		double c = 0;
 		for (int i=0; i<10 ; i++) {
-			c = c + getCoeffDeficitProd(i);
+			c = c + getCoeffDeficitProd(i)*partProd[i];
 		}
-		return c ;
+		if (1-c>0.2) {
+			return 1-c;
+		} else {
+			return 0.2;
+		}
 	} 
 	
 	/* Alexandre Bigot + Guillaume Sallé */
