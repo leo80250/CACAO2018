@@ -582,7 +582,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
                 return Double.MAX_VALUE;
             }
             case 2:
-                if (d.getQuantite() < 0.2 * stocks[FRIANDISES_MQ].getValeur() * (1_000_000 / 0.2)) {
+                if (d.getQuantite() < stocks[FRIANDISES_MQ].getValeur()*(1_000_000 / 0.2)) {
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000 + "€ à getReponse(d)");
                     return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite()* (1_000_000 / 0.2));
                 }
@@ -591,17 +591,17 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
                 return Double.MAX_VALUE;
             }
             case 4:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_BQ].getValeur()*(1_000_000 / 0.2)) {
+                if (d.getQuantite() < stocks[TABLETTES_BQ].getValeur()*(1_000_000 / 0.2)) {
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse(d)");
                     return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* (1_000_000 / 0.2));
                 }
             case 5:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_MQ].getValeur()*(1_000_000 / 0.2)) {
+                if (d.getQuantite() < stocks[TABLETTES_MQ].getValeur()*(1_000_000 / 0.2)) {
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse(d)");
                     return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* (1_000_000 / 0.2));
                 }
             case 6:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_HQ].getValeur()*(1_000_000 / 0.2)) {
+                if (d.getQuantite() < stocks[TABLETTES_HQ].getValeur()*(1_000_000 / 0.2)) {
                     journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000+ "€ à getReponse(d)");
                     return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite()* (1_000_000 / 0.2));
                 }
@@ -616,7 +616,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     @Override
     public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
         this.depenser(-prix);
-        this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite /(1_000_000 / 0.2));
+        this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite *(0.2/1_000_000));
         journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de qualite " +qualite + " pour "+prix+"€ à "+acteur.getNom());
     }
 
