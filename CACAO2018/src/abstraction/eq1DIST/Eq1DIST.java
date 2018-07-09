@@ -13,6 +13,10 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
+/**
+ * @author Elisa Gressier-Monard
+ **/
+
 public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurChocoBis {
 	private Stock stock;
 	private Journal journal;
@@ -26,7 +30,11 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	private Indicateur PrixChocoHdG;
 	private Indicateur PrixConfMdG;
 	private Indicateur PrixConfHdG;
-
+	
+	
+	/**
+	 * @author Elisa Gressier-Monard
+	 **/
 	public Eq1DIST() {
 		// création du distributeur
 		// variables de stock
@@ -266,6 +274,10 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		return new GrilleQuantite(res);
 
 	}
+	
+	/**
+	 * @author Elisa Gressier-Monard
+	 **/
 
 	public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
 		int nombre_transfo=Prix.size();
@@ -279,7 +291,7 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		return commande;
 	}
 	/**
-	 * @author Leo Vuylsteker
+	 * @author Leo Vuylsteker & Elisa Gressier-Monard
 	 **/
 	public ArrayList<Integer> listeTriee(ArrayList<Double> prix) {
 		ArrayList<Double> copie = new ArrayList<Double>();
@@ -320,6 +332,9 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 //
 //	}
 
+	/**
+	 * @author Elisa Gressier-Monard
+	 **/
 	// véritable fonction getCommande que nous ne sommes pas parvenus à implémenter (indices outofbounds mystérieux)
 //	public ArrayList<ArrayList<Integer>> getCommande(ArrayList<GPrix2> Prix, ArrayList<ArrayList<Integer>> Stock) {
 //		int[] demande;
@@ -390,18 +405,10 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 //			this.journal.ajouter("Tablettes MQ : " + l.get(4) + "; Tablettes HQ : " + l.get(5) + "; Confiseries MQ : "
 //					+ l.get(1) + "; Confiseries MQ : " + l.get(2));
 //			this.journal.ajouter("");
-//			this.stocks[1].setValeur(this, this.stocks[1].getValeur() + l.get(4));
-//			this.stocks[2].setValeur(this, this.stocks[2].getValeur() + l.get(5));
-//			this.stocks[4].setValeur(this, this.stocks[4].getValeur() + l.get(1));
-//			this.stocks[5].setValeur(this, this.stocks[5].getValeur() + l.get(2));
 //			this.solde.setValeur(this,
 //					this.solde.getValeur() - Prix.get(4).getPrixProduit(l.get(4), 4)
 //							- Prix.get(5).getPrixProduit(l.get(5), 5) - Prix.get(1).getPrixProduit(l.get(1), 1)
 //							- Prix.get(2).getPrixProduit(l.get(2), 2));
-//			stock.ajouter(l.get(4), 1);
-//			stock.ajouter(l.get(5), 2);
-//			stock.ajouter(l.get(1), 4);
-//			stock.ajouter(l.get(2), 5);
 //		}
 //		double[] PrixMoyenVente = new double[6];
 //		for (int i = 0; i < 6; i++) {
@@ -411,9 +418,10 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 //		return commandeFinale;
 //	}
 
-	@Override
+	/**
+	 * @author Elisa Gressier-Monard
+	 **/
 	public void livraison(ArrayList<Integer> livraison, double paiement) {
-		//ATENTION ORDRE DE LIVRAISON DIFFERENT A REVOIR
 		this.stocks[1].setValeur(this, this.stocks[1].getValeur()+livraison.get(1));
 		this.stocks[2].setValeur(this, this.stocks[2].getValeur()+livraison.get(2));
 		this.stocks[4].setValeur(this, this.stocks[4].getValeur()+livraison.get(4));
