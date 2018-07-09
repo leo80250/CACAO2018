@@ -1,7 +1,11 @@
 package abstraction.eq4TRAN;
 
 import java.lang.reflect.Field;
-
+/**
+ * 
+ * @author Etienne
+ *
+ */
 public class Marchandises {
 
 	public static final int StockChocBQ = 1;

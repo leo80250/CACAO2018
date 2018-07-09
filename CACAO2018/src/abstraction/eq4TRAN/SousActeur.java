@@ -216,6 +216,7 @@ IvendeurOccasionnelChocoTer{
 	public List<ContratFeveV3> getResultVentesV3() {
 		for (ContratFeveV3 contrat : this.contratFeveEnCours) {
 			double coutTotal = contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;
+			this.getJournalSousActeur().ajouter("L'équipe 4 a acheté : "+contrat.getProposition_Quantite()+ " de fèves " +Marchandises.getQualite(contrat.getQualite())+ " pour "+ contrat.getProposition_Prix());
 				//if (1.5*coutTotal < this.solde.getValeur()) {
 					if (true) {
 					contrat.setReponse(true);
