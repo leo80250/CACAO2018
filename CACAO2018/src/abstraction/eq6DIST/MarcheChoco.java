@@ -19,6 +19,7 @@ public class MarcheChoco  implements Acteur{
 	
 	public MarcheChoco() {
 		this.Journal_Marche_choco=new Journal("Journal Marche Choco");
+		Monde.LE_MONDE.ajouterJournal(this.Journal_Marche_choco);
 	}
 public void actu() {
 		this.transformateurs= new ArrayList<Acteur>();
