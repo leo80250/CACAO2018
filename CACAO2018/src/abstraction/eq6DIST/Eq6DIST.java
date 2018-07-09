@@ -1,21 +1,17 @@
 package abstraction.eq6DIST;
 
-import java.util.ArrayList;
 
 import abstraction.eq1DIST.GrilleQuantite;
-import abstraction.eq1DIST.IVenteConso;
 import abstraction.eq1DIST.InterfaceDistributeurClient;
-import abstraction.eq4TRAN.Eq4TRAN;
 import abstraction.eq4TRAN.VendeurChoco.GPrix2;
-import abstraction.eq5TRAN.Eq5TRAN;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
-import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChoco;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
-import abstraction.eq7TRAN.Eq7TRAN;
 import abstraction.fourni.Acteur;
 import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
+
+import java.util.ArrayList;
 
  
 public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeurClient{
@@ -118,16 +114,16 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		this.marge_TBQ.setValeur(this, this.marge.get(3));
 		this.marge_TMQ.setValeur(this, this.marge.get(4));
 		this.marge_THQ.setValeur(this, this.marge.get(5));
-		
+
 		//Victor Signes
 		//Achat occasionnel
-		
+
 		for(int i=0;i<6;i++) {
 			if(this.stock.get(i)<200) { //hypothèse stock minimal
 				DemandeAO d = new DemandeAO(500,i+1); //hypothèse achat à réaliser
 				ArrayList<Double> prop = new ArrayList<Double>();
 				ArrayList<Acteur> acteurs = new ArrayList<Acteur>();
-				for(Acteur acteur : Monde.LE_MONDE.getActeurs()) { 
+				for(Acteur acteur : Monde.LE_MONDE.getActeurs()) {
 					if(acteur instanceof IvendeurOccasionnelChocoTer) {
 						prop.add(((IvendeurOccasionnelChocoTer)acteur).getReponseTer(d));
 						acteurs.add(acteur);
@@ -136,19 +132,19 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				double p=prop.get(0);
 				Acteur a=acteurs.get(0);
 				for(Double j : prop) {
-					 if(j<p) {
+					 if(j<p && i<acteurs.size()) {
 						 p=j; //on choisit la proposition avec le prix minimum
 						 a=acteurs.get(i);
 					 }
 				}
 				((IvendeurOccasionnelChocoTer)a).envoyerReponseTer(this, d.getQuantite(), d.getQualite(), p); //envoi de la proposition choisie
-				
+
 			}
 		}
-		
 
 
-		/** 
+
+		/**
 		 * Karel Kédémos et Victor Signes
 		 */
 		journalEq6.ajouter("quantité bonbon basse qualité = " + Integer.toString(this.stock.get(0)));
@@ -169,7 +165,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		journalEq6.ajouter("marge sur tablettes basse qualité = " + Double.toString(this.marge.get(3)));
 		journalEq6.ajouter("marge sur tablettes moyenne qualité = " + Double.toString(this.marge.get(4)));
 		journalEq6.ajouter("marge sur tablettes haute qualité = " + Double.toString(this.marge.get(5)));
- 
+
 	}
 	
 	
@@ -192,18 +188,18 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		/**
 		 * Karel Kédémos
 		 */
-		
-	
+
+
 		int nombre_transfo=Prix.size();
 		ArrayList<ArrayList<Integer>> commande = new ArrayList<ArrayList<Integer>>();
 		for (int i=0;i<nombre_transfo;i++) {
 			commande.add(new ArrayList<Integer>());
 			for (int j=0;j<6;j++) {
-				commande.get(i).add(0);
+				commande.get(i).add(1000);
 			}
 		}
-		
-		
+
+
 		return commande;
 	}
 	@Override
@@ -215,26 +211,28 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		}
 		this.banque.setValeur(this, this.banque.getValeur()-paiement);
 	}
-	
+
 	// Victor Signes
 	@Override
 	public GrilleQuantite commander(GrilleQuantite Q) {
-		int[][] res = new int[1][6];
+		int[] res = new int[6];
 		for (int i=0;i<6;i++) {
-			int c = this.stock.get(i) - Q.getValeur(1, i);
+			int c = this.stock.get(i) - Q.getValeur( i);
 			if (c>=0) {
-				res[1][i]=(Q.getValeur(1, i));
+				res[i]=(Q.getValeur(i));
 			}else {
-				res[1][i]=(this.stock.get(i));
+				res[i]=(this.stock.get(i));
 			}
-			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i)*res[1][i]);		
+
+			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i)*res[i]);		
+
 		}
 		
 		return new GrilleQuantite(res);
 	}
 	
 	//Victor Signes
-	
+
 	public void modifPrix(GrilleQuantite Q) {
 		double p=0.2; //pourcentage de marge
 		ArrayList<Double> prixMax= new ArrayList<Double>();
@@ -243,10 +241,12 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		prixMin.add(0.0); prixMin.add(1.33); prixMin.add(0.0); prixMin.add(0.51); prixMin.add(1.7); prixMin.add(0.0);
 		double Nmarge= 0; //nouvelle marge
 		double margeUnitaire=0; //marge sur une tablette
-		
+
 		for (int i=0;i<6;i++) {  //on calcule la marge pour chaque type de chocolat
+
 			
-			Nmarge=this.prix.get(i)*Q.getValeur(1, i)*p;
+			Nmarge=this.prix.get(i)*Q.getValeur(i)*p;
+
 			margeUnitaire=this.prix.get(i)*p;
 			if(Nmarge<this.marge.get(i) && (this.prix.get(i)+margeUnitaire)<=prixMax.get(i)) {
 				this.prix.set(i, this.prix.get(i)+margeUnitaire); //on définit le nouveau prix
@@ -257,8 +257,12 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			this.marge.set(i, Nmarge);
 		}
 	}
-	
-	
-	
-	
-}
+
+	@Override
+	public double[] getPrix() {
+		// TODO Auto-generated method stub
+		return new double[] {this.prix_TBQ.getValeur(),this.prix_TMQ.getValeur(),this.prix_THQ.getValeur(),
+				this.prix_BBQ.getValeur(),this.prix_BMQ.getValeur(),this.prix_BHQ.getValeur()};
+		}
+	}
+
