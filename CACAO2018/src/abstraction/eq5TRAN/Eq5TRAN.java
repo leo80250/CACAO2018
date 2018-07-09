@@ -642,11 +642,11 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public GPrix2 getPrix() {
         ArrayList<Double[]> intervalles = new ArrayList<Double[]>();
         intervalles.add(new Double[0]);
-        intervalles.add(new Double[]{0.0d,stocks[FRIANDISES_MQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{stocks[FRIANDISES_MQ].getValeur()*1_000_000 / 0.2 / 2});
         intervalles.add(new Double[0]);
-        intervalles.add(new Double[]{0.0d,stocks[TABLETTES_BQ].getValeur()*1_000_000 / 0.2 / 2});
-        intervalles.add(new Double[]{0.0d,stocks[TABLETTES_MQ].getValeur()*1_000_000 / 0.2 / 2});
-        intervalles.add(new Double[]{0.0d,stocks[TABLETTES_HQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{stocks[TABLETTES_BQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{stocks[TABLETTES_MQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{stocks[TABLETTES_HQ].getValeur()*1_000_000 / 0.2 / 2});
 
         ArrayList<Double[]> prixAssocies = new ArrayList<Double[]>();
         prixAssocies.add(new Double[0]);
