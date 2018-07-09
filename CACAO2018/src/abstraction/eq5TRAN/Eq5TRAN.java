@@ -1,21 +1,10 @@
 package abstraction.eq5TRAN;
 
-import static abstraction.eq5TRAN.util.Marchandises.FEVES_BQ;
-import static abstraction.eq5TRAN.util.Marchandises.FEVES_MQ;
-import static abstraction.eq5TRAN.util.Marchandises.FRIANDISES_MQ;
-import static abstraction.eq5TRAN.util.Marchandises.POUDRE_BQ;
-import static abstraction.eq5TRAN.util.Marchandises.POUDRE_HQ;
-import static abstraction.eq5TRAN.util.Marchandises.POUDRE_MQ;
-import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_BQ;
-import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_HQ;
-import static abstraction.eq5TRAN.util.Marchandises.TABLETTES_MQ;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import abstraction.eq3PROD.echangesProdTransfo.ContratFeveV3;
 import abstraction.eq3PROD.echangesProdTransfo.IAcheteurFeveV4;
 import abstraction.eq3PROD.echangesProdTransfo.IMarcheFeve;
+import abstraction.eq4TRAN.IVendeurChocoBis;
+import abstraction.eq4TRAN.VendeurChoco.GPrix2;
 import abstraction.eq5TRAN.appeldOffre.DemandeAO;
 import abstraction.eq5TRAN.appeldOffre.IvendeurOccasionnelChocoTer;
 import abstraction.eq5TRAN.util.Marchandises;
@@ -27,6 +16,12 @@ import abstraction.fourni.Indicateur;
 import abstraction.fourni.Journal;
 import abstraction.fourni.Monde;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static abstraction.eq5TRAN.util.Marchandises.*;
+
 /**
  * @author Juliette Gorline (chef)
  * @author Francois Le Guernic
@@ -34,10 +29,9 @@ import abstraction.fourni.Monde;
  * @author Thomas Schillaci (lieutenant)
  * 
  * TODO LIST
- * - Determiner prix d'achat aux producteurs
  * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
  */
-public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoTer, IAcheteurFeveV4 {
+public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoTer, IAcheteurFeveV4, IVendeurChocoBis {
 
     // cf Marchandises.java pour obtenir l'indexation
     private Indicateur[] productionSouhaitee; // ce qui sort de nos machines en kT
@@ -95,7 +89,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         prix[TABLETTES_MQ] = new Indicateur("Eq5 - Prix de tablettes MQ", this, 10_000_000);
         prix[TABLETTES_HQ] = new Indicateur("Eq5 - Prix de tablettes HQ", this, 18_000_000);
         prix[POUDRE_BQ] = new Indicateur("Eq5 - Prix de poudre BQ", this, 0);
-        prix[POUDRE_MQ] = new Indicateur("Eq5 - Prix de poudre MQ", this, 8_500_000);
+        prix[POUDRE_MQ] = new Indicateur("Eq5 - Prix de poudre MQ", this, 5_000_000);
         prix[POUDRE_HQ] = new Indicateur("Eq5 - Prix de poudre HQ", this, 0);
         prix[FRIANDISES_MQ] = new Indicateur("Eq5 - Prix de friandises MQ", this, 8_000_000);
 
@@ -208,12 +202,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void production() {
         roulementStocks();
 
-        production(POUDRE_BQ, TABLETTES_BQ);
-        production(POUDRE_MQ, TABLETTES_MQ);
-        production(POUDRE_HQ, TABLETTES_HQ);
-        production(POUDRE_MQ, FRIANDISES_MQ);
-        production(FEVES_BQ, POUDRE_BQ);
-        production(FEVES_MQ, POUDRE_MQ);
+        production(POUDRE_BQ, TABLETTES_BQ,10);
+        production(POUDRE_MQ, TABLETTES_MQ,10);
+        production(POUDRE_HQ, TABLETTES_HQ,10);
+        production(POUDRE_MQ, FRIANDISES_MQ,1.0f/0.7f);
+        production(FEVES_BQ, POUDRE_BQ,1.0f/0.7f);
+        production(FEVES_MQ, POUDRE_MQ,1.0f/0.7f);
     }
 
     /**
@@ -233,9 +227,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     /**
      * @author Thomas Schillaci
      * Transforme la merch1 en merch2
+     * @param tauxDeConversion rapport 1kg de merch2 par le nombre de kg de merch1 necessaires pour produire ce kilo de merch1
      */
-    public void production(int merch1, int merch2) {
-        double quantite = Math.min(stocks[merch1].getValeur(), productionSouhaitee[merch2].getValeur() * (isPeriodeFetes()?3:1));
+    public void production(int merch1, int merch2, float tauxDeConversion) {
+        double quantite = Math.min(stocks[merch1].getValeur()*tauxDeConversion, productionSouhaitee[merch2].getValeur() * (isPeriodeFetes()?3:1));
         if (isGreves()) quantite *= 0.3;
         if (quantite < productionSouhaitee[merch2].getValeur()) {
             respectObjectifs[merch1] = false;
@@ -317,23 +312,27 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     	demande[0]= new ContratPoudre();
     	demande[1]= new ContratPoudre();
     	    	//Si l'équipe 7 n'a pas assez de stocks, on demande le maximum disponible
-    	if(catalogue[2].getQuantite()<210) {
-    		demande[2] = new ContratPoudre(2,catalogue[2].getQuantite(),catalogue[2].getPrix(),this,equipe7,false);
-    	}
-    	
-    	else {
-    		demande[2]=new ContratPoudre(2,(int)besoinPoudre,catalogue[2].getPrix(),this,equipe7,false);
-    	}  	
-    	ContratPoudre[] devis = equipe7.getDevisPoudre(demande, this);
-    	if(devis[2].getPrix()==demande[2].getPrix() && devis[2].getQuantite()==demande[2].getQuantite()) {
-    		devis[2].setReponse(true);
-    		equipe7.sendReponsePoudre(devis, this);
-    		depenser(devis[2].getPrix());
-    		this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
-    		journal.ajouter("L'équipe 5 a acheté "+devis[2].getQuantite()+" tonnes de poudre HQ à l'équipe 7");
-    	}
+        if(catalogue[2]!=null) {
+            if(catalogue[2].getQuantite()<210) {
+                demande[2] = new ContratPoudre(2,catalogue[2].getQuantite(),catalogue[2].getPrix(),this,equipe7,false);
+            }
+
+            else {
+                demande[2]=new ContratPoudre(2,(int)besoinPoudre,catalogue[2].getPrix(),this,equipe7,false);
+            }
+        }
+        ContratPoudre[] devis = equipe7.getDevisPoudre(demande, this);
+        if(demande[2]!=null && devis[2]!=null) {
+            if(devis[2].getPrix()==demande[2].getPrix() && devis[2].getQuantite()==demande[2].getQuantite()) {
+                devis[2].setReponse(true);
+                equipe7.sendReponsePoudre(devis, this);
+                depenser(devis[2].getPrix());
+                this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
+                journal.ajouter("L'équipe 5 a acheté "+devis[2].getQuantite()+" tonnes de poudre HQ à l'équipe 7");
+            }
+        }
     	equipe7.getEchangeFinalPoudre(demande, this);
-    	}
+    }
     
     
 
@@ -349,7 +348,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         ContratPoudre[] catalogue = new ContratPoudre[3];
         catalogue[0] = new ContratPoudre();
         catalogue[2] = new ContratPoudre(); // on ne vend que de la poudre MQ
-        catalogue[1] = new ContratPoudre(1, (int)stocks[POUDRE_MQ].getValeur()*1000, prix[POUDRE_MQ].getValeur()*stocks[POUDRE_MQ].getValeur()*1000, acheteur, this, false);
+        catalogue[1] = new ContratPoudre(1, (int)stocks[POUDRE_MQ].getValeur()*1000, prix[POUDRE_MQ].getValeur()*Math.pow(10, -3), acheteur, this, false);
        
         return catalogue;
 
@@ -366,7 +365,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             if (demande[i].getQualite() != 1 || demande[i].getQuantite() > stocks[POUDRE_MQ].getValeur()*1000) {
                 devis[i] = new ContratPoudre();
             } else {
-                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur()*demande[i].getQuantite()*1000, acheteur, this, false);
+                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur()*Math.pow(10, -3)*demande[i].getQuantite()*1000, acheteur, this, false);
             }
         }
 
@@ -381,7 +380,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
         ContratPoudre[] reponse = new ContratPoudre[devis.length];
         for (int i = 0; i < devis.length; i++) {
-            if (devis[i].getQualite() == 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur()*1000 && devis[i].getPrix() >= prix[POUDRE_MQ].getValeur()*devis[i].getQuantite()*1000) {
+            if (devis[i].getQualite() == 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur()*1000 && devis[i].getPrix() >= prix[POUDRE_MQ].getValeur()*Math.pow(10, -3)*devis[i].getQuantite()*1000) {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), true);
             } else {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), false);
@@ -583,28 +582,28 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
                 return Double.MAX_VALUE;
             }
             case 2:
-                if (d.getQuantite() < 0.2 * stocks[FRIANDISES_MQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[FRIANDISES_MQ].getValeur() / 1_000_000 * 0.2) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000 + "€ à getReponse(d)");
+                    return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
             case 3: {
                 journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse(d)");
                 return Double.MAX_VALUE;
             }
             case 4:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_BQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[TABLETTES_BQ].getValeur()* 0.2 / 1_000_000) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse(d)");
+                    return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
             case 5:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_MQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[TABLETTES_MQ].getValeur()* 0.2 / 1_000_000) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse(d)");
+                    return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
             case 6:
-                if (d.getQuantite() < 0.2 * stocks[TABLETTES_HQ].getValeur()) {
-                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() + "à getReponse(d)");
-                    return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite());
+                if (d.getQuantite() < 0.2 * stocks[TABLETTES_HQ].getValeur()* 0.2 / 1_000_000) {
+                    journal.ajouter("Eq5 renvoie" + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000+ "€ à getReponse(d)");
+                    return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000);
                 }
         }
         return Double.MAX_VALUE;
@@ -617,11 +616,102 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     @Override
     public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
         this.depenser(-prix);
-        this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * (200.0 / 10000000));
-        journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de "+qualite+" qualite pour "+prix+" euros à "+acteur.getNom());
+        this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite * 0.2 / 1_000_000);
+        journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de qualite " +qualite + " pour "+prix+"€ à "+acteur.getNom());
     }
-    
-    
 
+    /**
+     * @author Thomas Schillaci
+     */
+    @Override
+    public ArrayList<Integer> getStock() {
+        ArrayList<Integer> res = new ArrayList<Integer>();
+        res.add(0);
+        res.add((int) (stocks[FRIANDISES_MQ].getValeur() * 1_000_000 / 0.2));
+        res.add(0);
+        res.add((int) (stocks[TABLETTES_BQ].getValeur() * 1_000_000 / 0.2));
+        res.add((int) (stocks[TABLETTES_MQ].getValeur() * 1_000_000 / 0.2));
+        res.add((int) (stocks[TABLETTES_HQ].getValeur() * 1_000_000 / 0.2));
+        return res;
+    }
 
-} 	  				 	 	   			 	
+    /**
+     * @author Thomas Schillaci
+     */
+    @Override
+    public GPrix2 getPrix() {
+        ArrayList<Double[]> intervalles = new ArrayList<Double[]>();
+        intervalles.add(new Double[0]);
+        intervalles.add(new Double[]{stocks[FRIANDISES_MQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[0]);
+        intervalles.add(new Double[]{stocks[TABLETTES_BQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{stocks[TABLETTES_MQ].getValeur()*1_000_000 / 0.2 / 2});
+        intervalles.add(new Double[]{stocks[TABLETTES_HQ].getValeur()*1_000_000 / 0.2 / 2});
+
+        ArrayList<Double[]> prixAssocies = new ArrayList<Double[]>();
+        prixAssocies.add(new Double[0]);
+        prixAssocies.add(new Double[]{prix[FRIANDISES_MQ].getValeur()*0.2/1_000_000});
+        prixAssocies.add(new Double[0]);
+        prixAssocies.add(new Double[]{prix[TABLETTES_BQ].getValeur()*0.2/1_000_000});
+        prixAssocies.add(new Double[]{prix[TABLETTES_MQ].getValeur()*0.2/1_000_000});
+        prixAssocies.add(new Double[]{prix[TABLETTES_HQ].getValeur()*0.2/1_000_000});
+
+        return new GPrix2(intervalles, prixAssocies);
+    }
+
+    @Override
+    public ArrayList<ArrayList<Integer>> getLivraison(ArrayList<ArrayList<Integer>> commandes) {
+        ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+
+        ArrayList<Integer> eq1 = new ArrayList<Integer>();
+
+        eq1.add(0);
+        eq1.add((int)Math.min(commandes.get(0).get(1), stocks[FRIANDISES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq1.add(0);
+        eq1.add((int) Math.min(commandes.get(0).get(3), stocks[TABLETTES_BQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq1.add((int) Math.min(commandes.get(0).get(4), stocks[TABLETTES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq1.add((int) Math.min(commandes.get(0).get(5), stocks[TABLETTES_HQ].getValeur() * 1_000_000 / 0.2 / 2));
+        
+        ArrayList<Integer> eq6 = new ArrayList<Integer>();
+
+        eq6.add(0);
+        eq6.add((int)Math.min(commandes.get(1).get(1), stocks[FRIANDISES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq6.add(0);
+        eq6.add((int) Math.min(commandes.get(1).get(3), stocks[TABLETTES_BQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq6.add((int) Math.min(commandes.get(1).get(4), stocks[TABLETTES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        eq6.add((int) Math.min(commandes.get(1).get(5), stocks[TABLETTES_HQ].getValeur() * 1_000_000 / 0.2 / 2));
+
+        ArrayList<Integer> fictif = new ArrayList<Integer>();
+
+        fictif.add(0);
+        fictif.add((int)Math.min(commandes.get(2).get(1), stocks[FRIANDISES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        fictif.add(0);
+        fictif.add((int) Math.min(commandes.get(2).get(3), stocks[TABLETTES_BQ].getValeur() * 1_000_000 / 0.2 / 2));
+        fictif.add((int) Math.min(commandes.get(2).get(4), stocks[TABLETTES_MQ].getValeur() * 1_000_000 / 0.2 / 2));
+        fictif.add((int) Math.min(commandes.get(2).get(5), stocks[TABLETTES_HQ].getValeur() * 1_000_000 / 0.2 / 2));
+
+        res.add(eq1);
+        res.add(eq6);
+        res.add(fictif);
+
+        String[] produits = new String[]{"","FRIANDISES_MQ","","TABLETTES_BQ","TABLETTES_MQ","TABLETTES_HQ"};
+
+        for(int i=0; i<6; i++) {
+            double prixAssocie = prix[Marchandises.getIndex(produits[i])].getValeur() / 1_000_000 * 0.2;
+            if(eq1.get(i)!=0) {
+                journal.ajouter("L'eq5 vient de vendre " + eq1.get(i) + " " + produits[i] + " pour " + prixAssocie * eq1.get(i) + "€");
+                depenser(-prixAssocie * eq1.get(i));
+            }
+            if(eq6.get(i)!=0) {
+                journal.ajouter("L'eq5 vient de vendre " + eq6.get(i) + " " + produits[i] + " pour " + prixAssocie * eq6.get(i) + "€");
+                depenser(-prixAssocie * eq6.get(i));
+            }
+            if(fictif.get(i)!=0) {
+                journal.ajouter("L'eq5 vient de vendre " + fictif.get(i) + " " + produits[i] + " pour " + prixAssocie * fictif.get(i) + "€");
+                depenser(-prixAssocie * fictif.get(i));
+            }
+        }
+
+        return res;
+    }
+}

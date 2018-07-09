@@ -6,7 +6,7 @@ import java.util.List;
  * 
  * Interface associee aux producteurs vendeurs de fèves
  * METHODES DU POINT DE VUE DU MARCHE CENTRAL
- * @author Claire
+ * @author Claire et Grégoire
  */
 
 public interface IVendeurFeveV4 {

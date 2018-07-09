@@ -4,16 +4,32 @@
 
 package abstraction.eq1DIST;
 
-public interface InterfaceDistributeurClient {
+import abstraction.fourni.Acteur;
+
+public interface InterfaceDistributeurClient extends Acteur {
 	/**
 	 *
 	 * @param Q
-	 *            : tableau d'entier (2x3) ligne 1: ChocolatBdG ; ChocolatMdG ;
-	 *            ChocolatHdG ligne 2: ConfiserieBdG ; ConfiserieMdG ; ConfiserieHdG
-	 * @return tableau d'entier du même modèle qui correspond à ce que le
-	 *         distributeur vend aux clients.
+	 *            : tableau d'entier (1x6) : {ChocolatBdG ; ChocolatMdG ;
+	 *            ChocolatHdG  ConfiserieBdG ; ConfiserieMdG ; ConfiserieHdG}
+	 * @return tableau d'entier (1x6) : {ChocolatBdG ; ChocolatMdG ;
+	 *            ChocolatHdG ; ConfiserieBdG ; ConfiserieMdG ; ConfiserieHdG}
+	 *            qui correspond à ce que le distributeur vend aux clients.
+	 *            Le distributeur prendra donc soin d'actualiser ses stocks et son argent en fonction
 	 */
 	public GrilleQuantite commander(GrilleQuantite Q);
+	
+	/**
+	 *
+	 * @param 
+	 *          
+	 * @return tableau de doubles (1x6) : {PrixChocolatBdG ; PrixChocolatMdG ;
+	 *            PrixChocolatHdG ; PrixConfiserieBdG ; PrixConfiserieMdG ; PrixConfiserieHdG}
+	 *            le getPrix servira à comparer les prix des distributeurs et de modifier en conséquances
+	 *            les parts de marché de façon à créer une "guerre des prix".
+	 *            NB: mettre des prix = 0.0 si le Distributeur ne propose pas ces produits.
+	 */
+	public double[] getPrix();
 	
 
 }

@@ -12,11 +12,11 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 /* VARIABLES D'INSTANCE */
 	private List<ContratFeveV3> offreFinale;
 	private List<ContratFeveV3> contratPrecedent;
+	public final static double pond = 0.4;
 	
 	public acheteurFictifTRAN() {
 		this.offreFinale = new ArrayList<>();
 		this.contratPrecedent = new ArrayList<>();
-		
 	} 
 	
 	
@@ -42,23 +42,23 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 		return this.contratPrecedent;
 	}
 	public void setContratPrecedent(List<ContratFeveV3> l) {
-		this.contratPrecedent = l;
+		this.contratPrecedent = new ArrayList<ContratFeveV3>();
+		for (ContratFeveV3 c : l) {
+			if ((c.getTransformateur() != this)&&(c.getReponse())) {
+				this.contratPrecedent.add(c);
+			}
+		}
 	}
+	
 	public List<ContratFeveV3> getOffreFinale() {
 		return this.offreFinale;
 	}
 	public void setOffreFinale(List<ContratFeveV3> l) {
-		this.offreFinale = l;
+		this.offreFinale = new ArrayList<ContratFeveV3>();
+		for (ContratFeveV3 c : l) {
+			this.offreFinale.add(c);
+		}
 	}
-	
-	/* Guillaume Sallé 
-	 * a devient a*p , b devient b*p, etc. Pour pouvoir changer facilement p
-	 * Appelé dans getDemandePrivee()
-	 */
-	public void ponderation(int a, int b, int c, int d, double p) {
-		a=(int)(a*p); b=(int)(b*p); c=(int)(c*p); d=(int)(d*p);   
-	}
-
 	
 /* NEXT DE L'ACTEUR FICTIF */	
 	public void next() {
@@ -75,61 +75,65 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 
 	/* Agathe Chevalier, Guillaume Sallé */
 	public List<ContratFeveV3> getDemandePriveeV3() {
-		/*this.contratPrecedent = Monde.LE_MONDE.getActeur("Marche intermediaire").getContratPrecedent*/
+		//this.contratPrecedent = new ArrayList<ContratFeveV3>();
+		//this.contratPrecedent = ((MarcheFeve)(Monde.LE_MONDE.getActeur("Marche"))).getContratPrecedent();
 		List<ContratFeveV3> c = new ArrayList<ContratFeveV3>();
-		/* Pour l'acheteur ficitf :		
-		int tonnageQB = 0; double prixQB =0;
+		//* Pour l'acheteur fictif :		
+		int tonnageQB = 0; double prixQB =0; // Prix à la tonne !
 		int tonnageQM_1 = 0; double prixQM_1 = 0;
 		int tonnageQM_2 = 0; double prixQM_2 = 0;
 		int tonnageQH = 0; double prixQH = 0;
+		int nbQB = 0 ; int nbQM_1 = 0 ; int nbQM_2 = 0; int nbQH = 0;
 		
 		for(ContratFeveV3 contrat : getContratPrecedent()) {
 			if(contrat.getQualite()==0) {
-				tonnageQB += (int)(contrat.getDemande_Quantite()*0.40);
+				tonnageQB += (int)(contrat.getDemande_Quantite()*pond);
 				prixQB += contrat.getDemande_Prix();
+				nbQB += 1;
 			}
 			if(contrat.getQualite()==2) {
-				tonnageQH += (int)(contrat.getDemande_Quantite()*0.40);
+				tonnageQH += (int)(contrat.getDemande_Quantite()*pond);
 				prixQH += contrat.getDemande_Prix();
+				nbQH += 1;
 			}
 			if(contrat.getQualite()==1) {
-				if(contrat.getProducteur()==null // Eq2PROD
+				if(contrat.getProducteur()==getVendeurs().get(0)
 						) {
-					tonnageQM_1 += (int)(contrat.getDemande_Quantite()*0.40);
+					tonnageQM_1 += (int)(contrat.getDemande_Quantite()*pond);
 					prixQM_1 += contrat.getDemande_Prix();
+					nbQM_1 += 1;
 				} else {
-					tonnageQM_2 += (int)(contrat.getDemande_Quantite()*0.40);
+					tonnageQM_2 += (int)(contrat.getDemande_Quantite()*pond);
 					prixQM_2 += contrat.getDemande_Prix();
+					nbQM_2 += 1;
 				}
 			}
+
 		}
-		// On prend 40 % des tonnages 
-		
-		ponderation(tonnageQB,tonnageQH,tonnageQM_1,tonnageQM_2,0.4);
 		
 		if (tonnageQB != 0) {
-			c.add(new ContratFeveV3(this, null //Eq2PROD
+			c.add(new ContratFeveV3(this, getVendeurs().get(0)
 					, 0, 0, tonnageQB, 0, 
-					0, prixQB/tonnageQB, 0, false));
+					0, prixQB/nbQB, 0, false));
 		}
 		if (tonnageQH != 0) {
-			c.add(new ContratFeveV3(this, null //Eq3PROD
-					, 0, 0, tonnageQH, 0, 
-					0, prixQH/tonnageQH, 0, false));
+			c.add(new ContratFeveV3(this, getVendeurs().get(1)
+					, 2, 0, tonnageQH, 0, 
+					0, prixQH/nbQH, 0, false));
 		}
 		if (tonnageQM_1 != 0) {
-			c.add(new ContratFeveV3(this, null //Eq2PROD
-					, 0, 0, tonnageQM_1, 0, 
-					0, prixQM_1/tonnageQM_1, 0, false));
+			c.add(new ContratFeveV3(this, getVendeurs().get(0)
+					, 1, 0, tonnageQM_1, 0, 
+					0, prixQM_1/nbQM_1, 0, false));
 		}
 		if (tonnageQM_2 != 0) {
-			c.add(new ContratFeveV3(this, null //Eq3PROD
-					, 0, 0, tonnageQM_2, 0, 
-					0, prixQM_2/tonnageQM_2, 0, false));
+			c.add(new ContratFeveV3(this, getVendeurs().get(1)
+					, 1, 0, tonnageQM_2, 0, 
+					0, prixQM_2/nbQM_2, 0, false));
 		}
-		// */
+		//*/
 		
-		//* -> //*    :   Test pour notre Eq2PROD
+		/* -> //*    :   Test pour notre Eq2PROD
 		c.add(new ContratFeveV3(this, getVendeurs().get(0), 0,
 				0, 1, 0, 
 				0, 70800000.0/0.65, 0, false));
@@ -140,14 +144,9 @@ public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 		return c;
 	}
 
-	/* Guillaume Sallé*/
+	/* Guillaume Sallé + Agathe Chevalier */
 	public void sendContratFictifV3(List<ContratFeveV3> listContrats) {
 		setContratPrecedent(listContrats);
-		for (int i = 0; i<getContratPrecedent().size() ; i++) {
-			if (getContratPrecedent().get(i).getTransformateur() == this) {
-				getContratPrecedent().remove(i);
-			}
-		}
 	}
 
 	/* Agathe Chevalier */
