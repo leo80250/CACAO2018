@@ -1046,9 +1046,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		int quantite = 0;
 		for(ArrayList<Integer> commande : commandes) {
 			for(int idProduit = 4; idProduit <= 6; idProduit++) {
-				quantite += commande.get(idProduit-4);
+				quantite += commande.get(idProduit-4); 
 			}
-		}
+		} 
 		return quantite;
 	}
 	public int getQuantitePoudreCommandees() {

@@ -132,7 +132,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				double p=prop.get(0);
 				Acteur a=acteurs.get(0);
 				for(Double j : prop) {
-					 if(j<p) {
+					 if(j<p && j<acteurs.size()) {
 						 p=j; //on choisit la proposition avec le prix minimum
 						 a=acteurs.get(i);
 					 }
@@ -195,7 +195,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		for (int i=0;i<nombre_transfo;i++) {
 			commande.add(new ArrayList<Integer>());
 			for (int j=0;j<6;j++) {
-				commande.get(i).add(0);
+				commande.get(i).add(1000);
 			}
 		}
 
