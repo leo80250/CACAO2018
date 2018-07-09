@@ -19,6 +19,11 @@ public class ContratPoudre10 extends ContratPoudre{
 		this.repart=repart;
 	}
 	
+	public ContratPoudre10() {
+		super();
+		this.repart=new ArrayList<Integer>(10);
+	}
+	
 	public List<Integer> getRepart(){
 		return this.repart;
 	}
