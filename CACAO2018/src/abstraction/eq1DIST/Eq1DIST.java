@@ -147,7 +147,6 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 				if(d.getQualite()>=1) {
 				for (IvendeurOccasionnelChocoTer v : vendeursOcca) {
 					prop.add(v.getReponseTer(d));
-					System.out.println(v.getReponseTer(d));
 				}
 				}
 				//recherche du meilleur prix
@@ -311,9 +310,28 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 	/**
 	 * @author Leo Vuylsteker & Elisa Gressier-Monard
 	 **/
+	public int indexMin(ArrayList<Double> prix) {
+ 
+		int min = 0;
+		for (int i=0;i<prix.size(); i++) {
+			if (prix.get(i)<prix.get(min)) {
+				min =i;
+			}
+		}
+		return min;
+	}
 	public ArrayList<Integer> listeTriee(ArrayList<Double> prix) {
+		ArrayList<Integer> min = new ArrayList<Integer>();
+for (int i=0; i<prix.size(); i++) {
+	int mini = indexMin(prix);
+	prix.set(mini,Double.MAX_VALUE);
+	min.add(mini);
+}
+		return min;
+		/*
+		System.out.println("prix init "+prix);
 		ArrayList<Double> copie = new ArrayList<Double>();
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 5; i++) {
 			copie.add(prix.get(i));
 		}
 		Collections.sort(copie);
@@ -321,7 +339,11 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		min.add(prix.indexOf(copie.get(0)));
 		min.add(prix.indexOf(copie.get(1)));
 		min.add(prix.indexOf(copie.get(2)));
+		min.add(prix.indexOf(copie.get(3)));
+		min.add(prix.indexOf(copie.get(4)));
+		System.out.println("prix retour "+min);
 		return min;
+		*/
 	}
 
 	// main pour les tests en interne/debug
@@ -358,11 +380,11 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		int[] demande;
 		demande = new int[6];
 		demande[3] = 0;
-		demande[4] = 39834;
-		demande[5] = 17500;
-		demande[1] = 0;
-		demande[2] = 29167;
-		demande[3] = 12500;
+		demande[4] = 1000;//39834;
+		demande[5] = 1000;//17500;
+		demande[0] = 0;
+		demande[1] = 1000;//29167;
+		demande[2] = 1000;//12500;
 		double[][] PrixVentes = new double[3][6];
 		ArrayList<ArrayList<Integer>> commandeFinale = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer> listeT = new ArrayList<Integer>();
@@ -385,25 +407,20 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 		double[] m = new double[6];
 		Double[][] PrixVente = new Double[transfo.size()][6];
 		for (int i = 0; i < 6; i++) {
-			while (m[i] != 1) {
-
 				ArrayList<Double> prix;
 				prix = new ArrayList<Double>();
 				for (int j = 0; j < transfo.size(); j++) {
-					if (transfo.get(j).getPrix().getIntervalles().size()>0) {
 					prix.add(transfo.get(j).getPrix().getPrixProduit(demande[i], i+1));
 					PrixVente[j][i] = transfo.get(j).getPrix().getPrixProduit(demande[i], i+1);
-					}
+					
 				}
 
 				listeT = listeTriee(prix);
-
-				if (Stock.get(listeT.indexOf(0)).get(i) >= 0.6 * demande[i]) {
-					System.out.println(listeT.indexOf(0));
-					commandeFinale.get(listeT.indexOf(0)).set(i, (((int) 0.6 * demande[i])));
+				if (Stock.get(listeT.indexOf(0)).get(i) >= 0.6 * demande[i]) {					
+					commandeFinale.get(listeT.indexOf(0)).set(i, (((int)( 0.6 * demande[i]))));
 					m[i] += 0.6;
 					if (Stock.get(listeT.indexOf(1)).get(i) >= 0.3 * demande[i]) {
-						commandeFinale.get(listeT.indexOf(1)).set(i, ((int) 0.3 * demande[i]));
+						commandeFinale.get(listeT.indexOf(1)).set(i, ((int)( 0.3 * demande[i])));
 						m[i] += 0.3;
 						if (Stock.get(listeT.indexOf(2)).get(i) >= 0.1 * demande[i]) {
 							commandeFinale.get(listeT.indexOf(2)).set(i, ((int) (0.1 * demande[i])));
@@ -424,17 +441,13 @@ public class Eq1DIST implements Acteur, InterfaceDistributeurClient, IAcheteurCh
 					}
 				}
 			}
-		}
 		this.journal.ajouter("CONTRAT :");
 		this.journal.ajouter("");
 		for (ArrayList<Integer> l : commandeFinale) {
 			this.journal.ajouter("Tablettes MQ : " + l.get(4) + "; Tablettes HQ : " + l.get(5) + "; Confiseries MQ : "
 					+ l.get(1) + "; Confiseries MQ : " + l.get(2));
 			this.journal.ajouter("");
-			this.solde.setValeur(this,
-					this.solde.getValeur() - Prix.get(4).getPrixProduit(l.get(4), 4)
-							- Prix.get(5).getPrixProduit(l.get(5), 5) - Prix.get(1).getPrixProduit(l.get(1), 1)
-							- Prix.get(2).getPrixProduit(l.get(2), 2));
+			
 		}
 		double[] PrixMoyenVente = new double[6];
 		for (int i = 0; i < 6; i++) {
