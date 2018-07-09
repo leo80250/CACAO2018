@@ -1571,6 +1571,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	
 	//on ne peut pas mettre à jour chacune des 10 commandes en cours sans connaitre la répartition
 	//on doit donc récupérer le devis correspondant pour connaître sa répartitions
+	
+	/*
 	public void sendReponsePoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
 		for(int qualite = 0; qualite<3; qualite++) {
 			
@@ -1593,6 +1595,14 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 					this.getCommandesPoudreEnCoursParEntrep(acteur10).add(((ContratPoudre10)contrat[qualite]).getContrats().get(acteur10));
 				}
 			}
+		}
+	}
+	*/
+	
+	public void sendReponsePoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
+		for(int qualite = 0; qualite<3; qualite++) {
+			if(contrat[qualite].getReponse())
+				this.getCommandesPoudreEnCours().add(contrat[qualite]);
 		}
 	}
 	
