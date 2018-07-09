@@ -216,12 +216,13 @@ IvendeurOccasionnelChocoTer{
 	public List<ContratFeveV3> getResultVentesV3() {
 		for (ContratFeveV3 contrat : this.contratFeveEnCours) {
 			double coutTotal = contrat.getProposition_Prix()*contrat.getProposition_Quantite() ;
+			this.getJournalSousActeur().ajouter("L'équipe 4 a acheté : "+contrat.getProposition_Quantite()+ " de fèves " +Marchandises.getQualite(contrat.getQualite())+ " pour "+ contrat.getProposition_Prix());
 				//if (1.5*coutTotal < this.solde.getValeur()) {
 					if (true) {
 					contrat.setReponse(true);
 					//màj du solde 
-					double ancienneSolde = this.getSolde().getValeur() ; 
-					this.solde.setValeur(this, ancienneSolde - coutTotal ) ; 
+					double ancienSolde = this.getSolde().getValeur() ; 
+					this.solde.setValeur(this, ancienSolde - coutTotal ) ; 
 					//màj des stocks
 					for(int j=0;j<3;j++) {
 						if(contrat.getQualite() == j) {
@@ -272,6 +273,8 @@ IvendeurOccasionnelChocoTer{
 		livraison.addAll(vendeur.getLivraison(commandes));  //On remplit notre livraison selon la méthode implémentée dans Vendeur
 		//On met à jour nos stocks en fonction de la livraison effectuée
 		for(int i=1;i<6;i++) {
+			this.getJournalSousActeur().ajouter("L'équipe 4 a vendu : " + livraison.get(0).get(i) + " de " + Marchandises.getMarchandise(i+1) +" à "+ "Eq1DIST" + " pour "+ vendeur.getPrix().getPrixProduit(livraison.get(0).get(i), i+1));
+			this.getJournalSousActeur().ajouter("L'équipe 4 a vendu : " + livraison.get(0).get(i) + " de " + Marchandises.getMarchandise(i+1) +" à "+ "Eq6DIST" + " pour "+ vendeur.getPrix().getPrixProduit(livraison.get(0).get(i), i+1));
 			int quantite = getQuantite(i+1)-livraison.get(0).get(i)-livraison.get(1).get(i);
 			setQuantite(i+1,quantite);
 		}
