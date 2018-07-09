@@ -48,6 +48,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     private ContratFeveV3 contratFeveBQEq2; // Le contrat avec l'équipe 2 pour les fèves BQ
     private ContratFeveV3 contratFeveMQEq2; // Le contrat avec l'équipe 2 pour les fèves MQ
     private ContratFeveV3 contratFeveMQEq3; // Le contrat avec l'équipe 3 pour les fèves MQ
+    private  List<ContratFeveV3> contratsPrécédents ; // la liste des contrats précédents
 
     private Indicateur banque; // en milliers d'euros
     private Indicateur[] prix; // en €/T
@@ -460,11 +461,11 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
    
     public double prixActualiseFeveBQ () {
-    	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche");
+    	
         float ventes = 0 ;
     	float quantites = 0 ;
 
-    	for (ContratFeveV3  c : marche.getContratPrecedent()) {
+    	for (ContratFeveV3  c : this.contratsPrécédents) {
     		if ( c.getQualite()==0) { ventes += c.getProposition_Quantite()*c.getProposition_Prix() ; quantites += c.getProposition_Quantite() ; }
     	}
     	
@@ -529,6 +530,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
     @Override
     public void sendContratFictifV3(List<ContratFeveV3> listContrats) {
+    	this.contratsPrécédents = listContrats ;
     }
 
     /**
