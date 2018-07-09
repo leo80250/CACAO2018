@@ -230,7 +230,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      * @param tauxDeConversion rapport 1kg de merch2 par le nombre de kg de merch1 necessaires pour produire ce kilo de merch1
      */
     public void production(int merch1, int merch2, float tauxDeConversion) {
-        double quantite = Math.min(stocks[merch1].getValeur()*tauxDeConversion, productionSouhaitee[merch2].getValeur() * (isPeriodeFetes()?3:1));
+        double quantite = Math.max(0, Math.min(stocks[merch1].getValeur() * tauxDeConversion, productionSouhaitee[merch2].getValeur() * (isPeriodeFetes() ? 3 : 1)));
         if (isGreves()) quantite *= 0.3;
         if (quantite < productionSouhaitee[merch2].getValeur()) {
             respectObjectifs[merch1] = false;
@@ -238,7 +238,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         }
         stocks[merch1].setValeur(this, stocks[merch1].getValeur() - quantite);
         stocks[merch2].setValeur(this, stocks[merch2].getValeur() + quantite);
-        depenser(quantite*0.01f*prix[merch2].getValeur()); // LES VARIATIONS DE STOCKS NE SONT PAS BONNES: T -> kT
+        depenser(quantite*0.01f*prix[merch2].getValeur());
     }
 
     /**
