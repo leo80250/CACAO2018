@@ -448,13 +448,23 @@ for (int i=0; i<prix.size(); i++) {
 					+ l.get(1) + "; Confiseries MQ : " + l.get(2));
 			this.journal.ajouter("");
 			
+			
 		}
+		for (ArrayList<Integer> l : commandeFinale) {
+			for(int i=0;i<6;i++) {
+				this.nombreAchatsContrat[i].setValeur(this, this.nombreAchatsContrat[i].getValeur()+l.get(i)/2);
+				System.out.print(l.get(i)+" ");
+			}
+			System.out.println("");
+		}
+		System.out.println("fin");
 		double[] PrixMoyenVente = new double[6];
 		for (int i = 0; i < 6; i++) {
 			PrixMoyenVente[i] = (PrixVente[0][i] + PrixVente[1][i] + PrixVente[3][i]) / 3;
 		}
 		this.changerPrix(PrixMoyenVente);
 		return commandeFinale;
+		
 	}
 
 	/**
