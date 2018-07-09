@@ -403,7 +403,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         for (int i = 0; i < contrat.length; i++) {
         	if(contrat[i].getReponse()) {
         		echangesEffectifs[i] = contrat[i];
-                depenser(-contrat[i].getPrix()*contrat[i].getQuantite()*1000);
+                depenser(-contrat[i].getPrix()*contrat[i].getQuantite());
                 stocks[i+6].setValeur(this, stocks[i+6].getValeur()-contrat[i].getQuantite()*1000);
                 if(contrat[i].getQuantite()!=0) {
                 	journal.ajouter("");
