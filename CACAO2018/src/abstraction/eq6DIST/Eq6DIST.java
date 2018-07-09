@@ -42,7 +42,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		//MarcheChoco MC = new MarcheChoco();
 		//Monde.LE_MONDE.ajouterActeur(MC);
 		this.banque= new Indicateur("Solde bancaire Eq6 : ",this, 120000);
-		this.stock= new ArrayList<Integer>();this.stock.add(0);	this.stock.add(0);this.stock.add(0);this.stock.add(0);this.stock.add(0);this.stock.add(0);
+		this.stock= new ArrayList<Integer>();this.stock.add(0);	this.stock.add(58000/26);this.stock.add(0);this.stock.add(42000/26);this.stock.add(577500/26);this.stock.add(0);
 		this.marge= new ArrayList<Double>();this.marge.add(0.0);	this.marge.add(0.0);this.marge.add(0.0);this.marge.add(0.0);this.marge.add(0.0);this.marge.add(0.0);
 		this.stock_BBQ= new Indicateur("Stock de bonbons BQ Eq6 :",this);
 		this.stock_BMQ=new Indicateur("Stock de bonbons MQ Eq6 :",this);
@@ -119,8 +119,10 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		//Achat occasionnel
 
 		for(int i=0;i<6;i++) {
-			if(this.stock.get(i)<200) { //hypothèse stock minimal
-				DemandeAO d = new DemandeAO(500,i+1); //hypothèse achat à réaliser
+			ArrayList<Double> stocksInitiaux = new ArrayList<Double>();
+			stocksInitiaux.add((double) 0); stocksInitiaux.add((double) (58000/26)); stocksInitiaux.add((double) 0); stocksInitiaux.add((double) (42000/26)); stocksInitiaux.add((double) (577500/26)); stocksInitiaux.add((double) 0);
+			if(this.stock.get(i)<0.1*stocksInitiaux.get(i)) { //hypothèse stock minimal
+				DemandeAO d = new DemandeAO((int) (0.1*stocksInitiaux.get(i)),i+1); //hypothèse achat à réaliser
 				ArrayList<Double> prop = new ArrayList<Double>();
 				ArrayList<Acteur> acteurs = new ArrayList<Acteur>();
 				for(Acteur acteur : Monde.LE_MONDE.getActeurs()) {
@@ -395,7 +397,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 	public GrilleQuantite commander(GrilleQuantite Q) {
 		int[] res = new int[6];
 		for (int i=0;i<6;i++) {
-			int c = this.stock.get(i) - Q.getValeur( i);
+			int c = this.stock.get(i) - Q.getValeur(i);
 			if (c>=0) {
 				res[i]=(Q.getValeur(i));
 			}else {
