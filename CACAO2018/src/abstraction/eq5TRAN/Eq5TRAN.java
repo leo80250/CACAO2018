@@ -34,8 +34,12 @@ import abstraction.fourni.Monde;
  * @author Thomas Schillaci (lieutenant)
  * 
  * TODO LIST
+<<<<<<< HEAD
  * - Systeme de fidelite client/fournisseur
  * - Determiner prix d'achat aux producteurs ( done ? )
+=======
+ * - Determiner prix d'achat aux producteurs
+>>>>>>> branch 'master' of https://github.com/ThomasSchillaci/CACAO2018.git
  * - Constante mutlipicatrice a droite / ecouler stocks - reste du monde
  */
 public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IvendeurOccasionnelChocoTer, IAcheteurFeveV4 {
@@ -64,7 +68,16 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
      */
     private boolean[] respectObjectifs;
 
-    private int indicateurGreve = 0;
+    /**
+     * Permet de savoir si il y a grève ou non
+     */
+    private int indicateurGreve;
+
+    /**
+     * Nous multiplions nos ventes aux distributeurs par cette constante pour simuler le reste du monde
+     * Sont pris en compte nos stocks et notre compte en banque
+     */
+    private float[] constantesMultiplicatrices;
 
     public Eq5TRAN() {
 
@@ -159,6 +172,23 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
 
         respectObjectifs = new boolean[nbMarchandises];
         for (int i = 0; i < Marchandises.getNombreMarchandises(); i++) respectObjectifs[i] = true;
+
+        /**
+         * GESTION DES GREVES
+         * @author Juliette, Thomas
+         */
+
+        indicateurGreve=0;
+
+        /**
+         * GESTION DU RESTE DU MONDE COTE DISTRIBUTEURS
+         */
+
+        constantesMultiplicatrices = new float[nbMarchandises];
+        constantesMultiplicatrices[TABLETTES_BQ] = 431.25f;
+        constantesMultiplicatrices[TABLETTES_MQ] = 1.75f;
+        constantesMultiplicatrices[TABLETTES_HQ] = 38.35f;
+        constantesMultiplicatrices[FRIANDISES_MQ] = 46;
     }
 
     @Override
@@ -305,10 +335,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     		equipe7.sendReponsePoudre(devis, this);
     		depenser(devis[2].getPrix());
     		this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+devis[2].getQuantite());
-    		journal.ajouter("L'équipe 5 a acheté "+devis[2].getQuantite()+" tonnes de poudre HQ");
+    		journal.ajouter("L'équipe 5 a acheté "+devis[2].getQuantite()+" tonnes de poudre HQ à l'équipe 7");
     	}
     	equipe7.getEchangeFinalPoudre(demande, this);
     	}
+    
+    
 
 
 
@@ -319,8 +351,11 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public ContratPoudre[] getCataloguePoudre(IAcheteurPoudre acheteur) {
         if (stocks[POUDRE_MQ].getValeur() == 0) return new ContratPoudre[0];
 
-        ContratPoudre[] catalogue = new ContratPoudre[1];
-        catalogue[0] = new ContratPoudre(1, (int) stocks[POUDRE_MQ].getValeur()*1000, prix[POUDRE_MQ].getValeur()*stocks[POUDRE_MQ].getValeur(), acheteur, this, false);
+        ContratPoudre[] catalogue = new ContratPoudre[3];
+        catalogue[0] = new ContratPoudre();
+        catalogue[2] = new ContratPoudre(); // on ne vend que de la poudre MQ
+        catalogue[1] = new ContratPoudre(1, (int)stocks[POUDRE_MQ].getValeur()*1000, prix[POUDRE_MQ].getValeur()*stocks[POUDRE_MQ].getValeur()*1000, acheteur, this, false);
+       
         return catalogue;
 
     }
@@ -333,10 +368,10 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public ContratPoudre[] getDevisPoudre(ContratPoudre[] demande, IAcheteurPoudre acheteur) {
         ContratPoudre[] devis = new ContratPoudre[demande.length];
         for (int i = 0; i < demande.length; i++) {
-            if (demande[i].getQualite() != 1 && demande[i].getQuantite() < stocks[POUDRE_MQ].getValeur()) {
-                devis[i] = new ContratPoudre(0, 0, 0, acheteur, this, false);
+            if (demande[i].getQualite() != 1 || demande[i].getQuantite() > stocks[POUDRE_MQ].getValeur()*1000) {
+                devis[i] = new ContratPoudre();
             } else {
-                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur()*demande[i].getQuantite(), acheteur, this, false);
+                devis[i] = new ContratPoudre(demande[i].getQualite(), demande[i].getQuantite(), prix[POUDRE_MQ].getValeur()*demande[i].getQuantite()*1000, acheteur, this, false);
             }
         }
 
@@ -351,7 +386,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void sendReponsePoudre(ContratPoudre[] devis, IAcheteurPoudre acheteur) {
         ContratPoudre[] reponse = new ContratPoudre[devis.length];
         for (int i = 0; i < devis.length; i++) {
-            if (devis[i].getQualite() != 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur()*1000 && devis[i].getPrix() >= prix[POUDRE_MQ].getValeur()*devis[i].getQuantite()*1000) {
+            if (devis[i].getQualite() == 1 && devis[i].getQuantite() < stocks[POUDRE_MQ].getValeur()*1000 && devis[i].getPrix() >= prix[POUDRE_MQ].getValeur()*devis[i].getQuantite()*1000) {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), true);
             } else {
                 reponse[i] = new ContratPoudre(devis[i].getQualite(), devis[i].getQuantite(), devis[i].getPrix(), devis[i].getAcheteur(), devis[i].getVendeur(), false);
@@ -368,7 +403,14 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         ContratPoudre[] echangesEffectifs = new ContratPoudre[contrat.length];
         for (int i = 0; i < contrat.length; i++) {
             echangesEffectifs[i] = contrat[i];
+            depenser(-contrat[i].getPrix());
+            stocks[i+6].setValeur(this, stocks[i+6].getValeur()-contrat[i].getQuantite()*1000);
+            if(contrat[i].getQuantite()!=0) {
+                journal.ajouter("L'équipe 5 a vendu "+ contrat[i].getQuantite()+" tonnes de "+ Marchandises.getMarchandise(i+6) + " pour "+contrat[i].getPrix()*contrat[i].getQuantite()+" €"+" à l'équipe "+ ((Acteur)acheteur).getNom());
+            }
+         
         }
+        
         return echangesEffectifs;
     }
 
@@ -416,7 +458,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     	return ventes/quantites ;
     }
 
-    // TODO fonction a finir
+   
     public double prixActualiseFeveBQ () {
     	IMarcheFeve marche =  (IMarcheFeve)Monde.LE_MONDE.getActeur("Marche");
         float ventes = 0 ;
@@ -525,7 +567,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         for (ContratFeveV3 c : listeContrat) {
             if ((c.getProposition_Prix() <= c.getDemande_Prix()) && c.getProposition_Quantite() <= c.getDemande_Quantite() && c.getProposition_Quantite()!=0) {
                 c.setReponse(true); 
-                journal.ajouter("L'équipe 5 a conclu une affaire avec "+((Acteur)c.getProducteur()).getNom()+" Quantité échangée :" + c.getProposition_Quantite()+"T au prix de : "+c.getProposition_Prix()+ "euros par T !!!!!");
+                journal.ajouter("L'équipe 5 a conclu une affaire avec "+((Acteur)c.getProducteur()).getNom()+" Quantité échangée :" + c.getProposition_Quantite()+ "T de " + c.getQualite()+" au prix de : "+c.getProposition_Prix()+ "euros par T ");
                 this.depenser(c.getProposition_Prix()); 
                 this.stocks[c.getQualite()].setValeur(this, this.stocks[c.getQualite()].getValeur()+c.getProposition_Quantite()*Math.pow(10,-3));
             } else {
