@@ -60,7 +60,7 @@ public class Vendeur implements IVendeurChocoBis{
 	public GPrix2 getPrix() {
 		ArrayList<Double[]> intervalles = new ArrayList<>();
 		Double[] interval = {10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
-		for(int i=0;i<interval.length;i++) {
+		for(int i=0;i<6;i++) {
 			// On considère les mêmes intervalles pour chaque produit dans un premier temps
 			intervalles.add(interval);
 		}
