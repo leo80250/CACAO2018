@@ -11,7 +11,7 @@ import abstraction.eq3PROD.echangesProdTransfo.*;
 public class acheteurFictifTRAN implements Acteur, IAcheteurFeveV4 {
 /* VARIABLES D'INSTANCE */
 	private List<ContratFeveV3> offreFinale;
-	private List<ContratFeveV3> contratPrecedent; 
+	private List<ContratFeveV3> contratPrecedent;
 	public final static double pond = 2;
 	
 	public acheteurFictifTRAN() {
