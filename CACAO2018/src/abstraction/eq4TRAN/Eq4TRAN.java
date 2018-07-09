@@ -329,11 +329,15 @@ public class Eq4TRAN implements Acteur {
 				 * On les transforme en produits
 				 * Puis on les stocke
 				 */
-	
+				Acteur a;
+				
 				if(contratPoudreEnCours.get(i).isReponse()) {
 					for(int j=0;j<=2;j++) {
 						if (contratPoudreEnCours.get(i).getQualite() == j) {
+							if(i<3) a = Monde.LE_MONDE.getActeur("Eq5TRAN");
+							else a = Monde.LE_MONDE.getActeur("Eq7TRAN");
 							acteur.getProduction().get(j).setValeur(acteur, contratPoudreEnCours.get(i).getQuantite());
+							acteur.getJournalSousActeur().ajouter("L'équipe 4 a acheté : " + contratPoudreEnCours.get(i).getQuantite()+" de Poudre" +Marchandises.getQualite(i)+ " à " + a.getNom() + " pour " + contratPoudreEnCours.get(i).getQuantite());
 							double ancienStockChoc = acteur.getStocks().get(j).getValeur() ;
 							acteur.getStocks().get(j).setValeur(acteur, ancienStockChoc + acteur.getProduction().get(j).getValeur());
 							solde.setValeur(acteur, solde.getValeur()-contratPoudreEnCours.get(i).getPrix()*contratPoudreEnCours.get(i).getQuantite());
@@ -353,14 +357,6 @@ public class Eq4TRAN implements Acteur {
 			}	
 			
 		}
-			/**
-			 * Selon la qualité
-			 * On récupère les qtés de fèves achetées
-			 * Elles sont transformées immédiatement en produits
-			 * Les produits sont ajoutés aux stocks
-			 * Le coût total de l'achat est retiré au solde
-			 */
-		
 
 		// On met à jour le journal des trois acteurs
 		journalEq4(this.PME1);
@@ -375,11 +371,11 @@ public class Eq4TRAN implements Acteur {
 	}
 
 	public void journalEq4(SousActeur j) {
-		j.getJournalSousActeur().ajouter("Stock des tablettes Basse Qualité = "+j.getQuantite(6));
+		j.getJournalSousActeur().ajouter("Stock des tablettes Haute Qualité = "+j.getQuantite(6));
 		j.getJournalSousActeur().ajouter("Stock des tablettes Moyenne Qualité = "+j.getQuantite(5));
 		j.getJournalSousActeur().ajouter("Stock des tablettes Basse Qualité = "+j.getQuantite(4));
-		j.getJournalSousActeur().ajouter("Stock des chocolats Moyenne Qualité = "+j.getQuantite(3));
-		j.getJournalSousActeur().ajouter("Stock des chocolats Haute Qualité = "+j.getQuantite(2));
+		j.getJournalSousActeur().ajouter("Stock des chocolats Moyenne Qualité = "+j.getQuantite(2));
+		j.getJournalSousActeur().ajouter("Stock des chocolats Haute Qualité = "+j.getQuantite(3));
 		// Les Sous-Acteurs produisent ils vraiment des choses ? (rajouter alors getQuantitePorduite() et setter dans 
 		// Sous-Acteur
 		
