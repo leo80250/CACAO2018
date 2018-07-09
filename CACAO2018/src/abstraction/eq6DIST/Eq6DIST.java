@@ -424,7 +424,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 
 		}
 		
-		return new GrilleQuantite(res);
+		return new GrilleQuantite(res); 
 	}
 	
 	//Victor Signes
