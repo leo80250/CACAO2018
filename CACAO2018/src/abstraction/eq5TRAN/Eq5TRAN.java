@@ -516,12 +516,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
          */
         List<ContratFeveV3> demandesPrivee = new ArrayList<ContratFeveV3>() ;
         demandesPrivee.add(this.contratFeveBQEq2) ; demandesPrivee.add(this.contratFeveMQEq2) ;demandesPrivee.add(this.contratFeveMQEq3);
-        this.contratFeveBQEq2.setDemande_Prix(this.prixActualiseFeveBQ());
+        this.contratFeveBQEq2.setDemande_Prix((int)this.prixActualiseFeveBQ());
         this.contratFeveBQEq2.setDemande_Quantite((int) achatsSouhaites[FEVES_BQ].getValeur()*1000);
-        this.contratFeveMQEq2.setDemande_Prix(this.prixActualiseFeveBQ());
+        this.contratFeveMQEq2.setDemande_Prix((int)this.prixActualiseFeveBQ());
         this.contratFeveMQEq2.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.3*1000));
         // On répartit nos achats de MQ en 30 % à l'équipe 2 et 70 % à l'équipe 3
-        this.contratFeveMQEq3.setDemande_Prix(this.prixActualiseFeveMQ());
+        this.contratFeveMQEq3.setDemande_Prix((int)this.prixActualiseFeveMQ());
         this.contratFeveMQEq3.setDemande_Quantite((int) (achatsSouhaites[FEVES_MQ].getValeur() * 0.7*1000));
 
         return demandesPrivee;
@@ -566,6 +566,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         listeContrat.add(contratFeveMQEq3);
         
         for (ContratFeveV3 c : listeContrat) {
+        	journal.ajouter("Le prix actualisé de fèves MQ est" +(int)this.prixActualiseFeveMQ());
+        	journal.ajouter("Le prix actualisé de fèves BQ est "+(int)this.prixActualiseFeveBQ());
             if ((c.getProposition_Prix() <= c.getDemande_Prix()) && c.getProposition_Quantite() <= c.getDemande_Quantite() && c.getProposition_Quantite()!=0) {
                 c.setReponse(true); 
                 journal.ajouter(c.toString3());
