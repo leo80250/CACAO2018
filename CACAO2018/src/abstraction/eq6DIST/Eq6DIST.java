@@ -135,7 +135,8 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				Acteur a=acteurs.get(0);
 				int b = 0;
 				for(Double j : prop) {
-					 if(j<p && b<acteurs.size()) { 
+
+					 if(j<p && i<acteurs.size()) {
 						 p=j; //on choisit la proposition avec le prix minimum
 						 a=acteurs.get(b);
 					 }else {
@@ -214,6 +215,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			if (stock_TMG_min>=Stock.get(i).get(4)&&Stock.get(i).get(4)!=0) {
 				stock_TMG_min=Stock.get(i).get(4);
 				equipe_stock_TMG_min=i;
+				commande.get(i).add(1000);
 			}
 		}
 		int indice_equipe_moins_chere_TMG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
