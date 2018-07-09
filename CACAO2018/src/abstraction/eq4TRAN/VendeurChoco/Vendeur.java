@@ -39,6 +39,7 @@ public class Vendeur implements IVendeurChocoBis{
 		stocks = new ArrayList<>(Collections.nCopies(6, 0));
 	}
 
+	
 	// Getters et setters des stocks du Vendeur
 	
 	public int getQte(int IDProduit) {
@@ -58,20 +59,20 @@ public class Vendeur implements IVendeurChocoBis{
 	//Implémente getPrix 
 	public GPrix2 getPrix() {
 		ArrayList<Double[]> intervalles = new ArrayList<>();
-		Double[] interval = {0.0,10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
-		for(int i=0;i<interval.length;i++) {
+		Double[] interval = {10.0,50.0,100.0,250.0,500.0,750.0,1000.0};
+		for(int i=0;i<6;i++) {
 			// On considère les mêmes intervalles pour chaque produit dans un premier temps
 			intervalles.add(interval);
 		}
 		ArrayList<Double[] > prix = new ArrayList<>();
 		//Discuter de la stratégie d'etagement des prix
 		//On définit nos prix selon les quantités et pour chaque produit
-		Double[] prix4 = {0.72, 0.695, 0.650, 0.625, 0.6, 0.575, 0.55, 0.525};
-		Double[] prix5 = {1.12, 1.1, 1.075, 1.05, 1.025, 1.0, 0.975, 0.95};
-		Double[] prix6 = {2.0, 1.975, 1.95, 1.9, 1.875, 1.85, 1.825, 1.8};
-		Double[] prix1 = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
-		Double[] prix2 = {4.0, 3.975, 3.95, 3.9, 3.875, 3.85, 3.825, 3.8};
-		Double[] prix3 = {6.4, 6.375, 6.35, 6.325, 6.3, 6.275, 6.25, 6.2};
+		Double[] prix4 = {0.695, 0.650, 0.625, 0.6, 0.575, 0.55, 0.525};
+		Double[] prix5 = {1.1, 1.075, 1.05, 1.025, 1.0, 0.975, 0.95};
+		Double[] prix6 = {1.975, 1.95, 1.9, 1.875, 1.85, 1.825, 1.8};
+		Double[] prix1 = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+		Double[] prix2 = {3.975, 3.95, 3.9, 3.875, 3.85, 3.825, 3.8};
+		Double[] prix3 = {6.375, 6.35, 6.325, 6.3, 6.275, 6.25, 6.2};
 		//on concatène tous les tableaux de prix dans un Tableau GPrix2
 		prix.add(prix1);
 		prix.add(prix2);
