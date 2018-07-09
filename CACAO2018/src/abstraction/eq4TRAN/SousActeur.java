@@ -398,7 +398,7 @@ IvendeurOccasionnelChocoTer{
 			this.solde.setValeur(this, ancienSolde + prix);
 			double ancienStock = this.Stocks.get(qualite).getValeur() ; 
 			this.Stocks.get(qualite).setValeur(this, ancienStock - quantite );
-			JournalSousActeur.ajouter(this.getNom()+" a vendu " + quantite + "de qualité " + quantite+ " à " + acteur.getNom());
+			this.getJournalSousActeur().ajouter(this.getNom()+" a vendu " + quantite + "de qualité " + qualite+ " à " + acteur.getNom());
 		
 	}
 	
