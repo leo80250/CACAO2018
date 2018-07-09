@@ -30,6 +30,7 @@ public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 	private Indicateur soldejournal;
 	private Indicateur meteoI;
 	private Indicateur instabiliteI;
+	private Indicateur coeffstockI;
 	private int totalVenteQB;
 	private int totalVenteQM;
 	public final static double ponderation = 0.1;
@@ -73,18 +74,20 @@ public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 		this.soldejournal = new Indicateur("Solde de"+getNomEq(), this, getSolde());
 		this.meteoI = new Indicateur("Coefficient meteo de"+getNomEq(),this,getCoeffMeteo());
 		this.instabiliteI = new Indicateur("Coefficient d'instabilite de"+getNomEq(),this,getCoeffInstabilite());
+		this.coeffstockI = new Indicateur("Coefficient impactant le stock de"+getNomEq(),this,getCoeffStock());
 		setStockQBas(indicateurQB);
 		setStockQMoy(indicateurQM);
 		
 		setJournal(new Journal("Journal de"+getNomEq()));
 		setJournalOccasionel(new Journal("Journal de ventes occasionnelles de"+getNomEq()));
 		Monde.LE_MONDE.ajouterJournal(getJournal());
-		Monde.LE_MONDE.ajouterJournal(getJournalOccasionel());
+		Monde.LE_MONDE.ajouterJournal(getJournalOccasionel());		
 		Monde.LE_MONDE.ajouterIndicateur(getStockQBas());
 		Monde.LE_MONDE.ajouterIndicateur(getStockQMoy());
 		Monde.LE_MONDE.ajouterIndicateur(getSoldeJournal());
 		Monde.LE_MONDE.ajouterIndicateur(getMeteoI());
 		Monde.LE_MONDE.ajouterIndicateur(getInstabiliteI());
+		Monde.LE_MONDE.ajouterIndicateur(getCoeffStockI());
 		
 		Monde.LE_MONDE.ajouterActeur(new acheteurFictifTRAN());
 		this.nomEq = "Eq2PROD";
@@ -387,6 +390,9 @@ public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 	public Indicateur getInstabiliteI() {
 		return this.instabiliteI;
 	}
+	public Indicateur getCoeffStockI() {
+		return this.coeffstockI;
+	}
 	public Indicateur getStockQBas() {
 		return this.stockQBas;
 	}
@@ -445,6 +451,7 @@ public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 		soldejournal.setValeur(this, getSolde());
 		meteoI.setValeur(this, getCoeffMeteo());
 		instabiliteI.setValeur(this, getCoeffInstabilite());
+		coeffstockI.setValeur(this, getCoeffSolde());
 		razTotalVenteQB();
 		razTotalVenteQM();
 	}
