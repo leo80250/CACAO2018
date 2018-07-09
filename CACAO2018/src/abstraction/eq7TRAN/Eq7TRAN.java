@@ -1028,7 +1028,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		return quantite;
 	}
 	public int getQuantiteFevesCommandees() {
-		List<ContratFeveV3> commandes = this.getCommandesFeveEnCours();
+		List<ContratFeveV3> commandes = this.commandesFeveEnCours;
 		int quantite = 0;
 		for(ContratFeveV3 commande : commandes) {
 			quantite += commande.getProposition_Quantite();
@@ -1667,7 +1667,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 		List<ContratFeveV3> offresRetenues = new ArrayList<ContratFeveV3>(); 
 		for(int qualite = 0; qualite < 3; qualite++) {
 			for(int i = 0; i < n[qualite]; i++) {
-				if(offresRetenuesParQualite.get(qualite).get(i).getDemande_Quantite() > 0)
+				if((int)offresRetenuesParQualite.get(qualite).get(i).getDemande_Quantite() > 0)
 					offresRetenues.add(offresRetenuesParQualite.get(qualite).get(i));
 			} 
 		}
@@ -1724,7 +1724,6 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	public List<ContratFeveV3> getDemandePriveeV3() {
 		List<ContratFeveV3> offresPubliques = this.getOffresFevesPubliquesEnCours();
 		offresPubliques = this.analyseOffresPubliquesFeves(offresPubliques);
-		
 		return offresPubliques;
 	}
 	
@@ -1736,7 +1735,9 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 	@Override
 	public void sendOffreFinaleV3(List<ContratFeveV3> offresFinales) {
 		//List<ContratFeveV3> offresPrivees = this.analyseOffresPriveesFeves(offresFinales);
+
 		this.setCommandesFeveEnCours(offresFinales);
+		
 	}
 	@Override
 	public List<ContratFeveV3> getResultVentesV3() {
@@ -1745,7 +1746,7 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			if (contrat.getReponse()==true) {
 				this.getSolde().setValeur(this,this.getSolde().getValeur()-contrat.getProposition_Prix()*contrat.getProposition_Quantite());
 				this.setStockFeves((int)this.getStockFeves(contrat.getQualite()).getValeur()+contrat.getProposition_Quantite(), contrat.getQualite());
-				this.getJournal().ajouter(contrat.toString());
+				this.getJournal().ajouter(contrat.toString2());
 			}
 		}
 		
@@ -1836,8 +1837,8 @@ public class Eq7TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, IAchete
 			
 		}
 
-		this.getCommandesTablettesEnCours().addAll(commandes);
-		this.getLivraisonsTablettesEnCours().addAll(livraisons);
+		this.setCommandesTablettesEnCours(commandes);
+		this.setLivraisonsTablettesEnCours(livraisons);
 		return livraisons;
 	}
 	
