@@ -400,7 +400,6 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
             depenser(-contrat[i].getPrix()*contrat[i].getQuantite()*1000);
             stocks[i+6].setValeur(this, stocks[i+6].getValeur()-contrat[i].getQuantite()*1000);
             if(contrat[i].getQuantite()!=0) {
-            	journal.ajouter(" ");
                 journal.ajouter("L'équipe 5 a vendu "+ contrat[i].getQuantite()+" tonnes de "+ Marchandises.getMarchandise(i+6) + " pour "+contrat[i].getPrix()*contrat[i].getQuantite()+" €"+" à l'équipe "+ ((Acteur)acheteur).getNom());
             }
          
