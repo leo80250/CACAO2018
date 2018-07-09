@@ -75,9 +75,10 @@ public class GPrix2{
 		 * 6=TablettesHQ
 		 */
 		int j =0;
-		while((j<getIntervalles().size())&&(getIntervalles().get(idProduit-1)[j]>quantite)) {
+		while((j<getIntervalles().get(idProduit-1).length)//.size())// ROMU
+				&&(getIntervalles().get(idProduit-1)[j]>quantite)) {
 			j++;
 		}
-		return getPrix().get(idProduit-1)[j];
+		return j<getIntervalles().get(idProduit-1).length ? getPrix().get(idProduit-1)[j]:getPrix().get(idProduit-1)[getIntervalles().get(idProduit-1).length-1];
 	}
 }
