@@ -403,7 +403,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public ContratPoudre[] getEchangeFinalPoudre(ContratPoudre[] contrat, IAcheteurPoudre acheteur) {
         ContratPoudre[] echangesEffectifs = new ContratPoudre[contrat.length];
         for (int i = 0; i < contrat.length; i++) {
-        	
+        	if(contrat[i].getReponse()) {
         		echangesEffectifs[i] = contrat[i];
                 depenser(-contrat[i].getPrix()*contrat[i].getQuantite());
                 stocks[i+6].setValeur(this, stocks[i+6].getValeur()-contrat[i].getQuantite()*1000);
@@ -411,7 +411,7 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
                 	journal.ajouter("");
                     journal.ajouter("L'équipe 5 a vendu "+ contrat[i].getQuantite()+" tonnes de "+ Marchandises.getMarchandise(i+6) + " pour "+contrat[i].getPrix()*contrat[i].getQuantite()+" €"+" à l'équipe "+ ((Acteur)acheteur).getNom());
         	}
-            
+        	}
          
         }
         
