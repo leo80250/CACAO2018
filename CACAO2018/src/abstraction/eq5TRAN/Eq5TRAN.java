@@ -194,6 +194,8 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
         payerSalaires();
         achatPoudre();
         indicateurGreve = Monde.LE_MONDE.getStep();
+        this.stocks[POUDRE_HQ].setValeur(this, this.stocks[POUDRE_HQ].getValeur()+110.0/24); /** achat de poudre à l'acteur fictif**/
+        depenser(this.prix[POUDRE_HQ].getValeur()*(110.0/24));
     }
 
     /**
@@ -579,31 +581,31 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public double getReponseTer(DemandeAO d) {
         switch (d.getQualite()) {
             case 1: {
-                journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                //journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                 return Double.MAX_VALUE;
             }
             case 2:
                 if (d.getQuantite() < stocks[FRIANDISES_MQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    //journal.ajouter("Eq5 renvoie " + 1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                     return (1.1 * prix[FRIANDISES_MQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
             case 3: {
-                journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                //journal.ajouter("Eq5 renvoie MAX_VALUE à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                 return Double.MAX_VALUE;
             }
             case 4:
                 if (d.getQuantite() < stocks[TABLETTES_BQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    //journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                     return (1.1 * prix[TABLETTES_BQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
             case 5:
                 if (d.getQuantite() < stocks[TABLETTES_MQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    //journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()* 0.2 / 1_000_000 + "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                     return (1.1 * prix[TABLETTES_MQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
             case 6:
                 if (d.getQuantite() < stocks[TABLETTES_HQ].getValeur()*(1_000_000 / 0.2)) {
-                    journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000+ "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
+                    //journal.ajouter("Eq5 renvoie " + 1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite() * 0.2 / 1_000_000+ "€ à getReponse("+d.getQuantite()+","+d.getQualite()+")");
                     return (1.1 * prix[TABLETTES_HQ].getValeur() * d.getQuantite()/ (1_000_000 / 0.2));
                 }
         }
@@ -618,7 +620,12 @@ public class Eq5TRAN implements Acteur, IAcheteurPoudre, IVendeurPoudre, Ivendeu
     public void envoyerReponseTer(Acteur acteur, int quantite, int qualite, double prix) {
         this.depenser(-prix);
         this.stocks[qualite].setValeur(this, this.stocks[qualite].getValeur() - quantite *(0.2/1_000_000));
-        journal.ajouter("Eq5 a vendu "+quantite+" barres de chocolat de qualite " +qualite + " pour "+prix+"€ à "+acteur.getNom());
+        switch (qualite) {
+        case 2: journal.ajouter("Eq5 a vendu "+quantite+" friandises de moyenne qualité pour "+prix+"€ à "+acteur.getNom());
+        case 4: journal.ajouter("Eq5 a vendu "+quantite+" tablettes de basse qualité pour "+prix+"€ à "+acteur.getNom());
+        case 5: journal.ajouter("Eq5 a vendu "+quantite+" tablettes de moyenne qualité pour "+prix+"€ à "+acteur.getNom());
+        case 6: journal.ajouter("Eq5 a vendu "+quantite+" tablettes de haute qualité pour "+prix+"€ à "+acteur.getNom());
+        }
     }
 
     /**
