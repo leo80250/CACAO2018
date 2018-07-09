@@ -199,6 +199,8 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 
 
 		int nombre_transfo=Prix.size();
+		System.out.println(nombre_transfo);
+		System.out.println("size=" + Prix.size());
 		ArrayList<ArrayList<Integer>> commande = new ArrayList<ArrayList<Integer>>();
 		for (int i=0;i<nombre_transfo;i++) {
 			commande.add(new ArrayList<Integer>());
@@ -415,8 +417,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				res[i]=(this.stock.get(i+3));
 			}
 			
-			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i+3)*res[i]);
-			this.stock.set(i+3, this.stock.get(i+3)-res[i]);
+			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i+3)*res[i]);		
 
 		}
 		for (int i=3;i<6;i++) {
@@ -427,11 +428,10 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				res[i]=(this.stock.get(i-3));
 			}
 
-			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i-3)*res[i]);	
-			this.stock.set(i-3, this.stock.get(i-3)-res[i]);
+			this.banque.setValeur(this, this.banque.getValeur() + this.prix.get(i-3)*res[i]);		
 
 		}
-		this.modifPrix(Q);
+		
 		return new GrilleQuantite(res); 
 	}
 	
