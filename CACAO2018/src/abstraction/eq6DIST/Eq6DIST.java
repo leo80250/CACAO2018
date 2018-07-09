@@ -212,7 +212,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			}
 		}
 		int indice_equipe_moins_chere_TMG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
-		double prix_moins_chere_TMG=10000000.0;
+		double prix_moins_chere_TMG=10000000000000.0;
 		for (int i=0; i<Prix.size(); i++) {
 			System.out.println("intervalle longueur=" +Prix.get(i).getIntervalles().get(4).length);
 			System.out.println("prix longueur= "+Prix.get(i).getPrix().get(4).length);
@@ -222,12 +222,15 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			}
 		}
 		int stock_TMG1=0;
+		if (prix_moins_chere_TMG<1000000000) {
 		if (equipe_stock_TMG_min==indice_equipe_moins_chere_TMG) {
 			stock_TMG1= (int) (0.8*stock_TMG_min);
 		} else {
 			stock_TMG1= (int) (0.2*stock_TMG_min);
 		}
+		
 		commande.get(equipe_stock_TMG_min).set(4, stock_TMG1);
+		}
 		// calcule le 2e plus petit stock de TMG et l'indice du transfo associé 
 		double stock_TMG_min2=10000000.0;
 		int equipe_stock_TMG_min2=0;
@@ -239,7 +242,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		}
 		// renvoie l'indice du transfo le moins chere pour le 2e plus petit stock
 		int indice_equipe_moins_chere_TMG2=0;
-		double prix_moins_chere_TMG2=100000000.0;
+		double prix_moins_chere_TMG2=10000000000000.0;
 		for (int i=0; i<Stock.size(); i++) {
 			if (Prix.get(i).getPrixProduit((int) stock_TMG_min2-1, 5) <= prix_moins_chere_TMG2
 					&& i!=indice_equipe_moins_chere_TMG) {
@@ -247,17 +250,21 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				prix_moins_chere_TMG2=Prix.get(i).getPrixProduit((int)stock_TMG_min2-1,5);
 			}
 		}
-		int stock_TMG2;
+		int stock_TMG2=0;
+		if (prix_moins_chere_TMG2<1000000000) {
 		if (equipe_stock_TMG_min2==indice_equipe_moins_chere_TMG2) {
 			stock_TMG2=(int) (0.8*stock_TMG_min2);
 		} else {
 			stock_TMG2=(int) (0.2*stock_TMG_min2);
 		}
 		commande.get(equipe_stock_TMG_min2).set(4, stock_TMG2);
+		}
 		// calcule l'indice du transfo avec le plus grand stock
 		if (Stock.size()==3) {
 		int equipe_stock_TMG_max=3-equipe_stock_TMG_min-equipe_stock_TMG_min2;
+		if (Prix.get(equipe_stock_TMG_max).getPrixProduit((int) (22220-stock_TMG1-stock_TMG2), 5)<1000000000) {
 		commande.get(equipe_stock_TMG_max).set(4, 22220-stock_TMG1-stock_TMG2);
+		}
 		}
 		
 		//Commande de TBG
@@ -271,7 +278,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			}
 		}
 		int indice_equipe_moins_chere_TBG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
-		double prix_moins_chere_TBG=10000000.0;
+		double prix_moins_chere_TBG=10000000000000.0;
 		for (int i=0; i<Stock.size(); i++) {
 			if (Prix.get(i).getPrixProduit((int)stock_TBG_min-1,4)<=prix_moins_chere_TBG&&Prix.get(i).getPrixProduit((int)stock_TBG_min-1,4)!=0) {
 				indice_equipe_moins_chere_TBG=i;
@@ -279,12 +286,14 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			}
 		}
 		int stock_TBG1=0;
+		if (prix_moins_chere_TBG<1000000000) {
 		if (equipe_stock_TBG_min==indice_equipe_moins_chere_TBG) {
 			stock_TBG1= (int) (0.8*stock_TBG_min);
 		} else {
 			stock_TBG1= (int) (0.2*stock_TBG_min);
 		}
 		commande.get(equipe_stock_TBG_min).set(3, stock_TBG1);
+		}
 		// calcule le 2e plus petit stock de TBG et l'indice du transfo associé 
 		double stock_TBG_min2=10000000.0;
 		int equipe_stock_TBG_min2=0;
@@ -296,7 +305,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		}
 		// renvoie l'indice du transfo le moins chere pour le 2e plus petit stock
 		int indice_equipe_moins_chere_TBG2=0;
-		double prix_moins_chere_TBG2=100000000.0;
+		double prix_moins_chere_TBG2=100000000000000.0;
 		for (int i=0; i<Prix.size(); i++) {
 			if (Prix.get(i).getPrixProduit((int) stock_TBG_min2-1, 4) <= prix_moins_chere_TBG2
 					&& i!=indice_equipe_moins_chere_TBG) {
@@ -304,14 +313,15 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 				prix_moins_chere_TBG2=Prix.get(i).getPrixProduit((int)stock_TBG_min2-1,4);
 			}
 		}
-		int stock_TBG2;
+		int stock_TBG2=0;
+		if (prix_moins_chere_TBG2<1000000000) {
 		if (equipe_stock_TBG_min2==indice_equipe_moins_chere_TBG2) {
 			stock_TBG2=(int) (0.8*stock_TBG_min2);
 		} else {
 			stock_TBG2=(int) (0.2*stock_TBG_min2);
 		}
 		commande.get(equipe_stock_TBG_min2).set(3, stock_TBG2+1615-stock_TBG1);
-		
+		}
 		//Commande de CMG
 		
 		double stock_CMG_min=10000000.0; // calcul le stock min en CMG des 3 transfos et l'indice de l'équipe avec le plus petit stock;
@@ -323,7 +333,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			}
 		}
 		int indice_equipe_moins_chere_CMG=0 ; //renvoie l'indice du transfo le moins chere pour le stock min et renvoie le prix
-		double prix_moins_chere_CMG=10000000.0;
+		double prix_moins_chere_CMG=1000000000000.0;
 		for (int i=0; i<Prix.size(); i++) {
 			if (Prix.get(i).getPrixProduit((int)stock_CMG_min,2)<=prix_moins_chere_CMG) {
 				indice_equipe_moins_chere_CMG=i;
@@ -331,12 +341,14 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			}
 		}
 		int stock_CMG1=0;
+		if (prix_moins_chere_CMG<1000000000) {
 		if (equipe_stock_CMG_min==indice_equipe_moins_chere_CMG) {
 			stock_CMG1= (int) (0.8*stock_CMG_min);
 		} else {
 			stock_CMG1= (int) (0.2*stock_CMG_min);
 		}
 		commande.get(equipe_stock_CMG_min).set(1, stock_CMG1);
+		}
 		// calcule le 2e plus petit stock de CMG et l'indice du transfo associé 
 		double stock_CMG_min2=10000000.0;
 		int equipe_stock_CMG_min2=0;
@@ -348,7 +360,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		}
 		// renvoie l'indice du transfo le moins chere pour le 2e plus petit stock
 		int indice_equipe_moins_chere_CMG2=0;
-		double prix_moins_chere_CMG2=100000000.0;
+		double prix_moins_chere_CMG2=1000000000000.0;
 		for (int i=0; i<Prix.size(); i++) {
 			if (Prix.get(i).getPrixProduit((int) stock_CMG_min2-1, 2) <= prix_moins_chere_CMG2
 					&& i!=indice_equipe_moins_chere_CMG) {
@@ -357,13 +369,14 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 			}
 		}
 		int stock_CMG2;
+		if (prix_moins_chere_CMG2<1000000000) {
 		if (equipe_stock_CMG_min2==indice_equipe_moins_chere_CMG2) {
 			stock_CMG2=(int) (0.8*stock_CMG_min2);
 		} else {
 			stock_CMG2=(int) (0.2*stock_CMG_min2);
 		}
 		commande.get(equipe_stock_CMG_min2).set(1, stock_CMG2+11712-stock_CMG1);
-		
+		}
 
 		return commande;
 	}
