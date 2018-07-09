@@ -115,7 +115,7 @@ public class Eq6DIST implements Acteur, IAcheteurChocoBis, InterfaceDistributeur
 		this.marge_TMQ.setValeur(this, this.marge.get(4));
 		this.marge_THQ.setValeur(this, this.marge.get(5));
 
-		//Victor Signes, Karel Kédémos
+		//Victor Signes
 		//Achat occasionnel
 
 		for(int i=0;i<6;i++) {
