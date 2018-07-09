@@ -418,10 +418,10 @@ public class Eq2PROD implements Acteur, IVendeurFevesProd, IVendeurFeveV4 {
 	/* Code par Guillaume SALLE + Agathe CHEVALIER */
 	public void next() {
 		retireSolde(coutFixe);
-		this.getJournal().ajouter("Quantité vendue Basse Qualite ="+getTotalVenteQB());
-		this.getJournal().ajouter("Quantité vendue Moyenne Qualité ="+getTotalVenteQM());
-		this.getJournal().ajouter("Quantité basse qualité = "+ getStockQB());
-		this.getJournal().ajouter("Quantité moyenne qualité ="+ getStockQM());
+		this.getJournal().ajouter("Quantité vendue basse qualité ="+getTotalVenteQB());
+		this.getJournal().ajouter("Quantité vendue moyenne qualité ="+getTotalVenteQM());
+		this.getJournal().ajouter("Stock basse qualité = "+ getStockQB());
+		this.getJournal().ajouter("Stock moyenne qualité ="+ getStockQM());
 		this.getJournal().ajouter("Solde ="+getSolde()+" €");
 		this.getJournal().ajouter("Coefficient de la météo ="+ getCoeffMeteo());
 		this.getJournal().ajouter("Liste des coefficients d'instabilité de nos Pays : " + Arrays.toString(getListeInstabilite()));
